@@ -1,0 +1,70 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "renderscope"
+version = "0.1.0"
+description = "CLI tool and library for benchmarking, comparing, and cataloging open-source rendering engines"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "Ashutosh Mishra" },
+]
+requires-python = ">=3.10"
+keywords = [
+    "rendering",
+    "benchmarking",
+    "computer graphics",
+    "comparison",
+    "path tracing",
+    "ray tracing",
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Graphics :: 3D Rendering",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Typing :: Typed",
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "mypy>=1.8",
+    "ruff>=0.4",
+]
+
+[project.scripts]
+renderscope = "renderscope:main"
+
+[project.urls]
+Homepage = "https://github.com/renderscope-dev/renderscope"
+Repository = "https://github.com/renderscope-dev/renderscope"
+Documentation = "https://github.com/renderscope-dev/renderscope#readme"
+Issues = "https://github.com/renderscope-dev/renderscope/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/renderscope"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B", "SIM", "TCH"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_configs = true

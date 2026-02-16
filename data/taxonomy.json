@@ -1,0 +1,57 @@
+{
+  "$schema": "./taxonomy.schema.json",
+  "version": "0.1.0",
+  "lastUpdated": "2026-02-15",
+  "categories": [
+    {
+      "id": "path_tracing",
+      "name": "Path Tracers / Ray Tracers",
+      "description": "Physically based offline renderers that simulate light transport via path tracing or ray tracing.",
+      "color": "#3B82F6",
+      "renderers": []
+    },
+    {
+      "id": "realtime",
+      "name": "Real-Time / Rasterization",
+      "description": "Renderers optimized for real-time performance using rasterization pipelines.",
+      "color": "#22C55E",
+      "renderers": []
+    },
+    {
+      "id": "neural",
+      "name": "Neural / Radiance Field",
+      "description": "Renderers based on neural representations such as NeRF and 3D Gaussian Splatting.",
+      "color": "#A855F7",
+      "renderers": []
+    },
+    {
+      "id": "differentiable",
+      "name": "Differentiable Renderers",
+      "description": "Renderers that support gradient computation for inverse rendering and optimization.",
+      "color": "#EC4899",
+      "renderers": []
+    },
+    {
+      "id": "volume",
+      "name": "Volume / Scientific",
+      "description": "Renderers specialized for volumetric and scientific data visualization.",
+      "color": "#F97316",
+      "renderers": []
+    },
+    {
+      "id": "blender",
+      "name": "Blender Ecosystem",
+      "description": "Rendering engines tightly integrated with the Blender 3D suite.",
+      "color": "#EAB308",
+      "renderers": []
+    },
+    {
+      "id": "educational",
+      "name": "Educational / Minimal",
+      "description": "Small-scale renderers designed for learning and teaching rendering concepts.",
+      "color": "#6B7280",
+      "renderers": []
+    }
+  ],
+  "relationships": []
+}

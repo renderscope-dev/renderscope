@@ -1,0 +1,25 @@
+{
+  "name": "renderscope-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Monorepo for RenderScope — catalog, compare, and benchmark rendering engines",
+  "workspaces": [
+    "web",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "clean": "turbo clean"
+  },
+  "devDependencies": {
+    "turbo": "^2",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "npm@10.9.2"
+}

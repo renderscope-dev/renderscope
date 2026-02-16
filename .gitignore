@@ -1,0 +1,55 @@
+# === Node / JavaScript ===
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+.turbo/
+.vercel/
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+*.whl
+.venv/
+venv/
+env/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# === IDE ===
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# === OS ===
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# === Environment ===
+.env
+.env.local
+.env.*.local
+
+# === Firebase ===
+.firebase/
+.firebaserc
+
+# === Misc ===
+*.log
+npm-debug.log*
