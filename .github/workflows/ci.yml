@@ -90,6 +90,7 @@ jobs:
     name: Python — Lint, Type Check & Test
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.11", "3.12"]
     defaults:

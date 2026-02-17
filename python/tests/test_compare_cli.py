@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -16,6 +17,13 @@ from typer.testing import CliRunner
 from renderscope.cli.main import app
 
 runner = CliRunner()
+
+_ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
+
+
+def _strip_ansi(text: str) -> str:
+    """Remove ANSI escape codes from Rich/Typer output."""
+    return _ANSI_RE.sub("", text)
 
 
 # ---------------------------------------------------------------------------
@@ -125,13 +133,14 @@ class TestCompareBasic:
         """compare --help should show all options."""
         result = runner.invoke(app, ["compare", "--help"])
         assert result.exit_code == 0
-        assert "--metrics" in result.output
-        assert "--diff-image" in result.output
-        assert "--ssim-heatmap" in result.output
-        assert "--format" in result.output
-        assert "--amplify" in result.output
-        assert "--colormap" in result.output
-        assert "--recursive" in result.output
+        output = _strip_ansi(result.output)
+        assert "--metrics" in output
+        assert "--diff-image" in output
+        assert "--ssim-heatmap" in output
+        assert "--format" in output
+        assert "--amplify" in output
+        assert "--colormap" in output
+        assert "--recursive" in output
 
 
 # ---------------------------------------------------------------------------

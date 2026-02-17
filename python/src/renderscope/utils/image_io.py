@@ -182,7 +182,8 @@ def normalize_channels(image: NDArray[np.float32]) -> NDArray[np.float32]:
     if image.ndim == 3:
         channels = image.shape[2]
         if channels == 4:
-            return image[:, :, :3].copy().astype(np.float32)
+            rgb: NDArray[np.float32] = image[:, :, :3].copy().astype(np.float32)
+            return rgb
         if channels == 1:
             return np.concatenate([image, image, image], axis=-1).astype(np.float32)
         if channels == 3:

@@ -21,8 +21,8 @@ import pytest
 
 from renderscope.adapters.base import RendererAdapter
 from renderscope.adapters.exceptions import (
-    RenderError,
     RendererNotFoundError,
+    RenderError,
     SceneFormatError,
 )
 from renderscope.models.settings import RenderSettings
@@ -642,12 +642,15 @@ class TestAllAdaptersRegistered:
 
         names = registry.get_names()
         expected = {
-            "pbrt", "mitsuba3", "blender-cycles",
-            "luxcore", "appleseed", "filament", "ospray",
+            "pbrt",
+            "mitsuba3",
+            "blender-cycles",
+            "luxcore",
+            "appleseed",
+            "filament",
+            "ospray",
         }
-        assert expected.issubset(set(names)), (
-            f"Missing adapters: {expected - set(names)}"
-        )
+        assert expected.issubset(set(names)), f"Missing adapters: {expected - set(names)}"
 
     def test_registry_adapter_count(self) -> None:
         from renderscope.core.registry import registry

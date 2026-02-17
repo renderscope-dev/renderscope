@@ -3,12 +3,20 @@
 from __future__ import annotations
 
 import json
+import re
 
 from typer.testing import CliRunner
 
 from renderscope.cli.main import app
 
 runner = CliRunner()
+
+_ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
+
+
+def _strip_ansi(text: str) -> str:
+    """Remove ANSI escape codes from Rich/Typer output."""
+    return _ANSI_RE.sub("", text)
 
 
 class TestHelpAndVersion:
@@ -116,9 +124,10 @@ class TestListCommand:
         """list --help should show option descriptions."""
         result = runner.invoke(app, ["list", "--help"])
         assert result.exit_code == 0
-        assert "--technique" in result.output
-        assert "--format" in result.output
-        assert "--installed-only" in result.output
+        output = _strip_ansi(result.output)
+        assert "--technique" in output
+        assert "--format" in output
+        assert "--installed-only" in output
 
 
 class TestSystemInfoCommand:
@@ -145,7 +154,7 @@ class TestSystemInfoCommand:
         """system-info --help should show format option."""
         result = runner.invoke(app, ["system-info", "--help"])
         assert result.exit_code == 0
-        assert "--format" in result.output
+        assert "--format" in _strip_ansi(result.output)
 
 
 class TestInfoCommand:
@@ -218,17 +227,18 @@ class TestStubCommands:
         """benchmark --help should show the future interface."""
         result = runner.invoke(app, ["benchmark", "--help"])
         assert result.exit_code == 0
-        assert "--scene" in result.output
-        assert "--renderer" in result.output
+        output = _strip_ansi(result.output)
+        assert "--scene" in output
+        assert "--renderer" in output
 
     def test_compare_help(self) -> None:
         """compare --help should show the future interface."""
         result = runner.invoke(app, ["compare", "--help"])
         assert result.exit_code == 0
-        assert "--metrics" in result.output
+        assert "--metrics" in _strip_ansi(result.output)
 
     def test_report_help(self) -> None:
         """report --help should show the future interface."""
         result = runner.invoke(app, ["report", "--help"])
         assert result.exit_code == 0
-        assert "--format" in result.output
+        assert "--format" in _strip_ansi(result.output)
