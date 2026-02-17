@@ -1,0 +1,535 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://renderscope.dev/schemas/renderer.schema.json",
+  "title": "RenderScope Renderer",
+  "description": "Metadata for a single rendering engine in the RenderScope catalog.",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "version",
+    "description",
+    "long_description",
+    "technique",
+    "language",
+    "license",
+    "platforms",
+    "gpu_support",
+    "cpu_support",
+    "scene_formats",
+    "output_formats",
+    "repository",
+    "first_release",
+    "status",
+    "tags",
+    "strengths",
+    "limitations",
+    "best_for",
+    "features"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "URL-safe slug used as filename (without .json), URL path segment (/renderer/{id}), and cross-reference key. Must be unique across all renderers.",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "minLength": 2,
+      "maxLength": 64
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable display name. Can include version qualifiers (e.g., 'PBRT v4', 'Mitsuba 3').",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "version": {
+      "type": "string",
+      "description": "Latest known stable version string using the renderer's own versioning. For renderers without formal versioning, use the latest commit date as '2024.01' or 'git-main'.",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "description": "One-sentence summary used in card views and search results. No markdown, no newlines.",
+      "minLength": 10,
+      "maxLength": 200
+    },
+    "long_description": {
+      "type": "string",
+      "description": "2-3 paragraph description with full context: what it is, who made it, key technical differentiators, and relationship to the broader ecosystem. Markdown allowed.",
+      "minLength": 50,
+      "maxLength": 3000
+    },
+    "technique": {
+      "type": "array",
+      "description": "Primary rendering techniques. A renderer can belong to multiple categories.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "path_tracing",
+          "ray_tracing",
+          "rasterization",
+          "neural",
+          "gaussian_splatting",
+          "differentiable",
+          "volume_rendering",
+          "hybrid"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "language": {
+      "type": "string",
+      "description": "Primary implementation language(s). List the primary language first, followed by secondary (e.g., 'C++/Python', 'Python/CUDA').",
+      "minLength": 1
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX license identifier (e.g., 'BSD-3-Clause', 'Apache-2.0', 'MIT'). For custom/non-standard licenses, use the renderer's own label (e.g., 'Custom (NVIDIA)').",
+      "minLength": 1
+    },
+    "platforms": {
+      "type": "array",
+      "description": "Supported operating systems and platforms.",
+      "items": {
+        "type": "string",
+        "enum": ["linux", "macos", "windows", "web", "android", "ios"]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "gpu_support": {
+      "type": "boolean",
+      "description": "Whether the renderer can use GPU acceleration."
+    },
+    "gpu_apis": {
+      "type": "array",
+      "description": "Which GPU APIs are supported. Only present if gpu_support is true.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "cuda",
+          "optix",
+          "opencl",
+          "vulkan",
+          "metal",
+          "directx",
+          "hip",
+          "oneapi",
+          "webgl",
+          "webgpu"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "cpu_support": {
+      "type": "boolean",
+      "description": "Whether the renderer can run on CPU."
+    },
+    "real_time": {
+      "type": "boolean",
+      "description": "Whether the renderer is capable of real-time frame rates (>=30 fps).",
+      "default": false
+    },
+    "scene_formats": {
+      "type": "array",
+      "description": "Input scene formats the renderer can consume. Use lowercase identifiers.",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "output_formats": {
+      "type": "array",
+      "description": "Rendered output image/data formats.",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "homepage": {
+      "type": "string",
+      "description": "Official homepage URL. May be different from the repository URL.",
+      "format": "uri"
+    },
+    "repository": {
+      "type": "string",
+      "description": "Source code repository URL (typically GitHub). This is the primary identity link.",
+      "format": "uri"
+    },
+    "documentation": {
+      "type": "string",
+      "description": "Official documentation URL.",
+      "format": "uri"
+    },
+    "paper": {
+      "type": "string",
+      "description": "DOI URL or direct link to the original academic paper.",
+      "format": "uri"
+    },
+    "paper_bibtex": {
+      "type": "string",
+      "description": "BibTeX entry for the original paper. Multiline string."
+    },
+    "first_release": {
+      "type": "string",
+      "description": "Date of first public release in ISO 8601 format. Use approximate date if exact date is unknown (e.g., '2012-01-01' for 'sometime in 2012').",
+      "format": "date"
+    },
+    "latest_release": {
+      "type": "string",
+      "description": "Date of most recent release. Updated weekly by CI.",
+      "format": "date"
+    },
+    "latest_release_version": {
+      "type": "string",
+      "description": "Version string of the most recent release. Updated weekly by CI."
+    },
+    "status": {
+      "type": "string",
+      "description": "Project activity status. 'active' = regular commits/releases. 'maintenance' = bug fixes only. 'inactive' = no activity in 6+ months. 'archived' = officially archived by maintainer. 'deprecated' = replaced by successor.",
+      "enum": ["active", "maintenance", "inactive", "archived", "deprecated"]
+    },
+    "tags": {
+      "type": "array",
+      "description": "Freeform lowercase tags for search and filtering.",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "strengths": {
+      "type": "array",
+      "description": "Human-written strengths. Each item is one clear, specific, non-generic sentence.",
+      "items": {
+        "type": "string",
+        "minLength": 10
+      },
+      "minItems": 1,
+      "maxItems": 7
+    },
+    "limitations": {
+      "type": "array",
+      "description": "Human-written limitations. Honest, specific, useful for decision-making.",
+      "items": {
+        "type": "string",
+        "minLength": 10
+      },
+      "minItems": 1,
+      "maxItems": 7
+    },
+    "best_for": {
+      "type": "string",
+      "description": "One-sentence summary of ideal use cases.",
+      "minLength": 10,
+      "maxLength": 300
+    },
+    "not_ideal_for": {
+      "type": "string",
+      "description": "One-sentence summary of poor-fit use cases.",
+      "minLength": 10,
+      "maxLength": 300
+    },
+    "related": {
+      "type": "array",
+      "description": "Array of renderer id values for related/comparable renderers. Used for 'Related Renderers' section on profile pages and taxonomy edges.",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "features": {
+      "type": "object",
+      "description": "Boolean feature matrix used in the interactive feature comparison. Values: true = supported, false = not supported, null = not applicable.",
+      "additionalProperties": false,
+      "properties": {
+        "global_illumination": {
+          "type": ["boolean", "null"],
+          "description": "Computes indirect lighting"
+        },
+        "path_tracing": {
+          "type": ["boolean", "null"],
+          "description": "Unbiased Monte Carlo path tracing"
+        },
+        "bidirectional_pt": {
+          "type": ["boolean", "null"],
+          "description": "Bidirectional path tracing"
+        },
+        "metropolis_lt": {
+          "type": ["boolean", "null"],
+          "description": "Metropolis light transport (MLT)"
+        },
+        "photon_mapping": {
+          "type": ["boolean", "null"],
+          "description": "Photon mapping (any variant)"
+        },
+        "volumetric": {
+          "type": ["boolean", "null"],
+          "description": "Volume rendering (participating media)"
+        },
+        "subsurface_scattering": {
+          "type": ["boolean", "null"],
+          "description": "Subsurface scattering / BSSRDF"
+        },
+        "motion_blur": {
+          "type": ["boolean", "null"],
+          "description": "Camera or object motion blur"
+        },
+        "depth_of_field": {
+          "type": ["boolean", "null"],
+          "description": "Thin lens / depth of field simulation"
+        },
+        "spectral_rendering": {
+          "type": ["boolean", "null"],
+          "description": "Full spectral rendering (not just RGB)"
+        },
+        "polarization": {
+          "type": ["boolean", "null"],
+          "description": "Polarization-aware rendering"
+        },
+        "caustics": {
+          "type": ["boolean", "null"],
+          "description": "Caustic effects (specular-diffuse paths)"
+        },
+        "instancing": {
+          "type": ["boolean", "null"],
+          "description": "Geometry instancing for memory efficiency"
+        },
+        "out_of_core": {
+          "type": ["boolean", "null"],
+          "description": "Out-of-core rendering for scenes larger than RAM"
+        },
+        "adaptive_sampling": {
+          "type": ["boolean", "null"],
+          "description": "Spatially adaptive sample allocation"
+        },
+        "denoiser_builtin": {
+          "type": ["boolean", "null"],
+          "description": "Integrated AI or NLM denoiser"
+        },
+        "gpu_rendering": {
+          "type": ["boolean", "null"],
+          "description": "Can render on GPU"
+        },
+        "multi_gpu": {
+          "type": ["boolean", "null"],
+          "description": "Multi-GPU support"
+        },
+        "network_rendering": {
+          "type": ["boolean", "null"],
+          "description": "Distributed rendering over network"
+        },
+        "hardware_ray_tracing": {
+          "type": ["boolean", "null"],
+          "description": "Uses hardware RT cores (OptiX, DXR, Vulkan RT)"
+        },
+        "differentiable": {
+          "type": ["boolean", "null"],
+          "description": "Supports gradient computation"
+        },
+        "inverse_rendering": {
+          "type": ["boolean", "null"],
+          "description": "Can optimize scene parameters via gradients"
+        },
+        "neural_acceleration": {
+          "type": ["boolean", "null"],
+          "description": "Uses neural networks for acceleration"
+        },
+        "real_time_preview": {
+          "type": ["boolean", "null"],
+          "description": "Interactive preview during authoring"
+        },
+        "pbr_materials": {
+          "type": ["boolean", "null"],
+          "description": "PBR material model support"
+        },
+        "hdri_environment": {
+          "type": ["boolean", "null"],
+          "description": "HDRI environment lighting"
+        },
+        "shadow_mapping": {
+          "type": ["boolean", "null"],
+          "description": "Shadow maps (real-time technique)"
+        },
+        "screen_space_effects": {
+          "type": ["boolean", "null"],
+          "description": "SSAO, SSR, and other screen-space effects"
+        },
+        "lod_system": {
+          "type": ["boolean", "null"],
+          "description": "Level-of-detail management"
+        },
+        "animation_support": {
+          "type": ["boolean", "null"],
+          "description": "Keyframe or skeletal animation"
+        },
+        "python_api": {
+          "type": ["boolean", "null"],
+          "description": "Usable from Python"
+        },
+        "c_cpp_api": {
+          "type": ["boolean", "null"],
+          "description": "Usable from C/C++"
+        },
+        "rust_api": {
+          "type": ["boolean", "null"],
+          "description": "Usable from Rust"
+        },
+        "javascript_api": {
+          "type": ["boolean", "null"],
+          "description": "Usable from JavaScript"
+        },
+        "scene_editor_gui": {
+          "type": ["boolean", "null"],
+          "description": "Built-in GUI for scene editing"
+        },
+        "plugin_system": {
+          "type": ["boolean", "null"],
+          "description": "Supports plugins or extensions"
+        },
+        "open_shading_language": {
+          "type": ["boolean", "null"],
+          "description": "Open Shading Language (OSL) shader support"
+        },
+        "materialx": {
+          "type": ["boolean", "null"],
+          "description": "MaterialX material support"
+        }
+      }
+    },
+    "github_stars": {
+      "type": "integer",
+      "description": "Current GitHub star count. Updated weekly by CI.",
+      "minimum": 0
+    },
+    "github_stars_trend": {
+      "type": "array",
+      "description": "Monthly star counts over the last 12 months (array of 12 integers, oldest first). Updated weekly by CI.",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "commit_activity_52w": {
+      "type": "array",
+      "description": "Weekly commit counts for the last 52 weeks (oldest first). Updated weekly by CI.",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "contributor_count": {
+      "type": "integer",
+      "description": "Number of unique contributors. Updated weekly by CI.",
+      "minimum": 0
+    },
+    "open_issues": {
+      "type": "integer",
+      "description": "Current open issue count. Updated weekly by CI.",
+      "minimum": 0
+    },
+    "fork_count": {
+      "type": "integer",
+      "description": "Current fork count. Updated weekly by CI.",
+      "minimum": 0
+    },
+    "integrations": {
+      "type": "array",
+      "description": "Tools this renderer integrates with (e.g., 'Blender', 'Maya', 'Houdini').",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "community_links": {
+      "type": "object",
+      "description": "Links to community resources.",
+      "additionalProperties": false,
+      "properties": {
+        "discord": {
+          "type": "string",
+          "description": "Discord server invite URL.",
+          "format": "uri"
+        },
+        "forum": {
+          "type": "string",
+          "description": "Forum or discussion board URL.",
+          "format": "uri"
+        },
+        "mailing_list": {
+          "type": "string",
+          "description": "Mailing list URL.",
+          "format": "uri"
+        },
+        "stackoverflow_tag": {
+          "type": "string",
+          "description": "Stack Overflow tag name."
+        }
+      }
+    },
+    "citations": {
+      "type": "array",
+      "description": "Notable publications that use this renderer.",
+      "items": {
+        "type": "object",
+        "required": ["title", "url"],
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Publication title."
+          },
+          "url": {
+            "type": "string",
+            "description": "URL to the publication.",
+            "format": "uri"
+          },
+          "year": {
+            "type": "integer",
+            "description": "Publication year."
+          }
+        }
+      }
+    },
+    "tutorials": {
+      "type": "array",
+      "description": "Learning resources and tutorials.",
+      "items": {
+        "type": "object",
+        "required": ["title", "url", "type"],
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Tutorial title."
+          },
+          "url": {
+            "type": "string",
+            "description": "URL to the tutorial.",
+            "format": "uri"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of learning resource.",
+            "enum": ["video", "article", "course"]
+          }
+        }
+      }
+    },
+    "install_command": {
+      "type": "string",
+      "description": "Primary installation command displayed in quick-start on profile pages."
+    },
+    "logo": {
+      "type": "string",
+      "description": "Path to logo/icon image relative to /assets/logos/."
+    },
+    "thumbnail": {
+      "type": "string",
+      "description": "Path to a representative rendered image relative to /assets/renders/."
+    }
+  }
+}

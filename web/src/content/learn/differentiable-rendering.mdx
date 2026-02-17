@@ -1,0 +1,37 @@
+---
+title: "Differentiable Rendering"
+description: "Rendering with computable gradients, enabling optimization of 3D scene parameters through gradient descent."
+technique: "differentiable-rendering"
+furtherReading:
+  - title: "Differentiable Rendering: A Survey"
+    url: "https://arxiv.org/abs/2006.12057"
+    description: "A comprehensive survey of differentiable rendering methods and applications."
+    type: "paper"
+  - title: "Mitsuba 3 Documentation"
+    url: "https://mitsuba.readthedocs.io/"
+    description: "A research-oriented differentiable renderer with comprehensive documentation."
+    type: "documentation"
+---
+
+## How It Works
+
+Differentiable rendering makes the rendering process differentiable with respect to scene parameters — geometry, materials, lighting, and camera. This means gradients of the rendered image can be computed through backpropagation, enabling optimization of 3D scene parameters to match a target image using gradient descent.
+
+In practice, a differentiable renderer takes scene parameters as input, produces an image, compares it to a target (using a loss function like L2 or perceptual loss), and propagates gradients backward through the entire rendering pipeline to update the scene parameters. This "analysis by synthesis" approach connects rendering to machine learning optimization.
+
+## Key Concepts
+
+- **Reparameterization** reformulates the rendering integral to make it differentiable with respect to scene parameters, particularly at geometric boundaries (silhouette edges)
+- **Edge sampling** explicitly handles discontinuities where objects occlude each other — a key challenge since naive differentiation produces incorrect gradients at silhouettes
+- **Automatic differentiation** systems (PyTorch, JAX, Dr.Jit) provide the infrastructure for computing gradients through complex rendering code
+- **Inverse rendering** uses differentiable rendering to recover scene properties (shape, reflectance, illumination) from photographs
+
+## Strengths and Trade-offs
+
+Differentiable rendering bridges the gap between 3D graphics and machine learning, enabling applications that were previously impossible: reconstructing 3D scenes from photographs, optimizing materials to achieve a desired appearance, training neural networks that incorporate rendering in their forward pass, and more.
+
+The trade-offs include higher computational cost compared to non-differentiable rendering (gradient computation and storage add overhead), numerical challenges at geometric boundaries, and the need for careful handling of discrete operations (visibility, shadow computation) that are not naturally differentiable.
+
+## History
+
+Early work on differentiable rendering appeared in the 2010s with OpenDR (Loper and Black, 2014) and Neural Mesh Renderer (Kato et al., 2018). The field accelerated rapidly with SoftRas (2019), redner (Li et al., 2018), and PyTorch3D (2020). Mitsuba 3 (2022) brought differentiable rendering to a production-quality physically based renderer using the Dr.Jit compiler. Today, differentiable rendering is a foundational tool in 3D computer vision and the backbone of techniques like NeRF and Gaussian Splatting.

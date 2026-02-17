@@ -1,0 +1,129 @@
+{
+  "id": "taichi",
+  "name": "Taichi",
+  "version": "1.7.2",
+  "description": "High-performance parallel programming language for GPU-accelerated computing, differentiable simulation, and visual computing",
+  "long_description": "Taichi is a domain-specific programming language embedded in Python for writing high-performance parallel programs that compile to multiple GPU and CPU backends — CUDA, Vulkan, Metal, OpenGL, and LLVM. Created by Yuanming Hu at MIT CSAIL, it enables anyone who can write Python to produce GPU-accelerated code without learning CUDA, OpenCL, or shader languages. While not a renderer itself, Taichi has become one of the primary tools for building differentiable renderers, physics simulations, and visual computing applications in the research community.\n\nThe language's key innovation is its multi-backend compilation model: a single Taichi program, written in decorated Python functions using `@ti.kernel` and `@ti.func`, compiles to native GPU code for whichever backend is available — CUDA on NVIDIA hardware, Vulkan for cross-platform GPU, Metal on Apple devices, or LLVM for CPU execution. This write-once-run-anywhere portability is unmatched by any other high-performance computing tool in the catalog. Combined with built-in automatic differentiation (forward and reverse mode) and sparse data structures optimized for volumetric computation, Taichi is uniquely positioned for differentiable physics and rendering research.\n\nThe Taichi ecosystem includes official path tracer examples, real-time fluid and physics simulation demos, and a growing collection of community-built renderers and neural rendering implementations. Taichi Graphics Inc. (now Taichi) commercially supports the open-source project with regular releases, extensive documentation, and educational courses. With over 25,000 GitHub stars, Taichi has one of the largest communities in the visual computing space, bridging the gap between accessible Python programming and compiled-code GPU performance.",
+  "technique": ["differentiable"],
+  "language": "Python/C++",
+  "license": "Apache-2.0",
+  "platforms": ["linux", "macos", "windows"],
+  "gpu_support": true,
+  "gpu_apis": ["cuda", "vulkan", "metal"],
+  "cpu_support": true,
+  "real_time": true,
+  "scene_formats": ["programmatic"],
+  "output_formats": ["png", "jpg"],
+  "homepage": "https://taichi-lang.org",
+  "repository": "https://github.com/taichi-dev/taichi",
+  "documentation": "https://docs.taichi-lang.org",
+  "paper": "https://doi.org/10.1145/3355089.3356506",
+  "paper_bibtex": "@article{hu2019taichi,\n  title={Taichi: A Language for High-Performance Computation on Spatially Sparse Data Structures},\n  author={Hu, Yuanming and Li, Tzu-Mao and Anderson, Luke and Ragan-Kelley, Jonathan and Durand, Fr{\\'e}do},\n  journal={ACM Transactions on Graphics (TOG)},\n  volume={38},\n  number={6},\n  pages={201},\n  year={2019},\n  publisher={ACM},\n  doi={10.1145/3355089.3356506}\n}",
+  "first_release": "2019-10-01",
+  "latest_release": "2024-05-15",
+  "latest_release_version": "1.7.2",
+  "status": "active",
+  "github_stars": 25200,
+  "github_stars_trend": [22000, 22400, 22800, 23100, 23500, 23800, 24100, 24400, 24600, 24800, 25000, 25200],
+  "commit_activity_52w": [15, 12, 18, 8, 10, 14, 20, 11, 9, 16, 13, 7, 12, 15, 18, 10, 8, 14, 11, 13, 16, 9, 12, 15, 10, 8, 14, 17, 12, 9, 11, 15, 13, 8, 10, 16, 12, 14, 9, 11, 13, 15, 10, 8, 12, 14, 16, 11, 9, 13, 15, 10],
+  "contributor_count": 200,
+  "open_issues": 600,
+  "fork_count": 2500,
+  "tags": [
+    "programming-language",
+    "gpu-computing",
+    "differentiable-programming",
+    "parallel-computing",
+    "multi-backend",
+    "autodiff",
+    "physics-simulation",
+    "sparse-data-structures",
+    "visual-computing"
+  ],
+  "strengths": [
+    "Unique multi-backend GPU compilation — write once in Python-like syntax, run on CUDA, Vulkan, Metal, OpenGL, or CPU without any code changes, making Taichi the most portable high-performance computing tool for visual computing",
+    "Built-in automatic differentiation enables differentiable rendering and physics simulation without external AD frameworks — annotate kernels and Taichi generates backward passes automatically, supporting both forward and reverse mode AD",
+    "Exceptionally low barrier to entry for GPU programming — anyone who can write Python can produce GPU-accelerated parallel code without learning CUDA, OpenCL, or shader languages",
+    "Sparse data structures (hierarchical grids, VDB-like block-sparse layouts) built into the language enable efficient volumetric computation, fluid simulation, and MPM physics — a capability that requires specialized libraries in other frameworks",
+    "Large, active community with 25K+ GitHub stars, extensive official documentation, educational courses, and a growing ecosystem of community-built renderers, physics engines, and visual computing tools"
+  ],
+  "limitations": [
+    "Taichi is a language for building renderers, not a ready-to-use renderer — users must write their own rendering code or find community implementations that vary in quality, completeness, and maintenance",
+    "Performance ceiling may be lower than hand-tuned CUDA for specific tasks because the multi-backend abstraction layer and JIT compilation introduce some overhead compared to native GPU code",
+    "Autodiff has limitations compared to framework-native AD systems — some control flow patterns are not differentiable, dynamic memory allocation complicates gradient computation, and debugging AD failures requires understanding compiler internals",
+    "Debugging is harder than standard Python because errors may surface in the JIT compilation phase rather than at the Python level, with error messages that reference the compiled representation rather than the source code",
+    "Not a drop-in replacement for established differentiable rendering frameworks like PyTorch3D or Mitsuba 3 — lacks pre-built rendering pipelines, material models, scene loaders, and integrated ML framework interoperability"
+  ],
+  "best_for": "GPU-accelerated computing, differentiable simulation, and building custom renderers with an accessible Python-like syntax and multi-backend portability",
+  "not_ideal_for": "Users who need a ready-to-use rendering solution — Taichi requires writing your own rendering code. For production differentiable rendering, PyTorch3D or nvdiffrast provide more complete, tested pipelines",
+  "related": ["drjit", "pytorch3d", "softrasterizer"],
+  "features": {
+    "global_illumination": null,
+    "path_tracing": null,
+    "bidirectional_pt": null,
+    "metropolis_lt": null,
+    "photon_mapping": null,
+    "volumetric": null,
+    "subsurface_scattering": null,
+    "motion_blur": null,
+    "depth_of_field": null,
+    "spectral_rendering": null,
+    "polarization": null,
+    "caustics": null,
+    "instancing": null,
+    "out_of_core": false,
+    "adaptive_sampling": null,
+    "denoiser_builtin": false,
+    "gpu_rendering": true,
+    "multi_gpu": false,
+    "network_rendering": false,
+    "hardware_ray_tracing": false,
+    "differentiable": true,
+    "inverse_rendering": null,
+    "neural_acceleration": false,
+    "real_time_preview": true,
+    "pbr_materials": null,
+    "hdri_environment": null,
+    "shadow_mapping": null,
+    "screen_space_effects": null,
+    "lod_system": null,
+    "animation_support": null,
+    "python_api": true,
+    "c_cpp_api": true,
+    "rust_api": false,
+    "javascript_api": false,
+    "scene_editor_gui": false,
+    "plugin_system": false,
+    "open_shading_language": false,
+    "materialx": false
+  },
+  "integrations": ["PyTorch", "NumPy"],
+  "install_command": "pip install taichi",
+  "community_links": {
+    "forum": "https://forum.taichi-lang.org"
+  },
+  "citations": [
+    {
+      "title": "Taichi: A Language for High-Performance Computation on Spatially Sparse Data Structures",
+      "url": "https://doi.org/10.1145/3355089.3356506",
+      "year": 2019
+    },
+    {
+      "title": "DiffTaichi: Differentiable Programming for Physical Simulation",
+      "url": "https://arxiv.org/abs/1910.00935",
+      "year": 2020
+    }
+  ],
+  "tutorials": [
+    {
+      "title": "Taichi Official Documentation",
+      "url": "https://docs.taichi-lang.org/docs",
+      "type": "article"
+    },
+    {
+      "title": "Taichi Tutorials Collection",
+      "url": "https://docs.taichi-lang.org/docs/tutorials",
+      "type": "course"
+    }
+  ]
+}

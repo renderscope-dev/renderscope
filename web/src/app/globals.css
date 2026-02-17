@@ -3,29 +3,174 @@
 @tailwind utilities;
 
 @layer base {
+  /* ================================================================
+     DARK THEME (Default)
+
+     Design philosophy:
+     - Near-black backgrounds to make rendered images "pop"
+     - Subtle blue-gray tint for warmth (not pure black)
+     - High contrast text for readability
+     - Glowing accent colors for technique badges
+     ================================================================ */
   :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 95%;
-    --card: 240 6% 8%;
-    --card-foreground: 0 0% 95%;
-    --primary: 221 83% 53%;
+    --background:         240 10% 4%;
+    --foreground:         0 0% 95%;
+
+    --card:               240 6% 8%;
+    --card-foreground:    0 0% 95%;
+
+    --popover:            240 6% 10%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary:            217 92% 60%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 5% 15%;
-    --secondary-foreground: 0 0% 95%;
-    --muted: 240 5% 15%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 5% 15%;
-    --accent-foreground: 0 0% 95%;
-    --border: 240 5% 17%;
-    --ring: 221 83% 53%;
-    --radius: 0.5rem;
+
+    --secondary:          240 4% 16%;
+    --secondary-foreground: 0 0% 85%;
+
+    --muted:              240 4% 16%;
+    --muted-foreground:   240 5% 55%;
+
+    --accent:             240 4% 16%;
+    --accent-foreground:  0 0% 95%;
+
+    --destructive:        0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border:             240 4% 16%;
+    --input:              240 4% 16%;
+    --ring:               217 92% 60%;
+
+    --radius:             0.625rem;
+
+    --chart-1: 217 92% 60%;
+    --chart-2: 142 70% 50%;
+    --chart-3: 280 85% 65%;
+    --chart-4: 25 95% 55%;
+    --chart-5: 330 85% 60%;
+
+    /* ── TECHNIQUE BADGE COLORS ────────────────────────────────── */
+    --technique-path-tracing:       210 100% 65%;
+    --technique-ray-tracing:        195 100% 60%;
+    --technique-rasterization:      142 70% 50%;
+    --technique-neural:             280 85% 65%;
+    --technique-gaussian-splatting: 260 80% 70%;
+    --technique-differentiable:     330 85% 60%;
+    --technique-volume:             25 95% 55%;
+    --technique-ray-marching:       185 80% 55%;
+    --technique-educational:        45 95% 55%;
   }
 
+  /* ================================================================
+     LIGHT THEME (Override)
+     ================================================================ */
+  .light {
+    --background:         0 0% 100%;
+    --foreground:         240 10% 4%;
+
+    --card:               0 0% 98%;
+    --card-foreground:    240 10% 4%;
+
+    --popover:            0 0% 100%;
+    --popover-foreground: 240 10% 4%;
+
+    --primary:            217 92% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary:          240 5% 92%;
+    --secondary-foreground: 240 6% 10%;
+
+    --muted:              240 5% 96%;
+    --muted-foreground:   240 4% 46%;
+
+    --accent:             240 5% 96%;
+    --accent-foreground:  240 6% 10%;
+
+    --destructive:        0 84% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border:             240 6% 90%;
+    --input:              240 6% 90%;
+    --ring:               217 92% 50%;
+
+    --chart-1: 217 80% 50%;
+    --chart-2: 142 60% 40%;
+    --chart-3: 280 70% 50%;
+    --chart-4: 25 85% 45%;
+    --chart-5: 330 75% 50%;
+
+    --technique-path-tracing:       210 100% 45%;
+    --technique-ray-tracing:        195 100% 40%;
+    --technique-rasterization:      142 70% 38%;
+    --technique-neural:             280 85% 50%;
+    --technique-gaussian-splatting: 260 80% 50%;
+    --technique-differentiable:     330 85% 45%;
+    --technique-volume:             25 95% 45%;
+    --technique-ray-marching:       185 80% 40%;
+    --technique-educational:        45 95% 40%;
+  }
+
+  /* ── BASE ELEMENT STYLES ────────────────────────────────────── */
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+
+  /* Focus visible ring — accessibility */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Selection color */
+  ::selection {
+    background: hsl(var(--primary) / 0.3);
+    color: hsl(var(--foreground));
+  }
+}
+
+/* ── UTILITY CLASSES ──────────────────────────────────────────── */
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-[hsl(280,85%,65%)];
+  }
+
+  .glow-border {
+    box-shadow: 0 0 0 1px hsl(var(--border)),
+                0 0 15px -3px hsl(var(--primary) / 0.1);
+  }
+  .glow-border-hover:hover {
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.3),
+                0 0 25px -5px hsl(var(--primary) / 0.15);
+  }
+
+  .glass {
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
   }
 }

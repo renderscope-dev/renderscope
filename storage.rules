@@ -1,0 +1,28 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Rendered images and scene assets — public read, no client write
+    match /renders/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /scenes/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Open Graph images (auto-generated social sharing images)
+    match /og/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Default: deny everything else
+    match /{allPaths=**} {
+      allow read: if false;
+      allow write: if false;
+    }
+  }
+}

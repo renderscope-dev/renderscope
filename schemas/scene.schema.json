@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://renderscope.dev/schemas/scene.schema.json",
+  "title": "RenderScope Scene",
+  "description": "Metadata for a standard benchmark scene.",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "description",
+    "tests",
+    "complexity",
+    "source",
+    "available_formats"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "URL-safe slug used as filename and cross-reference key.",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable display name for the scene."
+    },
+    "description": {
+      "type": "string",
+      "description": "What this scene is and what rendering features it tests, 1-3 sentences."
+    },
+    "tests": {
+      "type": "array",
+      "description": "Rendering features this scene is designed to test.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "global_illumination",
+          "color_bleeding",
+          "soft_shadows",
+          "indirect_light",
+          "caustics",
+          "volumetric",
+          "subsurface_scattering",
+          "complex_geometry",
+          "textures",
+          "hdri_lighting",
+          "motion_blur",
+          "depth_of_field",
+          "transparency",
+          "reflections",
+          "outdoor_lighting"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "complexity": {
+      "type": "string",
+      "description": "Overall scene complexity rating.",
+      "enum": ["trivial", "low", "medium", "high", "extreme"]
+    },
+    "vertices": {
+      "type": "integer",
+      "description": "Total vertex count in the scene.",
+      "minimum": 0
+    },
+    "faces": {
+      "type": "integer",
+      "description": "Total face/triangle count in the scene.",
+      "minimum": 0
+    },
+    "lights": {
+      "type": "integer",
+      "description": "Number of light sources in the scene.",
+      "minimum": 0
+    },
+    "light_types": {
+      "type": "array",
+      "description": "Types of lights present in the scene.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "point",
+          "area",
+          "directional",
+          "spot",
+          "hdri",
+          "ies",
+          "emissive_geometry"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "textures": {
+      "type": "integer",
+      "description": "Number of texture maps used.",
+      "minimum": 0
+    },
+    "source": {
+      "type": "string",
+      "description": "Attribution — who created or provided the scene."
+    },
+    "source_url": {
+      "type": "string",
+      "description": "Link to the original scene source.",
+      "format": "uri"
+    },
+    "license": {
+      "type": "string",
+      "description": "Scene license (SPDX identifier or description)."
+    },
+    "available_formats": {
+      "type": "array",
+      "description": "Scene file formats available for download.",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "thumbnail": {
+      "type": "string",
+      "description": "Relative path to the scene thumbnail image."
+    },
+    "downloads": {
+      "type": "object",
+      "description": "Mapping of format name to download URL for each available format.",
+      "additionalProperties": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "camera": {
+      "type": "object",
+      "description": "Standard camera position for consistent benchmarking.",
+      "additionalProperties": false,
+      "properties": {
+        "position": {
+          "type": "array",
+          "description": "Camera position as [x, y, z].",
+          "items": { "type": "number" },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "look_at": {
+          "type": "array",
+          "description": "Camera look-at target as [x, y, z].",
+          "items": { "type": "number" },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "up": {
+          "type": "array",
+          "description": "Camera up vector as [x, y, z].",
+          "items": { "type": "number" },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "fov": {
+          "type": "number",
+          "description": "Vertical field of view in degrees.",
+          "minimum": 0,
+          "maximum": 180
+        }
+      }
+    }
+  }
+}

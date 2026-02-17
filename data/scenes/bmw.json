@@ -1,0 +1,25 @@
+{
+  "id": "bmw",
+  "name": "BMW M6",
+  "description": "An automotive rendering benchmark from the Blender Foundation featuring a BMW M6 with detailed reflective surfaces, complex curved body panels, and HDR environment lighting. Pushes material quality to its limits with clearcoat, metallic paint, and glass materials.",
+  "tests": ["reflections", "complex_geometry", "hdri_lighting", "textures"],
+  "complexity": "high",
+  "vertices": 1156128,
+  "faces": 1156128,
+  "lights": 1,
+  "light_types": ["hdri"],
+  "textures": 12,
+  "source": "Blender Foundation Demo Files",
+  "source_url": "https://www.blender.org/download/demo-files/",
+  "license": "CC0-1.0",
+  "available_formats": ["blend", "gltf", "obj"],
+  "downloads": {
+    "blend": "https://download.blender.org/demo/test/BMW27.blend.zip"
+  },
+  "camera": {
+    "position": [5, 2.5, -5],
+    "look_at": [0, 0.5, 0],
+    "up": [0, 1, 0],
+    "fov": 45
+  }
+}

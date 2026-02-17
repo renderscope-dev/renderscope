@@ -1,0 +1,80 @@
+[
+  {
+    "term": "BSDF",
+    "definition": "Bidirectional Scattering Distribution Function. A generalization that combines BRDF (reflection) and BTDF (transmission) to describe how light interacts with a surface.",
+    "related": ["BRDF", "BTDF"],
+    "seeAlso": "/learn/path-tracing"
+  },
+  {
+    "term": "BRDF",
+    "definition": "Bidirectional Reflectance Distribution Function. A function that defines how light is reflected off a surface, depending on the incoming and outgoing light directions.",
+    "related": ["BSDF", "BTDF", "PBR"],
+    "seeAlso": "/learn/path-tracing"
+  },
+  {
+    "term": "BVH",
+    "definition": "Bounding Volume Hierarchy. A tree data structure used to accelerate ray-object intersection tests by organizing scene geometry into nested bounding boxes.",
+    "related": ["Ray Tracing"],
+    "seeAlso": "/learn/path-tracing"
+  },
+  {
+    "term": "Denoising",
+    "definition": "The process of removing noise from a rendered image, typically Monte Carlo noise from undersampled path tracing. Modern denoisers use neural networks (e.g., Intel Open Image Denoise, NVIDIA OptiX AI denoiser).",
+    "related": ["SPP", "Monte Carlo"],
+    "seeAlso": null
+  },
+  {
+    "term": "GI",
+    "definition": "Global Illumination. Lighting algorithms that account for indirect light (light that has bounced off surfaces) in addition to direct illumination, producing more realistic images.",
+    "related": ["Path Tracing", "Radiosity"],
+    "seeAlso": "/learn/path-tracing"
+  },
+  {
+    "term": "HDRI",
+    "definition": "High Dynamic Range Image. An image format that stores a wider range of luminance values than standard images. Commonly used as environment maps for image-based lighting in 3D scenes.",
+    "related": ["EXR", "Tone Mapping"],
+    "seeAlso": null
+  },
+  {
+    "term": "Monte Carlo",
+    "definition": "A class of algorithms that use random sampling to estimate numerical results. In rendering, Monte Carlo integration is the foundation of path tracing — rays are sampled randomly to estimate the rendering equation.",
+    "related": ["Path Tracing", "SPP", "Importance Sampling"],
+    "seeAlso": "/learn/path-tracing"
+  },
+  {
+    "term": "NeRF",
+    "definition": "Neural Radiance Field. A method that uses a neural network to represent a 3D scene as a continuous volumetric function mapping 3D coordinates to color and density. Trained from a set of posed photographs.",
+    "related": ["Gaussian Splatting", "Radiance Field"],
+    "seeAlso": "/learn/neural-radiance-fields"
+  },
+  {
+    "term": "PBR",
+    "definition": "Physically Based Rendering. An approach to rendering that models materials and light transport according to physical principles, producing more consistent and realistic results than ad-hoc shading models.",
+    "related": ["BRDF", "BSDF", "Path Tracing"],
+    "seeAlso": "/learn/path-tracing"
+  },
+  {
+    "term": "PSNR",
+    "definition": "Peak Signal-to-Noise Ratio. An image quality metric measured in decibels (dB) that compares a rendered image to a reference. Higher values indicate less error. Typical ranges for rendered images: 30–50 dB.",
+    "related": ["SSIM", "LPIPS", "MSE"],
+    "seeAlso": null
+  },
+  {
+    "term": "SDF",
+    "definition": "Signed Distance Field (or Function). A function that returns the shortest distance from any point in space to the nearest surface. Positive outside, negative inside. Used for ray marching, procedural modeling, and real-time effects.",
+    "related": ["Ray Marching"],
+    "seeAlso": "/learn/ray-marching"
+  },
+  {
+    "term": "SPP",
+    "definition": "Samples Per Pixel. The number of ray samples averaged for each pixel in a Monte Carlo renderer. More samples reduce noise but increase render time. Typical values range from 64 (noisy preview) to 4096+ (final quality).",
+    "related": ["Monte Carlo", "Denoising", "Path Tracing"],
+    "seeAlso": "/learn/path-tracing"
+  },
+  {
+    "term": "SSIM",
+    "definition": "Structural Similarity Index Measure. An image quality metric that compares structural patterns, luminance, and contrast between two images. Values range from 0 to 1, where 1 means identical images.",
+    "related": ["PSNR", "LPIPS"],
+    "seeAlso": null
+  }
+]

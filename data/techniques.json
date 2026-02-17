@@ -1,0 +1,72 @@
+[
+  {
+    "id": "path-tracing",
+    "name": "Path Tracing",
+    "shortDescription": "Physically-based light simulation that traces rays through a scene to produce photorealistic images.",
+    "icon": "Zap",
+    "gradient": "from-blue-500/20 to-blue-900/20",
+    "accentColor": "blue",
+    "order": 1,
+    "rendererTechniqueId": "path_tracing"
+  },
+  {
+    "id": "rasterization",
+    "name": "Rasterization",
+    "shortDescription": "The dominant real-time technique that projects 3D triangles onto a 2D screen at interactive frame rates.",
+    "icon": "Monitor",
+    "gradient": "from-green-500/20 to-green-900/20",
+    "accentColor": "green",
+    "order": 2,
+    "rendererTechniqueId": "rasterization"
+  },
+  {
+    "id": "neural-radiance-fields",
+    "name": "Neural Radiance Fields",
+    "shortDescription": "Neural networks that learn a volumetric scene representation from a set of photographs.",
+    "icon": "Brain",
+    "gradient": "from-purple-500/20 to-purple-900/20",
+    "accentColor": "purple",
+    "order": 3,
+    "rendererTechniqueId": "neural"
+  },
+  {
+    "id": "gaussian-splatting",
+    "name": "3D Gaussian Splatting",
+    "shortDescription": "An explicit point-based representation that renders novel views in real time using differentiable Gaussian primitives.",
+    "icon": "Sparkles",
+    "gradient": "from-pink-500/20 to-pink-900/20",
+    "accentColor": "pink",
+    "order": 4,
+    "rendererTechniqueId": "gaussian_splatting"
+  },
+  {
+    "id": "volume-rendering",
+    "name": "Volume Rendering",
+    "shortDescription": "Techniques for visualizing 3D scalar fields like CT scans, fluid simulations, and participating media.",
+    "icon": "Box",
+    "gradient": "from-orange-500/20 to-orange-900/20",
+    "accentColor": "orange",
+    "order": 5,
+    "rendererTechniqueId": "volume_rendering"
+  },
+  {
+    "id": "differentiable-rendering",
+    "name": "Differentiable Rendering",
+    "shortDescription": "Rendering with computable gradients, enabling optimization of 3D scene parameters through gradient descent.",
+    "icon": "GitBranch",
+    "gradient": "from-rose-500/20 to-rose-900/20",
+    "accentColor": "rose",
+    "order": 6,
+    "rendererTechniqueId": "differentiable"
+  },
+  {
+    "id": "ray-marching",
+    "name": "Ray Marching & SDFs",
+    "shortDescription": "Iterative ray stepping through signed distance fields, popular for procedural geometry and real-time effects.",
+    "icon": "Waves",
+    "gradient": "from-cyan-500/20 to-cyan-900/20",
+    "accentColor": "cyan",
+    "order": 7,
+    "rendererTechniqueId": "ray_marching"
+  }
+]

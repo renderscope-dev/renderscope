@@ -1,0 +1,127 @@
+{
+  "id": "nvidia-falcor",
+  "name": "NVIDIA Falcor",
+  "version": "8.0",
+  "description": "NVIDIA's real-time rendering research framework with first-class DXR ray tracing and Python scripting",
+  "long_description": "Falcor is NVIDIA's open-source real-time rendering research framework, developed by the company's real-time rendering research group. It has become the de facto standard framework for academic and industrial ray tracing research on NVIDIA GPUs, powering landmark publications including ReSTIR (spatiotemporal reservoir sampling), RTXDI (real-time direct illumination), NRD (NVIDIA Real-time Denoisers), and numerous SIGGRAPH papers. Falcor is built primarily on DirectX 12 with DXR ray tracing as a first-class feature, with growing Vulkan support.\n\nFalcor's architecture centers on a render graph system that allows researchers to compose complex multi-pass rendering pipelines from modular render passes. This graph-based approach enables rapid prototyping: new rendering algorithms can be implemented as isolated passes and plugged into existing pipelines without understanding the full framework. The engine ships with reference implementations of path tracers, temporal denoisers, and various GI algorithms that serve as baselines for research comparisons.\n\nA key differentiator is Python scripting via pybind11, enabling automated experiment pipelines — researchers can script scene loading, parameter sweeps, image capture, and metric computation without recompiling C++. Falcor uses Slang as its shading language, supporting advanced features like differentiable shading and generics. The material system supports measured BSDFs, and the scene description system can import PBRT, glTF, USD, OBJ, and FBX formats, enabling direct comparison with physically based rendering literature. While Falcor provides a built-in scene editor with material editing, light placement, and camera controls, it is not a game engine — there is no physics, audio, or networking.",
+  "technique": ["rasterization", "ray_tracing", "path_tracing"],
+  "language": "C++",
+  "license": "BSD-3-Clause",
+  "platforms": ["windows"],
+  "gpu_support": true,
+  "gpu_apis": ["directx", "vulkan"],
+  "cpu_support": false,
+  "real_time": true,
+  "scene_formats": ["gltf", "glb", "usd", "pbrt", "obj", "fbx"],
+  "output_formats": ["exr", "png", "hdr", "framebuffer"],
+  "homepage": "https://developer.nvidia.com/falcor",
+  "repository": "https://github.com/NVIDIAGameWorks/Falcor",
+  "documentation": "https://github.com/NVIDIAGameWorks/Falcor/tree/master/docs",
+  "first_release": "2017-07-01",
+  "latest_release": "2024-08-15",
+  "latest_release_version": "8.0",
+  "status": "active",
+  "tags": [
+    "research",
+    "ray-tracing",
+    "dxr",
+    "nvidia",
+    "path-tracing",
+    "render-graph",
+    "python-scripting",
+    "denoising",
+    "real-time",
+    "slang"
+  ],
+  "strengths": [
+    "The definitive framework for GPU ray tracing research — used in landmark NVIDIA papers on ReSTIR, RTXDI, NRD denoising, and other techniques that have shaped real-time ray tracing",
+    "Render graph architecture enables clean composition and rapid prototyping of complex multi-pass rendering pipelines, letting researchers focus on algorithm development",
+    "Python scripting via pybind11 supports automated experiment pipelines — scene loading, parameter sweeps, image capture, and metric computation without recompiling C++",
+    "Built-in reference path tracer provides high-quality ground truth for image quality comparison, with support for progressive and interactive rendering modes",
+    "Reads PBRT scene files alongside glTF, USD, OBJ, and FBX, enabling direct comparison with the physically based rendering literature and standard benchmark scenes"
+  ],
+  "limitations": [
+    "Effectively requires NVIDIA RTX GPUs — DXR ray tracing features depend on RTX hardware, and there is no AMD or Intel GPU support",
+    "Primarily Windows-only due to its DirectX 12 foundation; Linux/Vulkan support exists but is less mature and less tested",
+    "The codebase is large and complex with significant ramp-up time, even for experienced graphics programmers familiar with DX12",
+    "Development priorities align with NVIDIA's internal research agenda rather than community feature requests, and external contributions can be slow to merge",
+    "Not suitable as a general-purpose game engine — lacks physics, audio, networking, scripting beyond Python automation, and other game-engine subsystems"
+  ],
+  "best_for": "Rendering researchers and graphics engineers prototyping ray tracing algorithms on NVIDIA hardware, especially those needing DXR integration, automated experiment workflows, and publication-quality baselines",
+  "not_ideal_for": "Cross-platform game development, projects targeting AMD/Intel GPUs, or teams without C++ rendering expertise who need a production-ready engine",
+  "related": ["wicked-engine", "the-forge", "pbrt", "mitsuba3", "ospray"],
+  "features": {
+    "global_illumination": true,
+    "path_tracing": true,
+    "bidirectional_pt": false,
+    "metropolis_lt": false,
+    "photon_mapping": false,
+    "volumetric": true,
+    "subsurface_scattering": true,
+    "motion_blur": true,
+    "depth_of_field": true,
+    "spectral_rendering": false,
+    "polarization": false,
+    "caustics": true,
+    "instancing": true,
+    "out_of_core": false,
+    "adaptive_sampling": true,
+    "denoiser_builtin": true,
+    "gpu_rendering": true,
+    "multi_gpu": false,
+    "network_rendering": false,
+    "hardware_ray_tracing": true,
+    "differentiable": false,
+    "inverse_rendering": false,
+    "neural_acceleration": true,
+    "real_time_preview": true,
+    "pbr_materials": true,
+    "hdri_environment": true,
+    "shadow_mapping": true,
+    "screen_space_effects": true,
+    "lod_system": false,
+    "animation_support": true,
+    "python_api": true,
+    "c_cpp_api": true,
+    "rust_api": false,
+    "javascript_api": false,
+    "scene_editor_gui": true,
+    "plugin_system": true,
+    "open_shading_language": false,
+    "materialx": false
+  },
+  "github_stars": 2700,
+  "github_stars_trend": [2300, 2350, 2380, 2420, 2450, 2480, 2520, 2550, 2580, 2620, 2660, 2700],
+  "commit_activity_52w": [10, 18, 25, 15, 22, 8, 30, 12, 20, 16, 28, 10, 14, 22, 18, 25, 12, 8, 20, 15, 30, 18, 10, 22, 14, 25, 8, 16, 20, 28, 12, 15, 22, 18, 10, 25, 30, 14, 8, 20, 16, 22, 12, 18, 28, 15, 10, 25, 20, 14, 8, 22],
+  "contributor_count": 45,
+  "open_issues": 55,
+  "fork_count": 450,
+  "install_command": "git clone https://github.com/NVIDIAGameWorks/Falcor && cd Falcor && setup.bat",
+  "community_links": {
+    "forum": "https://github.com/NVIDIAGameWorks/Falcor/discussions"
+  },
+  "citations": [
+    {
+      "title": "Spatiotemporal reservoir resampling for real-time ray tracing with dynamic direct lighting (ReSTIR)",
+      "url": "https://doi.org/10.1145/3386569.3392481",
+      "year": 2020
+    },
+    {
+      "title": "ReSTIR GI: Path Resampling for Real-Time Path Tracing",
+      "url": "https://doi.org/10.1111/cgf.14378",
+      "year": 2021
+    }
+  ],
+  "tutorials": [
+    {
+      "title": "Falcor Documentation",
+      "url": "https://github.com/NVIDIAGameWorks/Falcor/tree/master/docs",
+      "type": "article"
+    },
+    {
+      "title": "Getting Started with Falcor",
+      "url": "https://github.com/NVIDIAGameWorks/Falcor/blob/master/docs/getting-started.md",
+      "type": "article"
+    }
+  ]
+}

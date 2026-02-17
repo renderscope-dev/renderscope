@@ -1,0 +1,113 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.event_name == 'push' && 'production' || format('preview-{0}', github.event.pull_request.number) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  # ──────────────────────────────────────────────
+  # Build the static site (shared by both deploy jobs)
+  # ──────────────────────────────────────────────
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js static site
+        run: npm run build
+        working-directory: web
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+
+      - name: Verify build output
+        run: |
+          if [ ! -d "web/out" ]; then
+            echo "ERROR: web/out directory not found."
+            echo "Ensure next.config.mjs includes: output: 'export'"
+            exit 1
+          fi
+          echo "Build output: $(du -sh web/out | cut -f1), $(find web/out -type f | wc -l) files"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: web/out
+          retention-days: 1
+
+  # ──────────────────────────────────────────────
+  # Production deploy (push to main)
+  # ──────────────────────────────────────────────
+  deploy-production:
+    name: Deploy — Production
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: web/out
+
+      - name: Deploy to Firebase Hosting (live)
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: render-scope
+          channelId: live
+
+  # ──────────────────────────────────────────────
+  # Preview deploy (pull requests)
+  # ──────────────────────────────────────────────
+  deploy-preview:
+    name: Deploy — Preview
+    needs: build
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: web/out
+
+      - name: Deploy preview to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: render-scope

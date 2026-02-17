@@ -1,0 +1,122 @@
+{
+  "id": "vtk",
+  "name": "VTK",
+  "version": "9.4.0",
+  "description": "Industry-standard open source toolkit for 3D visualization, image processing, and scientific data rendering",
+  "long_description": "VTK (Visualization Toolkit) is an open source software system for 3D computer graphics, image processing, and visualization, developed and maintained by Kitware, Inc. since 1993. It is one of the most widely used visualization libraries in scientific computing, providing a comprehensive pipeline-based architecture for transforming raw data — structured grids, unstructured meshes, point clouds, volumetric datasets, and more — into interactive 3D visual representations. VTK forms the foundation of numerous downstream tools, most notably ParaView and 3D Slicer.\n\nVTK's rendering capabilities span GPU-accelerated volume rendering via raycasting, OpenGL-based surface rasterization, and optional high-quality CPU ray tracing through its Intel OSPRay backend integration. Its data processing pipeline is its defining feature: hundreds of filters for contouring, streamline generation, glyph placement, interpolation, isosurface extraction, and data transformation operate on a unified data model that supports structured grids, unstructured grids, polygonal meshes, rectilinear grids, and image data. This pipeline model enables scientists to chain operations declaratively without managing low-level rendering details.\n\nVTK is used extensively in national laboratories (Sandia, Los Alamos, LLNL), medical imaging (as the visualization backbone of 3D Slicer), computational fluid dynamics, finite element analysis, and climate science. Its Python bindings are first-class and widely used for scripting visualization workflows. While VTK's material system is basic compared to modern PBR renderers — limited to Phong and Gouraud shading in its default pipeline — its unmatched breadth of scientific data format support and its 30-year track record of stability and backwards compatibility make it irreplaceable in scientific computing.",
+  "technique": ["volume_rendering", "rasterization"],
+  "language": "C++",
+  "license": "BSD-3-Clause",
+  "platforms": ["linux", "macos", "windows"],
+  "gpu_support": true,
+  "cpu_support": true,
+  "real_time": true,
+  "scene_formats": ["vtk", "vti", "vtp", "vtu", "vtr", "vts", "pvd", "stl", "obj", "ply", "nrrd", "dicom"],
+  "output_formats": ["png", "jpg", "tiff", "bmp", "ps", "pdf"],
+  "homepage": "https://vtk.org",
+  "repository": "https://github.com/Kitware/VTK",
+  "documentation": "https://docs.vtk.org",
+  "first_release": "1993-01-01",
+  "latest_release": "2024-10-15",
+  "latest_release_version": "9.4.0",
+  "status": "active",
+  "github_stars": 2800,
+  "github_stars_trend": [],
+  "commit_activity_52w": [],
+  "contributor_count": 350,
+  "open_issues": 800,
+  "fork_count": 1100,
+  "tags": [
+    "scientific-visualization",
+    "volume-rendering",
+    "medical-imaging",
+    "hpc",
+    "data-processing",
+    "pipeline",
+    "kitware",
+    "python",
+    "cross-platform"
+  ],
+  "strengths": [
+    "Unmatched breadth of scientific data format support — reads VTK native formats, DICOM, NRRD, STL, OBJ, PLY, and dozens of domain-specific file types used in simulation and medical imaging",
+    "Pipeline-based architecture with hundreds of filters enables declarative data transformation from raw simulation output to polished 3D visualizations without managing low-level rendering state",
+    "GPU-accelerated volume rendering handles datasets of billions of voxels interactively, critical for medical imaging (CT/MRI) and computational fluid dynamics",
+    "Foundational to a massive ecosystem — ParaView, 3D Slicer, VisIt, and countless academic tools are built on VTK, making it the most influential open source visualization library in scientific computing",
+    "First-class Python bindings via pip install vtk make VTK accessible for scripting visualization workflows in Jupyter notebooks and automated pipelines"
+  ],
+  "limitations": [
+    "Material system is limited to basic Phong and Gouraud shading — no PBR materials, no physically accurate light transport, resulting in visual output that lags behind modern real-time engines",
+    "Pipeline-based architecture has a steep learning curve — the data model (vtkPolyData, vtkUnstructuredGrid, etc.) and filter chains require significant investment to understand",
+    "No built-in GUI or scene editor — VTK is a library, not an application, so users must write code or use ParaView for interactive exploration",
+    "Documentation can be overwhelming due to the sheer scope of the API — over 2,000 classes spanning visualization, imaging, geometry, and rendering",
+    "Default rendering aesthetics are dated compared to engines with PBR pipelines — scientific visualizations often look functional rather than visually polished without significant customization"
+  ],
+  "best_for": "Scientific visualization of volumetric, mesh, and field data from simulations, medical imaging, and computational science",
+  "not_ideal_for": "Photorealistic rendering, game development, artistic content creation, or applications requiring PBR materials and modern visual fidelity",
+  "related": ["paraview", "ospray", "open3d"],
+  "features": {
+    "global_illumination": false,
+    "path_tracing": false,
+    "bidirectional_pt": null,
+    "metropolis_lt": null,
+    "photon_mapping": null,
+    "volumetric": true,
+    "subsurface_scattering": false,
+    "motion_blur": false,
+    "depth_of_field": false,
+    "spectral_rendering": false,
+    "polarization": false,
+    "caustics": null,
+    "instancing": true,
+    "out_of_core": true,
+    "adaptive_sampling": false,
+    "denoiser_builtin": false,
+    "gpu_rendering": true,
+    "multi_gpu": false,
+    "network_rendering": false,
+    "hardware_ray_tracing": false,
+    "differentiable": false,
+    "inverse_rendering": false,
+    "neural_acceleration": false,
+    "real_time_preview": true,
+    "pbr_materials": false,
+    "hdri_environment": false,
+    "shadow_mapping": true,
+    "screen_space_effects": true,
+    "lod_system": true,
+    "animation_support": true,
+    "python_api": true,
+    "c_cpp_api": true,
+    "rust_api": false,
+    "javascript_api": false,
+    "scene_editor_gui": false,
+    "plugin_system": true,
+    "open_shading_language": false,
+    "materialx": false
+  },
+  "integrations": ["ParaView", "3D Slicer", "VisIt", "Mayavi"],
+  "install_command": "pip install vtk",
+  "community_links": {
+    "forum": "https://discourse.vtk.org",
+    "stackoverflow_tag": "vtk"
+  },
+  "citations": [
+    {
+      "title": "The Visualization Toolkit: An Object-Oriented Approach to 3D Graphics (4th Edition)",
+      "url": "https://vtk.org/vtk-textbook/",
+      "year": 2006
+    }
+  ],
+  "tutorials": [
+    {
+      "title": "VTK Examples",
+      "url": "https://examples.vtk.org",
+      "type": "article"
+    },
+    {
+      "title": "VTK User's Guide",
+      "url": "https://vtk.org/documentation/",
+      "type": "article"
+    }
+  ]
+}

@@ -5,8 +5,15 @@
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "./dist",
+    "declarationDir": "./dist/types",
     "emitDeclarationOnly": false
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.*",
+    "**/*.stories.*",
+    ".storybook"
+  ]
 }

@@ -1,0 +1,25 @@
+{
+  "id": "san-miguel",
+  "name": "San Miguel",
+  "description": "A large outdoor courtyard scene with complex vegetation, intricate architectural details, and over 10 million polygons. The ultimate stress test for renderer geometry handling, memory management, and outdoor global illumination. Many renderers struggle with this scene's scale.",
+  "tests": ["global_illumination", "outdoor_lighting", "complex_geometry", "textures"],
+  "complexity": "extreme",
+  "vertices": 7880670,
+  "faces": 10503076,
+  "lights": 1,
+  "light_types": ["directional", "hdri"],
+  "textures": 58,
+  "source": "Guillermo M. Leal Llaguno / PBRT Scene Repository",
+  "source_url": "https://pbrt.org/scenes-v4",
+  "license": "Free for non-commercial use",
+  "available_formats": ["pbrt", "obj"],
+  "downloads": {
+    "obj": "https://casual-effects.com/g3d/data10/research/model/San_Miguel/San_Miguel.zip"
+  },
+  "camera": {
+    "position": [8, 2, 0],
+    "look_at": [0, 1.5, 0],
+    "up": [0, 1, 0],
+    "fov": 65
+  }
+}

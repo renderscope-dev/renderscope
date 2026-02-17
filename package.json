@@ -2,6 +2,7 @@
   "name": "renderscope-monorepo",
   "version": "0.0.0",
   "private": true,
+  "author": "Ashutosh Mishra",
   "description": "Monorepo for RenderScope — catalog, compare, and benchmark rendering engines",
   "workspaces": [
     "web",

@@ -1,57 +1,1268 @@
 {
-  "$schema": "./taxonomy.schema.json",
-  "version": "0.1.0",
-  "lastUpdated": "2026-02-15",
-  "categories": [
+  "version": "1.0.0",
+  "last_updated": "2026-02-16",
+  "nodes": [
     {
       "id": "path_tracing",
-      "name": "Path Tracers / Ray Tracers",
-      "description": "Physically based offline renderers that simulate light transport via path tracing or ray tracing.",
-      "color": "#3B82F6",
-      "renderers": []
+      "type": "category",
+      "label": "Path Tracing",
+      "description": "Unbiased global illumination via stochastic light-path sampling."
     },
     {
-      "id": "realtime",
-      "name": "Real-Time / Rasterization",
-      "description": "Renderers optimized for real-time performance using rasterization pipelines.",
-      "color": "#22C55E",
-      "renderers": []
+      "id": "ray_tracing",
+      "type": "category",
+      "label": "Ray Tracing",
+      "description": "Image synthesis by tracing rays from the camera into the scene."
+    },
+    {
+      "id": "rasterization",
+      "type": "category",
+      "label": "Rasterization",
+      "description": "Real-time rendering by projecting primitives onto a 2-D pixel grid."
     },
     {
       "id": "neural",
-      "name": "Neural / Radiance Field",
-      "description": "Renderers based on neural representations such as NeRF and 3D Gaussian Splatting.",
-      "color": "#A855F7",
-      "renderers": []
+      "type": "category",
+      "label": "Neural Rendering",
+      "description": "Rendering techniques that use neural networks to represent or synthesize images."
+    },
+    {
+      "id": "gaussian_splatting",
+      "type": "category",
+      "label": "Gaussian Splatting",
+      "description": "Rendering by projecting and alpha-compositing 3-D Gaussian primitives."
     },
     {
       "id": "differentiable",
-      "name": "Differentiable Renderers",
-      "description": "Renderers that support gradient computation for inverse rendering and optimization.",
-      "color": "#EC4899",
-      "renderers": []
+      "type": "category",
+      "label": "Differentiable Rendering",
+      "description": "Renderers whose output is differentiable with respect to scene parameters."
     },
     {
-      "id": "volume",
-      "name": "Volume / Scientific",
-      "description": "Renderers specialized for volumetric and scientific data visualization.",
-      "color": "#F97316",
-      "renderers": []
-    },
-    {
-      "id": "blender",
-      "name": "Blender Ecosystem",
-      "description": "Rendering engines tightly integrated with the Blender 3D suite.",
-      "color": "#EAB308",
-      "renderers": []
+      "id": "volume_rendering",
+      "type": "category",
+      "label": "Volume Rendering",
+      "description": "Direct visualization of 3-D scalar or vector fields without surface extraction."
     },
     {
       "id": "educational",
-      "name": "Educational / Minimal",
-      "description": "Small-scale renderers designed for learning and teaching rendering concepts.",
-      "color": "#6B7280",
-      "renderers": []
+      "type": "category",
+      "label": "Educational",
+      "description": "Minimal or tutorial-oriented renderers designed primarily for learning."
+    },
+    {
+      "id": "node-3d-gaussian-splatting",
+      "type": "renderer",
+      "label": "3D Gaussian Splatting",
+      "renderer_id": "3d-gaussian-splatting"
+    },
+    {
+      "id": "node-3d-slicer",
+      "type": "renderer",
+      "label": "3D Slicer",
+      "renderer_id": "3d-slicer"
+    },
+    {
+      "id": "node-3dgs-cpp",
+      "type": "renderer",
+      "label": "3DGS.cpp",
+      "renderer_id": "3dgs-cpp"
+    },
+    {
+      "id": "node-appleseed",
+      "type": "renderer",
+      "label": "appleseed",
+      "renderer_id": "appleseed"
+    },
+    {
+      "id": "node-babylonjs",
+      "type": "renderer",
+      "label": "Babylon.js",
+      "renderer_id": "babylonjs"
+    },
+    {
+      "id": "node-bevy",
+      "type": "renderer",
+      "label": "Bevy",
+      "renderer_id": "bevy"
+    },
+    {
+      "id": "node-bgfx",
+      "type": "renderer",
+      "label": "bgfx",
+      "renderer_id": "bgfx"
+    },
+    {
+      "id": "node-blender-cycles",
+      "type": "renderer",
+      "label": "Blender Cycles",
+      "renderer_id": "blender-cycles"
+    },
+    {
+      "id": "node-blender-eevee",
+      "type": "renderer",
+      "label": "Blender EEVEE",
+      "renderer_id": "blender-eevee"
+    },
+    {
+      "id": "node-deodr",
+      "type": "renderer",
+      "label": "DEODR",
+      "renderer_id": "deodr"
+    },
+    {
+      "id": "node-drjit",
+      "type": "renderer",
+      "label": "Dr.Jit",
+      "renderer_id": "drjit"
+    },
+    {
+      "id": "node-embree",
+      "type": "renderer",
+      "label": "Intel Embree",
+      "renderer_id": "embree"
+    },
+    {
+      "id": "node-filament",
+      "type": "renderer",
+      "label": "Google Filament",
+      "renderer_id": "filament"
+    },
+    {
+      "id": "node-gaussian-splatting-lightning",
+      "type": "renderer",
+      "label": "gaussian-splatting-lightning",
+      "renderer_id": "gaussian-splatting-lightning"
+    },
+    {
+      "id": "node-godot",
+      "type": "renderer",
+      "label": "Godot Engine",
+      "renderer_id": "godot"
+    },
+    {
+      "id": "node-gsplat",
+      "type": "renderer",
+      "label": "gsplat",
+      "renderer_id": "gsplat"
+    },
+    {
+      "id": "node-indigo-renderer",
+      "type": "renderer",
+      "label": "Indigo Renderer",
+      "renderer_id": "indigo-renderer"
+    },
+    {
+      "id": "node-instant-ngp",
+      "type": "renderer",
+      "label": "Instant-NGP",
+      "renderer_id": "instant-ngp"
+    },
+    {
+      "id": "node-lichtfeld-studio",
+      "type": "renderer",
+      "label": "LichtFeld Studio",
+      "renderer_id": "lichtfeld-studio"
+    },
+    {
+      "id": "node-luxcorerender",
+      "type": "renderer",
+      "label": "LuxCoreRender",
+      "renderer_id": "luxcorerender"
+    },
+    {
+      "id": "node-mitsuba3",
+      "type": "renderer",
+      "label": "Mitsuba 3",
+      "renderer_id": "mitsuba3"
+    },
+    {
+      "id": "node-nerfacc",
+      "type": "renderer",
+      "label": "Nerfacc",
+      "renderer_id": "nerfacc"
+    },
+    {
+      "id": "node-nerfstudio",
+      "type": "renderer",
+      "label": "Nerfstudio",
+      "renderer_id": "nerfstudio"
+    },
+    {
+      "id": "node-nvdiffrast",
+      "type": "renderer",
+      "label": "nvdiffrast",
+      "renderer_id": "nvdiffrast"
+    },
+    {
+      "id": "node-nvidia-falcor",
+      "type": "renderer",
+      "label": "NVIDIA Falcor",
+      "renderer_id": "nvidia-falcor"
+    },
+    {
+      "id": "node-nvidia-kaolin",
+      "type": "renderer",
+      "label": "NVIDIA Kaolin",
+      "renderer_id": "nvidia-kaolin"
+    },
+    {
+      "id": "node-ogre3d",
+      "type": "renderer",
+      "label": "Ogre3D / OgreNext",
+      "renderer_id": "ogre3d"
+    },
+    {
+      "id": "node-open3d",
+      "type": "renderer",
+      "label": "Open3D",
+      "renderer_id": "open3d"
+    },
+    {
+      "id": "node-ospray",
+      "type": "renderer",
+      "label": "Intel OSPRay",
+      "renderer_id": "ospray"
+    },
+    {
+      "id": "node-panda3d",
+      "type": "renderer",
+      "label": "Panda3D",
+      "renderer_id": "panda3d"
+    },
+    {
+      "id": "node-paraview",
+      "type": "renderer",
+      "label": "ParaView",
+      "renderer_id": "paraview"
+    },
+    {
+      "id": "node-pbrt",
+      "type": "renderer",
+      "label": "PBRT v4",
+      "renderer_id": "pbrt"
+    },
+    {
+      "id": "node-povray",
+      "type": "renderer",
+      "label": "POV-Ray",
+      "renderer_id": "povray"
+    },
+    {
+      "id": "node-pytorch3d",
+      "type": "renderer",
+      "label": "PyTorch3D",
+      "renderer_id": "pytorch3d"
+    },
+    {
+      "id": "node-radeon-prorender",
+      "type": "renderer",
+      "label": "Radeon ProRender",
+      "renderer_id": "radeon-prorender"
+    },
+    {
+      "id": "node-raylib",
+      "type": "renderer",
+      "label": "raylib",
+      "renderer_id": "raylib"
+    },
+    {
+      "id": "node-raytracing-in-one-weekend",
+      "type": "renderer",
+      "label": "Ray Tracing in One Weekend",
+      "renderer_id": "raytracing-in-one-weekend"
+    },
+    {
+      "id": "node-redner",
+      "type": "renderer",
+      "label": "redner",
+      "renderer_id": "redner"
+    },
+    {
+      "id": "node-smallpt",
+      "type": "renderer",
+      "label": "smallpt",
+      "renderer_id": "smallpt"
+    },
+    {
+      "id": "node-softrasterizer",
+      "type": "renderer",
+      "label": "SoftRasterizer",
+      "renderer_id": "softrasterizer"
+    },
+    {
+      "id": "node-sokol",
+      "type": "renderer",
+      "label": "Sokol",
+      "renderer_id": "sokol"
+    },
+    {
+      "id": "node-sort",
+      "type": "renderer",
+      "label": "SORT",
+      "renderer_id": "sort"
+    },
+    {
+      "id": "node-taichi",
+      "type": "renderer",
+      "label": "Taichi",
+      "renderer_id": "taichi"
+    },
+    {
+      "id": "node-tensorflow-graphics",
+      "type": "renderer",
+      "label": "TensorFlow Graphics",
+      "renderer_id": "tensorflow-graphics"
+    },
+    {
+      "id": "node-the-forge",
+      "type": "renderer",
+      "label": "The Forge",
+      "renderer_id": "the-forge"
+    },
+    {
+      "id": "node-threejs",
+      "type": "renderer",
+      "label": "three.js",
+      "renderer_id": "threejs"
+    },
+    {
+      "id": "node-tinyraytracer",
+      "type": "renderer",
+      "label": "tinyraytracer",
+      "renderer_id": "tinyraytracer"
+    },
+    {
+      "id": "node-tungsten",
+      "type": "renderer",
+      "label": "Tungsten",
+      "renderer_id": "tungsten"
+    },
+    {
+      "id": "node-viskores",
+      "type": "renderer",
+      "label": "Viskores (VTK-m)",
+      "renderer_id": "viskores"
+    },
+    {
+      "id": "node-voreen",
+      "type": "renderer",
+      "label": "Voreen",
+      "renderer_id": "voreen"
+    },
+    {
+      "id": "node-vtk",
+      "type": "renderer",
+      "label": "VTK",
+      "renderer_id": "vtk"
+    },
+    {
+      "id": "node-wicked-engine",
+      "type": "renderer",
+      "label": "Wicked Engine",
+      "renderer_id": "wicked-engine"
+    },
+    {
+      "id": "node-yafray",
+      "type": "renderer",
+      "label": "YafaRay",
+      "renderer_id": "yafray"
     }
   ],
-  "relationships": []
+  "edges": [
+    {
+      "source": "node-3d-gaussian-splatting",
+      "target": "neural",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-3d-slicer",
+      "target": "volume_rendering",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-3dgs-cpp",
+      "target": "gaussian_splatting",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-appleseed",
+      "target": "path_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-babylonjs",
+      "target": "rasterization",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-bevy",
+      "target": "rasterization",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-bgfx",
+      "target": "rasterization",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-blender-cycles",
+      "target": "path_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-blender-eevee",
+      "target": "rasterization",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-deodr",
+      "target": "differentiable",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-drjit",
+      "target": "differentiable",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-embree",
+      "target": "ray_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-filament",
+      "target": "rasterization",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-gaussian-splatting-lightning",
+      "target": "gaussian_splatting",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-godot",
+      "target": "rasterization",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-gsplat",
+      "target": "neural",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-indigo-renderer",
+      "target": "path_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-instant-ngp",
+      "target": "neural",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-lichtfeld-studio",
+      "target": "gaussian_splatting",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-luxcorerender",
+      "target": "path_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-mitsuba3",
+      "target": "path_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-nerfacc",
+      "target": "neural",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-nerfstudio",
+      "target": "neural",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-nvdiffrast",
+      "target": "differentiable",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-nvidia-falcor",
+      "target": "rasterization",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-nvidia-kaolin",
+      "target": "differentiable",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-ogre3d",
+      "target": "rasterization",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-open3d",
+      "target": "rasterization",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-ospray",
+      "target": "ray_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-panda3d",
+      "target": "rasterization",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-paraview",
+      "target": "volume_rendering",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-pbrt",
+      "target": "path_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-povray",
+      "target": "ray_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-pytorch3d",
+      "target": "differentiable",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-radeon-prorender",
+      "target": "path_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-raylib",
+      "target": "rasterization",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-raytracing-in-one-weekend",
+      "target": "ray_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-redner",
+      "target": "differentiable",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-smallpt",
+      "target": "path_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-softrasterizer",
+      "target": "differentiable",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-sokol",
+      "target": "rasterization",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-sort",
+      "target": "path_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-taichi",
+      "target": "differentiable",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-tensorflow-graphics",
+      "target": "differentiable",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-the-forge",
+      "target": "rasterization",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-threejs",
+      "target": "rasterization",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-tinyraytracer",
+      "target": "ray_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-tungsten",
+      "target": "path_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-viskores",
+      "target": "volume_rendering",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-voreen",
+      "target": "volume_rendering",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-vtk",
+      "target": "volume_rendering",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-wicked-engine",
+      "target": "rasterization",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-yafray",
+      "target": "path_tracing",
+      "type": "belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-3d-gaussian-splatting",
+      "target": "gaussian_splatting",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-3d-gaussian-splatting",
+      "target": "differentiable",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-3dgs-cpp",
+      "target": "neural",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-deodr",
+      "target": "rasterization",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-gaussian-splatting-lightning",
+      "target": "neural",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-gaussian-splatting-lightning",
+      "target": "differentiable",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-gsplat",
+      "target": "gaussian_splatting",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-gsplat",
+      "target": "differentiable",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-instant-ngp",
+      "target": "differentiable",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-instant-ngp",
+      "target": "volume_rendering",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-lichtfeld-studio",
+      "target": "neural",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-mitsuba3",
+      "target": "differentiable",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-nerfacc",
+      "target": "differentiable",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-nerfacc",
+      "target": "volume_rendering",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-nerfstudio",
+      "target": "gaussian_splatting",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-nerfstudio",
+      "target": "differentiable",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-nvdiffrast",
+      "target": "rasterization",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-nvidia-falcor",
+      "target": "ray_tracing",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-nvidia-falcor",
+      "target": "path_tracing",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-nvidia-kaolin",
+      "target": "rasterization",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-nvidia-kaolin",
+      "target": "ray_tracing",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-open3d",
+      "target": "volume_rendering",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-ospray",
+      "target": "volume_rendering",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-paraview",
+      "target": "rasterization",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-pbrt",
+      "target": "ray_tracing",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-pytorch3d",
+      "target": "rasterization",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-radeon-prorender",
+      "target": "ray_tracing",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-raytracing-in-one-weekend",
+      "target": "path_tracing",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-redner",
+      "target": "path_tracing",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-redner",
+      "target": "ray_tracing",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-softrasterizer",
+      "target": "rasterization",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-sort",
+      "target": "ray_tracing",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-tensorflow-graphics",
+      "target": "rasterization",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-the-forge",
+      "target": "ray_tracing",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-vtk",
+      "target": "rasterization",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-wicked-engine",
+      "target": "ray_tracing",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-wicked-engine",
+      "target": "path_tracing",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-yafray",
+      "target": "ray_tracing",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-smallpt",
+      "target": "educational",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-sort",
+      "target": "educational",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-raytracing-in-one-weekend",
+      "target": "educational",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-tinyraytracer",
+      "target": "educational",
+      "type": "also_belongs_to",
+      "label": null
+    },
+    {
+      "source": "node-ospray",
+      "target": "node-embree",
+      "type": "uses_backend",
+      "label": "Embree ray tracing kernels"
+    },
+    {
+      "source": "node-pbrt",
+      "target": "node-embree",
+      "type": "uses_backend",
+      "label": "Optional Embree BVH backend"
+    },
+    {
+      "source": "node-blender-cycles",
+      "target": "node-embree",
+      "type": "uses_backend",
+      "label": "Embree for CPU ray tracing"
+    },
+    {
+      "source": "node-appleseed",
+      "target": "node-embree",
+      "type": "uses_backend",
+      "label": "Embree for ray traversal"
+    },
+    {
+      "source": "node-mitsuba3",
+      "target": "node-drjit",
+      "type": "uses_backend",
+      "label": "Dr.Jit JIT compiler"
+    },
+    {
+      "source": "node-nvidia-kaolin",
+      "target": "node-nvdiffrast",
+      "type": "uses_backend",
+      "label": "nvdiffrast for differentiable rasterization"
+    },
+    {
+      "source": "node-paraview",
+      "target": "node-vtk",
+      "type": "uses_backend",
+      "label": "Built on VTK"
+    },
+    {
+      "source": "node-paraview",
+      "target": "node-ospray",
+      "type": "uses_backend",
+      "label": "OSPRay for ray tracing"
+    },
+    {
+      "source": "node-3d-slicer",
+      "target": "node-vtk",
+      "type": "uses_backend",
+      "label": "Built on VTK for rendering"
+    },
+    {
+      "source": "node-vtk",
+      "target": "node-viskores",
+      "type": "uses_backend",
+      "label": "VTK-m for parallel algorithms"
+    },
+    {
+      "source": "node-nerfstudio",
+      "target": "node-gsplat",
+      "type": "uses_backend",
+      "label": "gsplat for Gaussian Splatting"
+    },
+    {
+      "source": "node-nerfstudio",
+      "target": "node-nerfacc",
+      "type": "uses_backend",
+      "label": "nerfacc for NeRF acceleration"
+    },
+    {
+      "source": "node-blender-cycles",
+      "target": "node-blender-eevee",
+      "type": "same_ecosystem",
+      "label": "Blender renderers"
+    },
+    {
+      "source": "node-vtk",
+      "target": "node-paraview",
+      "type": "same_ecosystem",
+      "label": "Kitware ecosystem"
+    },
+    {
+      "source": "node-vtk",
+      "target": "node-viskores",
+      "type": "same_ecosystem",
+      "label": "Kitware ecosystem"
+    },
+    {
+      "source": "node-paraview",
+      "target": "node-viskores",
+      "type": "same_ecosystem",
+      "label": "Kitware ecosystem"
+    },
+    {
+      "source": "node-ospray",
+      "target": "node-embree",
+      "type": "same_ecosystem",
+      "label": "Intel RenderKit"
+    },
+    {
+      "source": "node-nerfstudio",
+      "target": "node-gsplat",
+      "type": "same_ecosystem",
+      "label": "Nerfstudio project"
+    },
+    {
+      "source": "node-nerfstudio",
+      "target": "node-nerfacc",
+      "type": "same_ecosystem",
+      "label": "Nerfstudio project"
+    },
+    {
+      "source": "node-mitsuba3",
+      "target": "node-drjit",
+      "type": "same_ecosystem",
+      "label": "Mitsuba/Dr.Jit ecosystem"
+    },
+    {
+      "source": "node-tinyraytracer",
+      "target": "node-smallpt",
+      "type": "same_ecosystem",
+      "label": "Minimal educational renderers"
+    },
+    {
+      "source": "node-raytracing-in-one-weekend",
+      "target": "node-tinyraytracer",
+      "type": "same_ecosystem",
+      "label": "Educational ray tracing"
+    },
+    {
+      "source": "node-raytracing-in-one-weekend",
+      "target": "node-smallpt",
+      "type": "same_ecosystem",
+      "label": "Educational ray tracing"
+    },
+    {
+      "source": "node-threejs",
+      "target": "node-babylonjs",
+      "type": "same_ecosystem",
+      "label": "WebGL/WebGPU engines"
+    },
+    {
+      "source": "node-filament",
+      "target": "node-threejs",
+      "type": "same_ecosystem",
+      "label": "Real-time PBR engines"
+    },
+    {
+      "source": "node-pytorch3d",
+      "target": "node-nvdiffrast",
+      "type": "same_ecosystem",
+      "label": "NVIDIA differentiable rendering"
+    },
+    {
+      "source": "node-pytorch3d",
+      "target": "node-nvidia-kaolin",
+      "type": "same_ecosystem",
+      "label": "NVIDIA 3D deep learning"
+    },
+    {
+      "source": "node-nvdiffrast",
+      "target": "node-nvidia-kaolin",
+      "type": "same_ecosystem",
+      "label": "NVIDIA differentiable rendering"
+    },
+    {
+      "source": "node-tensorflow-graphics",
+      "target": "node-pytorch3d",
+      "type": "same_ecosystem",
+      "label": "ML framework rendering"
+    },
+    {
+      "source": "node-softrasterizer",
+      "target": "node-pytorch3d",
+      "type": "same_ecosystem",
+      "label": "Differentiable mesh rendering"
+    },
+    {
+      "source": "node-sokol",
+      "target": "node-raylib",
+      "type": "same_ecosystem",
+      "label": "Minimal C rendering libraries"
+    },
+    {
+      "source": "node-bgfx",
+      "target": "node-the-forge",
+      "type": "same_ecosystem",
+      "label": "Cross-platform rendering frameworks"
+    },
+    {
+      "source": "node-3d-slicer",
+      "target": "node-voreen",
+      "type": "same_ecosystem",
+      "label": "Medical/scientific volume visualization"
+    },
+    {
+      "source": "node-raytracing-in-one-weekend",
+      "target": "node-pbrt",
+      "type": "inspired_by",
+      "label": "Teaches concepts from PBR theory"
+    },
+    {
+      "source": "node-gsplat",
+      "target": "node-3d-gaussian-splatting",
+      "type": "inspired_by",
+      "label": "Modular reimplementation"
+    },
+    {
+      "source": "node-gaussian-splatting-lightning",
+      "target": "node-3d-gaussian-splatting",
+      "type": "inspired_by",
+      "label": "Training framework for 3DGS"
+    },
+    {
+      "source": "node-3dgs-cpp",
+      "target": "node-3d-gaussian-splatting",
+      "type": "inspired_by",
+      "label": "C++/Vulkan reimplementation"
+    },
+    {
+      "source": "node-lichtfeld-studio",
+      "target": "node-3d-gaussian-splatting",
+      "type": "inspired_by",
+      "label": "C++/CUDA reimplementation"
+    },
+    {
+      "source": "node-sort",
+      "target": "node-pbrt",
+      "type": "inspired_by",
+      "label": "Educational renderer influenced by PBR theory"
+    },
+    {
+      "source": "node-tungsten",
+      "target": "node-pbrt",
+      "type": "inspired_by",
+      "label": "Research renderer influenced by PBRT architecture"
+    },
+    {
+      "source": "node-instant-ngp",
+      "target": "node-nerfstudio",
+      "type": "inspired_by",
+      "label": "Builds on NeRF concepts"
+    },
+    {
+      "source": "node-filament",
+      "target": "node-threejs",
+      "type": "shared_format",
+      "label": "glTF support"
+    },
+    {
+      "source": "node-filament",
+      "target": "node-babylonjs",
+      "type": "shared_format",
+      "label": "glTF support"
+    },
+    {
+      "source": "node-threejs",
+      "target": "node-babylonjs",
+      "type": "shared_format",
+      "label": "glTF support"
+    },
+    {
+      "source": "node-pbrt",
+      "target": "node-mitsuba3",
+      "type": "shared_format",
+      "label": "Structured scene descriptions"
+    },
+    {
+      "source": "node-3d-gaussian-splatting",
+      "target": "node-3dgs-cpp",
+      "type": "shared_format",
+      "label": "PLY Gaussian model format"
+    },
+    {
+      "source": "node-3d-gaussian-splatting",
+      "target": "node-gaussian-splatting-lightning",
+      "type": "shared_format",
+      "label": "PLY Gaussian model format"
+    },
+    {
+      "source": "node-3d-gaussian-splatting",
+      "target": "node-gsplat",
+      "type": "shared_format",
+      "label": "PLY Gaussian model format"
+    },
+    {
+      "source": "node-3d-gaussian-splatting",
+      "target": "node-lichtfeld-studio",
+      "type": "shared_format",
+      "label": "PLY Gaussian model format"
+    },
+    {
+      "source": "node-blender-cycles",
+      "target": "node-luxcorerender",
+      "type": "shared_format",
+      "label": "Blender scene format integration"
+    },
+    {
+      "source": "node-vtk",
+      "target": "node-3d-slicer",
+      "type": "shared_format",
+      "label": "VTK data formats"
+    },
+    {
+      "source": "node-vtk",
+      "target": "node-paraview",
+      "type": "shared_format",
+      "label": "VTK data formats"
+    },
+    {
+      "source": "node-vtk",
+      "target": "node-open3d",
+      "type": "shared_format",
+      "label": "PLY and point cloud formats"
+    },
+    {
+      "source": "node-ogre3d",
+      "target": "node-godot",
+      "type": "shared_format",
+      "label": "Common mesh formats"
+    }
+  ]
 }

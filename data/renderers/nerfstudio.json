@@ -1,0 +1,123 @@
+{
+  "id": "nerfstudio",
+  "name": "Nerfstudio",
+  "version": "1.1.0",
+  "description": "Modular framework for neural radiance field development supporting NeRF, Gaussian Splatting, and many method variants",
+  "long_description": "Nerfstudio is a comprehensive, modular framework for neural radiance field research and development, created at UC Berkeley. It provides a unified platform for training, evaluating, and deploying multiple neural rendering methods — including NeRF variants (nerfacto, instant-ngp integration), Gaussian Splatting methods (splatfacto via gsplat), and experimental approaches — through a consistent API and data pipeline.\n\nThe framework's standout feature is its interactive web-based viewer (powered by viser), which provides real-time visualization of training progress, camera path creation, and scene exploration. Its modular architecture allows researchers to swap components — data parsers, field representations, renderers, and loss functions — independently, enabling rapid prototyping of new methods without reimplementing infrastructure. Nerfstudio supports diverse input formats including COLMAP, Polycam, Record3D, and Blender synthetic datasets.\n\nMaintained by a dedicated team with regular releases and an active open-source community, Nerfstudio has become the de facto standard framework for academic neural rendering research. It provides comprehensive documentation, tutorials, and a growing ecosystem of compatible tools (gsplat for Gaussian rasterization, nerfacc for volumetric acceleration, viser for visualization). The framework is designed to lower the barrier to entry for neural rendering research while providing the flexibility needed for state-of-the-art work.",
+  "technique": ["neural", "gaussian_splatting", "differentiable"],
+  "language": "Python",
+  "license": "Apache-2.0",
+  "platforms": ["linux", "windows", "macos"],
+  "gpu_support": true,
+  "gpu_apis": ["cuda"],
+  "cpu_support": false,
+  "real_time": false,
+  "scene_formats": ["colmap", "images", "nerfstudio-data", "transforms-json", "polycam", "record3d", "blender-synthetic"],
+  "output_formats": ["png", "mp4", "json", "ply", "ckpt"],
+  "homepage": "https://docs.nerf.studio",
+  "repository": "https://github.com/nerfstudio-project/nerfstudio",
+  "documentation": "https://docs.nerf.studio",
+  "paper": "https://arxiv.org/abs/2302.04264",
+  "paper_bibtex": "@inproceedings{tancik2023nerfstudio,\n  title={Nerfstudio: A Modular Framework for Neural Radiance Field Development},\n  author={Tancik, Matthew and Weber, Ethan and Ng, Evonne and Li, Ruilong and Yi, Brent and Wang, Terrance and Kristoffersen, Alexander and Austin, Jake and Salahi, Kamyar and Ahuja, Abhik and Mcallister, David and Kerr, Justin and Kanazawa, Angjoo},\n  booktitle={ACM SIGGRAPH 2023 Conference Proceedings},\n  year={2023}\n}",
+  "first_release": "2022-10-20",
+  "latest_release": "2024-10-15",
+  "status": "active",
+  "tags": [
+    "neural-rendering",
+    "nerf",
+    "gaussian-splatting",
+    "framework",
+    "novel-view-synthesis",
+    "research",
+    "modular",
+    "3d-reconstruction"
+  ],
+  "strengths": [
+    "The most comprehensive neural rendering framework — supports NeRF, Gaussian Splatting, and dozens of method variants through a unified, modular architecture with swappable components",
+    "Interactive web-based viewer (viser) provides real-time visualization of training progress, camera path creation, scene exploration, and export — the best developer experience in the neural rendering space",
+    "First-class data pipeline supporting diverse input formats including COLMAP, Polycam, Record3D, and Blender synthetic datasets with automatic preprocessing",
+    "Well-documented with tutorials, API reference, and an active community — the most approachable entry point for researchers new to neural rendering",
+    "Actively maintained by a dedicated team at UC Berkeley with regular releases, new method integrations, and strong ecosystem partnerships with gsplat, nerfacc, and viser"
+  ],
+  "limitations": [
+    "Significant installation complexity — requires PyTorch with CUDA, tiny-cuda-nn, and multiple compiled extensions that can break across CUDA and PyTorch version combinations",
+    "Higher memory overhead than specialized single-method implementations due to the generality and abstraction layers of the framework",
+    "Training speed for individual methods can be slower than optimized standalone implementations (e.g., original 3DGS code may train faster than Nerfstudio's splatfacto)",
+    "Rapid development pace means breaking API changes between versions — code targeting v0.3 may not run on v1.x without significant modification",
+    "Requires NVIDIA GPU for any practical use — CPU and non-CUDA GPU paths are not viable for training or real-time rendering"
+  ],
+  "best_for": "Researchers and engineers who need a unified platform for experimenting with multiple neural rendering methods, and as the standard framework for academic neural rendering publications",
+  "not_ideal_for": "Production deployment requiring minimal dependencies, projects targeting non-NVIDIA hardware, or use cases demanding maximum single-method training speed",
+  "related": ["gsplat", "3d-gaussian-splatting", "instant-ngp", "nerfacc"],
+  "features": {
+    "global_illumination": false,
+    "path_tracing": false,
+    "bidirectional_pt": false,
+    "metropolis_lt": false,
+    "photon_mapping": false,
+    "volumetric": true,
+    "subsurface_scattering": false,
+    "motion_blur": false,
+    "depth_of_field": true,
+    "spectral_rendering": false,
+    "polarization": false,
+    "caustics": false,
+    "instancing": false,
+    "out_of_core": false,
+    "adaptive_sampling": false,
+    "denoiser_builtin": false,
+    "gpu_rendering": true,
+    "multi_gpu": false,
+    "network_rendering": false,
+    "hardware_ray_tracing": false,
+    "differentiable": true,
+    "inverse_rendering": false,
+    "neural_acceleration": true,
+    "real_time_preview": true,
+    "pbr_materials": false,
+    "hdri_environment": false,
+    "shadow_mapping": null,
+    "screen_space_effects": null,
+    "lod_system": false,
+    "animation_support": true,
+    "python_api": true,
+    "c_cpp_api": false,
+    "rust_api": false,
+    "javascript_api": false,
+    "scene_editor_gui": true,
+    "plugin_system": true,
+    "open_shading_language": false,
+    "materialx": false
+  },
+  "github_stars": 10000,
+  "github_stars_trend": [6500, 7000, 7500, 8000, 8300, 8700, 9000, 9200, 9500, 9700, 9800, 10000],
+  "commit_activity_52w": [8, 12, 10, 15, 9, 11, 7, 13, 10, 8, 14, 6, 11, 9, 7, 12, 10, 8, 13, 11, 9, 7, 10, 12, 8, 6, 14, 11, 9, 10, 7, 12, 8, 11, 6, 9, 13, 10, 8, 7, 11, 9, 12, 10, 8, 6, 9, 11, 7, 10, 8, 9],
+  "contributor_count": 120,
+  "open_issues": 350,
+  "fork_count": 1300,
+  "integrations": ["gsplat", "nerfacc", "viser", "COLMAP"],
+  "install_command": "pip install nerfstudio",
+  "community_links": {
+    "discord": "https://discord.gg/uMbNqcGPeH",
+    "forum": "https://github.com/nerfstudio-project/nerfstudio/discussions"
+  },
+  "citations": [
+    {
+      "title": "Nerfstudio: A Modular Framework for Neural Radiance Field Development",
+      "url": "https://arxiv.org/abs/2302.04264",
+      "year": 2023
+    }
+  ],
+  "tutorials": [
+    {
+      "title": "Nerfstudio Documentation",
+      "url": "https://docs.nerf.studio",
+      "type": "article"
+    },
+    {
+      "title": "Nerfstudio Getting Started Guide",
+      "url": "https://docs.nerf.studio/quickstart/installation.html",
+      "type": "article"
+    }
+  ]
+}

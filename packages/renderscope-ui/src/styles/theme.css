@@ -1,0 +1,194 @@
+/*
+ * RenderScope UI — CSS Custom Property Theming System
+ *
+ * All variables are prefixed with --rs- to avoid collisions.
+ * Consumers can override any variable to match their application's theme.
+ *
+ * Usage:
+ *   import 'renderscope-ui/styles';
+ *
+ * Override example:
+ *   :root { --rs-bg: #1a1a2e; --rs-primary: #e94560; }
+ *
+ * Scoped override:
+ *   .my-wrapper .renderscope { --rs-bg: #ffffff; --rs-text: #111; }
+ */
+
+/* ── Base defaults at :root level ── */
+:root {
+  /* Surfaces */
+  --rs-bg: #09090f;
+  --rs-bg-card: #121218;
+  --rs-bg-elevated: #1a1a24;
+  --rs-bg-hover: #1f1f2e;
+  --rs-bg-active: #252536;
+
+  /* Text */
+  --rs-text: #f2f2f2;
+  --rs-text-muted: #87878f;
+  --rs-text-dim: #555560;
+
+  /* Borders */
+  --rs-border: #262630;
+  --rs-border-subtle: #1c1c28;
+
+  /* Primary accent */
+  --rs-primary: #3b82f6;
+  --rs-primary-hover: #2563eb;
+  --rs-primary-muted: rgba(59, 130, 246, 0.15);
+
+  /* Secondary accent */
+  --rs-accent: #6366f1;
+
+  /* Technique badge colors */
+  --rs-technique-path-tracing: #4da6ff;
+  --rs-technique-rasterization: #2dd471;
+  --rs-technique-neural: #a855f7;
+  --rs-technique-differentiable: #ec4899;
+  --rs-technique-volume: #f97316;
+  --rs-technique-blender: #eab308;
+  --rs-technique-educational: #6b7280;
+
+  /* Metric quality indicators */
+  --rs-metric-good: #22c55e;
+  --rs-metric-ok: #eab308;
+  --rs-metric-poor: #ef4444;
+
+  /* Feature matrix cells */
+  --rs-feature-yes: #22c55e;
+  --rs-feature-no: #ef4444;
+  --rs-feature-partial: #eab308;
+
+  /* Spacing scale */
+  --rs-space-xs: 0.25rem;
+  --rs-space-sm: 0.5rem;
+  --rs-space-md: 0.75rem;
+  --rs-space-lg: 1rem;
+  --rs-space-xl: 1.5rem;
+  --rs-space-2xl: 2rem;
+  --rs-space-3xl: 3rem;
+
+  /* Border radius */
+  --rs-radius-sm: 0.25rem;
+  --rs-radius: 0.375rem;
+  --rs-radius-lg: 0.5rem;
+  --rs-radius-xl: 0.75rem;
+  --rs-radius-full: 9999px;
+
+  /* Typography */
+  --rs-font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --rs-font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+  --rs-font-size-xs: 0.75rem;
+  --rs-font-size-sm: 0.875rem;
+  --rs-font-size-base: 1rem;
+  --rs-font-size-lg: 1.125rem;
+  --rs-font-size-xl: 1.25rem;
+  --rs-font-size-2xl: 1.5rem;
+
+  /* Transitions */
+  --rs-transition-fast: 100ms ease;
+  --rs-transition-normal: 200ms ease;
+  --rs-transition-slow: 300ms ease;
+
+  /* Shadows */
+  --rs-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --rs-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --rs-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+  /* Z-index scale */
+  --rs-z-dropdown: 100;
+  --rs-z-tooltip: 200;
+  --rs-z-overlay: 300;
+  --rs-z-modal: 400;
+}
+
+/* ── Scoping wrapper for consumers who want isolation ── */
+.renderscope {
+  /* Surfaces */
+  --rs-bg: #09090f;
+  --rs-bg-card: #121218;
+  --rs-bg-elevated: #1a1a24;
+  --rs-bg-hover: #1f1f2e;
+  --rs-bg-active: #252536;
+
+  /* Text */
+  --rs-text: #f2f2f2;
+  --rs-text-muted: #87878f;
+  --rs-text-dim: #555560;
+
+  /* Borders */
+  --rs-border: #262630;
+  --rs-border-subtle: #1c1c28;
+
+  /* Primary accent */
+  --rs-primary: #3b82f6;
+  --rs-primary-hover: #2563eb;
+  --rs-primary-muted: rgba(59, 130, 246, 0.15);
+
+  /* Secondary accent */
+  --rs-accent: #6366f1;
+
+  /* Technique badge colors */
+  --rs-technique-path-tracing: #4da6ff;
+  --rs-technique-rasterization: #2dd471;
+  --rs-technique-neural: #a855f7;
+  --rs-technique-differentiable: #ec4899;
+  --rs-technique-volume: #f97316;
+  --rs-technique-blender: #eab308;
+  --rs-technique-educational: #6b7280;
+
+  /* Metric quality indicators */
+  --rs-metric-good: #22c55e;
+  --rs-metric-ok: #eab308;
+  --rs-metric-poor: #ef4444;
+
+  /* Feature matrix cells */
+  --rs-feature-yes: #22c55e;
+  --rs-feature-no: #ef4444;
+  --rs-feature-partial: #eab308;
+
+  /* Spacing scale */
+  --rs-space-xs: 0.25rem;
+  --rs-space-sm: 0.5rem;
+  --rs-space-md: 0.75rem;
+  --rs-space-lg: 1rem;
+  --rs-space-xl: 1.5rem;
+  --rs-space-2xl: 2rem;
+  --rs-space-3xl: 3rem;
+
+  /* Border radius */
+  --rs-radius-sm: 0.25rem;
+  --rs-radius: 0.375rem;
+  --rs-radius-lg: 0.5rem;
+  --rs-radius-xl: 0.75rem;
+  --rs-radius-full: 9999px;
+
+  /* Typography */
+  --rs-font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --rs-font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+  --rs-font-size-xs: 0.75rem;
+  --rs-font-size-sm: 0.875rem;
+  --rs-font-size-base: 1rem;
+  --rs-font-size-lg: 1.125rem;
+  --rs-font-size-xl: 1.25rem;
+  --rs-font-size-2xl: 1.5rem;
+
+  /* Transitions */
+  --rs-transition-fast: 100ms ease;
+  --rs-transition-normal: 200ms ease;
+  --rs-transition-slow: 300ms ease;
+
+  /* Shadows */
+  --rs-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --rs-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --rs-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+  /* Z-index scale */
+  --rs-z-dropdown: 100;
+  --rs-z-tooltip: 200;
+  --rs-z-overlay: 300;
+  --rs-z-modal: 400;
+
+  color: var(--rs-text);
+  font-family: var(--rs-font-sans);
+}

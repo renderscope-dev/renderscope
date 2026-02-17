@@ -1,0 +1,37 @@
+---
+title: "Volume Rendering"
+description: "Techniques for visualizing 3D scalar fields like CT scans, fluid simulations, and participating media."
+technique: "volume-rendering"
+furtherReading:
+  - title: "Real-Time Volume Graphics"
+    url: "https://www.real-time-volume-graphics.org/"
+    description: "A comprehensive resource on GPU-accelerated volume rendering techniques."
+    type: "book"
+  - title: "VTK User's Guide"
+    url: "https://vtk.org/documentation/"
+    description: "Documentation for the Visualization Toolkit, a widely used volume rendering framework."
+    type: "documentation"
+---
+
+## How It Works
+
+Volume rendering visualizes 3D data that exists throughout a volume rather than only on surfaces. The data is typically stored as a 3D grid (voxels) where each cell contains a scalar value — density in a CT scan, temperature in a fluid simulation, or absorption in participating media like fog and smoke.
+
+The most common approach is ray casting: for each pixel, a ray is marched through the volume, sampling values at regular intervals. A transfer function maps each sampled value to color and opacity, and these samples are composited along the ray to produce the final pixel. The transfer function is the key artistic control — it determines which density ranges are visible and what colors they take.
+
+## Key Concepts
+
+- **Transfer functions** map scalar data values to visual properties (color and opacity), enabling selective visualization of different structures
+- **Ray marching** steps through the volume at regular intervals, accumulating color and opacity along each ray
+- **Maximum intensity projection (MIP)** displays the brightest voxel along each ray — useful for angiography and vessel visualization
+- **Isosurface extraction** (e.g., marching cubes) converts volumetric data to surface meshes at specific threshold values
+
+## Strengths and Trade-offs
+
+Volume rendering excels at visualizing internal structures that surface-based rendering cannot show — the interior of a human body from a CT scan, the evolution of a fluid simulation, or the density distribution of a molecular cloud. It is indispensable in medical imaging, scientific visualization, and visual effects.
+
+The main trade-off is computational cost: sampling a 3D volume for every pixel at every frame is memory-intensive and bandwidth-heavy. Large volumes (e.g., 512³ or 1024³ grids) require significant GPU memory and careful optimization for interactive performance.
+
+## History
+
+Volume rendering emerged in the late 1980s with the work of Levoy (1988) and Drebin, Carpenter, and Hanrahan (1988). GPU-based volume rendering became practical in the early 2000s with programmable shader hardware. Today, frameworks like VTK, ParaView, and 3D Slicer make volume rendering accessible to researchers and clinicians, while production renderers like PBRT and Mitsuba support volumetric light transport for photorealistic participating media.

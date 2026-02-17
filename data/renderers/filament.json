@@ -1,0 +1,117 @@
+{
+  "id": "filament",
+  "name": "Google Filament",
+  "version": "1.54.5",
+  "description": "Real-time physically based rendering engine optimized for Android and mobile platforms",
+  "long_description": "Google Filament is an open source, real-time physically based rendering engine designed with mobile-first priorities. Originally built to power 3D experiences on Android — including the Sceneform AR framework — Filament has grown into a cross-platform rendering library supporting Vulkan, OpenGL ES, Metal, WebGL 2.0, and desktop OpenGL. Its material system is grounded in a comprehensive PBR model documented in a widely-referenced technical whitepaper that details every approximation and design decision.\n\nFilament's architecture is optimized for constrained hardware. Its rendering pipeline uses a clustered forward renderer with dynamic resolution scaling, aggressive draw call batching, and a material compiler (matc) that generates optimized GPU shaders for each backend. The engine provides high-quality image-based lighting with prefiltered environment maps, screen-space ambient occlusion, screen-space reflections, and post-processing effects including bloom, depth of field, motion blur, and temporal anti-aliasing.\n\nAs a rendering library rather than a game engine, Filament requires application-level code for scene management, input handling, and asset loading. It ships with gltfio, a glTF 2.0 loader, and filamat, a material definition system. Filament is used in production across Google products including Google Maps, Google Search AR, and third-party applications requiring high-fidelity mobile rendering. Its C++ core is complemented by Java/JNI bindings for Android and JavaScript bindings via WebAssembly.",
+  "technique": ["rasterization"],
+  "language": "C++/Java/JavaScript",
+  "license": "Apache-2.0",
+  "platforms": ["linux", "macos", "windows", "android", "ios", "web"],
+  "gpu_support": true,
+  "gpu_apis": ["vulkan", "metal", "webgl"],
+  "cpu_support": false,
+  "real_time": true,
+  "scene_formats": ["gltf", "glb", "obj", "filamesh"],
+  "output_formats": ["framebuffer", "png", "exr", "hdr"],
+  "homepage": "https://google.github.io/filament/",
+  "repository": "https://github.com/google/filament",
+  "documentation": "https://google.github.io/filament/Filament.html",
+  "first_release": "2018-08-22",
+  "status": "active",
+  "tags": [
+    "real-time",
+    "pbr",
+    "mobile",
+    "android",
+    "google",
+    "vulkan",
+    "opengl",
+    "metal",
+    "webgl",
+    "cross-platform",
+    "physically-based",
+    "ibl"
+  ],
+  "strengths": [
+    "Exceptional PBR material model with a thorough technical whitepaper documenting every rendering equation, approximation, and design trade-off",
+    "Mobile-first architecture with aggressive performance optimizations — clustered forward rendering, draw call batching, and dynamic resolution scaling",
+    "Comprehensive multi-backend support spanning Vulkan, OpenGL ES 3.x, Metal, desktop OpenGL 4.1, and WebGL 2.0 from a single codebase",
+    "Production-quality image-based lighting pipeline with precomputed irradiance maps, prefiltered specular environment maps, and a BRDF LUT",
+    "Mature material compiler (matc) generates optimized, platform-specific shaders from a high-level material definition language"
+  ],
+  "limitations": [
+    "No built-in scene editor, visual authoring tool, or asset pipeline — requires custom application code for scene composition and interaction",
+    "Limited global illumination: supports screen-space ambient occlusion and baked lightmaps only, with no real-time GI solution",
+    "Steeper integration curve than higher-level engines like Godot or Babylon.js — designed as a rendering library, not a full engine",
+    "Clustered forward rendering architecture limits the number of dynamic lights compared to deferred rendering approaches",
+    "Community is smaller than three.js or Babylon.js despite Google backing, resulting in fewer third-party tutorials and integrations"
+  ],
+  "best_for": "Mobile and embedded applications requiring high-fidelity physically based rendering with minimal overhead and cross-platform GPU support",
+  "not_ideal_for": "Projects needing a full game engine with built-in physics, scripting, scene editing, or real-time global illumination",
+  "related": ["godot", "threejs", "babylonjs", "bgfx", "blender-eevee"],
+  "features": {
+    "global_illumination": false,
+    "path_tracing": false,
+    "bidirectional_pt": null,
+    "metropolis_lt": null,
+    "photon_mapping": null,
+    "volumetric": false,
+    "subsurface_scattering": true,
+    "motion_blur": true,
+    "depth_of_field": true,
+    "spectral_rendering": false,
+    "polarization": false,
+    "caustics": false,
+    "instancing": true,
+    "out_of_core": false,
+    "adaptive_sampling": null,
+    "denoiser_builtin": false,
+    "gpu_rendering": true,
+    "multi_gpu": false,
+    "network_rendering": false,
+    "hardware_ray_tracing": false,
+    "differentiable": false,
+    "inverse_rendering": false,
+    "neural_acceleration": false,
+    "real_time_preview": true,
+    "pbr_materials": true,
+    "hdri_environment": true,
+    "shadow_mapping": true,
+    "screen_space_effects": true,
+    "lod_system": false,
+    "animation_support": true,
+    "python_api": false,
+    "c_cpp_api": true,
+    "rust_api": false,
+    "javascript_api": true,
+    "scene_editor_gui": false,
+    "plugin_system": false,
+    "open_shading_language": false,
+    "materialx": false
+  },
+  "integrations": ["Android Sceneform", "Google Maps", "Google ARCore"],
+  "install_command": "git clone https://github.com/google/filament && cd filament && ./build.sh release",
+  "community_links": {
+    "forum": "https://github.com/google/filament/discussions"
+  },
+  "citations": [
+    {
+      "title": "Physically Based Rendering in Filament",
+      "url": "https://google.github.io/filament/Filament.html",
+      "year": 2018
+    }
+  ],
+  "tutorials": [
+    {
+      "title": "Filament Material Guide",
+      "url": "https://google.github.io/filament/Materials.html",
+      "type": "article"
+    },
+    {
+      "title": "Building Filament",
+      "url": "https://github.com/google/filament/blob/main/BUILDING.md",
+      "type": "article"
+    }
+  ]
+}

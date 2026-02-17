@@ -1,0 +1,243 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://renderscope.dev/schemas/benchmark.schema.json",
+  "title": "RenderScope Benchmark Result",
+  "description": "A single benchmark run: one renderer, one scene, one hardware configuration.",
+  "type": "object",
+  "required": [
+    "id",
+    "renderer",
+    "renderer_version",
+    "scene",
+    "timestamp",
+    "hardware",
+    "settings",
+    "results"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier in the format '{scene}-{renderer}-{YYYY-MM-DD}'.",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "renderer": {
+      "type": "string",
+      "description": "Renderer id (must match a file in /data/renderers/)."
+    },
+    "renderer_version": {
+      "type": "string",
+      "description": "Exact renderer version used for this benchmark run."
+    },
+    "scene": {
+      "type": "string",
+      "description": "Scene id (must match a file in /data/scenes/)."
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "ISO 8601 datetime with timezone when the benchmark was run.",
+      "format": "date-time"
+    },
+    "hardware": {
+      "type": "object",
+      "description": "Hardware configuration used for this benchmark.",
+      "required": ["cpu", "ram_gb", "os"],
+      "additionalProperties": false,
+      "properties": {
+        "cpu": {
+          "type": "string",
+          "description": "CPU model name."
+        },
+        "cpu_cores": {
+          "type": "integer",
+          "description": "Number of physical CPU cores.",
+          "minimum": 1
+        },
+        "cpu_threads": {
+          "type": "integer",
+          "description": "Number of CPU threads (including hyperthreading).",
+          "minimum": 1
+        },
+        "gpu": {
+          "type": ["string", "null"],
+          "description": "GPU model name, or null if CPU-only run."
+        },
+        "gpu_vram_gb": {
+          "type": "number",
+          "description": "GPU VRAM in gigabytes.",
+          "minimum": 0
+        },
+        "ram_gb": {
+          "type": "number",
+          "description": "System RAM in gigabytes.",
+          "minimum": 0
+        },
+        "os": {
+          "type": "string",
+          "description": "Operating system name and version."
+        },
+        "driver_version": {
+          "type": "string",
+          "description": "GPU driver version."
+        }
+      }
+    },
+    "settings": {
+      "type": "object",
+      "description": "Render settings used for this benchmark.",
+      "required": ["resolution"],
+      "additionalProperties": false,
+      "properties": {
+        "resolution": {
+          "type": "array",
+          "description": "Output resolution as [width, height].",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "samples_per_pixel": {
+          "type": "integer",
+          "description": "Number of samples per pixel.",
+          "minimum": 1
+        },
+        "time_budget_seconds": {
+          "type": ["number", "null"],
+          "description": "Time budget in seconds (alternative to samples_per_pixel).",
+          "minimum": 0
+        },
+        "integrator": {
+          "type": "string",
+          "description": "Rendering integrator or algorithm name (renderer-specific)."
+        },
+        "max_bounces": {
+          "type": "integer",
+          "description": "Maximum ray bounce depth.",
+          "minimum": 0
+        },
+        "threads": {
+          "type": "integer",
+          "description": "Number of CPU threads used.",
+          "minimum": 1
+        },
+        "gpu_enabled": {
+          "type": "boolean",
+          "description": "Whether GPU rendering was used."
+        },
+        "denoiser": {
+          "type": ["string", "null"],
+          "description": "Denoiser used, if any (e.g., 'OIDN', 'OptiX')."
+        },
+        "extra": {
+          "type": "object",
+          "description": "Renderer-specific settings not covered by standard fields."
+        }
+      }
+    },
+    "results": {
+      "type": "object",
+      "description": "Benchmark results.",
+      "required": ["render_time_seconds", "output_image"],
+      "additionalProperties": false,
+      "properties": {
+        "render_time_seconds": {
+          "type": "number",
+          "description": "Total wall-clock render time in seconds.",
+          "exclusiveMinimum": 0
+        },
+        "peak_memory_mb": {
+          "type": "number",
+          "description": "Peak memory usage during rendering in megabytes.",
+          "minimum": 0
+        },
+        "output_image": {
+          "type": "string",
+          "description": "Relative path to the full-resolution output image."
+        },
+        "output_image_web": {
+          "type": "string",
+          "description": "Relative path to the web-optimized output image (WebP)."
+        }
+      }
+    },
+    "quality_vs_reference": {
+      "type": "object",
+      "description": "Image quality metrics compared to a reference render.",
+      "required": ["reference_renderer", "reference_samples"],
+      "additionalProperties": false,
+      "properties": {
+        "reference_renderer": {
+          "type": "string",
+          "description": "Renderer id used for the reference image."
+        },
+        "reference_samples": {
+          "type": "integer",
+          "description": "Sample count used for the reference image.",
+          "minimum": 1
+        },
+        "psnr": {
+          "type": "number",
+          "description": "Peak Signal-to-Noise Ratio in dB."
+        },
+        "ssim": {
+          "type": "number",
+          "description": "Structural Similarity Index (0.0 to 1.0).",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "mse": {
+          "type": "number",
+          "description": "Mean Squared Error.",
+          "minimum": 0
+        },
+        "lpips": {
+          "type": ["number", "null"],
+          "description": "Learned Perceptual Image Patch Similarity (0.0 to 1.0, lower is better).",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "convergence": {
+      "type": "array",
+      "description": "Convergence data points for progressive renderers, showing quality at increasing sample counts.",
+      "items": {
+        "type": "object",
+        "required": ["samples", "time_seconds"],
+        "additionalProperties": false,
+        "properties": {
+          "samples": {
+            "type": "integer",
+            "description": "Sample count at this data point.",
+            "minimum": 1
+          },
+          "time_seconds": {
+            "type": "number",
+            "description": "Wall-clock time at this sample count.",
+            "minimum": 0
+          },
+          "psnr": {
+            "type": "number",
+            "description": "PSNR at this sample count."
+          },
+          "ssim": {
+            "type": "number",
+            "description": "SSIM at this sample count.",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Freeform notes about this benchmark run."
+    },
+    "submitted_by": {
+      "type": "string",
+      "description": "GitHub username of the person who submitted this result."
+    }
+  }
+}

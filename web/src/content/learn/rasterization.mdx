@@ -1,0 +1,38 @@
+---
+title: "Rasterization"
+description: "The dominant real-time technique that projects 3D triangles onto a 2D screen at interactive frame rates."
+technique: "rasterization"
+furtherReading:
+  - title: "Real-Time Rendering (4th Edition)"
+    url: "https://www.realtimerendering.com/"
+    description: "The definitive reference on real-time rendering techniques including rasterization."
+    type: "book"
+  - title: "Learn OpenGL"
+    url: "https://learnopengl.com/"
+    description: "A comprehensive, free online tutorial for learning modern OpenGL and rasterization concepts."
+    type: "tutorial"
+---
+
+## How It Works
+
+Rasterization converts 3D geometry into 2D pixels through a pipeline of transformation, projection, and fragment processing stages. Triangles — the fundamental building block — are projected from 3D world space onto the 2D screen, and each pixel covered by a triangle is filled (rasterized) with color computed by a fragment shader.
+
+The GPU executes this pipeline in a massively parallel fashion, processing millions of triangles per frame. The depth buffer (z-buffer) resolves visibility by storing the closest fragment at each pixel, ensuring correct occlusion without needing to sort geometry.
+
+## Key Concepts
+
+- **Vertex shaders** transform geometry from model space through view and projection matrices
+- **Fragment shaders** compute per-pixel color using material properties, lighting, and textures
+- **Depth buffering** determines visibility without requiring geometry sorting
+- **Deferred shading** decouples geometry processing from lighting, enabling many dynamic lights
+- **Physically based materials** (PBR) bring energy-conserving shading models to real-time rendering via metallic/roughness workflows
+
+## Strengths and Trade-offs
+
+Rasterization excels at speed — modern GPUs can render complex scenes at 60+ fps, making it the backbone of games, interactive applications, and web 3D. However, rasterization is fundamentally a local operation: each triangle is processed independently, making global effects like reflections, soft shadows, and global illumination require approximations (shadow maps, screen-space reflections, light probes).
+
+These approximations can produce artifacts visible to trained eyes, but the performance advantage is enormous — orders of magnitude faster than path tracing for equivalent scene complexity.
+
+## History
+
+The z-buffer algorithm was invented by Ed Catmull in 1974. Hardware-accelerated rasterization became mainstream with consumer GPUs in the late 1990s (3dfx Voodoo, NVIDIA RIVA TNT). The programmable shader revolution in the early 2000s transformed fixed-function pipelines into the flexible GPU computing platforms we use today. Modern APIs like Vulkan, DirectX 12, and WebGPU give developers unprecedented control over the rendering pipeline.

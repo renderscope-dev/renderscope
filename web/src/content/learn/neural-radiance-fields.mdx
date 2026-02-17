@@ -1,0 +1,37 @@
+---
+title: "Neural Radiance Fields"
+description: "Neural networks that learn a volumetric scene representation from a set of photographs."
+technique: "neural-radiance-fields"
+furtherReading:
+  - title: "NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis"
+    url: "https://arxiv.org/abs/2003.08934"
+    description: "The original 2020 paper by Mildenhall et al. that introduced NeRF."
+    type: "paper"
+  - title: "Nerfstudio Documentation"
+    url: "https://docs.nerf.studio/"
+    description: "A modular framework for training and evaluating NeRF variants."
+    type: "documentation"
+---
+
+## How It Works
+
+A Neural Radiance Field (NeRF) represents a 3D scene as a continuous function that maps a 5D input — 3D spatial coordinates (x, y, z) plus a 2D viewing direction (θ, φ) — to color and volume density. This function is parameterized by a neural network (typically a multi-layer perceptron) and trained by minimizing the difference between rendered and actual photographs of the scene.
+
+To render a novel view, rays are cast through each pixel of the desired camera. Along each ray, the network is queried at sampled 3D points to obtain density and color values. These samples are composited using classical volume rendering equations to produce the final pixel color.
+
+## Key Concepts
+
+- **Positional encoding** maps low-dimensional coordinates to a higher-dimensional space, enabling the network to represent high-frequency details
+- **Hierarchical sampling** uses a coarse network to identify regions of interest, then focuses samples where density is high
+- **Volume rendering** integrates color and density along each ray using numerical quadrature
+- **Photometric loss** trains the network by comparing rendered pixels against ground-truth photographs from known camera poses
+
+## Strengths and Trade-offs
+
+NeRFs produce remarkably photorealistic novel views from a sparse set of input photographs, capturing complex view-dependent effects like specular reflections and semi-transparent materials. They are particularly effective for static scenes where many photographs are available.
+
+However, training is compute-intensive (minutes to hours per scene on a modern GPU), rendering is slow compared to rasterization (seconds per frame without acceleration), and editing the scene after training is difficult. Memory consumption scales with scene complexity, and generalizing across scenes remains an active research area.
+
+## History
+
+The original NeRF paper by Mildenhall et al. was published in 2020 and rapidly became one of the most cited works in computer vision. Since then, hundreds of follow-up papers have addressed its limitations: Instant-NGP (2022) reduced training to seconds using hash-based encodings, Mip-NeRF addressed aliasing, and frameworks like Nerfstudio made the technology more accessible to practitioners.

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://renderscope.dev/schemas/taxonomy.schema.json",
+  "title": "RenderScope Taxonomy",
+  "description": "Classification graph connecting renderers, techniques, and relationships.",
+  "type": "object",
+  "required": ["nodes", "edges"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Schema version for this taxonomy file."
+    },
+    "last_updated": {
+      "type": "string",
+      "description": "Date when the taxonomy was last updated.",
+      "format": "date"
+    },
+    "nodes": {
+      "type": "array",
+      "description": "All nodes in the taxonomy graph — either category nodes (technique groups) or renderer nodes.",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "label"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique node identifier within the taxonomy."
+          },
+          "type": {
+            "type": "string",
+            "description": "Node type: 'category' for technique groups, 'renderer' for individual renderers.",
+            "enum": ["category", "renderer"]
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable display label for the node."
+          },
+          "description": {
+            "type": "string",
+            "description": "Short description of this category or renderer node."
+          },
+          "parent": {
+            "type": ["string", "null"],
+            "description": "Parent category ID for hierarchical grouping. Null for top-level categories."
+          },
+          "renderer_id": {
+            "type": "string",
+            "description": "For renderer nodes only: links to /data/renderers/{id}.json. Required when type is 'renderer'."
+          }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "description": "Relationships between nodes in the taxonomy graph.",
+      "items": {
+        "type": "object",
+        "required": ["source", "target", "type"],
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "Source node ID."
+          },
+          "target": {
+            "type": "string",
+            "description": "Target node ID."
+          },
+          "type": {
+            "type": "string",
+            "description": "Edge relationship type.",
+            "enum": [
+              "belongs_to",
+              "also_belongs_to",
+              "uses_backend",
+              "forked_from",
+              "inspired_by",
+              "shared_format",
+              "same_ecosystem"
+            ]
+          },
+          "label": {
+            "type": ["string", "null"],
+            "description": "Optional display label for the edge."
+          }
+        }
+      }
+    }
+  }
+}

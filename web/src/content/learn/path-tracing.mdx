@@ -1,0 +1,43 @@
+---
+title: "Path Tracing"
+description: "Physically-based light simulation that traces rays through a scene to produce photorealistic images."
+technique: "path-tracing"
+furtherReading:
+  - title: "Physically Based Rendering: From Theory to Implementation"
+    url: "https://pbr-book.org"
+    description: "The definitive textbook on path tracing and physically based rendering."
+    type: "book"
+  - title: "Ray Tracing in One Weekend"
+    url: "https://raytracing.github.io/"
+    description: "An accessible introduction to building a ray tracer from scratch."
+    type: "tutorial"
+  - title: "The Rendering Equation (Kajiya 1986)"
+    url: "https://dl.acm.org/doi/10.1145/15886.15902"
+    description: "The foundational paper that established the theoretical basis for path tracing."
+    type: "paper"
+---
+
+## How It Works
+
+Path tracing simulates light transport by tracing the paths of individual light rays as they bounce through a scene. Starting from the camera, rays are cast through each pixel of the image and followed as they interact with surfaces — reflecting, refracting, or being absorbed — until they either reach a light source or are terminated.
+
+This process is rooted in Monte Carlo integration: by sampling many random ray paths per pixel and averaging their contributions, the renderer converges toward the mathematically correct solution of the rendering equation. Each additional sample reduces noise, gradually producing a clean, photorealistic image.
+
+## Key Concepts
+
+The rendering equation, formulated by James Kajiya in 1986, describes how light is distributed in a scene. Path tracing is essentially a stochastic method for solving this integral equation. Key concepts include:
+
+- **Importance sampling** — biasing ray directions toward light sources for faster convergence
+- **Russian roulette** — probabilistically terminating low-contribution paths to avoid infinite recursion
+- **Multiple importance sampling (MIS)** — combining different sampling strategies for robustness across diverse scene configurations
+- **BSDF evaluation** — determining how light scatters at each surface interaction based on material properties
+
+## Strengths and Trade-offs
+
+Path tracing produces physically accurate results — soft shadows, color bleeding, caustics, and realistic reflections all emerge naturally from the simulation without any scene-specific tuning. However, convergence can be slow, especially for scenes with complex light transport such as caustics through glass or indirect illumination in enclosed spaces.
+
+This makes path tracing primarily an offline technique used in film production, architectural visualization, and research. Real-time denoising techniques powered by neural networks are rapidly closing the gap, enabling interactive path-traced previews on modern GPUs.
+
+## History
+
+The foundations of ray tracing were laid by Arthur Appel in 1968, with Turner Whitted introducing recursive ray tracing in 1979. Kajiya's 1986 rendering equation paper established the theoretical basis for path tracing. The technique became practical for production use through progressive improvements in sampling strategies, acceleration structures (particularly BVH), and GPU hardware throughout the 2000s and 2010s. Today, hardware-accelerated ray tracing cores in NVIDIA RTX and AMD RDNA GPUs have made real-time path tracing a reality.

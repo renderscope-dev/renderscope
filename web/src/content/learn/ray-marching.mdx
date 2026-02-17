@@ -1,0 +1,38 @@
+---
+title: "Ray Marching & SDFs"
+description: "Iterative ray stepping through signed distance fields, popular for procedural geometry and real-time effects."
+technique: "ray-marching"
+furtherReading:
+  - title: "Inigo Quilez — Distance Functions"
+    url: "https://iquilezles.org/articles/distfunctions/"
+    description: "The definitive reference for SDF primitives and operations by a pioneer of the technique."
+    type: "tutorial"
+  - title: "Shadertoy"
+    url: "https://www.shadertoy.com/"
+    description: "A platform for creating and sharing shader art, where ray marching is the dominant technique."
+    type: "tutorial"
+---
+
+## How It Works
+
+Ray marching is an iterative rendering technique where rays are advanced through a scene in discrete steps rather than computing exact ray-surface intersections analytically. At each step along the ray, the renderer evaluates a distance function to determine how far the ray is from the nearest surface, then advances by that distance. When the distance drops below a threshold, a surface hit is registered.
+
+When combined with Signed Distance Fields (SDFs) — functions that return the shortest distance from any point to the nearest surface — ray marching becomes sphere tracing: each step is guaranteed safe (no surface can be missed), and the algorithm converges quickly in open space where distances are large.
+
+## Key Concepts
+
+- **Signed Distance Fields** define implicit surfaces mathematically — positive values outside, negative inside, zero on the surface
+- **Sphere tracing** uses the SDF value as the step size, ensuring no surfaces are missed while maximizing step efficiency
+- **CSG operations** (union, intersection, subtraction) combine simple SDF primitives into complex shapes using min/max operations
+- **Smooth blending** creates organic transitions between SDF shapes using smooth minimum functions
+- **Domain repetition** tiles geometry infinitely by applying modulo operations to ray positions
+
+## Strengths and Trade-offs
+
+Ray marching with SDFs enables the creation of incredibly complex, procedural geometry defined entirely by mathematical functions — no polygon meshes needed. This makes it ideal for demoscene productions, shader art, procedural content generation, and visualizing mathematical surfaces. The technique excels at smooth, organic shapes and can represent infinite detail at any zoom level.
+
+The main limitation is performance: each pixel requires multiple distance function evaluations (typically 50–200 steps), and complex SDFs can be expensive to evaluate. Ray marching also struggles with thin features that might be stepped over and requires careful tuning of step counts and thresholds for each scene.
+
+## History
+
+Ray marching dates back to the 1980s with work on volume rendering and implicit surfaces. The technique gained a dedicated community through the demoscene and Shadertoy, where artists like Inigo Quilez pioneered creative applications. Hart's 1996 paper on sphere tracing formalized the use of distance fields for ray marching. Today, ray marching is used in game engines for volumetric effects (fog, clouds), in VFX for procedural geometry, and remains the dominant technique in real-time shader art.

@@ -1,0 +1,37 @@
+---
+title: "3D Gaussian Splatting"
+description: "An explicit point-based representation that renders novel views in real time using differentiable Gaussian primitives."
+technique: "gaussian-splatting"
+furtherReading:
+  - title: "3D Gaussian Splatting for Real-Time Radiance Field Rendering"
+    url: "https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/"
+    description: "The original 2023 paper and project page by Kerbl et al."
+    type: "paper"
+  - title: "gsplat Library"
+    url: "https://docs.gsplat.studio/"
+    description: "An open-source library for differentiable Gaussian splatting with PyTorch."
+    type: "documentation"
+---
+
+## How It Works
+
+3D Gaussian Splatting represents a scene as a collection of 3D Gaussian primitives — ellipsoidal blobs defined by position, covariance (shape and orientation), opacity, and view-dependent color encoded via spherical harmonics. To render a view, each Gaussian is projected (splatted) onto the image plane, sorted by depth, and alpha-composited front-to-back to produce the final image.
+
+Unlike NeRF's implicit neural representation, Gaussian Splatting uses an explicit, point-based representation. This enables extremely fast rendering because there is no per-pixel neural network evaluation — just projection and blending of pre-computed primitives.
+
+## Key Concepts
+
+- **Anisotropic Gaussians** — 3D ellipsoids that can represent thin structures, sharp edges, and complex geometry better than isotropic points
+- **Spherical harmonics** encode view-dependent color, capturing specular highlights and reflections without neural network queries at render time
+- **Differentiable rasterization** enables end-to-end optimization of Gaussian parameters from training photographs via gradient descent
+- **Adaptive density control** splits, clones, and prunes Gaussians during optimization to match scene detail
+
+## Strengths and Trade-offs
+
+The primary advantage is rendering speed: Gaussian Splatting achieves real-time frame rates (100+ fps) at quality comparable to or exceeding NeRF, making it suitable for interactive applications like VR walkthroughs and live scene exploration. Training is also fast — typically 15–30 minutes on a single GPU.
+
+The trade-offs include high memory usage (millions of Gaussians per scene, each with dozens of parameters) and difficulty representing perfectly smooth surfaces. The discrete point-based representation can also produce artifacts at extreme close-ups where individual Gaussians become visible.
+
+## History
+
+3D Gaussian Splatting was introduced by Kerbl et al. at SIGGRAPH 2023, immediately attracting massive attention for its combination of quality and speed. Within months, dozens of follow-up works extended the technique to dynamic scenes, text-to-3D generation, SLAM, autonomous driving, and more. The approach revived interest in explicit, point-based representations that had been explored in earlier work on point-based graphics and surfels.

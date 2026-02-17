@@ -1,0 +1,129 @@
+{
+  "id": "redner",
+  "name": "redner",
+  "version": "0.4.1",
+  "description": "Differentiable path tracer with correct edge-sampling gradients for physically based inverse rendering",
+  "long_description": "redner is a differentiable renderer developed by Tzu-Mao Li (MIT/UC San Diego) that solves a fundamental problem in differentiable rendering: computing correct gradients at object silhouettes and geometric discontinuities. While rasterization-based differentiable renderers (nvdiffrast, PyTorch3D) produce zero or incorrect gradients when object boundaries cross pixel boundaries, redner uses an edge-sampling algorithm that analytically accounts for these discontinuities, producing mathematically correct derivatives even at silhouette edges.\n\nUnlike the rasterization-based tools common in the differentiable rendering ecosystem, redner is a full physically based path tracer that computes global illumination — soft shadows, interreflections, color bleeding, and caustics all participate in the gradient computation. This makes redner uniquely suited for inverse rendering tasks where physical accuracy matters: material estimation from photographs, lighting reconstruction, and geometry optimization in scenes with complex light transport.\n\nredner supports both CPU and GPU execution paths. The CPU path uses multi-threaded rendering and is fully functional without an NVIDIA GPU, making redner more accessible than GPU-only alternatives. The renderer integrates with PyTorch through a custom autograd function, accepts OBJ meshes and Mitsuba XML scene files, and supports physically based materials including microfacet BSDFs, depth of field, and HDRI environment lighting. The project is in maintenance mode — while the codebase is stable and functional, active feature development has slowed as the author has moved to newer projects.",
+  "technique": ["differentiable", "path_tracing", "ray_tracing"],
+  "language": "C++/Python",
+  "license": "MIT",
+  "platforms": ["linux", "macos", "windows"],
+  "gpu_support": true,
+  "gpu_apis": ["cuda"],
+  "cpu_support": true,
+  "real_time": false,
+  "scene_formats": ["obj", "mitsuba_xml", "programmatic"],
+  "output_formats": ["tensor", "png", "exr"],
+  "homepage": "https://github.com/BachiLi/redner",
+  "repository": "https://github.com/BachiLi/redner",
+  "documentation": "https://redner.readthedocs.io/en/latest/",
+  "paper": "https://doi.org/10.1145/3355089.3356522",
+  "paper_bibtex": "@article{Li2018redner,\n  title={Differentiable Monte Carlo Ray Tracing through Edge Sampling},\n  author={Li, Tzu-Mao and Aittala, Miika and Durand, Fr{\\'e}do and Lehtinen, Jaakko},\n  journal={ACM Transactions on Graphics (Proceedings of SIGGRAPH Asia)},\n  volume={37},\n  number={6},\n  pages={222:1--222:11},\n  year={2018},\n  publisher={ACM}\n}",
+  "first_release": "2018-11-01",
+  "latest_release": "2023-01-15",
+  "latest_release_version": "0.4.1",
+  "status": "maintenance",
+  "github_stars": 1200,
+  "github_stars_trend": [1020, 1040, 1060, 1080, 1100, 1110, 1130, 1140, 1150, 1170, 1185, 1200],
+  "commit_activity_52w": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+  "contributor_count": 18,
+  "open_issues": 45,
+  "fork_count": 160,
+  "tags": [
+    "differentiable",
+    "path-tracing",
+    "inverse-rendering",
+    "pytorch",
+    "physically-based",
+    "edge-sampling",
+    "silhouette-gradients",
+    "academic",
+    "global-illumination",
+    "cpu"
+  ],
+  "strengths": [
+    "The only fully differentiable physically based path tracer that correctly handles edge and silhouette gradients — where rasterization-based methods produce zero or incorrect gradients at object boundaries, redner's edge-sampling algorithm computes mathematically correct derivatives",
+    "Full global illumination with differentiable gradients through soft shadows, interreflections, color bleeding, and caustics, enabling physically accurate inverse rendering that accounts for complex light transport phenomena",
+    "Runs on both CPU and GPU — unlike nvdiffrast and most of Kaolin, redner has a fully functional multi-threaded CPU rendering path, making it accessible on hardware without NVIDIA GPUs including macOS and AMD systems",
+    "Clean mathematical foundation based on the seminal edge-sampling papers by Tzu-Mao Li, making it a valuable reference implementation for academic work on differentiable rendering theory",
+    "Permissive MIT license with no commercial restrictions, and a stable, well-understood codebase that continues to be cited as a baseline in differentiable rendering research"
+  ],
+  "limitations": [
+    "Significantly slower per iteration than rasterization-based differentiable renderers (nvdiffrast, PyTorch3D) — path tracing is inherently more expensive, limiting its use in training loops requiring millions of iterations at high throughput",
+    "In maintenance mode with infrequent updates — the project is stable but no longer under active feature development, and newer approaches (Mitsuba 3's differentiable mode) have superseded it for many use cases",
+    "Limited scene complexity in practice — while it supports arbitrary geometry, the per-iteration cost of differentiable path tracing makes it impractical for large scenes with dense geometry and complex multi-bounce lighting",
+    "Smaller community and ecosystem than PyTorch3D or Kaolin — fewer tutorials, examples, and integration guides, which increases the onboarding effort for new users"
+  ],
+  "best_for": "Researchers who need physically correct differentiable gradients through full global illumination effects including silhouette edges — particularly for inverse rendering, material estimation, and lighting reconstruction papers",
+  "not_ideal_for": "Large-scale training loops requiring fast rendering throughput or real-time performance — use nvdiffrast or PyTorch3D when rasterization-level accuracy is sufficient and speed is the priority",
+  "related": ["pytorch3d", "nvdiffrast", "drjit", "mitsuba3", "pbrt"],
+  "features": {
+    "global_illumination": true,
+    "path_tracing": true,
+    "bidirectional_pt": false,
+    "metropolis_lt": false,
+    "photon_mapping": false,
+    "volumetric": false,
+    "subsurface_scattering": false,
+    "motion_blur": false,
+    "depth_of_field": true,
+    "spectral_rendering": false,
+    "polarization": false,
+    "caustics": true,
+    "instancing": false,
+    "out_of_core": false,
+    "adaptive_sampling": false,
+    "denoiser_builtin": false,
+    "gpu_rendering": true,
+    "multi_gpu": false,
+    "network_rendering": false,
+    "hardware_ray_tracing": false,
+    "differentiable": true,
+    "inverse_rendering": true,
+    "neural_acceleration": false,
+    "real_time_preview": false,
+    "pbr_materials": true,
+    "hdri_environment": true,
+    "shadow_mapping": null,
+    "screen_space_effects": null,
+    "lod_system": false,
+    "animation_support": false,
+    "python_api": true,
+    "c_cpp_api": true,
+    "rust_api": false,
+    "javascript_api": false,
+    "scene_editor_gui": false,
+    "plugin_system": false,
+    "open_shading_language": false,
+    "materialx": false
+  },
+  "integrations": ["PyTorch"],
+  "install_command": "pip install redner-gpu",
+  "community_links": {
+    "forum": "https://github.com/BachiLi/redner/issues"
+  },
+  "citations": [
+    {
+      "title": "Differentiable Monte Carlo Ray Tracing through Edge Sampling",
+      "url": "https://doi.org/10.1145/3355089.3356522",
+      "year": 2018
+    },
+    {
+      "title": "Differentiable Vector Graphics Rasterization for Editing and Learning",
+      "url": "https://doi.org/10.1145/3414685.3417871",
+      "year": 2020
+    }
+  ],
+  "tutorials": [
+    {
+      "title": "redner Documentation",
+      "url": "https://redner.readthedocs.io/en/latest/",
+      "type": "article"
+    },
+    {
+      "title": "redner Tutorial Examples",
+      "url": "https://github.com/BachiLi/redner/tree/master/tutorials",
+      "type": "article"
+    }
+  ]
+}

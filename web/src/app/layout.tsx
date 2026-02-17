@@ -1,46 +1,66 @@
-import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { ThemeProvider } from "@/components/layout/theme-provider";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
+import { inter, jetbrainsMono } from "@/styles/fonts";
+import { siteConfig } from "@/lib/constants";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: "RenderScope",
-    template: "%s | RenderScope",
+    default: `${siteConfig.name} — Catalog, Compare & Benchmark Rendering Engines`,
+    template: `%s | ${siteConfig.name}`,
   },
-  description:
-    "An open-source platform for cataloging, comparing, benchmarking, and understanding open-source rendering engines.",
+  description: siteConfig.description,
   keywords: [
-    "rendering engines",
-    "computer graphics",
-    "benchmarking",
+    "rendering engine",
     "path tracing",
     "ray tracing",
-    "rasterization",
-    "neural rendering",
-    "3D Gaussian Splatting",
+    "3D gaussian splatting",
     "NeRF",
+    "renderer comparison",
+    "benchmark",
     "open source",
+    "PBRT",
+    "Mitsuba",
+    "Blender Cycles",
   ],
   authors: [{ name: "Ashutosh Mishra" }],
+  creator: "Ashutosh Mishra",
   openGraph: {
-    title: "RenderScope",
-    description:
-      "Catalog, compare, and benchmark 50+ open-source rendering engines.",
     type: "website",
     locale: "en_US",
+    url: siteConfig.url,
+    title: siteConfig.name,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
   },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.name,
+    description: siteConfig.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#09090f" },
+  ],
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -49,11 +69,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-sans min-h-screen`}
-      >
-        {children}
+    <html
+      lang="en"
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="min-h-screen bg-background font-sans antialiased">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          <main className="relative flex min-h-[calc(100vh-4rem)] flex-col pt-16">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

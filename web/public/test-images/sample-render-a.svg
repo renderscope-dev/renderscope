@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bgA" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a0a2e"/>
+      <stop offset="50%" style="stop-color:#16213e"/>
+      <stop offset="100%" style="stop-color:#0f3460"/>
+    </linearGradient>
+    <radialGradient id="lightA" cx="35%" cy="30%" r="50%">
+      <stop offset="0%" style="stop-color:#e94560;stop-opacity:0.6"/>
+      <stop offset="100%" style="stop-color:#e94560;stop-opacity:0"/>
+    </radialGradient>
+    <radialGradient id="lightA2" cx="70%" cy="60%" r="40%">
+      <stop offset="0%" style="stop-color:#533483;stop-opacity:0.5"/>
+      <stop offset="100%" style="stop-color:#533483;stop-opacity:0"/>
+    </radialGradient>
+    <filter id="noiseA">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feBlend in="SourceGraphic" mode="multiply" result="blend"/>
+    </filter>
+  </defs>
+  <!-- Background -->
+  <rect width="1200" height="800" fill="url(#bgA)"/>
+  <!-- Light sources -->
+  <rect width="1200" height="800" fill="url(#lightA)"/>
+  <rect width="1200" height="800" fill="url(#lightA2)"/>
+  <!-- Floor plane -->
+  <polygon points="0,800 1200,800 1100,450 100,450" fill="#0a0a1a" opacity="0.7"/>
+  <!-- Left wall -->
+  <polygon points="0,100 100,450 100,800 0,800" fill="#8b1a1a" opacity="0.5"/>
+  <!-- Right wall -->
+  <polygon points="1200,100 1100,450 1100,800 1200,800" fill="#1a1a8b" opacity="0.5"/>
+  <!-- Box 1 (tall) -->
+  <g transform="translate(350, 300)">
+    <polygon points="0,250 120,250 120,50 0,50" fill="#2a1a3a" stroke="#3a2a4a" stroke-width="1"/>
+    <polygon points="0,50 40,20 160,20 120,50" fill="#3a2a4a" stroke="#4a3a5a" stroke-width="1"/>
+    <polygon points="120,50 160,20 160,220 120,250" fill="#251535" stroke="#352545" stroke-width="1"/>
+  </g>
+  <!-- Box 2 (short, rotated) -->
+  <g transform="translate(650, 380)">
+    <polygon points="0,120 140,120 140,20 0,20" fill="#1a2a3a" stroke="#2a3a4a" stroke-width="1"/>
+    <polygon points="0,20 30,-5 170,-5 140,20" fill="#2a3a4a" stroke="#3a4a5a" stroke-width="1"/>
+    <polygon points="140,20 170,-5 170,95 140,120" fill="#152535" stroke="#253545" stroke-width="1"/>
+  </g>
+  <!-- Sphere approximation -->
+  <circle cx="500" cy="430" r="60" fill="#2a2040" opacity="0.8"/>
+  <circle cx="485" cy="415" r="50" fill="none" stroke="#e94560" stroke-width="0.5" opacity="0.3"/>
+  <ellipse cx="490" cy="410" rx="25" ry="20" fill="#e94560" opacity="0.15"/>
+  <!-- Light rectangle (ceiling) -->
+  <rect x="400" y="95" width="400" height="5" fill="#fff" opacity="0.8"/>
+  <rect x="400" y="95" width="400" height="80" fill="#fff" opacity="0.05"/>
+  <!-- Label -->
+  <text x="40" y="770" font-family="monospace" font-size="16" fill="#666" opacity="0.5">Renderer A — Path Traced — 1024 SPP</text>
+</svg>

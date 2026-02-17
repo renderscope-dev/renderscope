@@ -1,0 +1,25 @@
+{
+  "id": "stanford-bunny",
+  "name": "Stanford Bunny",
+  "description": "A 3D scanned rabbit model from the Stanford 3D Scanning Repository. One of the most recognizable test models in computer graphics. Useful for evaluating material rendering, smooth surface handling, and basic lighting on a familiar shape.",
+  "tests": ["soft_shadows", "reflections", "indirect_light"],
+  "complexity": "low",
+  "vertices": 35947,
+  "faces": 69451,
+  "lights": 1,
+  "light_types": ["area"],
+  "textures": 0,
+  "source": "Stanford University 3D Scanning Repository",
+  "source_url": "https://graphics.stanford.edu/data/3Dscanrep/",
+  "license": "Free for research and educational use",
+  "available_formats": ["ply", "obj", "pbrt", "gltf"],
+  "downloads": {
+    "obj": "https://graphics.stanford.edu/~mdfisher/Data/Meshes/bunny.obj"
+  },
+  "camera": {
+    "position": [-0.03, 0.1, 0.3],
+    "look_at": [-0.03, 0.1, 0],
+    "up": [0, 1, 0],
+    "fov": 45
+  }
+}

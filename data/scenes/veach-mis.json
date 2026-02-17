@@ -1,0 +1,26 @@
+{
+  "id": "veach-mis",
+  "name": "Veach MIS",
+  "description": "Eric Veach's classic test scene designed to demonstrate the importance of Multiple Importance Sampling. Features four plates with varying roughness illuminated by four lights of varying size. Exposes algorithmic differences in how renderers sample difficult light transport paths \u2014 a diagnostic tool more than a beauty test.",
+  "tests": ["global_illumination", "reflections", "soft_shadows"],
+  "complexity": "low",
+  "vertices": 1200,
+  "faces": 1200,
+  "lights": 4,
+  "light_types": ["area"],
+  "textures": 0,
+  "source": "Eric Veach / PBRT Scene Repository",
+  "source_url": "https://pbrt.org/scenes-v4",
+  "license": "Public domain",
+  "available_formats": ["pbrt", "mitsuba_xml"],
+  "downloads": {
+    "pbrt": "https://benedikt-bitterli.me/resources/pbrt-v4/veach-mis.zip",
+    "mitsuba_xml": "https://benedikt-bitterli.me/resources/mitsuba/veach-mis.zip"
+  },
+  "camera": {
+    "position": [0, 2, 15],
+    "look_at": [0, 1.69, 0],
+    "up": [0, 1, 0],
+    "fov": 20
+  }
+}

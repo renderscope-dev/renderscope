@@ -48,7 +48,17 @@ Desktop.ini
 
 # === Firebase ===
 .firebase/
-.firebaserc
+
+# === Storybook ===
+storybook-static/
+
+# === Large binary assets (scenes, renders) ===
+# Downloaded via scripts/acquire_scenes.py — too large for Git
+assets/scenes/
+assets/renders/
+
+# Scene download completion markers
+assets/scenes/**/.scene-complete
 
 # === Misc ===
 *.log

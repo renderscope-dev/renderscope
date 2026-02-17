@@ -1,0 +1,5 @@
+jsonschema>=4.20.0
+referencing>=0.31.0
+requests>=2.31.0
+rich>=13.0.0
+trimesh>=4.0.0

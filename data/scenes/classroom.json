@@ -1,0 +1,25 @@
+{
+  "id": "classroom",
+  "name": "Classroom",
+  "description": "A Blender Foundation demo scene depicting a detailed school classroom interior with mixed lighting: directional sunlight through windows combined with artificial interior lights. Tests a wide range of rendering capabilities including caustics, volumetric effects, and complex material interactions.",
+  "tests": ["global_illumination", "caustics", "volumetric", "complex_geometry", "textures"],
+  "complexity": "high",
+  "vertices": 756242,
+  "faces": 756242,
+  "lights": 2,
+  "light_types": ["directional", "area"],
+  "textures": 32,
+  "source": "Blender Foundation Demo Files",
+  "source_url": "https://www.blender.org/download/demo-files/",
+  "license": "CC0-1.0",
+  "available_formats": ["blend", "gltf", "obj"],
+  "downloads": {
+    "blend": "https://download.blender.org/demo/test/classroom.zip"
+  },
+  "camera": {
+    "position": [4.6, 1.6, -3.5],
+    "look_at": [0, 1.2, 0],
+    "up": [0, 1, 0],
+    "fov": 50
+  }
+}

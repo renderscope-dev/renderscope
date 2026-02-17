@@ -1,0 +1,25 @@
+{
+  "id": "sponza",
+  "name": "Sponza Atrium",
+  "description": "An architectural interior based on the Sponza Palace atrium in Dubrovnik, Croatia. A standard benchmark for testing complex indirect lighting, light interaction across many surfaces, and texture-heavy scenes. Used in virtually every rendering research paper as a reference scene.",
+  "tests": ["global_illumination", "indirect_light", "textures", "complex_geometry"],
+  "complexity": "medium",
+  "vertices": 153635,
+  "faces": 262267,
+  "lights": 1,
+  "light_types": ["directional", "emissive_geometry"],
+  "textures": 25,
+  "source": "Crytek / Morgan McGuire Computer Graphics Archive",
+  "source_url": "https://casual-effects.com/data/",
+  "license": "CC-BY-3.0",
+  "available_formats": ["obj", "pbrt", "gltf", "mitsuba_xml"],
+  "downloads": {
+    "obj": "https://casual-effects.com/g3d/data10/common/model/crytek_sponza/sponza.zip"
+  },
+  "camera": {
+    "position": [-10, 2, 0],
+    "look_at": [0, 2, 0],
+    "up": [0, 1, 0],
+    "fov": 60
+  }
+}

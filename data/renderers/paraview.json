@@ -1,0 +1,123 @@
+{
+  "id": "paraview",
+  "name": "ParaView",
+  "version": "5.13.1",
+  "description": "Open source multi-platform application for interactive scientific visualization and analysis of extremely large datasets",
+  "long_description": "ParaView is an open source, multi-platform data analysis and visualization application built on top of VTK by Kitware, Inc. in collaboration with Sandia and Los Alamos National Laboratories. While VTK is a programming library, ParaView is a full application — providing a Qt-based GUI, a client-server architecture for remote visualization, and a built-in Python scripting environment — making it the primary way that scientists interact with VTK's visualization capabilities without writing C++ code.\n\nParaView's defining strength is its ability to handle extremely large datasets through MPI-based distributed rendering and data-parallel processing. A single ParaView session can distribute a multi-terabyte simulation dataset across hundreds of compute nodes, render each partition locally using either OpenGL rasterization, Intel OSPRay CPU ray tracing, or NVIDIA OptiX GPU ray tracing, and composite the results into a single interactive view. Catalyst, ParaView's in-situ visualization library, can be embedded directly into running simulations to produce visualizations in real time without writing intermediate data to disk.\n\nParaView supports an exceptionally broad range of scientific file formats: VTK native formats, Exodus II (finite element), CGNS (CFD), NetCDF, HDF5, XDMF, Ensight, CSV, and many more. Its filter pipeline inherits VTK's full suite of data processing algorithms — contouring, streamlines, volume rendering, slicing, clipping, threshold filtering, and temporal data analysis. ParaView is used across the DOE national laboratory complex, at CERN, NASA, and throughout the computational science and engineering community worldwide.",
+  "technique": ["volume_rendering", "rasterization"],
+  "language": "C++",
+  "license": "BSD-3-Clause",
+  "platforms": ["linux", "macos", "windows"],
+  "gpu_support": true,
+  "cpu_support": true,
+  "real_time": true,
+  "scene_formats": ["vtk", "vti", "vtp", "vtu", "pvd", "exodus", "cgns", "netcdf", "hdf5", "xdmf", "ensight", "csv", "stl", "obj", "ply"],
+  "output_formats": ["png", "jpg", "tiff", "bmp", "avi"],
+  "homepage": "https://www.paraview.org",
+  "repository": "https://github.com/Kitware/ParaView",
+  "documentation": "https://docs.paraview.org",
+  "first_release": "2002-01-01",
+  "latest_release": "2024-11-01",
+  "latest_release_version": "5.13.1",
+  "status": "active",
+  "github_stars": 1500,
+  "github_stars_trend": [],
+  "commit_activity_52w": [],
+  "contributor_count": 250,
+  "open_issues": 500,
+  "fork_count": 450,
+  "tags": [
+    "scientific-visualization",
+    "volume-rendering",
+    "hpc",
+    "distributed-rendering",
+    "mpi",
+    "in-situ",
+    "catalyst",
+    "kitware",
+    "gui",
+    "python"
+  ],
+  "strengths": [
+    "Handles petascale datasets through MPI-based distributed rendering — can spread multi-terabyte simulations across hundreds of compute nodes for interactive exploration",
+    "Full GUI application with Qt-based interface enables interactive scientific visualization without writing code, while Python scripting allows automation of complex workflows",
+    "Broadest scientific file format support of any open source visualization tool — reads VTK, Exodus II, CGNS, NetCDF, HDF5, XDMF, Ensight, and dozens more",
+    "Catalyst in-situ visualization library enables real-time rendering embedded directly into running simulations without writing intermediate data to disk",
+    "OSPRay and OptiX ray tracing backends provide publication-quality rendering with global illumination, shadows, and ambient occlusion for scientific data"
+  ],
+  "limitations": [
+    "Not a photorealistic renderer — visual quality is oriented toward scientific clarity rather than artistic realism, with limited material and lighting controls",
+    "GUI can be overwhelming for new users — hundreds of filters, properties panels, and configuration options create a steep initial learning curve",
+    "Substantial memory footprint and startup time compared to lightweight visualization tools — designed for workstation-class hardware, not laptops",
+    "Requires understanding VTK's pipeline model (source, filter, mapper, actor) to use effectively beyond basic loading and viewing",
+    "Real-time rendering performance depends heavily on dataset complexity — interactive frame rates are achievable for moderate datasets but degrade with very large unstructured grids"
+  ],
+  "best_for": "Interactive exploration and visualization of large-scale scientific simulation data, particularly in HPC environments with distributed rendering needs",
+  "not_ideal_for": "Photorealistic rendering, game development, real-time applications outside scientific visualization, or quick lightweight data previews",
+  "related": ["vtk", "ospray", "open3d"],
+  "features": {
+    "global_illumination": false,
+    "path_tracing": false,
+    "bidirectional_pt": null,
+    "metropolis_lt": null,
+    "photon_mapping": null,
+    "volumetric": true,
+    "subsurface_scattering": false,
+    "motion_blur": false,
+    "depth_of_field": false,
+    "spectral_rendering": false,
+    "polarization": false,
+    "caustics": null,
+    "instancing": true,
+    "out_of_core": true,
+    "adaptive_sampling": false,
+    "denoiser_builtin": false,
+    "gpu_rendering": true,
+    "multi_gpu": false,
+    "network_rendering": true,
+    "hardware_ray_tracing": false,
+    "differentiable": false,
+    "inverse_rendering": false,
+    "neural_acceleration": false,
+    "real_time_preview": true,
+    "pbr_materials": false,
+    "hdri_environment": false,
+    "shadow_mapping": true,
+    "screen_space_effects": true,
+    "lod_system": true,
+    "animation_support": true,
+    "python_api": true,
+    "c_cpp_api": true,
+    "rust_api": false,
+    "javascript_api": false,
+    "scene_editor_gui": true,
+    "plugin_system": true,
+    "open_shading_language": false,
+    "materialx": false
+  },
+  "integrations": ["VTK", "Intel OSPRay", "NVIDIA OptiX", "Catalyst"],
+  "install_command": "Download from https://www.paraview.org/download/ or build from source with CMake",
+  "community_links": {
+    "forum": "https://discourse.paraview.org",
+    "stackoverflow_tag": "paraview"
+  },
+  "citations": [
+    {
+      "title": "ParaView: An End-User Tool for Large Data Visualization",
+      "url": "https://www.paraview.org/publications/",
+      "year": 2005
+    }
+  ],
+  "tutorials": [
+    {
+      "title": "ParaView Tutorial",
+      "url": "https://docs.paraview.org/en/latest/Tutorials/index.html",
+      "type": "article"
+    },
+    {
+      "title": "ParaView Self-Directed Tutorial",
+      "url": "https://www.paraview.org/tutorials/",
+      "type": "article"
+    }
+  ]
+}
