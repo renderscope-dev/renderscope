@@ -3,41 +3,75 @@ title: "Path Tracing"
 description: "Physically-based light simulation that traces rays through a scene to produce photorealistic images."
 technique: "path-tracing"
 furtherReading:
-  - title: "Physically Based Rendering: From Theory to Implementation"
-    url: "https://pbr-book.org"
-    description: "The definitive textbook on path tracing and physically based rendering."
+  - title: "Physically Based Rendering: From Theory to Implementation (PBR Book)"
+    url: "https://www.pbr-book.org/"
+    description: "The definitive textbook on path tracing, freely available online. Co-authored by the creators of PBRT."
     type: "book"
-  - title: "Ray Tracing in One Weekend"
+  - title: "Ray Tracing in One Weekend (Peter Shirley)"
     url: "https://raytracing.github.io/"
-    description: "An accessible introduction to building a ray tracer from scratch."
+    description: "A gentle, hands-on introduction to building a ray tracer from scratch in C++. The best starting point for beginners."
     type: "tutorial"
-  - title: "The Rendering Equation (Kajiya 1986)"
+  - title: "The Rendering Equation (Kajiya, 1986)"
     url: "https://dl.acm.org/doi/10.1145/15886.15902"
-    description: "The foundational paper that established the theoretical basis for path tracing."
+    description: "The foundational paper that formalized the rendering equation and introduced path tracing as a solution method."
     type: "paper"
+  - title: "Monte Carlo Methods in Practice (PBR Book Chapter 2)"
+    url: "https://www.pbr-book.org/4ed/Monte_Carlo_Integration"
+    description: "Deep dive into the Monte Carlo sampling techniques that make modern path tracers efficient."
+    type: "book"
+  - title: "A Trip Through the Graphics Pipeline (Fabian Giesen)"
+    url: "https://fgiesen.wordpress.com/2011/07/09/a-trip-through-the-graphics-pipeline-2011-index/"
+    description: "Legendary blog series explaining how ray tracing and rasterization work at the hardware level."
+    type: "tutorial"
 ---
+
+## What Is Path Tracing?
+
+Path tracing is a rendering algorithm that simulates how light travels in the physical world. For every pixel in the final image, the algorithm traces a ray from the camera into the scene, follows that ray as it bounces off surfaces — reflecting, refracting, scattering — and records how much light accumulates along the way. By repeating this process thousands of times per pixel, each time with slightly randomized bounce directions, and averaging the results, path tracing converges toward a physically accurate image.
+
+This approach is called a **Monte Carlo method** because it relies on random sampling to approximate a complex integral: the rendering equation, first formalized by James Kajiya in 1986. The rendering equation describes the total light leaving every point on every surface in a scene, accounting for all possible light paths. Path tracing solves it by sampling — instead of computing all paths analytically, which is impossible for complex scenes, it randomly generates paths and averages their contributions.
+
+The result is photorealistic images with physically correct global illumination, soft shadows, caustics, color bleeding, and depth of field — effects that emerge naturally from the simulation rather than being faked with tricks.
+
+<PipelineDiagram
+  steps={[
+    { icon: "Camera", label: "Camera", sublabel: "Cast ray" },
+    { icon: "Target", label: "Hit Surface", sublabel: "Evaluate BSDF" },
+    { icon: "Target", label: "Bounce", sublabel: "Random direction" },
+    { icon: "Lightbulb", label: "Hit Light", sublabel: "Collect energy" },
+    { icon: "Sparkles", label: "Accumulate", sublabel: "Average samples" }
+  ]}
+  accentColor="blue"
+  caption="Each pixel averages thousands of random light paths to converge on the correct color."
+/>
 
 ## How It Works
 
-Path tracing simulates light transport by tracing the paths of individual light rays as they bounce through a scene. Starting from the camera, rays are cast through each pixel of the image and followed as they interact with surfaces — reflecting, refracting, or being absorbed — until they either reach a light source or are terminated.
+The algorithm operates per pixel:
 
-This process is rooted in Monte Carlo integration: by sampling many random ray paths per pixel and averaging their contributions, the renderer converges toward the mathematically correct solution of the rendering equation. Each additional sample reduces noise, gradually producing a clean, photorealistic image.
+1. **Ray generation** — A primary ray is cast from the camera through the pixel into the scene.
+2. **Intersection testing** — The ray is tested against scene geometry (triangles, curves, volumes) to find the closest surface hit. This is accelerated by spatial data structures like BVH (Bounding Volume Hierarchy) trees.
+3. **Shading** — At the hit point, the surface's material properties (BSDF — Bidirectional Scattering Distribution Function) determine how light interacts with the surface. The material could be diffuse, specular, glossy, transmissive, or any combination.
+4. **Bouncing** — A new ray direction is sampled according to the BSDF. The ray continues into the scene, hitting another surface. This continues recursively up to a maximum bounce depth.
+5. **Light contribution** — Whenever a ray hits a light source or the environment, the light's energy is carried back along the path and multiplied by each surface's reflectance along the way.
+6. **Accumulation** — Steps 1 through 5 are repeated many times per pixel (each repetition is a "sample" or SPP — samples per pixel). The final pixel color is the average of all samples.
 
-## Key Concepts
+Modern path tracers use **importance sampling** (biasing random directions toward where light is likely coming from) and **next-event estimation** (directly sampling light sources at each bounce rather than hoping a random bounce finds one) to converge much faster. Without these optimizations, a naive path tracer might need millions of samples per pixel; with them, 256 to 4096 SPP often suffices for production-quality images.
 
-The rendering equation, formulated by James Kajiya in 1986, describes how light is distributed in a scene. Path tracing is essentially a stochastic method for solving this integral equation. Key concepts include:
+## Strengths
 
-- **Importance sampling** — biasing ray directions toward light sources for faster convergence
-- **Russian roulette** — probabilistically terminating low-contribution paths to avoid infinite recursion
-- **Multiple importance sampling (MIS)** — combining different sampling strategies for robustness across diverse scene configurations
-- **BSDF evaluation** — determining how light scatters at each surface interaction based on material properties
+Path tracing's core strength is **physical correctness by default**. Because it simulates actual light transport, effects like soft shadows, indirect illumination (color bleeding between nearby surfaces), caustics (concentrated light patterns through glass or water), and participating media (fog, smoke, subsurface scattering in skin) all emerge naturally. There is no need to implement each effect as a separate algorithm — they are all consequences of solving the rendering equation.
 
-## Strengths and Trade-offs
+This makes path tracing the preferred technique for visual effects, architectural visualization, product rendering, and any context where the image must be indistinguishable from a photograph. It is also the reference standard against which other techniques are benchmarked for correctness.
 
-Path tracing produces physically accurate results — soft shadows, color bleeding, caustics, and realistic reflections all emerge naturally from the simulation without any scene-specific tuning. However, convergence can be slow, especially for scenes with complex light transport such as caustics through glass or indirect illumination in enclosed spaces.
+## Tradeoffs
 
-This makes path tracing primarily an offline technique used in film production, architectural visualization, and research. Real-time denoising techniques powered by neural networks are rapidly closing the gap, enabling interactive path-traced previews on modern GPUs.
+The primary tradeoff is **computational cost**. Each pixel requires hundreds to thousands of light paths to converge to a noise-free result. A single frame at 1920 by 1080 with 1024 SPP means tracing over two billion light paths. Production renders of complex scenes can take minutes to hours per frame.
+
+**Noise** is the visible artifact of insufficient samples — the image appears grainy, especially in dark regions or areas illuminated primarily by indirect light. Denoising algorithms (both traditional and ML-based) can mitigate this but cannot fully replace converged sampling for all use cases.
+
+Path tracing is also **not real-time** in most scenarios. While GPU-accelerated path tracers (using NVIDIA OptiX, AMD HIP, or Intel oneAPI) have dramatically reduced render times, and denoised interactive previews are now common, full-quality path-traced frames at real-time rates remain limited to relatively simple scenes or require specialized hardware with dedicated ray tracing cores.
 
 ## History
 
-The foundations of ray tracing were laid by Arthur Appel in 1968, with Turner Whitted introducing recursive ray tracing in 1979. Kajiya's 1986 rendering equation paper established the theoretical basis for path tracing. The technique became practical for production use through progressive improvements in sampling strategies, acceleration structures (particularly BVH), and GPU hardware throughout the 2000s and 2010s. Today, hardware-accelerated ray tracing cores in NVIDIA RTX and AMD RDNA GPUs have made real-time path tracing a reality.
+The foundations of ray tracing were laid by Arthur Appel in 1968, with Turner Whitted introducing recursive ray tracing in 1979. Kajiya's 1986 rendering equation paper established the theoretical basis for path tracing as a general solution to light transport. Eric Veach's PhD thesis in 1997 introduced multiple importance sampling and bidirectional path tracing, dramatically improving practical convergence. The technique became viable for production use through progressive improvements in acceleration structures (particularly BVH), material models, and GPU hardware throughout the 2000s and 2010s. Today, hardware-accelerated ray tracing cores in NVIDIA RTX and AMD RDNA GPUs have made real-time path-traced previews a reality, while offline path tracers like PBRT, Mitsuba, and Cycles remain the backbone of photorealistic rendering.

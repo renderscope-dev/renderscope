@@ -1,0 +1,44 @@
+{
+  "id": "cornell-box-pbrt-hw2-2024-12-08",
+  "renderer": "pbrt",
+  "renderer_version": "4.0.0",
+  "scene": "cornell-box",
+  "timestamp": "2024-12-08T16:00:00Z",
+  "hardware": {
+    "id": "hw2",
+    "label": "Mid-Range Laptop",
+    "cpu": "Intel Core i7-13700H",
+    "gpu": "NVIDIA RTX 4060 Laptop",
+    "ram_gb": 32,
+    "os": "Windows 11",
+    "driver": "NVIDIA 546.33"
+  },
+  "settings": {
+    "resolution": [1920, 1080],
+    "samples_per_pixel": 1024,
+    "integrator": "volpath",
+    "max_bounces": 8,
+    "threads": 16,
+    "gpu_enabled": false
+  },
+  "results": {
+    "render_time_seconds": 82.6,
+    "peak_memory_mb": 1280,
+    "output_image": "renders/cornell-box/pbrt_1024spp_hw2.exr"
+  },
+  "quality_vs_reference": {
+    "reference_renderer": "pbrt",
+    "reference_samples": 65536,
+    "psnr": 42.0,
+    "ssim": 0.9986,
+    "mse": 0.000063
+  },
+  "convergence": [
+    { "samples": 1, "time": 0.08, "psnr": 12.2 },
+    { "samples": 4, "time": 0.32, "psnr": 18.6 },
+    { "samples": 16, "time": 1.27, "psnr": 25.0 },
+    { "samples": 64, "time": 5.04, "psnr": 31.3 },
+    { "samples": 256, "time": 20.0, "psnr": 37.1 },
+    { "samples": 1024, "time": 82.6, "psnr": 42.0 }
+  ]
+}

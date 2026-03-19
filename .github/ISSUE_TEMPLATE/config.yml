@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "Documentation"
+    url: "https://renderscope.dev/docs"
+    about: "Check the documentation before filing an issue — your question may already be answered."
+  - name: "Discussions"
+    url: "https://github.com/renderscope-dev/renderscope/discussions"
+    about: "Ask questions, share ideas, or show off what you've built with RenderScope."

@@ -1,0 +1,101 @@
+name: Run Benchmarks
+
+on:
+  workflow_dispatch:
+    inputs:
+      renderer:
+        description: 'Renderer to benchmark (comma-separated, or "all")'
+        required: false
+        default: 'all'
+        type: string
+      scene:
+        description: 'Scene to benchmark (comma-separated, or "all")'
+        required: false
+        default: 'all'
+        type: string
+      include_reference:
+        description: 'Also generate reference renders (very slow)'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  benchmark:
+    runs-on: self-hosted  # Must be a machine with renderers installed
+    timeout-minutes: 1440  # 24 hours max
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install RenderScope Python package
+        run: |
+          cd python
+          pip install -e ".[dev]"
+
+      - name: Install script dependencies
+        run: pip install pyyaml rich pillow numpy
+
+      - name: Download scenes (if needed)
+        run: python scripts/acquire_scenes.py
+
+      - name: Detect installed renderers
+        run: renderscope list
+
+      - name: Run benchmarks
+        run: |
+          ARGS="--skip-existing"
+          if [ "${{ inputs.renderer }}" != "all" ]; then
+            for r in $(echo "${{ inputs.renderer }}" | tr ',' ' '); do
+              ARGS="$ARGS --renderer $r"
+            done
+          fi
+          if [ "${{ inputs.scene }}" != "all" ]; then
+            for s in $(echo "${{ inputs.scene }}" | tr ',' ' '); do
+              ARGS="$ARGS --scene $s"
+            done
+          fi
+          python scripts/run_benchmarks.py $ARGS
+
+      - name: Generate reference renders
+        if: ${{ inputs.include_reference == true }}
+        run: python scripts/generate_reference_renders.py --skip-existing
+
+      - name: Generate web images
+        run: python scripts/generate_web_images.py
+
+      - name: Validate benchmark results
+        run: python scripts/validate_data.py --type benchmark
+        continue-on-error: true  # Don't fail the whole workflow on validation warnings
+
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/benchmarks/ logs/benchmarks/
+          # Optionally add WebP files if they exist and are small enough
+          # --force needed because assets/renders/ is in .gitignore (EXR protection)
+          if [ -d "assets/renders" ]; then
+            find assets/renders -name "*.webp" -size -1M -exec git add --force {} +
+          fi
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "bench: benchmark results for ${{ inputs.renderer }} × ${{ inputs.scene }}"
+            git push
+          fi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: |
+            data/benchmarks/
+            assets/renders/**/*.webp
+            logs/benchmarks/
+          retention-days: 90

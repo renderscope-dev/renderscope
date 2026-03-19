@@ -42,3 +42,34 @@ export type {
   CameraPosition,
   SceneData,
 } from "./scene";
+
+export type {
+  ComparisonImage,
+  SliderOrientation,
+  DiffMode,
+  ColorMapName,
+  ImageLoadState,
+  ZoomPanState,
+  NormalizedRegion,
+  ImageMetrics,
+  SSIMResult,
+} from "./image-compare";
+
+export type {
+  TaxonomyData,
+  TaxonomyNode,
+  TaxonomyEdge,
+  TaxonomyNodeType,
+  TaxonomyEdgeType,
+  ColorByMode,
+} from "./taxonomy";
+
+export type {
+  FeatureDefinition,
+  FeatureCategory,
+  FeatureMatrixRenderer,
+  FeatureValue,
+  FeatureMatrixProps,
+  FeatureCellProps,
+  FeatureGroupHeaderProps,
+} from "./feature-matrix";

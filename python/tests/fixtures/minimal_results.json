@@ -1,0 +1,46 @@
+[
+  {
+    "id": "cornell-box-pbrt-2026-02-16",
+    "renderer": "pbrt",
+    "renderer_version": "4.0.0",
+    "scene": "cornell-box",
+    "timestamp": "2026-02-16T15:00:00+00:00",
+    "hardware": {
+      "cpu": "AMD Ryzen 9 7950X",
+      "cpu_cores_physical": 16,
+      "cpu_cores_logical": 32,
+      "ram_gb": 64.0,
+      "os": "Ubuntu 22.04.3 LTS",
+      "python_version": "3.11.5"
+    },
+    "settings": {
+      "width": 1920,
+      "height": 1080,
+      "samples": 1024,
+      "gpu": false
+    },
+    "results": {
+      "renderer": "pbrt",
+      "scene": "cornell-box",
+      "output_path": "renderscope-results/cornell-box/pbrt_1024spp.exr",
+      "render_time_seconds": 34.2,
+      "peak_memory_mb": 1228.8,
+      "settings": {
+        "width": 1920,
+        "height": 1080,
+        "samples": 1024,
+        "gpu": false
+      },
+      "hardware": {
+        "cpu": "AMD Ryzen 9 7950X",
+        "cpu_cores_physical": 16,
+        "cpu_cores_logical": 32,
+        "ram_gb": 64.0,
+        "os": "Ubuntu 22.04.3 LTS",
+        "python_version": "3.11.5"
+      },
+      "timestamp": "2026-02-16T15:00:00+00:00"
+    },
+    "convergence": []
+  }
+]

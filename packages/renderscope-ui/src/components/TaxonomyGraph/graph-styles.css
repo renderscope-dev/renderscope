@@ -1,0 +1,307 @@
+/*
+ * RenderScope UI — TaxonomyGraph Component Styles
+ *
+ * All class names are prefixed with `rs-taxonomy-` for scoping.
+ * All colors reference --rs-* custom properties from theme.css.
+ * No Tailwind utilities — standalone CSS for the npm package.
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Container
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.rs-taxonomy-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--rs-radius-lg);
+  font-family: var(--rs-font-sans);
+}
+
+.rs-taxonomy-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Nodes
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.rs-taxonomy-node {
+  cursor: default;
+}
+
+.rs-taxonomy-node--renderer {
+  cursor: pointer;
+}
+
+.rs-taxonomy-node circle {
+  transition: filter 200ms ease;
+}
+
+.rs-taxonomy-node--highlighted circle {
+  animation: rs-taxonomy-pulse 2s ease-in-out infinite;
+}
+
+@keyframes rs-taxonomy-pulse {
+  0%, 100% { stroke-opacity: 1; }
+  50% { stroke-opacity: 0.4; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Labels
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.rs-taxonomy-label {
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Edges
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.rs-taxonomy-edge {
+  transition: stroke-opacity 200ms ease;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Tooltip
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.rs-taxonomy-tooltip {
+  position: absolute;
+  z-index: var(--rs-z-tooltip, 200);
+  width: 240px;
+  pointer-events: none;
+  border-radius: var(--rs-radius-lg);
+  border: 1px solid var(--rs-border);
+  background: var(--rs-bg-popover, var(--rs-bg-card));
+  box-shadow: var(--rs-shadow-lg);
+  padding: 12px;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.rs-taxonomy-tooltip--visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.rs-taxonomy-tooltip__name {
+  font-size: var(--rs-font-size-sm);
+  font-weight: 600;
+  color: var(--rs-text);
+  line-height: 1.3;
+  margin: 0 0 8px;
+}
+
+.rs-taxonomy-tooltip__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.rs-taxonomy-tooltip__dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--rs-radius-full);
+  flex-shrink: 0;
+}
+
+.rs-taxonomy-tooltip__technique {
+  font-size: var(--rs-font-size-xs);
+  color: var(--rs-text-muted);
+}
+
+.rs-taxonomy-tooltip__stars {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--rs-font-size-xs);
+  color: var(--rs-text-muted);
+}
+
+.rs-taxonomy-tooltip__stars svg {
+  width: 12px;
+  height: 12px;
+  color: #eab308;
+  fill: #eab308;
+}
+
+.rs-taxonomy-tooltip__description {
+  font-size: var(--rs-font-size-xs);
+  color: var(--rs-text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.rs-taxonomy-tooltip__hint {
+  font-size: 11px;
+  color: var(--rs-text-dim);
+  margin-top: 6px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Legend
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.rs-taxonomy-legend {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 40;
+  border-radius: var(--rs-radius-lg);
+  border: 1px solid var(--rs-border);
+  background: rgba(18, 18, 24, 0.8);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--rs-shadow-lg);
+  transition: all 200ms ease;
+  max-width: 200px;
+}
+
+.rs-taxonomy-legend__toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  color: var(--rs-text);
+  font-size: var(--rs-font-size-xs);
+  font-weight: 500;
+  font-family: var(--rs-font-sans);
+  cursor: pointer;
+  transition: color var(--rs-transition-fast);
+}
+
+.rs-taxonomy-legend__toggle:hover {
+  color: var(--rs-text);
+}
+
+.rs-taxonomy-legend__toggle svg {
+  color: var(--rs-text-muted);
+  flex-shrink: 0;
+}
+
+.rs-taxonomy-legend__items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 12px 10px;
+}
+
+.rs-taxonomy-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rs-taxonomy-legend__item-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--rs-radius-full);
+  flex-shrink: 0;
+}
+
+.rs-taxonomy-legend__item-label {
+  font-size: 11px;
+  color: var(--rs-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rs-taxonomy-legend__item-count {
+  font-size: 10px;
+  color: var(--rs-text-dim);
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Controls
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.rs-taxonomy-controls {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--rs-radius-lg);
+  border: 1px solid var(--rs-border);
+  background: rgba(18, 18, 24, 0.8);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--rs-shadow-lg);
+}
+
+.rs-taxonomy-controls__divider {
+  height: 1px;
+  margin: 0 4px;
+  background: var(--rs-border);
+}
+
+.rs-taxonomy-controls__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--rs-radius);
+  background: transparent;
+  color: var(--rs-text-muted);
+  cursor: pointer;
+  transition: background var(--rs-transition-fast), color var(--rs-transition-fast);
+}
+
+.rs-taxonomy-controls__btn:hover {
+  background: var(--rs-bg-hover);
+  color: var(--rs-text);
+}
+
+.rs-taxonomy-controls__btn:active {
+  background: var(--rs-bg-active);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Empty State
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.rs-taxonomy-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  color: var(--rs-text-muted);
+  font-size: var(--rs-font-size-sm);
+  font-family: var(--rs-font-sans);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SSR Placeholder
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.rs-taxonomy-ssr-placeholder {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rs-text-dim);
+  font-size: var(--rs-font-size-sm);
+  font-family: var(--rs-font-sans);
+  border-radius: var(--rs-radius-lg);
+  background: var(--rs-bg-card);
+  border: 1px solid var(--rs-border);
+}

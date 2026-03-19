@@ -95,7 +95,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col items-center justify-between gap-4 py-6 md:flex-row">
           <p className="text-xs text-muted-foreground">
-            &copy; {currentYear} Ashutosh Mishra. Licensed under{" "}
+            &copy; {currentYear} RenderScope Contributors. Licensed under{" "}
             <a
               href="https://www.apache.org/licenses/LICENSE-2.0"
               target="_blank"

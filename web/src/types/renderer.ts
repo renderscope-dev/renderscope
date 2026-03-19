@@ -185,7 +185,32 @@ export type RendererCardData = Pick<
   | "best_for"
 >;
 
-export type ViewMode = "grid" | "list";
+/** Represents a single rendered image in the sample gallery */
+export interface SampleRender {
+  src: string;
+  scene: string;
+  renderer: string;
+  width?: number;
+  height?: number;
+  spp?: number;
+  renderTime?: number;
+  settings?: string;
+}
+
+/** Props for the ImageLightbox component */
+export interface LightboxImage {
+  src: string;
+  alt: string;
+  scene: string;
+  renderer: string;
+  width?: number;
+  height?: number;
+  spp?: number;
+  renderTime?: number;
+  settings?: string;
+}
+
+export type ViewMode = "grid" | "list" | "graph";
 
 export type SortOption =
   | "name-asc"
@@ -194,3 +219,32 @@ export type SortOption =
   | "stars-asc"
   | "newest"
   | "oldest";
+
+// ═══════════════════════════════════════════════════════════════
+// FILTER TYPES — Session 6.2
+// ═══════════════════════════════════════════════════════════════
+
+/** A single option within a filter group */
+export interface FilterOption {
+  value: string;
+  label: string;
+  count: number;
+}
+
+/** The complete filter state (what the user has selected) */
+export interface FilterState {
+  techniques: string[];
+  languages: string[];
+  licenses: string[];
+  platforms: string[];
+  statuses: string[];
+}
+
+/** Empty filter state constant */
+export const EMPTY_FILTERS: FilterState = {
+  techniques: [],
+  languages: [],
+  licenses: [],
+  platforms: [],
+  statuses: [],
+};

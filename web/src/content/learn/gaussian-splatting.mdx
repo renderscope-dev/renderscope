@@ -3,35 +3,95 @@ title: "3D Gaussian Splatting"
 description: "An explicit point-based representation that renders novel views in real time using differentiable Gaussian primitives."
 technique: "gaussian-splatting"
 furtherReading:
-  - title: "3D Gaussian Splatting for Real-Time Radiance Field Rendering"
+  - title: "3D Gaussian Splatting for Real-Time Radiance Field Rendering (Kerbl et al., 2023)"
     url: "https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/"
-    description: "The original 2023 paper and project page by Kerbl et al."
+    description: "The original 3DGS paper and project page. Includes code, datasets, and interactive demos."
     type: "paper"
-  - title: "gsplat Library"
+  - title: "gsplat Documentation"
     url: "https://docs.gsplat.studio/"
-    description: "An open-source library for differentiable Gaussian splatting with PyTorch."
+    description: "High-performance, modular Gaussian Splatting library for research and production. Part of the Nerfstudio ecosystem."
     type: "documentation"
+  - title: "A Survey on 3D Gaussian Splatting (Chen et al., 2024)"
+    url: "https://arxiv.org/abs/2401.03890"
+    description: "Comprehensive survey covering the rapidly growing landscape of 3DGS research, extensions, and applications."
+    type: "paper"
+  - title: "Awesome 3D Gaussian Splatting (GitHub)"
+    url: "https://github.com/MrNeRF/awesome-3D-gaussian-splatting"
+    description: "Community-maintained list of 3DGS papers, implementations, and resources for staying current in this fast-moving field."
+    type: "documentation"
+  - title: "3D Gaussian Splatting Explained (Haque, 2024)"
+    url: "https://huggingface.co/blog/gaussian-splatting"
+    description: "Accessible visual walkthrough of how 3DGS works, with interactive diagrams. A great entry point for newcomers."
+    type: "tutorial"
 ---
+
+## What Is 3D Gaussian Splatting?
+
+3D Gaussian Splatting (3DGS), introduced by Kerbl et al. at SIGGRAPH 2023, is a technique for representing and rendering 3D scenes as collections of millions of semi-transparent 3D Gaussian ellipsoids. Like [Neural Radiance Fields](/learn/neural-radiance-fields), it takes photographs of a scene and produces a representation capable of rendering photorealistic novel views. Unlike NeRF, it achieves **real-time rendering** (30 to 200+ FPS at 1080p) by replacing neural network evaluation with a fast, GPU-friendly rasterization-style pipeline.
+
+Each "Gaussian" in the scene is a small, oriented 3D blob defined by a position (where it is in space), a covariance matrix (its shape and orientation — from tiny spheres to stretched ellipsoids), a color (represented as spherical harmonics for view-dependent appearance), and an opacity. Hundreds of thousands to millions of these Gaussians collectively represent surfaces, textures, and fine details throughout the scene.
+
+3DGS has rapidly become one of the most actively researched topics in computer graphics and vision because it combines NeRF-quality visual results with the real-time performance that interactive applications demand.
+
+<PipelineDiagram
+  steps={[
+    { icon: "Camera", label: "Input Photos", sublabel: "With camera poses" },
+    { icon: "Atom", label: "Optimize", sublabel: "Fit 3D Gaussians" },
+    { icon: "Sparkles", label: "Gaussian Cloud", sublabel: "Position, color, shape" },
+    { icon: "Monitor", label: "Splat & Render", sublabel: "Real-time rasterization" }
+  ]}
+  accentColor="pink"
+  caption="3DGS optimizes millions of Gaussian ellipsoids to match training views, then renders novel views via GPU-accelerated splatting."
+/>
 
 ## How It Works
 
-3D Gaussian Splatting represents a scene as a collection of 3D Gaussian primitives — ellipsoidal blobs defined by position, covariance (shape and orientation), opacity, and view-dependent color encoded via spherical harmonics. To render a view, each Gaussian is projected (splatted) onto the image plane, sorted by depth, and alpha-composited front-to-back to produce the final image.
+The 3DGS pipeline has three stages: **initialization**, **optimization**, and **rendering**.
 
-Unlike NeRF's implicit neural representation, Gaussian Splatting uses an explicit, point-based representation. This enables extremely fast rendering because there is no per-pixel neural network evaluation — just projection and blending of pre-computed primitives.
+### Initialization
 
-## Key Concepts
+A sparse point cloud is generated from the input photographs using structure-from-motion (typically COLMAP). Each point becomes the center of an initial 3D Gaussian with small, isotropic (spherical) covariance, uniform color, and moderate opacity. This gives the optimizer a reasonable geometric starting point.
 
-- **Anisotropic Gaussians** — 3D ellipsoids that can represent thin structures, sharp edges, and complex geometry better than isotropic points
-- **Spherical harmonics** encode view-dependent color, capturing specular highlights and reflections without neural network queries at render time
-- **Differentiable rasterization** enables end-to-end optimization of Gaussian parameters from training photographs via gradient descent
-- **Adaptive density control** splits, clones, and prunes Gaussians during optimization to match scene detail
+### Optimization
 
-## Strengths and Trade-offs
+The Gaussians' parameters — position, covariance (shape and orientation), color (spherical harmonic coefficients), and opacity — are optimized through gradient-based training, similar in spirit to neural network training:
 
-The primary advantage is rendering speed: Gaussian Splatting achieves real-time frame rates (100+ fps) at quality comparable to or exceeding NeRF, making it suitable for interactive applications like VR walkthroughs and live scene exploration. Training is also fast — typically 15–30 minutes on a single GPU.
+1. **Differentiable rendering** — The Gaussians are projected onto a training camera's image plane. Each 3D Gaussian projects to a 2D Gaussian (an ellipse) on screen. These 2D ellipses are composited front-to-back using alpha blending — this is the "splatting," where each Gaussian splats its color contribution onto the image.
 
-The trade-offs include high memory usage (millions of Gaussians per scene, each with dozens of parameters) and difficulty representing perfectly smooth surfaces. The discrete point-based representation can also produce artifacts at extreme close-ups where individual Gaussians become visible.
+2. **Loss computation** — The rendered image is compared to the real training photograph using a combination of L1 loss and a structural similarity (SSIM) loss.
+
+3. **Backpropagation** — Gradients flow back through the differentiable renderer to update each Gaussian's parameters. Over thousands of iterations, the Gaussians reshape, recolor, and reposition themselves to match the training views.
+
+4. **Adaptive density control** — Periodically during training, the optimizer adds new Gaussians in under-reconstructed regions (where rendering error is high), splits large Gaussians into smaller ones for finer detail, and removes nearly-transparent Gaussians that contribute little. This adaptive process is key to achieving both efficiency and quality.
+
+### Rendering
+
+Once optimized, rendering a novel view is straightforward and fast:
+
+1. Sort Gaussians by depth relative to the camera (tile-based sorting on GPU)
+2. Project each 3D Gaussian to a 2D screen-space ellipse
+3. For each pixel, alpha-composite the overlapping Gaussian contributions front-to-back
+
+This pipeline is implemented entirely on the GPU using custom CUDA kernels (or Vulkan compute shaders in some implementations), achieving frame rates of 30 to 200+ FPS depending on scene complexity and resolution.
+
+## Strengths
+
+The most compelling advantage of 3DGS is **real-time rendering quality on par with state-of-the-art NeRF methods**. The SIGGRAPH 2023 paper demonstrated equivalent or superior visual quality to Mip-NeRF 360 while rendering over 100 times faster. This combination of quality and speed opens applications that NeRF cannot serve: real-time scene exploration, VR/AR experiences, game asset creation, and interactive digital twins.
+
+The explicit point-based representation is also more **editable and inspectable** than a neural network. Gaussians can be directly manipulated — moved, deleted, recolored — enabling scene editing workflows. The representation can be exported, streamed, and compressed, making it more practical for deployment than a black-box MLP.
+
+Training is also relatively fast (typically 5 to 30 minutes on a modern GPU), compared to hours for the original NeRF, though Instant-NGP has closed this gap for NeRFs.
+
+## Tradeoffs
+
+3DGS scenes can have **large memory footprints**. A well-optimized scene may contain 1 to 5 million Gaussians, each with dozens of parameters (position, full covariance matrix, spherical harmonic coefficients, opacity). Uncompressed, this can reach hundreds of megabytes to gigabytes. Compression and level-of-detail techniques are active research areas addressing this limitation.
+
+Like NeRF, the quality depends heavily on **input data**: camera coverage, image quality, and accurate pose estimation. Textureless regions, reflective surfaces, and thin structures can be challenging to reconstruct faithfully.
+
+The technique is also **relatively new** (2023), so the ecosystem of tools, best practices, and production workflows is still maturing. Integration with traditional 3D pipelines — game engines, DCC tools, web viewers — is improving rapidly but not yet seamless.
+
+Rendering quality can suffer in regions far from any training viewpoint — the Gaussians optimize to reproduce training views and may not extrapolate well to very different camera positions or wide baselines. The discrete nature of the representation can also produce visible artifacts at extreme close-ups where individual Gaussians become distinguishable.
 
 ## History
 
-3D Gaussian Splatting was introduced by Kerbl et al. at SIGGRAPH 2023, immediately attracting massive attention for its combination of quality and speed. Within months, dozens of follow-up works extended the technique to dynamic scenes, text-to-3D generation, SLAM, autonomous driving, and more. The approach revived interest in explicit, point-based representations that had been explored in earlier work on point-based graphics and surfels.
+3D Gaussian Splatting was introduced by Kerbl et al. at SIGGRAPH 2023, immediately attracting massive attention for its combination of quality and speed. The paper built on decades of earlier work in point-based graphics — Zwicker et al.'s surface splatting (2001), Botsch et al.'s point-based rendering survey (2005), and Yifan et al.'s differentiable surface splatting (2019). Within months of publication, dozens of follow-up works extended the technique to dynamic scenes, text-to-3D generation, SLAM, autonomous driving, avatar creation, and more. The approach revived interest in explicit point-based representations that had been overshadowed by NeRF's implicit neural approach, and the two paradigms are now actively cross-pollinating: hybrid methods combine Gaussian primitives with neural features for the best of both worlds.

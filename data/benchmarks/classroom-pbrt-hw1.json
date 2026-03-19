@@ -1,0 +1,44 @@
+{
+  "id": "classroom-pbrt-hw1-2024-12-05",
+  "renderer": "pbrt",
+  "renderer_version": "4.0.0",
+  "scene": "classroom",
+  "timestamp": "2024-12-05T13:00:00Z",
+  "hardware": {
+    "id": "hw1",
+    "label": "High-End Desktop",
+    "cpu": "AMD Ryzen 9 7950X",
+    "gpu": "NVIDIA RTX 4080",
+    "ram_gb": 64,
+    "os": "Ubuntu 22.04",
+    "driver": "NVIDIA 545.29.06"
+  },
+  "settings": {
+    "resolution": [1920, 1080],
+    "samples_per_pixel": 1024,
+    "integrator": "volpath",
+    "max_bounces": 10,
+    "threads": 32,
+    "gpu_enabled": false
+  },
+  "results": {
+    "render_time_seconds": 198.4,
+    "peak_memory_mb": 2340,
+    "output_image": "renders/classroom/pbrt_1024spp.exr"
+  },
+  "quality_vs_reference": {
+    "reference_renderer": "pbrt",
+    "reference_samples": 65536,
+    "psnr": 41.7,
+    "ssim": 0.9976,
+    "mse": 0.000068
+  },
+  "convergence": [
+    { "samples": 1, "time": 0.20, "psnr": 11.2 },
+    { "samples": 4, "time": 0.78, "psnr": 17.5 },
+    { "samples": 16, "time": 3.08, "psnr": 23.8 },
+    { "samples": 64, "time": 12.2, "psnr": 30.1 },
+    { "samples": 256, "time": 48.4, "psnr": 36.4 },
+    { "samples": 1024, "time": 198.4, "psnr": 41.7 }
+  ]
+}

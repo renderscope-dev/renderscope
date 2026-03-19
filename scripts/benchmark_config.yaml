@@ -1,0 +1,85 @@
+# RenderScope Benchmark Configuration
+# ====================================
+# Declarative specification of all renderer × scene combinations and their
+# standardised render settings.  This is the single source of truth for
+# "what should be benchmarked".
+#
+# Used by:
+#   scripts/run_benchmarks.py          — batch orchestration
+#   scripts/generate_reference_renders.py — reference image generation
+#   scripts/generate_web_images.py     — EXR → WebP image pipeline
+#
+# Naming conventions: see docs/NAMING_CONVENTIONS.md
+
+version: 1
+
+# ---------------------------------------------------------------------------
+# Default settings applied to every benchmark unless overridden per-scene or
+# per-renderer.  Any key here can be overridden via settings_override.
+# ---------------------------------------------------------------------------
+defaults:
+  resolution: [1920, 1080]
+  samples_per_pixel: 1024
+  max_bounces: 8
+  timeout_seconds: 3600          # 1 hour max per render
+  convergence_checkpoints: [1, 4, 16, 64, 256, 1024]
+  output_format: exr
+  gpu_enabled: false              # CPU rendering by default for fair comparison
+
+# ---------------------------------------------------------------------------
+# Reference render settings (high-SPP ground truth for quality metrics).
+# ---------------------------------------------------------------------------
+reference:
+  renderer: pbrt                  # PBRT produces the most "correct" reference
+  samples_per_pixel: 65536
+  timeout_seconds: 86400          # 24 hours max for reference renders
+
+# ---------------------------------------------------------------------------
+# Scenes to benchmark.  Camera + metadata are read from data/scenes/<id>.json.
+# ---------------------------------------------------------------------------
+scenes:
+  - id: cornell-box
+    enabled: true
+    settings_override: {}
+
+  - id: sponza
+    enabled: true
+    settings_override:
+      timeout_seconds: 7200       # Sponza may take longer — 2-hour timeout
+
+  - id: stanford-bunny
+    enabled: true
+    settings_override: {}
+
+# ---------------------------------------------------------------------------
+# Renderers to benchmark.  Adapter detection handled by renderscope CLI.
+# ---------------------------------------------------------------------------
+renderers:
+  - id: pbrt
+    enabled: true
+    settings_override: {}
+
+  - id: mitsuba3
+    enabled: true
+    settings_override: {}
+
+  - id: blender-cycles
+    enabled: true
+    settings_override:
+      gpu_enabled: true           # Cycles is dramatically faster on GPU
+
+  - id: luxcore
+    enabled: true
+    settings_override: {}
+
+  - id: appleseed
+    enabled: true
+    settings_override: {}
+
+# ---------------------------------------------------------------------------
+# Output paths (relative to repository root).
+# ---------------------------------------------------------------------------
+output:
+  benchmarks_dir: data/benchmarks
+  renders_dir: assets/renders
+  logs_dir: logs/benchmarks

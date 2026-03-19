@@ -99,8 +99,8 @@
           "maxItems": 2
         },
         "samples_per_pixel": {
-          "type": "integer",
-          "description": "Number of samples per pixel.",
+          "type": ["integer", "null"],
+          "description": "Number of samples per pixel. Null for rasterization renderers.",
           "minimum": 1
         },
         "time_budget_seconds": {
@@ -129,6 +129,30 @@
         "denoiser": {
           "type": ["string", "null"],
           "description": "Denoiser used, if any (e.g., 'OIDN', 'OptiX')."
+        },
+        "renderer_type": {
+          "type": "string",
+          "description": "Rendering paradigm. Enables paradigm-aware display in dashboards.",
+          "enum": ["path_tracing", "rasterization", "scientific_visualization"]
+        },
+        "frame_count": {
+          "type": "integer",
+          "description": "Number of frames rendered (for rasterization benchmarks).",
+          "minimum": 1
+        },
+        "warmup_frames": {
+          "type": "integer",
+          "description": "Number of warm-up frames discarded before measurement.",
+          "minimum": 0
+        },
+        "msaa_samples": {
+          "type": "integer",
+          "description": "MSAA sample count for anti-aliasing (rasterization renderers).",
+          "minimum": 1
+        },
+        "ospray_renderer": {
+          "type": "string",
+          "description": "OSPRay renderer backend type (e.g., 'pathtracer', 'scivis', 'ao')."
         },
         "extra": {
           "type": "object",
@@ -159,6 +183,36 @@
         "output_image_web": {
           "type": "string",
           "description": "Relative path to the web-optimized output image (WebP)."
+        },
+        "frame_time_ms_median": {
+          "type": "number",
+          "description": "Median frame time in milliseconds (rasterization benchmarks).",
+          "exclusiveMinimum": 0
+        },
+        "frame_time_ms_mean": {
+          "type": "number",
+          "description": "Mean frame time in milliseconds (rasterization benchmarks).",
+          "exclusiveMinimum": 0
+        },
+        "frame_time_ms_min": {
+          "type": "number",
+          "description": "Minimum frame time in milliseconds (rasterization benchmarks).",
+          "exclusiveMinimum": 0
+        },
+        "frame_time_ms_max": {
+          "type": "number",
+          "description": "Maximum frame time in milliseconds (rasterization benchmarks).",
+          "exclusiveMinimum": 0
+        },
+        "frame_time_ms_p95": {
+          "type": "number",
+          "description": "95th percentile frame time in milliseconds (rasterization benchmarks).",
+          "exclusiveMinimum": 0
+        },
+        "frame_count": {
+          "type": "integer",
+          "description": "Total number of frames rendered (rasterization benchmarks).",
+          "minimum": 1
         }
       }
     },

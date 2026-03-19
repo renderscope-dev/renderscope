@@ -68,6 +68,16 @@ class RendererAdapter(ABC):
             A ``RenderResult`` with timing, output path, and metadata.
         """
 
+    @property
+    def is_mock(self) -> bool:
+        """Whether this is a mock/test-only adapter.
+
+        Returns ``False`` for all production adapters.  The ``MockRendererAdapter``
+        overrides this to return ``True`` so that CLI commands like ``list`` can
+        filter it from default output.
+        """
+        return False
+
     def convert_scene(self, source: Path, target_format: str) -> Path:
         """Convert a scene file to this renderer's native format.
 

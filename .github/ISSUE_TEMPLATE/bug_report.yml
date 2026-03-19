@@ -1,0 +1,105 @@
+name: "Bug Report"
+description: "Report a bug in the web app, Python CLI, or npm package."
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report a bug. Please fill out the sections below so we can reproduce and fix the issue.
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: "Affected Package"
+      description: "Which part of RenderScope is affected?"
+      options:
+        - "Web App (renderscope.dev)"
+        - "Python CLI/Library (pip install renderscope)"
+        - "npm Package (renderscope-ui)"
+        - "Data / JSON files"
+        - "Documentation"
+        - "CI / Build system"
+        - "Other"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Bug Description"
+      description: "A clear and concise description of what the bug is."
+      placeholder: "When I try to... I expect... but instead..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: "Steps to Reproduce"
+      description: "Provide step-by-step instructions to reproduce the bug."
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Expected Behavior"
+      description: "What did you expect to happen?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: "Screenshots or Logs"
+      description: "If applicable, add screenshots, console output, or error logs."
+      placeholder: "Paste screenshots or logs here..."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: "Browser (if web app)"
+      description: "Which browser are you using? (Select if applicable)"
+      options:
+        - "Chrome"
+        - "Firefox"
+        - "Safari"
+        - "Edge"
+        - "Other"
+        - "N/A (not a web issue)"
+    validations:
+      required: false
+
+  - type: input
+    id: os
+    attributes:
+      label: "Operating System"
+      description: "e.g., macOS 14.2, Ubuntu 22.04, Windows 11"
+      placeholder: "macOS 14.2"
+    validations:
+      required: false
+
+  - type: input
+    id: version
+    attributes:
+      label: "Package Version"
+      description: "For Python/npm issues, which version are you using? Run `renderscope --version` or check package.json."
+      placeholder: "e.g., 0.1.0"
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: "Additional Context"
+      description: "Any other context about the problem — related issues, workarounds you've tried, etc."
+    validations:
+      required: false

@@ -1,5 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 import { cn } from "@/lib/utils";
+import { PipelineDiagram } from "./pipeline-diagram";
 
 export function getMdxComponents(): MDXComponents {
   return {
@@ -122,5 +123,6 @@ export function getMdxComponents(): MDXComponents {
       </strong>
     ),
     hr: () => <hr className="my-8 border-border/40" />,
+    PipelineDiagram,
   };
 }

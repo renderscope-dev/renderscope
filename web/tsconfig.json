@@ -11,6 +11,9 @@
         "./src/*"
       ]
     },
+    "types": [
+      "vitest/globals"
+    ],
     "jsx": "preserve",
     "incremental": true,
     "noEmit": true,
@@ -23,6 +26,8 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "playwright.config.ts",
+    "tests"
   ]
 }

@@ -1,0 +1,9 @@
+{# Convergence chart partial — included within scene_section.html.
+   The actual SVG is generated in Python (html_report.py) and passed
+   as the ``convergence_svg`` variable.  This partial exists for
+   documentation and potential future template-side enhancements. #}
+{% if convergence_svg %}
+<div class="rs-chart-container">
+  {{ convergence_svg }}
+</div>
+{% endif %}

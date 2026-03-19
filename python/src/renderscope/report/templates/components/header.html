@@ -1,0 +1,18 @@
+<header class="rs-header">
+  <div class="rs-header-inner">
+    <div class="rs-logo" aria-label="RenderScope">
+      <span class="rs-logo-render">Render</span><span class="rs-logo-scope">Scope</span>
+    </div>
+    <h1 class="rs-title">{{ title }}</h1>
+    <div class="rs-meta">
+      <span class="rs-meta-item">
+        <svg class="rs-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.5 4.5v4l3.5 2.1-.5.8L7.5 9V4.5h1z"/></svg>
+        {{ timestamp }}
+      </span>
+      <span class="rs-badge">v{{ version }}</span>
+      <span class="rs-meta-item">{{ num_renderers }} renderer{{ 's' if num_renderers != 1 else '' }}</span>
+      <span class="rs-meta-item">{{ num_scenes }} scene{{ 's' if num_scenes != 1 else '' }}</span>
+    </div>
+  </div>
+  <div class="rs-header-gradient"></div>
+</header>

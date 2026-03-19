@@ -90,6 +90,9 @@ export function Navbar() {
             className="text-muted-foreground hover:text-foreground md:hidden"
             onClick={() => setMobileOpen(true)}
             aria-label="Open navigation menu"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav-drawer"
+            data-testid="mobile-menu-button"
           >
             <Menu className="h-5 w-5" />
           </Button>

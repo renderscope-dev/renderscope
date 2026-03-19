@@ -212,7 +212,7 @@ export function TimelineVisualization({
       <div
         ref={containerRef}
         className="overflow-x-auto rounded-lg border border-border/50 bg-card/30"
-        role="img"
+        role="group"
         aria-label="Interactive timeline showing when rendering engines were first released, grouped by technique category"
       >
         <svg
@@ -364,7 +364,7 @@ export function TimelineVisualization({
 
       {/* Scroll hint */}
       {contentWidth > 800 && (
-        <p className="mt-2 text-center text-xs text-muted-foreground/60">
+        <p className="mt-2 text-center text-xs text-muted-foreground">
           Scroll horizontally to explore the full timeline
         </p>
       )}

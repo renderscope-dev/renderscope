@@ -10,3 +10,4 @@ export { GlossaryTermCard } from "./glossary-term-card";
 export { AlphabetNav } from "./alphabet-nav";
 export { TimelinePageClient } from "./timeline-page";
 export { TimelineVisualization } from "./timeline-visualization";
+export { PipelineDiagram } from "./pipeline-diagram";

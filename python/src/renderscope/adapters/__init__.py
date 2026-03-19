@@ -24,6 +24,8 @@ _ADAPTER_MODULES = [
     "renderscope.adapters.appleseed",
     "renderscope.adapters.filament",
     "renderscope.adapters.ospray",
+    # Test-only adapter (always detected, generates synthetic images)
+    "renderscope.adapters.mock",
 ]
 
 

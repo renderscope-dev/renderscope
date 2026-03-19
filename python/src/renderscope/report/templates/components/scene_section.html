@@ -1,0 +1,93 @@
+<section class="rs-section rs-scene" aria-label="Scene: {{ scene.name }}">
+  <h2 class="rs-section-title">{{ scene.name }}</h2>
+
+  {% if include_images %}
+  {# Image gallery / slider #}
+  {% if scene.show_slider and scene.renderers|length == 2 %}
+  {# Side-by-side slider for exactly 2 renderers #}
+  <div class="rs-slider-container" data-slider aria-label="Image comparison slider between {{ scene.renderers[0].name }} and {{ scene.renderers[1].name }}">
+    <div class="rs-slider-wrapper">
+      {% if scene.renderers[1].image %}
+      <img src="{{ scene.renderers[1].image }}" alt="Render by {{ scene.renderers[1].name }}" class="rs-slider-img rs-slider-img-bottom" draggable="false">
+      {% endif %}
+      {% if scene.renderers[0].image %}
+      <img src="{{ scene.renderers[0].image }}" alt="Render by {{ scene.renderers[0].name }}" class="rs-slider-img rs-slider-img-top" draggable="false" style="clip-path: inset(0 50% 0 0);">
+      {% endif %}
+      <div class="rs-slider-handle" aria-label="Drag to compare images" role="slider" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" tabindex="0">
+        <div class="rs-slider-line"></div>
+        <div class="rs-slider-grip">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5l-5 7 5 7V5zM16 5l5 7-5 7V5z"/></svg>
+        </div>
+      </div>
+      <div class="rs-slider-label rs-slider-label-left">{{ scene.renderers[0].name }}</div>
+      <div class="rs-slider-label rs-slider-label-right">{{ scene.renderers[1].name }}</div>
+    </div>
+  </div>
+  {% for r in scene.renderers %}
+  {% if r.is_placeholder %}<p class="rs-placeholder-text">Image not available</p>{% endif %}
+  {% endfor %}
+  {% else %}
+  {# Grid of images for 1 or 3+ renderers #}
+  <div class="rs-image-grid">
+    {% for r in scene.renderers %}
+    {% if r.image %}
+    <figure class="rs-image-card">
+      <img src="{{ r.image }}" alt="Render by {{ r.name }}" loading="lazy">
+      <figcaption>{{ r.name }}</figcaption>
+      {% if r.is_placeholder %}<p class="rs-placeholder-text">Image not available</p>{% endif %}
+    </figure>
+    {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endif %}
+
+  {# Metrics table #}
+  <div class="rs-table-responsive">
+    <table class="rs-metrics-table" aria-label="Metrics for {{ scene.name }}">
+      <thead>
+        <tr>
+          <th>Renderer</th>
+          {% if scene.has_quality %}
+          <th>PSNR (dB)</th>
+          <th>SSIM</th>
+          <th>MSE</th>
+          {% endif %}
+          <th>Render Time</th>
+          <th>Peak Memory</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in scene.renderers %}
+        <tr>
+          <td class="rs-renderer-name">{{ r.name }}</td>
+          {% if scene.has_quality %}
+          <td class="{{ r.psnr_class }}">
+            {% if r.psnr is not none %}{{ r.psnr|fmt_metric('.1f') }}{% if r.get('is_best_psnr') %} <span class="rs-best" title="Best">&#x2726;</span>{% endif %}{% else %}&mdash;{% endif %}
+          </td>
+          <td class="{{ r.ssim_class }}">
+            {% if r.ssim is not none %}{{ r.ssim|fmt_metric('.3f') }}{% if r.get('is_best_ssim') %} <span class="rs-best" title="Best">&#x2726;</span>{% endif %}{% else %}&mdash;{% endif %}
+          </td>
+          <td>
+            {% if r.mse is not none %}{{ r.mse|fmt_metric('.5f') }}{% else %}&mdash;{% endif %}
+          </td>
+          {% endif %}
+          <td class="{{ r.time_class }}">
+            {{ r.render_time|fmt_time }}{% if r.get('is_best_time') %} <span class="rs-best" title="Best">&#x2726;</span>{% endif %}
+          </td>
+          <td class="{{ r.memory_class }}">
+            {{ r.peak_memory|fmt_memory }}{% if r.get('is_best_memory') %} <span class="rs-best" title="Best">&#x2726;</span>{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if scene.has_convergence and include_convergence %}
+  <div class="rs-convergence" aria-label="Convergence chart for {{ scene.name }}">
+    <h3 class="rs-subsection-title">Convergence</h3>
+    {{ scene.convergence_svg | safe }}
+  </div>
+  {% endif %}
+</section>

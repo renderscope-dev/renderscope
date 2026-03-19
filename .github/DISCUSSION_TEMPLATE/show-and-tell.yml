@@ -1,0 +1,23 @@
+title: "Show & Tell"
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share something you've built with RenderScope — a comparison report, a custom dashboard using the npm components, a benchmark analysis, or anything else!
+
+  - type: textarea
+    id: showcase
+    attributes:
+      label: "What did you build?"
+      description: "Tell us about your project and how RenderScope helped."
+    validations:
+      required: true
+
+  - type: textarea
+    id: links
+    attributes:
+      label: "Links & Screenshots"
+      description: "Share links, screenshots, or demos."
+    validations:
+      required: false

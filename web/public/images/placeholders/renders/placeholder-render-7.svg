@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="bg7" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a0818"/>
+      <stop offset="50%" stop-color="#0a0a0f"/>
+      <stop offset="100%" stop-color="#1a0a15"/>
+    </linearGradient>
+    <radialGradient id="glow7a" cx="30%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#ec4899" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#ec4899" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow7b" cx="70%" cy="60%" r="50%">
+      <stop offset="0%" stop-color="#db2777" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#db2777" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg7)"/>
+  <rect width="1200" height="675" fill="url(#glow7a)"/>
+  <rect width="1200" height="675" fill="url(#glow7b)"/>
+  <g opacity="0.04" stroke="#fff" stroke-width="0.5">
+    <line x1="0" y1="0" x2="1200" y2="675"/>
+    <line x1="200" y1="0" x2="1200" y2="500"/>
+    <line x1="400" y1="0" x2="1200" y2="400"/>
+    <line x1="0" y1="200" x2="800" y2="675"/>
+    <line x1="0" y1="400" x2="500" y2="675"/>
+  </g>
+  <rect x="480" y="220" width="240" height="240" rx="4" fill="none" stroke="#ec4899" stroke-width="1" opacity="0.2" transform="rotate(15 600 340)"/>
+  <rect x="500" y="240" width="200" height="200" rx="4" fill="none" stroke="#db2777" stroke-width="1" opacity="0.15" transform="rotate(30 600 340)"/>
+  <circle cx="600" cy="340" r="60" fill="none" stroke="#ec4899" stroke-width="1" opacity="0.2"/>
+  <text x="600" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#fff" opacity="0.25" letter-spacing="3">SAMPLE RENDER</text>
+  <text x="600" y="360" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#fff" opacity="0.15" letter-spacing="2">VEACH MIS</text>
+</svg>

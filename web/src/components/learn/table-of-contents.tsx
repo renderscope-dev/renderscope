@@ -94,7 +94,7 @@ export function TableOfContents({
         aria-label="Table of contents"
         className="hidden lg:block sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto"
       >
-        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           On this page
         </p>
         {tocContent}

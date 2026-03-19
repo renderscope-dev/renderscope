@@ -27,7 +27,7 @@ export function LearnOverview({ techniques }: LearnOverviewProps) {
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
           Understand the techniques behind modern rendering
         </p>
-        <p className="mx-auto mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground/80">
+        <p className="mx-auto mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground">
           From physically-based path tracing to real-time rasterization to the
           latest neural approaches, rendering spans a fascinating range of
           techniques. Explore each one to understand how it works, which

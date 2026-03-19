@@ -1,0 +1,31 @@
+{% if summary %}
+<section class="rs-section" aria-label="Summary">
+  <h2 class="rs-section-title">Summary</h2>
+  <div class="rs-table-responsive">
+    <table class="rs-metrics-table rs-summary-table" aria-label="Overall benchmark summary">
+      <thead>
+        <tr>
+          <th>Renderer</th>
+          <th>Avg PSNR (dB)</th>
+          <th>Avg SSIM</th>
+          <th>Avg Render Time</th>
+          <th>Avg Peak Memory</th>
+          <th>Scenes</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in summary %}
+        <tr>
+          <td class="rs-renderer-name">{{ r.name }}</td>
+          <td class="{{ r.psnr_class }}">{{ r.avg_psnr|fmt_metric('.1f') }}</td>
+          <td class="{{ r.ssim_class }}">{{ r.avg_ssim|fmt_metric('.3f') }}</td>
+          <td>{{ r.avg_time|fmt_time }}</td>
+          <td>{{ r.avg_memory|fmt_memory }}</td>
+          <td>{{ r.scenes_tested }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}

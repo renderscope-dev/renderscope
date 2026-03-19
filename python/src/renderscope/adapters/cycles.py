@@ -73,6 +73,13 @@ _RENDER_SCRIPT_TEMPLATE = textwrap.dedent("""\
     SAMPLES = {samples}
     USE_GPU = {use_gpu}
     IS_BLEND_FILE = {is_blend}
+    CAMERA_POSITION = {camera_position!r}  # None or [x, y, z]
+    CAMERA_TARGET = {camera_target!r}      # None or [x, y, z]
+    CAMERA_UP = {camera_up!r}              # None or [x, y, z]
+    CAMERA_FOV = {camera_fov!r}            # None or float
+
+    # --- Resolve output path to absolute (Blender may change CWD) ---
+    OUTPUT_PATH = os.path.abspath(OUTPUT_PATH)
 
     # --- Import scene if not a .blend file ---
     if not IS_BLEND_FILE:
@@ -97,8 +104,45 @@ _RENDER_SCRIPT_TEMPLATE = textwrap.dedent("""\
             print(f"[RenderScope] Unsupported format: {{ext}}", file=sys.stderr)
             sys.exit(1)
 
-    # --- Configure Cycles ---
+    # --- Ensure camera exists (OBJ/STL/PLY imports lack cameras) ---
+    import mathutils
     scene = bpy.context.scene
+    if not any(obj.type == 'CAMERA' for obj in bpy.data.objects):
+        print("[RenderScope] No camera found, creating one...", file=sys.stderr)
+        cam_data = bpy.data.cameras.new("RenderScope_Camera")
+        cam_obj = bpy.data.objects.new("RenderScope_Camera", cam_data)
+        scene.collection.objects.link(cam_obj)
+        scene.camera = cam_obj
+
+        if CAMERA_POSITION is not None and CAMERA_TARGET is not None:
+            pos = mathutils.Vector(CAMERA_POSITION)
+            target = mathutils.Vector(CAMERA_TARGET)
+            direction = target - pos
+            rot_quat = direction.to_track_quat('-Z', 'Y')
+            cam_obj.location = pos
+            cam_obj.rotation_euler = rot_quat.to_euler()
+            if CAMERA_FOV is not None:
+                import math
+                cam_data.lens_unit = 'FOV'
+                cam_data.angle = math.radians(CAMERA_FOV)
+        else:
+            # Fallback: frame all objects
+            cam_obj.location = (0, -10, 5)
+            cam_obj.rotation_euler = (1.1, 0, 0)
+            cam_data.lens = 35
+
+    # Ensure a light exists (imported meshes often have no lights)
+    if not any(obj.type == 'LIGHT' for obj in bpy.data.objects):
+        print("[RenderScope] No light found, adding environment light...", file=sys.stderr)
+        world = bpy.data.worlds.new("RenderScope_World")
+        scene.world = world
+        world.use_nodes = True
+        bg_node = world.node_tree.nodes.get("Background")
+        if bg_node:
+            bg_node.inputs[0].default_value = (0.8, 0.8, 0.8, 1.0)
+            bg_node.inputs[1].default_value = 1.0
+
+    # --- Configure Cycles ---
     scene.render.engine = 'CYCLES'
     scene.render.resolution_x = WIDTH
     scene.render.resolution_y = HEIGHT
@@ -154,9 +198,23 @@ _RENDER_SCRIPT_TEMPLATE = textwrap.dedent("""\
     else:
         scene.cycles.device = 'CPU'
 
+    # --- Ensure output directory exists ---
+    os.makedirs(os.path.dirname(os.path.abspath(OUTPUT_PATH)), exist_ok=True)
+
     # --- Render ---
     print("[RenderScope] Starting render...", file=sys.stderr)
-    bpy.ops.render.render(write_still=True)
+    bpy.ops.render.render(write_still=False)
+
+    # Save render result to exact output path (avoids Blender's frame
+    # number and extension appending that write_still=True does).
+    result_img = bpy.data.images.get('Render Result')
+    if result_img is not None:
+        result_img.save_render(filepath=OUTPUT_PATH, scene=scene)
+        print(f"[RenderScope] Saved to: {{OUTPUT_PATH}}", file=sys.stderr)
+    else:
+        print("[RenderScope] ERROR: No render result image found", file=sys.stderr)
+        sys.exit(1)
+
     print("[RenderScope] Render complete.", file=sys.stderr)
 """)
 
@@ -259,6 +317,12 @@ class CyclesAdapter(RendererAdapter):
         # Ensure output directory exists
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
+        # Extract camera info from settings.extra (passed by BenchmarkRunner)
+        camera_position = settings.extra.get("camera_position")
+        camera_target = settings.extra.get("camera_target")
+        camera_up = settings.extra.get("camera_up")
+        camera_fov = settings.extra.get("camera_fov")
+
         # Generate the render script
         script_content = _RENDER_SCRIPT_TEMPLATE.format(
             scene_path=str(scene_path),
@@ -268,6 +332,10 @@ class CyclesAdapter(RendererAdapter):
             samples=samples,
             use_gpu=settings.gpu,
             is_blend=is_blend,
+            camera_position=camera_position,
+            camera_target=camera_target,
+            camera_up=camera_up,
+            camera_fov=camera_fov,
         )
 
         # Write script to temp file (cleaned up in finally)

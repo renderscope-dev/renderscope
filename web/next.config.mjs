@@ -1,6 +1,12 @@
+import bundleAnalyzer from "@next/bundle-analyzer";
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  output: "export",
 
   // Trailing slashes ensure clean URLs on Firebase Hosting for nested routes
   trailingSlash: true,
@@ -13,8 +19,8 @@ const nextConfig = {
   reactStrictMode: true,
 
   typescript: {
-    tsconfigPath: './tsconfig.json',
+    tsconfigPath: "./tsconfig.json",
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

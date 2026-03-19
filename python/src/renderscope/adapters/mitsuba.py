@@ -153,15 +153,24 @@ class MitsubaAdapter(RendererAdapter):
                 install_hint="pip install mitsuba",
             ) from exc
 
-        # Select variant
+        # Select variant — try preferred, fall back on failure (e.g. LLVM DLL missing)
         variant = self._select_variant(mi, gpu=settings.gpu)
         try:
             mi.set_variant(variant)
-        except Exception as exc:
-            raise RenderError(
-                self.display_name,
-                f"Failed to set variant '{variant}': {exc}",
-            ) from exc
+        except Exception:
+            logger.warning(
+                "Failed to set variant '%s', falling back to '%s'",
+                variant,
+                _FALLBACK_VARIANT,
+            )
+            variant = _FALLBACK_VARIANT
+            try:
+                mi.set_variant(variant)
+            except Exception as exc:
+                raise RenderError(
+                    self.display_name,
+                    f"Failed to set variant '{variant}': {exc}",
+                ) from exc
 
         # Suppress verbose logging during renders
         with contextlib.suppress(Exception):

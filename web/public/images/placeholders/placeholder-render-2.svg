@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a1a1a"/>
+      <stop offset="50%" stop-color="#0a0a1a"/>
+      <stop offset="100%" stop-color="#0a1a15"/>
+    </linearGradient>
+    <radialGradient id="glow2" cx="60%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#14b8a6" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#14b8a6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2b" cx="35%" cy="65%" r="50%">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg2)"/>
+  <rect width="1200" height="675" fill="url(#glow2)"/>
+  <rect width="1200" height="675" fill="url(#glow2b)"/>
+  <!-- Arch pattern -->
+  <g opacity="0.04" stroke="#fff" stroke-width="0.5">
+    <ellipse cx="600" cy="675" rx="500" ry="400" fill="none"/>
+    <ellipse cx="600" cy="675" rx="400" ry="320" fill="none"/>
+    <ellipse cx="600" cy="675" rx="300" ry="240" fill="none"/>
+  </g>
+  <!-- Column shapes -->
+  <rect x="350" y="200" width="8" height="300" rx="2" fill="#14b8a6" opacity="0.1"/>
+  <rect x="550" y="180" width="8" height="320" rx="2" fill="#14b8a6" opacity="0.08"/>
+  <rect x="750" y="210" width="8" height="290" rx="2" fill="#14b8a6" opacity="0.1"/>
+  <rect x="450" y="160" width="6" height="340" rx="2" fill="#06b6d4" opacity="0.06"/>
+  <rect x="650" y="190" width="6" height="310" rx="2" fill="#06b6d4" opacity="0.06"/>
+  <rect x="850" y="220" width="6" height="280" rx="2" fill="#06b6d4" opacity="0.05"/>
+  <!-- Text -->
+  <text x="600" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#fff" opacity="0.25" letter-spacing="3">SAMPLE RENDER</text>
+  <text x="600" y="360" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#fff" opacity="0.15" letter-spacing="2">SPONZA ATRIUM</text>
+</svg>

@@ -1,0 +1,62 @@
+name: "Feature Request"
+description: "Suggest a new feature or improvement for RenderScope."
+title: "[Feature]: "
+labels: ["feature", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We appreciate your ideas for improving RenderScope! Please describe your suggestion below.
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: "Relevant Package"
+      description: "Which part of RenderScope would this feature affect?"
+      options:
+        - "Web App (renderscope.dev)"
+        - "Python CLI/Library"
+        - "npm Package (renderscope-ui)"
+        - "Data Schema / Content"
+        - "Documentation"
+        - "Cross-cutting / Multiple packages"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: "Problem or Motivation"
+      description: "What problem does this feature solve? What use case does it support?"
+      placeholder: "I'm trying to... but currently..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: "Proposed Solution"
+      description: "Describe the feature or change you'd like to see."
+      placeholder: "It would be great if..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternatives Considered"
+      description: "Have you considered any alternative solutions or workarounds?"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: willingness
+    attributes:
+      label: "Would you be willing to contribute this?"
+      description: "Let us know if you'd like to implement this yourself."
+      options:
+        - "Yes, I'd like to submit a PR"
+        - "I could help with guidance"
+        - "No, just suggesting"
+    validations:
+      required: false

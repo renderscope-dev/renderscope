@@ -18,6 +18,7 @@ export function SliderHandle({ position, orientation, isDragging }: SliderHandle
 
   return (
     <div
+      data-testid="slider-handle"
       className={cn(
         'absolute z-20 pointer-events-none',
         isHorizontal ? 'inset-y-0' : 'inset-x-0'

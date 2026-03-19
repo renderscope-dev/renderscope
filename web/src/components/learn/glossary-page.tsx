@@ -8,6 +8,7 @@ import type { GlossaryTerm } from "@/types/learn";
 import { GlossaryTermCard } from "./glossary-term-card";
 import { AlphabetNav } from "./alphabet-nav";
 import { cn } from "@/lib/utils";
+import { announceToScreenReader } from "@/lib/a11y-utils";
 
 interface GlossaryPageProps {
   terms: GlossaryTerm[];
@@ -87,6 +88,20 @@ export function GlossaryPageClient({ terms }: GlossaryPageProps) {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // Announce search result count to screen readers (debounced)
+  useEffect(() => {
+    if (!query.trim()) return;
+    const timer = setTimeout(() => {
+      const count = filteredTerms.length;
+      announceToScreenReader(
+        count === 0
+          ? `No terms matching "${query}"`
+          : `${count} term${count === 1 ? "" : "s"} matching "${query}"`
+      );
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [query, filteredTerms.length]);
+
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Breadcrumb */}
@@ -123,7 +138,7 @@ export function GlossaryPageClient({ terms }: GlossaryPageProps) {
           aria-label="Search glossary terms"
           className={cn(
             "w-full rounded-lg border border-border/50 bg-card/50 py-2.5 pl-10 pr-20 text-sm text-foreground",
-            "placeholder:text-muted-foreground/60",
+            "placeholder:text-muted-foreground",
             "focus:outline-none focus:ring-1 focus:ring-ring focus:border-ring",
             "transition-colors"
           )}

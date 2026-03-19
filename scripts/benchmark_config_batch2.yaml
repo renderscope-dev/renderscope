@@ -1,0 +1,171 @@
+# RenderScope Benchmark Configuration -- Batch 2
+# ================================================
+# Expands beyond Batch 1 (5 path tracers x 3 scenes) with:
+#   - 4 additional scenes (Classroom, BMW, San Miguel, Veach MIS)
+#   - 2 additional renderers (Filament, OSPRay)
+#   - Cross-paradigm benchmarking (rasterization + path tracing)
+#   - Format compatibility handling via skip_combinations
+#
+# Run with:
+#   python scripts/run_benchmarks.py --config scripts/benchmark_config_batch2.yaml
+#
+# To avoid re-running Batch 1 results:
+#   python scripts/run_benchmarks.py --config scripts/benchmark_config_batch2.yaml --skip-existing
+#
+# Naming conventions: see docs/NAMING_CONVENTIONS.md
+
+version: 1
+
+# ---------------------------------------------------------------------------
+# Default settings applied to every benchmark unless overridden per-scene or
+# per-renderer.  Any key here can be overridden via settings_override.
+# ---------------------------------------------------------------------------
+defaults:
+  resolution: [1920, 1080]
+  samples_per_pixel: 1024
+  max_bounces: 8
+  timeout_seconds: 3600          # 1 hour max per render
+  convergence_checkpoints: [1, 4, 16, 64, 256, 1024]
+  output_format: exr
+  gpu_enabled: false              # CPU rendering by default for fair comparison
+
+# ---------------------------------------------------------------------------
+# Reference render settings (high-SPP ground truth for quality metrics).
+# ---------------------------------------------------------------------------
+reference:
+  renderer: pbrt                  # PBRT produces the most "correct" reference
+  samples_per_pixel: 65536
+  timeout_seconds: 86400          # 24 hours max for reference renders
+
+# ---------------------------------------------------------------------------
+# Scenes to benchmark.  All 7 scenes: 3 from Batch 1 + 4 new.
+# Camera + metadata are read from data/scenes/<id>.json.
+# Including Batch 1 scenes so new renderers (Filament, OSPRay) run on them.
+# Use --skip-existing to avoid re-running completed Batch 1 combinations.
+# ---------------------------------------------------------------------------
+scenes:
+  # Batch 1 scenes (included for new renderer coverage)
+  - id: cornell-box
+    enabled: true
+    settings_override: {}
+
+  - id: sponza
+    enabled: true
+    settings_override:
+      timeout_seconds: 7200       # Sponza may take longer -- 2-hour timeout
+
+  - id: stanford-bunny
+    enabled: true
+    settings_override: {}
+
+  # Batch 2 scenes -- new
+  - id: classroom
+    enabled: true
+    settings_override:
+      timeout_seconds: 7200       # High complexity -- allow 2 hours
+
+  - id: bmw
+    enabled: true
+    settings_override:
+      timeout_seconds: 7200       # High complexity -- allow 2 hours
+
+  - id: san-miguel
+    enabled: true
+    settings_override:
+      timeout_seconds: 14400      # Extreme complexity -- allow 4 hours
+      # NOTE: Some renderers will fail (OOM or timeout).  This is expected.
+      # San Miguel has ~10.5M faces and may require 16+ GB RAM.
+
+  - id: veach-mis
+    enabled: true
+    settings_override: {}
+    # NOTE: Only available in PBRT format.  Most renderers will be skipped
+    # due to format incompatibility.  This is expected and handled gracefully.
+
+# ---------------------------------------------------------------------------
+# Renderers to benchmark.  All 7: 5 from Batch 1 + Filament + OSPRay.
+# The 'paradigm' field controls how each renderer is benchmarked:
+#   - path_tracing (default): SPP-based with convergence tracking, EXR output
+#   - rasterization: multi-frame averaging with warm-up, PNG output
+# ---------------------------------------------------------------------------
+renderers:
+  # Batch 1 renderers (included so they run on new scenes)
+  - id: pbrt
+    enabled: true
+    settings_override: {}
+
+  - id: mitsuba3
+    enabled: true
+    settings_override: {}
+
+  - id: blender-cycles
+    enabled: true
+    settings_override:
+      gpu_enabled: true           # Cycles is dramatically faster on GPU
+
+  - id: luxcore
+    enabled: true
+    settings_override: {}
+
+  - id: appleseed
+    enabled: true
+    settings_override: {}
+
+  # Batch 2 renderers -- new
+  - id: filament
+    enabled: true
+    paradigm: rasterization       # Real-time rasterizer -- different benchmarking
+    settings_override:
+      gpu_enabled: true           # Filament requires GPU
+      samples_per_pixel: null     # SPP not applicable to rasterization
+      frame_count: 100            # Render 100 measurement frames
+      warmup_frames: 10           # Discard first 10 frames (GPU cache/shader warmup)
+      msaa_samples: 4             # 4x MSAA for anti-aliasing
+      output_format: png          # Filament outputs PNG, not EXR
+
+  - id: ospray
+    enabled: true
+    paradigm: path_tracing        # OSPRay pathtracer mode -- same as Batch 1
+    settings_override:
+      ospray_renderer: pathtracer # Use path tracing mode (not scivis)
+      # OSPRay is CPU-only in standard builds; gpu_enabled stays false
+
+# ---------------------------------------------------------------------------
+# Output paths (relative to repository root).
+# ---------------------------------------------------------------------------
+output:
+  benchmarks_dir: data/benchmarks
+  renders_dir: assets/renders
+  logs_dir: logs/benchmarks
+
+# ---------------------------------------------------------------------------
+# Format compatibility overrides.
+# Combinations known to be incompatible due to format limitations or hardware
+# constraints.  The script will skip these without attempting to render.
+#
+# Format reasoning:
+#   - Veach MIS only exists in PBRT format.  Only PBRT can render natively;
+#     Mitsuba can attempt a lossy PBRT->XML conversion.
+#   - San Miguel has 10.5M faces -- too large for real-time rasterisation.
+#   - OSPRay cannot parse PBRT scene files directly.
+# ---------------------------------------------------------------------------
+skip_combinations:
+  - renderer: filament
+    scene: san-miguel
+    reason: "Filament cannot handle 10.5M face scenes in real-time"
+
+  - renderer: filament
+    scene: veach-mis
+    reason: "Veach MIS only available in PBRT format; no glTF conversion exists"
+
+  - renderer: luxcore
+    scene: veach-mis
+    reason: "Veach MIS only available in PBRT format; no LuxCore scene conversion"
+
+  - renderer: appleseed
+    scene: veach-mis
+    reason: "Veach MIS only available in PBRT format; no appleseed scene conversion"
+
+  - renderer: ospray
+    scene: veach-mis
+    reason: "Veach MIS only available in PBRT format; no OBJ/glTF conversion"

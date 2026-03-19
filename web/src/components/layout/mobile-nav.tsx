@@ -24,7 +24,7 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="w-80 p-0 sm:w-96">
+      <SheetContent side="right" className="w-80 p-0 sm:w-96" data-testid="mobile-drawer">
         <SheetHeader className="px-6 pb-4 pt-6">
           <SheetTitle className="text-left">
             <Logo showIcon={false} />

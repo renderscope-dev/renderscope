@@ -97,6 +97,7 @@ export function ImageCompareSlider({
   return (
     <div
       ref={containerRef}
+      data-testid="image-compare-slider"
       className={cn(
         'relative overflow-hidden select-none',
         'rounded-lg border border-border',

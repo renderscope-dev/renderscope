@@ -9,7 +9,7 @@ Also provides ``RenderResultBuilder`` to construct ``RenderResult``
 objects from raw measurements — ensuring every adapter produces
 identically-structured output.
 
-The ``BenchmarkRunner`` class remains a skeleton for Phase 18.
+The full ``BenchmarkRunner`` implementation lives in ``core/benchmark.py``.
 """
 
 from __future__ import annotations
@@ -307,16 +307,3 @@ class RenderResultBuilder:
             timestamp=datetime.now(tz=timezone.utc).isoformat(),
             metadata=self.metadata,
         )
-
-
-# ---------------------------------------------------------------------------
-# BenchmarkRunner — skeleton for Phase 18
-# ---------------------------------------------------------------------------
-
-
-class BenchmarkRunner:
-    """Orchestrates benchmark execution across renderers and scenes.
-
-    Manages adapter invocation, timing, memory monitoring, and result
-    collection.  Full implementation in Phase 18.
-    """

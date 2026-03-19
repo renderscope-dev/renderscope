@@ -1,0 +1,93 @@
+name: Update Renderer Data
+
+on:
+  schedule:
+    # Every Monday at 6 AM UTC
+    # Chosen to avoid peak GitHub API hours and to give
+    # fresh data for the start of each work week.
+    - cron: '0 6 * * 1'
+
+  # Manual trigger — useful for testing or forcing an update
+  workflow_dispatch:
+    inputs:
+      renderer:
+        description: 'Optional: update only this renderer slug (leave empty for all)'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Dry run (log changes without writing files)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: update-data
+  cancel-in-progress: false  # Don't cancel — data updates should complete
+
+jobs:
+  update-github-stats:
+    name: Fetch GitHub Stats & Update Data
+    runs-on: ubuntu-latest
+
+    # This job needs write access to push commits
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch full history so git operations work correctly
+          fetch-depth: 0
+          # Use the default GITHUB_TOKEN for checkout — it has push access
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: scripts/requirements-scripts.txt
+
+      - name: Install script dependencies
+        run: pip install -r scripts/requirements-scripts.txt
+
+      - name: Fetch GitHub statistics
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.renderer }}" ]; then
+            ARGS="$ARGS --renderer ${{ github.event.inputs.renderer }}"
+          fi
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          python scripts/fetch_github_stats.py $ARGS
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate updated data
+        run: python scripts/validate_data.py
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/renderers/; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No data changes detected."
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Data changes detected:"
+            git diff --stat data/renderers/
+          fi
+
+      - name: Commit and push changes
+        if: steps.changes.outputs.changed == 'true' && github.event.inputs.dry_run != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/renderers/
+          git commit -m "data: weekly GitHub stats update
+
+          Automated update via fetch_github_stats.py
+          Run: ${{ github.run_id }}"
+          git push

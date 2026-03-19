@@ -1,7 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { FileText, Terminal, Code, Heart } from "lucide-react";
+import {
+  FileText,
+  Terminal,
+  Code,
+  Database,
+  Heart,
+  FlaskConical,
+  Quote,
+} from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 
 const docSections = [
@@ -22,11 +30,35 @@ const docSections = [
     accentColor: "text-sky-400",
   },
   {
+    icon: <Database className="h-5 w-5" />,
+    title: "Data Schema",
+    description:
+      "JSON schema documentation for renderer metadata and benchmark results.",
+    href: "/docs/schema",
+    accentColor: "text-sky-400",
+  },
+  {
     icon: <Heart className="h-5 w-5" />,
     title: "Contributing",
     description:
-      "How to add a renderer, submit benchmarks, report issues, and contribute code.",
+      "How to add renderers, submit benchmarks, report issues, and contribute code.",
     href: "/docs/contributing",
+    accentColor: "text-sky-400",
+  },
+  {
+    icon: <FlaskConical className="h-5 w-5" />,
+    title: "Methodology",
+    description:
+      "How benchmarks are designed, conducted, and validated for fair comparisons.",
+    href: "/docs/methodology",
+    accentColor: "text-sky-400",
+  },
+  {
+    icon: <Quote className="h-5 w-5" />,
+    title: "Cite RenderScope",
+    description:
+      "BibTeX, CITATION.cff, and plain text citation formats for your research.",
+    href: "/docs/citation",
     accentColor: "text-sky-400",
   },
 ];
@@ -39,11 +71,10 @@ export function DocsPageContent() {
         title="Documentation"
         subtitle="Everything you need to use RenderScope — from the CLI tool and component library to contributing new renderers."
         accentColor="sky"
-        badge="Coming Soon"
       />
 
       {/* Doc section cards */}
-      <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {docSections.map((section) => (
           <Link
             key={section.href}
@@ -53,9 +84,9 @@ export function DocsPageContent() {
             <div className={`mb-3 ${section.accentColor}`}>
               {section.icon}
             </div>
-            <h3 className="mb-2 text-base font-semibold text-foreground group-hover:text-white">
+            <h2 className="mb-2 text-base font-semibold text-foreground group-hover:text-white">
               {section.title}
-            </h3>
+            </h2>
             <p className="text-sm text-muted-foreground">
               {section.description}
             </p>

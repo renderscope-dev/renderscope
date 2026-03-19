@@ -34,6 +34,7 @@ coverage.xml
 *.swp
 *.swo
 *~
+*.tmp.*
 .DS_Store
 
 # === OS ===
@@ -57,8 +58,25 @@ storybook-static/
 assets/scenes/
 assets/renders/
 
+# Raw EXR renders — very large HDR files, never commit directly
+*.exr
+
 # Scene download completion markers
 assets/scenes/**/.scene-complete
+
+# === Build-time generated (image optimization pipeline) ===
+web/public/optimized/
+web/src/generated/
+
+# === Lighthouse CI ===
+.lighthouseci/
+
+# === Playwright test artifacts ===
+web/playwright-report/
+web/test-results/
+
+# === Stray test files at root ===
+/test-*.json
 
 # === Misc ===
 *.log

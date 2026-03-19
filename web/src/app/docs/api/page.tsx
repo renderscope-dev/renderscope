@@ -1,14 +1,28 @@
 import type { Metadata } from "next";
-import { generatePageMetadata } from "@/lib/metadata";
+import { generatePageMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/json-ld";
+import { generateBreadcrumbSchema } from "@/lib/structured-data";
 import { APIReferenceContent } from "./content";
 
 export const metadata: Metadata = generatePageMetadata({
-  title: "API Reference",
+  title: "Component API Reference",
   description:
-    "Component API documentation for the renderscope-ui npm package.",
+    "API documentation for renderscope-ui React components. Image comparison, feature matrices, charts, and taxonomy graphs.",
   path: "/docs/api",
+  ogImage: "/og/default.png",
 });
 
 export default function APIReferencePage() {
-  return <APIReferenceContent />;
+  return (
+    <>
+      <JsonLd
+        data={generateBreadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Docs", path: "/docs" },
+          { name: "API Reference", path: "/docs/api" },
+        ])}
+      />
+      <APIReferenceContent />
+    </>
+  );
 }

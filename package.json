@@ -16,11 +16,15 @@
     "clean": "turbo clean"
   },
   "devDependencies": {
+    "jsdom": "^28.1.0",
     "turbo": "^2",
     "typescript": "^5"
   },
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "npm@10.9.2"
+  "packageManager": "npm@10.9.2",
+  "dependencies": {
+    "@exodus/bytes": "^1.14.1"
+  }
 }

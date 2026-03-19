@@ -1,80 +1,471 @@
 [
   {
-    "term": "BSDF",
-    "definition": "Bidirectional Scattering Distribution Function. A generalization that combines BRDF (reflection) and BTDF (transmission) to describe how light interacts with a surface.",
-    "related": ["BRDF", "BTDF"],
-    "seeAlso": "/learn/path-tracing"
+    "term": "Albedo",
+    "definition": "The base color of a surface, representing the fraction of light reflected at each wavelength. Independent of lighting or viewing angle, albedo is the intrinsic color of a material before any shading is applied.",
+    "related": ["PBR", "BRDF", "Roughness"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "materials"
+  },
+  {
+    "term": "Ambient Occlusion",
+    "definition": "A shading technique that darkens creases, holes, and surfaces close to other surfaces, approximating how ambient light is occluded in concavities. Can be screen-space (SSAO), ray-traced, or estimated from SDF evaluations.",
+    "related": ["GI", "Rasterization"],
+    "seeAlso": "/learn/rasterization",
+    "category": "algorithms"
+  },
+  {
+    "term": "Bidirectional Path Tracing",
+    "definition": "An extension of path tracing that traces light paths from both the camera and light sources, then connects them. Handles difficult light transport scenarios like small light sources and caustics better than unidirectional path tracing.",
+    "related": ["Path Tracing", "MLT", "MIS"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "algorithms"
   },
   {
     "term": "BRDF",
-    "definition": "Bidirectional Reflectance Distribution Function. A function that defines how light is reflected off a surface, depending on the incoming and outgoing light directions.",
+    "definition": "Bidirectional Reflectance Distribution Function. Describes how light reflects off a surface depending on the incoming and outgoing light directions. The reflection-only component of the more general BSDF.",
     "related": ["BSDF", "BTDF", "PBR"],
-    "seeAlso": "/learn/path-tracing"
+    "seeAlso": "/learn/path-tracing",
+    "category": "materials"
+  },
+  {
+    "term": "BSDF",
+    "definition": "Bidirectional Scattering Distribution Function. Combines BRDF (reflection) and BTDF (transmission) to describe the complete light-surface interaction. Most physically based renderers use BSDFs to define material appearance.",
+    "related": ["BRDF", "BTDF", "PBR"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "materials"
+  },
+  {
+    "term": "BTDF",
+    "definition": "Bidirectional Transmittance Distribution Function. Describes how light transmits through a surface, such as glass or water. Combined with the BRDF, it forms the complete BSDF.",
+    "related": ["BSDF", "BRDF"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "materials"
   },
   {
     "term": "BVH",
-    "definition": "Bounding Volume Hierarchy. A tree data structure used to accelerate ray-object intersection tests by organizing scene geometry into nested bounding boxes.",
-    "related": ["Ray Tracing"],
-    "seeAlso": "/learn/path-tracing"
+    "definition": "Bounding Volume Hierarchy. A tree data structure that spatially organizes scene geometry into nested bounding boxes to accelerate ray intersection tests. Used by nearly every modern ray tracer.",
+    "related": ["Path Tracing", "Embree", "OptiX"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "geometry"
+  },
+  {
+    "term": "Caustics",
+    "definition": "Focused light patterns created by reflection or refraction through curved surfaces, such as bright patterns on the bottom of a swimming pool. Notoriously difficult for unidirectional path tracers to render efficiently.",
+    "related": ["Path Tracing", "Photon Mapping", "Bidirectional Path Tracing"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "lighting"
+  },
+  {
+    "term": "Convergence",
+    "definition": "In Monte Carlo rendering, the process of noise reducing as more samples are taken. A converged image has negligible visible noise. The rate of convergence depends on the variance of the estimator and the sampling strategies used.",
+    "related": ["SPP", "Monte Carlo Sampling", "Denoising"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "general"
+  },
+  {
+    "term": "CSG",
+    "definition": "Constructive Solid Geometry. A technique for building complex 3D shapes by combining simpler primitives using boolean operations: union, intersection, and subtraction. With SDFs, CSG is trivially implemented as min, max, and negation of distance values.",
+    "related": ["SDF", "Ray Marching", "Sphere Tracing"],
+    "seeAlso": "/learn/ray-marching",
+    "category": "geometry"
+  },
+  {
+    "term": "CUDA",
+    "definition": "NVIDIA's parallel computing platform for GPU programming. Provides a C/C++-like model for writing GPU kernels. Many renderers use CUDA for acceleration, including PBRT v4, Mitsuba 3, and Gaussian Splatting implementations.",
+    "related": ["OptiX", "RT Cores", "Vulkan"],
+    "seeAlso": null,
+    "category": "hardware"
   },
   {
     "term": "Denoising",
-    "definition": "The process of removing noise from a rendered image, typically Monte Carlo noise from undersampled path tracing. Modern denoisers use neural networks (e.g., Intel Open Image Denoise, NVIDIA OptiX AI denoiser).",
-    "related": ["SPP", "Monte Carlo"],
-    "seeAlso": null
+    "definition": "Algorithms that remove Monte Carlo noise from rendered images, allowing acceptable quality at lower sample counts. Can be AI-based (NVIDIA OptiX AI Denoiser, Intel Open Image Denoise) or traditional (non-local means, bilateral filtering).",
+    "related": ["SPP", "Monte Carlo Sampling", "Convergence"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "algorithms"
+  },
+  {
+    "term": "Differentiable Rendering",
+    "definition": "Rendering where gradients of the output image can be computed with respect to scene parameters (geometry, materials, lighting), enabling optimization-based inverse problems through gradient descent.",
+    "related": ["Gradient", "Inverse Rendering"],
+    "seeAlso": "/learn/differentiable-rendering",
+    "category": "neural"
+  },
+  {
+    "term": "Displacement Mapping",
+    "definition": "A technique that physically moves surface vertices based on a texture map, creating real geometric detail. Unlike normal maps which only fake the appearance of detail, displacement maps modify actual geometry and produce correct silhouettes and shadows.",
+    "related": ["Normal Map", "UV Mapping", "Triangle Mesh"],
+    "seeAlso": null,
+    "category": "geometry"
+  },
+  {
+    "term": "Embree",
+    "definition": "Intel's high-performance CPU ray tracing library providing optimized BVH construction and traversal using SIMD instructions. Used as a ray intersection backend by many renderers including OSPRay, PBRT, Mitsuba, LuxCoreRender, and appleseed.",
+    "related": ["BVH", "OptiX"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "hardware"
+  },
+  {
+    "term": "EXR",
+    "definition": "OpenEXR. A high dynamic range image format supporting 16-bit and 32-bit floating point values per channel. The standard output format for physically based renderers, preserving the full range of computed light values for post-processing.",
+    "related": ["HDRI", "Tone Mapping"],
+    "seeAlso": null,
+    "category": "formats"
+  },
+  {
+    "term": "Fresnel Effect",
+    "definition": "The phenomenon where a surface's reflectivity increases at grazing angles. All real materials exhibit this — a lake appears mirror-like at a distance but transparent when looking straight down. Physically based renderers model this using Fresnel equations.",
+    "related": ["BRDF", "PBR", "Roughness"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "materials"
+  },
+  {
+    "term": "Gaussian Splatting",
+    "definition": "A rendering technique representing scenes as collections of 3D Gaussian ellipsoids with learned color, opacity, and shape parameters. Rendered by projecting each Gaussian onto the image plane and alpha-compositing. Achieves real-time novel view synthesis.",
+    "related": ["Radiance Field", "Novel View Synthesis", "Differentiable Rendering"],
+    "seeAlso": "/learn/gaussian-splatting",
+    "category": "neural"
   },
   {
     "term": "GI",
-    "definition": "Global Illumination. Lighting algorithms that account for indirect light (light that has bounced off surfaces) in addition to direct illumination, producing more realistic images.",
-    "related": ["Path Tracing", "Radiosity"],
-    "seeAlso": "/learn/path-tracing"
+    "definition": "Global Illumination. The simulation of all light transport in a scene, including indirect bounces where light reflects between surfaces. The gold standard for realism, producing effects like color bleeding, soft indirect shadows, and caustics.",
+    "related": ["Path Tracing", "Radiosity", "Monte Carlo Sampling"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "lighting"
+  },
+  {
+    "term": "glTF",
+    "definition": "GL Transmission Format. A royalty-free 3D scene format designed for efficient transmission. Supports meshes, materials, textures, animations, and scene hierarchy. Often called 'the JPEG of 3D,' supported by most real-time and many offline renderers.",
+    "related": ["USD", "OBJ", "PLY"],
+    "seeAlso": null,
+    "category": "formats"
+  },
+  {
+    "term": "Gradient",
+    "definition": "A vector of partial derivatives indicating how much and in which direction each scene parameter should change to reduce a loss function. The fundamental quantity enabling gradient-based optimization in differentiable rendering and neural network training.",
+    "related": ["Differentiable Rendering", "Inverse Rendering"],
+    "seeAlso": "/learn/differentiable-rendering",
+    "category": "neural"
   },
   {
     "term": "HDRI",
-    "definition": "High Dynamic Range Image. An image format that stores a wider range of luminance values than standard images. Commonly used as environment maps for image-based lighting in 3D scenes.",
-    "related": ["EXR", "Tone Mapping"],
-    "seeAlso": null
+    "definition": "High Dynamic Range Image. A panoramic image with a wide brightness range, commonly used as environment lighting in rendering. Captures real-world illumination from all directions, enabling realistic image-based lighting of 3D scenes.",
+    "related": ["EXR", "Tone Mapping", "GI"],
+    "seeAlso": null,
+    "category": "lighting"
   },
   {
-    "term": "Monte Carlo",
-    "definition": "A class of algorithms that use random sampling to estimate numerical results. In rendering, Monte Carlo integration is the foundation of path tracing — rays are sampled randomly to estimate the rendering equation.",
-    "related": ["Path Tracing", "SPP", "Importance Sampling"],
-    "seeAlso": "/learn/path-tracing"
+    "term": "Importance Sampling",
+    "definition": "A variance reduction technique that concentrates random samples in directions where the integrand is large, reducing noise for the same sample count. In rendering, this means sampling rays toward bright light sources or likely BRDF directions.",
+    "related": ["Monte Carlo Sampling", "MIS", "NEE"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "algorithms"
+  },
+  {
+    "term": "Inverse Rendering",
+    "definition": "The problem of recovering scene properties (3D shape, materials, lighting) from one or more images. Differentiable rendering enables solving this via gradient-based optimization rather than hand-crafted algorithms.",
+    "related": ["Differentiable Rendering", "Gradient"],
+    "seeAlso": "/learn/differentiable-rendering",
+    "category": "neural"
+  },
+  {
+    "term": "Isosurface",
+    "definition": "A surface within a volume where the data has a constant value, analogous to a contour line on a topographic map. Extracting isosurfaces via algorithms like marching cubes converts volumetric data into triangle meshes at a chosen threshold.",
+    "related": ["Voxel", "Volume Rendering", "SDF"],
+    "seeAlso": "/learn/volume-rendering",
+    "category": "geometry"
+  },
+  {
+    "term": "LPIPS",
+    "definition": "Learned Perceptual Image Patch Similarity. A neural network-based perceptual quality metric where lower values indicate greater similarity. Generally correlates better with human judgments of image quality than PSNR or SSIM.",
+    "related": ["PSNR", "SSIM", "MSE"],
+    "seeAlso": null,
+    "category": "metrics"
+  },
+  {
+    "term": "MIS",
+    "definition": "Multiple Importance Sampling. A framework for combining samples from multiple strategies (e.g., BRDF sampling and light sampling) in a provably near-optimal way. Introduced by Eric Veach in his 1997 PhD thesis.",
+    "related": ["Importance Sampling", "NEE", "Monte Carlo Sampling"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "algorithms"
+  },
+  {
+    "term": "MLT",
+    "definition": "Metropolis Light Transport. A path tracing variant using Markov chain Monte Carlo to explore path space, concentrating effort on high-contribution paths. Effective for extremely difficult lighting like light through a keyhole into a dark room.",
+    "related": ["Path Tracing", "Bidirectional Path Tracing", "Monte Carlo Sampling"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "algorithms"
+  },
+  {
+    "term": "Monte Carlo Sampling",
+    "definition": "A class of algorithms using random sampling to estimate integrals. In rendering, Monte Carlo integration is the foundation of path tracing — rays are sampled randomly to approximate the rendering equation, which has no closed-form solution for complex scenes.",
+    "related": ["Path Tracing", "SPP", "Importance Sampling", "Convergence"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "algorithms"
+  },
+  {
+    "term": "MSE",
+    "definition": "Mean Squared Error. The average of squared pixel differences between two images. The simplest quality metric, computed as the mean of (reference minus test) squared across all pixels and channels. PSNR is derived directly from MSE.",
+    "related": ["PSNR", "SSIM", "LPIPS"],
+    "seeAlso": null,
+    "category": "metrics"
+  },
+  {
+    "term": "NEE",
+    "definition": "Next Event Estimation. A technique where the renderer explicitly samples light sources at each path bounce rather than waiting for a random bounce to find one. Dramatically reduces noise for scenes with small or distant lights.",
+    "related": ["Importance Sampling", "MIS", "Path Tracing"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "algorithms"
   },
   {
     "term": "NeRF",
-    "definition": "Neural Radiance Field. A method that uses a neural network to represent a 3D scene as a continuous volumetric function mapping 3D coordinates to color and density. Trained from a set of posed photographs.",
-    "related": ["Gaussian Splatting", "Radiance Field"],
-    "seeAlso": "/learn/neural-radiance-fields"
+    "definition": "Neural Radiance Field. A method that trains a neural network to represent a 3D scene as a continuous volumetric function mapping spatial coordinates and viewing direction to color and density. Enables photorealistic novel view synthesis from posed photographs.",
+    "related": ["Radiance Field", "Gaussian Splatting", "Novel View Synthesis"],
+    "seeAlso": "/learn/neural-radiance-fields",
+    "category": "neural"
+  },
+  {
+    "term": "Normal Map",
+    "definition": "A texture that stores surface normal perturbations, creating the illusion of fine geometric detail (bumps, dents, scratches) without additional polygons. Each texel encodes a normal direction that modifies surface shading.",
+    "related": ["Displacement Mapping", "UV Mapping", "Triangle Mesh"],
+    "seeAlso": "/learn/rasterization",
+    "category": "geometry"
+  },
+  {
+    "term": "Novel View Synthesis",
+    "definition": "The task of generating new camera views of a scene from a set of input images. The primary application of NeRF and Gaussian Splatting, enabling virtual camera movement through a captured real-world scene.",
+    "related": ["NeRF", "Radiance Field", "Gaussian Splatting"],
+    "seeAlso": "/learn/neural-radiance-fields",
+    "category": "neural"
+  },
+  {
+    "term": "OBJ",
+    "definition": "Wavefront OBJ. A simple, widely-supported text-based 3D geometry format storing vertices, normals, texture coordinates, and polygon faces. One of the oldest and most universal 3D formats, though lacking support for materials and animations.",
+    "related": ["glTF", "PLY", "USD"],
+    "seeAlso": null,
+    "category": "formats"
+  },
+  {
+    "term": "Offline Rendering",
+    "definition": "Rendering where quality is prioritized over speed. A single frame may take seconds, minutes, or hours. Path tracing is the dominant offline technique, used for film VFX, architectural visualization, and product rendering.",
+    "related": ["Real-Time Rendering", "Path Tracing", "Convergence"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "general"
+  },
+  {
+    "term": "OptiX",
+    "definition": "NVIDIA's ray tracing SDK for CUDA GPUs. Provides hardware-accelerated BVH traversal and ray-triangle intersection testing using RT Cores. Used as a backend by many GPU ray tracers including PBRT v4 and Blender Cycles.",
+    "related": ["CUDA", "RT Cores", "Embree", "BVH"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "hardware"
+  },
+  {
+    "term": "Participating Media",
+    "definition": "Materials that light passes through rather than bouncing off — fog, smoke, clouds, fire, and scattering within translucent solids like skin and wax. Volume rendering and participating media simulation in path tracers handle these effects.",
+    "related": ["Volume Rendering", "Subsurface Scattering", "Voxel"],
+    "seeAlso": "/learn/volume-rendering",
+    "category": "materials"
+  },
+  {
+    "term": "Path Tracing",
+    "definition": "A Monte Carlo rendering algorithm that traces random light paths from the camera through the scene, accumulating light at each surface bounce. The core algorithm behind most modern physically based renderers.",
+    "related": ["Monte Carlo Sampling", "GI", "SPP", "Bidirectional Path Tracing"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "algorithms"
   },
   {
     "term": "PBR",
-    "definition": "Physically Based Rendering. An approach to rendering that models materials and light transport according to physical principles, producing more consistent and realistic results than ad-hoc shading models.",
-    "related": ["BRDF", "BSDF", "Path Tracing"],
-    "seeAlso": "/learn/path-tracing"
+    "definition": "Physically Based Rendering. An approach where materials and lighting follow real-world physics — energy conservation, Fresnel equations, measured material data. Produces realistic results because the simulation is grounded in how light actually behaves.",
+    "related": ["BRDF", "BSDF", "Path Tracing", "Fresnel Effect"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "materials"
+  },
+  {
+    "term": "Photon Mapping",
+    "definition": "A two-pass global illumination algorithm: first, photons are traced from lights and stored where they interact with surfaces; second, stored photons estimate indirect illumination during rendering. Effective for caustics and participating media.",
+    "related": ["Path Tracing", "GI", "Caustics"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "algorithms"
+  },
+  {
+    "term": "Physically Based",
+    "definition": "An approach to rendering grounded in the physics of light transport: energy conservation, Fresnel equations, measured material data, and radiometric correctness. Results look realistic because the simulation follows real-world rules.",
+    "related": ["PBR", "Path Tracing", "GI"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "general"
+  },
+  {
+    "term": "PLY",
+    "definition": "Polygon File Format (Stanford Triangle Format). A simple format for 3D scanned data, commonly used for point clouds and Gaussian Splatting data. Supports per-vertex properties like color, normal, and custom attributes.",
+    "related": ["OBJ", "glTF"],
+    "seeAlso": null,
+    "category": "formats"
   },
   {
     "term": "PSNR",
-    "definition": "Peak Signal-to-Noise Ratio. An image quality metric measured in decibels (dB) that compares a rendered image to a reference. Higher values indicate less error. Typical ranges for rendered images: 30–50 dB.",
+    "definition": "Peak Signal-to-Noise Ratio. A pixel-level image quality metric measured in decibels (dB). Higher values indicate less error, derived from MSE. A common baseline metric, though it does not always correlate well with human perception.",
     "related": ["SSIM", "LPIPS", "MSE"],
-    "seeAlso": null
+    "seeAlso": null,
+    "category": "metrics"
+  },
+  {
+    "term": "Radiance Field",
+    "definition": "A continuous function mapping 3D coordinates (and optionally viewing direction) to color and density. The scene representation learned by NeRF, implementable as a neural network, hash grid, or other parameterization.",
+    "related": ["NeRF", "Novel View Synthesis", "Gaussian Splatting", "Volume Rendering"],
+    "seeAlso": "/learn/neural-radiance-fields",
+    "category": "neural"
+  },
+  {
+    "term": "Radiosity",
+    "definition": "A global illumination method that computes diffuse inter-reflections by subdividing surfaces into patches and solving for energy equilibrium. Produces soft, view-independent lighting. Largely historical, superseded by path tracing.",
+    "related": ["GI", "Path Tracing"],
+    "seeAlso": null,
+    "category": "algorithms"
+  },
+  {
+    "term": "Rasterization",
+    "definition": "The process of projecting 3D triangles onto a 2D screen and determining which pixels each triangle covers. The foundation of real-time rendering, implemented in hardware by every modern GPU.",
+    "related": ["Real-Time Rendering", "Vulkan", "WebGPU"],
+    "seeAlso": "/learn/rasterization",
+    "category": "algorithms"
+  },
+  {
+    "term": "Ray Marching",
+    "definition": "A rendering technique that advances along rays in discrete steps, evaluating a distance or density function at each step. When combined with signed distance fields, the step size adapts to the distance to the nearest surface (sphere tracing).",
+    "related": ["SDF", "Sphere Tracing", "Volume Rendering"],
+    "seeAlso": "/learn/ray-marching",
+    "category": "algorithms"
+  },
+  {
+    "term": "Real-Time Rendering",
+    "definition": "Rendering fast enough for interactive use, typically 30 or more frames per second. Achieved through rasterization, GPU acceleration, and approximations of global illumination. Modern approaches increasingly incorporate selective ray tracing.",
+    "related": ["Rasterization", "Offline Rendering", "Vulkan"],
+    "seeAlso": "/learn/rasterization",
+    "category": "general"
+  },
+  {
+    "term": "Renderer",
+    "definition": "A software system that takes a 3D scene description as input and produces a 2D image as output. Renderers vary widely in technique (path tracing, rasterization, neural), speed (real-time to hours per frame), and target use case.",
+    "related": ["Offline Rendering", "Real-Time Rendering"],
+    "seeAlso": null,
+    "category": "general"
+  },
+  {
+    "term": "Roughness",
+    "definition": "A material parameter controlling how sharp or blurry reflections appear. Low roughness produces mirror-like reflections; high roughness produces matte, diffuse surfaces. A key parameter in physically based material models.",
+    "related": ["PBR", "BRDF", "Albedo", "Fresnel Effect"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "materials"
+  },
+  {
+    "term": "RT Cores",
+    "definition": "Dedicated hardware units in NVIDIA RTX GPUs that accelerate BVH traversal and ray-triangle intersection testing in silicon, dramatically speeding up ray tracing by offloading the most expensive operations from shader cores.",
+    "related": ["OptiX", "CUDA", "BVH"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "hardware"
   },
   {
     "term": "SDF",
-    "definition": "Signed Distance Field (or Function). A function that returns the shortest distance from any point in space to the nearest surface. Positive outside, negative inside. Used for ray marching, procedural modeling, and real-time effects.",
-    "related": ["Ray Marching"],
-    "seeAlso": "/learn/ray-marching"
+    "definition": "Signed Distance Function. A function returning the shortest distance from any point in space to the nearest surface. Positive outside, negative inside, zero on the surface. Used in ray marching, procedural modeling, and collision detection.",
+    "related": ["Ray Marching", "Sphere Tracing", "CSG"],
+    "seeAlso": "/learn/ray-marching",
+    "category": "geometry"
+  },
+  {
+    "term": "Spectral Rendering",
+    "definition": "Rendering that simulates individual wavelengths of light rather than only RGB triplets. Produces more physically accurate results, especially for dispersion (prisms, rainbows), fluorescence, and complex material interactions.",
+    "related": ["PBR", "Path Tracing"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "materials"
+  },
+  {
+    "term": "Sphere Tracing",
+    "definition": "A ray marching algorithm that uses the SDF value as the step size. Since the SDF guarantees no surface is closer than the returned distance, the ray safely advances by that amount — large steps in open space, small steps near surfaces.",
+    "related": ["SDF", "Ray Marching", "CSG"],
+    "seeAlso": "/learn/ray-marching",
+    "category": "algorithms"
   },
   {
     "term": "SPP",
-    "definition": "Samples Per Pixel. The number of ray samples averaged for each pixel in a Monte Carlo renderer. More samples reduce noise but increase render time. Typical values range from 64 (noisy preview) to 4096+ (final quality).",
-    "related": ["Monte Carlo", "Denoising", "Path Tracing"],
-    "seeAlso": "/learn/path-tracing"
+    "definition": "Samples Per Pixel. The number of random light path samples averaged for each pixel in a Monte Carlo renderer. More samples reduce noise but increase render time. Typical values range from 64 (noisy preview) to 4096+ (final quality).",
+    "related": ["Monte Carlo Sampling", "Convergence", "Denoising", "Path Tracing"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "algorithms"
   },
   {
     "term": "SSIM",
-    "definition": "Structural Similarity Index Measure. An image quality metric that compares structural patterns, luminance, and contrast between two images. Values range from 0 to 1, where 1 means identical images.",
-    "related": ["PSNR", "LPIPS"],
-    "seeAlso": null
+    "definition": "Structural Similarity Index Measure. A perceptual quality metric comparing luminance, contrast, and structural patterns between two images. Ranges from 0 to 1 (1 = identical). Better correlated with human perception than PSNR.",
+    "related": ["PSNR", "LPIPS", "MSE"],
+    "seeAlso": null,
+    "category": "metrics"
+  },
+  {
+    "term": "Subsurface Scattering",
+    "definition": "Light enters a translucent material, scatters inside, and exits at a different point. Critical for realistic rendering of skin, wax, marble, milk, and other translucent materials where light visibly penetrates the surface.",
+    "related": ["BSDF", "PBR", "Participating Media"],
+    "seeAlso": "/learn/path-tracing",
+    "category": "materials"
+  },
+  {
+    "term": "Tone Mapping",
+    "definition": "The process of converting high dynamic range (HDR) rendered values to the limited range displayable on a screen. Essential for physically based renderers, since real-world light intensities span orders of magnitude that displays cannot reproduce directly.",
+    "related": ["EXR", "HDRI", "PBR"],
+    "seeAlso": null,
+    "category": "materials"
+  },
+  {
+    "term": "Transfer Function",
+    "definition": "In volume rendering, the mapping from raw scalar data values to visual properties (color and opacity). Determines which structures in volumetric data are visible and how they appear, serving as the primary artistic and scientific control.",
+    "related": ["Volume Rendering", "Voxel"],
+    "seeAlso": "/learn/volume-rendering",
+    "category": "algorithms"
+  },
+  {
+    "term": "Triangle Mesh",
+    "definition": "The most common 3D surface representation: a collection of vertices connected into triangles. Standard input for most renderers, stored in formats like OBJ, glTF, PLY, and FBX.",
+    "related": ["OBJ", "glTF", "Normal Map", "BVH"],
+    "seeAlso": null,
+    "category": "geometry"
+  },
+  {
+    "term": "USD",
+    "definition": "Universal Scene Description. Pixar's scene format for complex production pipelines. Supports layered composition, references, variants, and massive scenes with millions of objects. Increasingly adopted across film, games, and simulation.",
+    "related": ["glTF", "OBJ"],
+    "seeAlso": null,
+    "category": "formats"
+  },
+  {
+    "term": "UV Mapping",
+    "definition": "The process of projecting a 3D surface onto a 2D plane for texture application. U and V are the 2D coordinate axes. Good UV layouts minimize distortion and seams, enabling textures to wrap cleanly around 3D geometry.",
+    "related": ["Normal Map", "Triangle Mesh", "Displacement Mapping"],
+    "seeAlso": null,
+    "category": "geometry"
+  },
+  {
+    "term": "Volume Rendering",
+    "definition": "Rendering that visualizes the interior of 3D volumetric data by casting rays through it and accumulating color and opacity. Used for medical imaging (CT/MRI), scientific visualization, and participating media effects like fog and fire.",
+    "related": ["Voxel", "Participating Media", "Transfer Function", "Ray Marching"],
+    "seeAlso": "/learn/volume-rendering",
+    "category": "algorithms"
+  },
+  {
+    "term": "Voxel",
+    "definition": "A 3D pixel — a single data point in a volumetric grid. A portmanteau of 'volume' and 'pixel.' Voxels store scalar values (density, temperature, color) at discrete grid positions and are the primary data structure for volume rendering.",
+    "related": ["Volume Rendering", "Isosurface"],
+    "seeAlso": "/learn/volume-rendering",
+    "category": "geometry"
+  },
+  {
+    "term": "Vulkan",
+    "definition": "A low-level, cross-platform GPU API and successor to OpenGL. Provides explicit control over GPU resources for both graphics and compute. Supports ray tracing extensions for hardware-accelerated ray tracing on compatible GPUs.",
+    "related": ["WebGPU", "CUDA", "Rasterization"],
+    "seeAlso": "/learn/rasterization",
+    "category": "hardware"
+  },
+  {
+    "term": "WebGPU",
+    "definition": "A modern web standard for GPU access in browsers, successor to WebGL. Provides compute shader support and a more efficient API design aligned with native GPU APIs like Vulkan, Metal, and DirectX 12.",
+    "related": ["Vulkan", "Rasterization"],
+    "seeAlso": "/learn/rasterization",
+    "category": "hardware"
   }
 ]

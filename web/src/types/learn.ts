@@ -22,6 +22,7 @@ export interface GlossaryTerm {
   definition: string;
   related: string[];
   seeAlso: string | null;
+  category?: string;
 }
 
 /**

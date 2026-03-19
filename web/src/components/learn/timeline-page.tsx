@@ -82,7 +82,7 @@ export function TimelinePageClient({ renderers }: TimelinePageProps) {
                   "flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-all",
                   isActive
                     ? "border-border bg-card/80 text-foreground"
-                    : "border-transparent bg-muted/30 text-muted-foreground/50"
+                    : "border-transparent bg-muted/30 text-muted-foreground"
                 )}
               >
                 <span

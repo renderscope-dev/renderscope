@@ -29,6 +29,7 @@ export function RendererCard({ renderer, index, maxStars }: RendererCardProps) {
     >
       <Link href={`/renderer/${renderer.id}`} className="group block h-full">
         <article
+          data-testid="renderer-card"
           className={cn(
             "relative h-full rounded-xl border bg-card",
             "overflow-hidden",

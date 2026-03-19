@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "@/components/layout/theme-provider";
+import { MotionProvider } from "@/components/layout/motion-provider";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { ClientToaster } from "@/components/layout/client-toaster";
 import { inter, jetbrainsMono } from "@/styles/fonts";
 import { siteConfig } from "@/lib/constants";
 import "./globals.css";
@@ -75,17 +77,29 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-background font-sans antialiased">
+        <a
+          href="#main-content"
+          className="skip-nav"
+        >
+          Skip to main content
+        </a>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          <main className="relative flex min-h-[calc(100vh-4rem)] flex-col pt-16">
-            {children}
-          </main>
-          <Footer />
+          <MotionProvider>
+            <Navbar />
+            <main
+              id="main-content"
+              className="relative flex min-h-[calc(100vh-4rem)] flex-col pt-16"
+            >
+              {children}
+            </main>
+            <Footer />
+            <ClientToaster />
+          </MotionProvider>
         </ThemeProvider>
       </body>
     </html>

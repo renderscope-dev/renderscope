@@ -1,0 +1,99 @@
+name: "New Renderer Request"
+description: "Request or propose adding a new rendering engine to the RenderScope catalog."
+title: "[Renderer]: "
+labels: ["renderer-data", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a new renderer! Please provide as much information as you can. You don't need to fill in every field — we can research the rest — but the more you provide, the faster we can add it.
+
+        **Alternatively**, if you'd like to contribute the renderer data yourself, you can:
+        1. Copy `/data/renderers/_template.json`
+        2. Fill in the fields
+        3. Run `python scripts/validate_data.py`
+        4. Submit a Pull Request
+
+  - type: input
+    id: name
+    attributes:
+      label: "Renderer Name"
+      description: "The display name of the rendering engine."
+      placeholder: "e.g., PBRT v4, Mitsuba 3, Gaussian Splatting"
+    validations:
+      required: true
+
+  - type: input
+    id: repository
+    attributes:
+      label: "Repository URL"
+      description: "Link to the source code (GitHub, GitLab, etc.)."
+      placeholder: "https://github.com/..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: technique
+    attributes:
+      label: "Primary Rendering Technique"
+      description: "Select the main rendering approach. Select all that apply."
+      multiple: true
+      options:
+        - "Path Tracing / Ray Tracing"
+        - "Rasterization (Real-Time)"
+        - "Neural Rendering (NeRF)"
+        - "Gaussian Splatting"
+        - "Differentiable Rendering"
+        - "Volume Rendering"
+        - "Hybrid"
+        - "Other / Unsure"
+    validations:
+      required: true
+
+  - type: input
+    id: language
+    attributes:
+      label: "Primary Language"
+      description: "e.g., C++, Python/CUDA, Rust, JavaScript"
+      placeholder: "C++"
+    validations:
+      required: false
+
+  - type: input
+    id: license
+    attributes:
+      label: "License"
+      description: "SPDX identifier (e.g., MIT, Apache-2.0, BSD-3-Clause, GPL-3.0)"
+      placeholder: "MIT"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: data_checklist
+    attributes:
+      label: "Available Information"
+      description: "Check the items you can provide or that exist for this renderer. This helps us gauge the effort needed to add it."
+      options:
+        - label: "Open source with accessible repository"
+        - label: "Has official documentation"
+        - label: "Has an associated academic paper"
+        - label: "Supports standard scene formats (glTF, OBJ, USD, etc.)"
+        - label: "Has had a release in the last 12 months"
+        - label: "I have personal experience using this renderer"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Brief Description"
+      description: "What does this renderer do? What makes it unique or worth including?"
+      placeholder: "This renderer is notable because..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: "Additional Context"
+      description: "Any other relevant links, comparisons, or notes."
+    validations:
+      required: false

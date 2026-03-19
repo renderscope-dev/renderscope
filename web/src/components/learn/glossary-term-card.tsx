@@ -18,7 +18,7 @@ export function GlossaryTermCard({ term, onRelatedClick }: GlossaryTermCardProps
 
       <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
         {term.related.length > 0 && (
-          <span className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground/70">
+          <span className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
             <span className="font-medium">Related:</span>
             {term.related.map((rel, i) => (
               <span key={rel}>

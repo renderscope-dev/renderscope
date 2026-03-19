@@ -1,0 +1,44 @@
+{
+  "id": "sponza-blender-cycles-hw1-2024-12-03",
+  "renderer": "blender-cycles",
+  "renderer_version": "4.1.0",
+  "scene": "sponza",
+  "timestamp": "2024-12-03T12:30:00Z",
+  "hardware": {
+    "id": "hw1",
+    "label": "High-End Desktop",
+    "cpu": "AMD Ryzen 9 7950X",
+    "gpu": "NVIDIA RTX 4080",
+    "ram_gb": 64,
+    "os": "Ubuntu 22.04",
+    "driver": "NVIDIA 545.29.06"
+  },
+  "settings": {
+    "resolution": [1920, 1080],
+    "samples_per_pixel": 1024,
+    "integrator": "path_tracing",
+    "max_bounces": 12,
+    "threads": 32,
+    "gpu_enabled": true
+  },
+  "results": {
+    "render_time_seconds": 78.4,
+    "peak_memory_mb": 1840,
+    "output_image": "renders/sponza/blender-cycles_1024spp.exr"
+  },
+  "quality_vs_reference": {
+    "reference_renderer": "pbrt",
+    "reference_samples": 65536,
+    "psnr": 38.9,
+    "ssim": 0.9948,
+    "mse": 0.000129
+  },
+  "convergence": [
+    { "samples": 1, "time": 0.08, "psnr": 9.7 },
+    { "samples": 4, "time": 0.31, "psnr": 16.0 },
+    { "samples": 16, "time": 1.22, "psnr": 22.3 },
+    { "samples": 64, "time": 4.84, "psnr": 28.5 },
+    { "samples": 256, "time": 19.2, "psnr": 34.2 },
+    { "samples": 1024, "time": 78.4, "psnr": 38.9 }
+  ]
+}

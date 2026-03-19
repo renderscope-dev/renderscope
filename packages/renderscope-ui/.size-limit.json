@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Core (ImageCompareSlider only)",
+    "path": "dist/index.mjs",
+    "import": "{ ImageCompareSlider }",
+    "limit": "34 kB",
+    "gzip": true
+  },
+  {
+    "name": "All image comparison components (no D3)",
+    "path": "dist/index.mjs",
+    "import": "{ ImageCompareSlider, ImageDiff, ImageToggle, ImageSideBySide, RegionZoom, ImageSSIMHeatmap }",
+    "limit": "42 kB",
+    "gzip": true
+  },
+  {
+    "name": "FeatureMatrix only (no D3)",
+    "path": "dist/index.mjs",
+    "import": "{ FeatureMatrix }",
+    "limit": "36 kB",
+    "gzip": true
+  },
+  {
+    "name": "TaxonomyGraph only (D3 cost)",
+    "path": "dist/index.mjs",
+    "import": "{ TaxonomyGraph }",
+    "limit": "35 kB",
+    "gzip": true
+  },
+  {
+    "name": "Full package (all components)",
+    "path": "dist/index.mjs",
+    "import": "{ ImageCompareSlider, FeatureMatrix, TaxonomyGraph }",
+    "limit": "40 kB",
+    "gzip": true
+  }
+]

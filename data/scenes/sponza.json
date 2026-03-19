@@ -2,24 +2,96 @@
   "id": "sponza",
   "name": "Sponza Atrium",
   "description": "An architectural interior based on the Sponza Palace atrium in Dubrovnik, Croatia. A standard benchmark for testing complex indirect lighting, light interaction across many surfaces, and texture-heavy scenes. Used in virtually every rendering research paper as a reference scene.",
-  "tests": ["global_illumination", "indirect_light", "textures", "complex_geometry"],
+  "tests": [
+    "global_illumination",
+    "indirect_light",
+    "textures",
+    "complex_geometry"
+  ],
   "complexity": "medium",
   "vertices": 153635,
   "faces": 262267,
   "lights": 1,
-  "light_types": ["directional", "emissive_geometry"],
+  "light_types": [
+    "directional",
+    "emissive_geometry"
+  ],
   "textures": 25,
   "source": "Crytek / Morgan McGuire Computer Graphics Archive",
   "source_url": "https://casual-effects.com/data/",
   "license": "CC-BY-3.0",
-  "available_formats": ["obj", "pbrt", "gltf", "mitsuba_xml"],
+  "available_formats": [
+    "obj",
+    "pbrt",
+    "gltf",
+    "mitsuba_xml"
+  ],
   "downloads": {
     "obj": "https://casual-effects.com/g3d/data10/common/model/crytek_sponza/sponza.zip"
   },
   "camera": {
-    "position": [-10, 2, 0],
-    "look_at": [0, 2, 0],
-    "up": [0, 1, 0],
+    "position": [
+      -10,
+      2,
+      0
+    ],
+    "look_at": [
+      0,
+      2,
+      0
+    ],
+    "up": [
+      0,
+      1,
+      0
+    ],
     "fov": 60
-  }
+  },
+  "thumbnail": "/renders/sponza/thumbnail.webp",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "renders": [
+    {
+      "renderer_id": "appleseed",
+      "image_web": "/renders/sponza/appleseed_1920x1080.webp",
+      "image_thumb": "/renders/sponza/appleseed_400x225.webp",
+      "render_time_seconds": 582.6,
+      "samples_per_pixel": 1024,
+      "integrator": "pt"
+    },
+    {
+      "renderer_id": "blender-cycles",
+      "image_web": "/renders/sponza/blender-cycles_1920x1080.webp",
+      "image_thumb": "/renders/sponza/blender-cycles_400x225.webp",
+      "render_time_seconds": 78.4,
+      "samples_per_pixel": 1024,
+      "integrator": "path_tracing"
+    },
+    {
+      "renderer_id": "luxcorerender",
+      "image_web": "/renders/sponza/luxcorerender_1920x1080.webp",
+      "image_thumb": "/renders/sponza/luxcorerender_400x225.webp",
+      "render_time_seconds": 95.7,
+      "samples_per_pixel": 1024,
+      "integrator": "pathgpu"
+    },
+    {
+      "renderer_id": "mitsuba3",
+      "image_web": "/renders/sponza/mitsuba3_1920x1080.webp",
+      "image_thumb": "/renders/sponza/mitsuba3_400x225.webp",
+      "render_time_seconds": 412.5,
+      "samples_per_pixel": 1024,
+      "integrator": "path"
+    },
+    {
+      "renderer_id": "pbrt",
+      "image_web": "/renders/sponza/pbrt_1920x1080.webp",
+      "image_thumb": "/renders/sponza/pbrt_400x225.webp",
+      "render_time_seconds": 487.2,
+      "samples_per_pixel": 1024,
+      "integrator": "volpath"
+    }
+  ]
 }

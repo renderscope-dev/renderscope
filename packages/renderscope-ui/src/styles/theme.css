@@ -42,12 +42,18 @@
 
   /* Technique badge colors */
   --rs-technique-path-tracing: #4da6ff;
+  --rs-technique-ray-tracing: #33ccff;
   --rs-technique-rasterization: #2dd471;
   --rs-technique-neural: #a855f7;
+  --rs-technique-gaussian-splatting: #a78bfa;
   --rs-technique-differentiable: #ec4899;
   --rs-technique-volume: #f97316;
+  --rs-technique-ray-marching: #22d3ee;
   --rs-technique-blender: #eab308;
   --rs-technique-educational: #6b7280;
+
+  /* Popover / tooltip surface */
+  --rs-bg-popover: #161622;
 
   /* Metric quality indicators */
   --rs-metric-good: #22c55e;
@@ -58,6 +64,13 @@
   --rs-feature-yes: #22c55e;
   --rs-feature-no: #ef4444;
   --rs-feature-partial: #eab308;
+
+  /* Feature matrix — supported/unsupported/NA */
+  --rs-feature-supported: #34d399;
+  --rs-feature-supported-bg: rgba(52, 211, 153, 0.05);
+  --rs-feature-unsupported: #f87171;
+  --rs-feature-unsupported-bg: rgba(248, 113, 113, 0.05);
+  --rs-feature-na: var(--rs-text-muted);
 
   /* Spacing scale */
   --rs-space-xs: 0.25rem;
@@ -100,6 +113,13 @@
   --rs-z-tooltip: 200;
   --rs-z-overlay: 300;
   --rs-z-modal: 400;
+
+  /* Image comparison */
+  --rs-slider-handle-width: 2px;
+  --rs-slider-handle-color: rgba(255, 255, 255, 0.6);
+  --rs-overlay-bg: rgba(0, 0, 0, 0.6);
+  --rs-selection-border: var(--rs-primary);
+  --rs-zoom-grid-color: rgba(255, 255, 255, 0.1);
 }
 
 /* ── Scoping wrapper for consumers who want isolation ── */
@@ -130,12 +150,18 @@
 
   /* Technique badge colors */
   --rs-technique-path-tracing: #4da6ff;
+  --rs-technique-ray-tracing: #33ccff;
   --rs-technique-rasterization: #2dd471;
   --rs-technique-neural: #a855f7;
+  --rs-technique-gaussian-splatting: #a78bfa;
   --rs-technique-differentiable: #ec4899;
   --rs-technique-volume: #f97316;
+  --rs-technique-ray-marching: #22d3ee;
   --rs-technique-blender: #eab308;
   --rs-technique-educational: #6b7280;
+
+  /* Popover / tooltip surface */
+  --rs-bg-popover: #161622;
 
   /* Metric quality indicators */
   --rs-metric-good: #22c55e;
@@ -146,6 +172,13 @@
   --rs-feature-yes: #22c55e;
   --rs-feature-no: #ef4444;
   --rs-feature-partial: #eab308;
+
+  /* Feature matrix — supported/unsupported/NA */
+  --rs-feature-supported: #34d399;
+  --rs-feature-supported-bg: rgba(52, 211, 153, 0.05);
+  --rs-feature-unsupported: #f87171;
+  --rs-feature-unsupported-bg: rgba(248, 113, 113, 0.05);
+  --rs-feature-na: var(--rs-text-muted);
 
   /* Spacing scale */
   --rs-space-xs: 0.25rem;
@@ -188,6 +221,13 @@
   --rs-z-tooltip: 200;
   --rs-z-overlay: 300;
   --rs-z-modal: 400;
+
+  /* Image comparison */
+  --rs-slider-handle-width: 2px;
+  --rs-slider-handle-color: rgba(255, 255, 255, 0.6);
+  --rs-overlay-bg: rgba(0, 0, 0, 0.6);
+  --rs-selection-border: var(--rs-primary);
+  --rs-zoom-grid-color: rgba(255, 255, 255, 0.1);
 
   color: var(--rs-text);
   font-family: var(--rs-font-sans);

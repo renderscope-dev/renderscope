@@ -3,35 +3,96 @@ title: "Differentiable Rendering"
 description: "Rendering with computable gradients, enabling optimization of 3D scene parameters through gradient descent."
 technique: "differentiable-rendering"
 furtherReading:
-  - title: "Differentiable Rendering: A Survey"
+  - title: "Kato et al., 'Differentiable Rendering: A Survey' (2020)"
     url: "https://arxiv.org/abs/2006.12057"
-    description: "A comprehensive survey of differentiable rendering methods and applications."
+    description: "Comprehensive survey of the field covering differentiable rasterization, ray tracing, and neural approaches."
     type: "paper"
-  - title: "Mitsuba 3 Documentation"
-    url: "https://mitsuba.readthedocs.io/"
-    description: "A research-oriented differentiable renderer with comprehensive documentation."
+  - title: "Li et al., 'Differentiable Monte Carlo Ray Tracing through Edge Sampling' (SIGGRAPH Asia 2018)"
+    url: "https://people.csail.mit.edu/tzumao/diffrt/"
+    description: "The foundational redner paper that solved the silhouette edge problem for differentiable ray tracing."
+    type: "paper"
+  - title: "Jakob et al., 'Mitsuba 3: A Retargetable Forward and Inverse Renderer' (SIGGRAPH 2022)"
+    url: "https://doi.org/10.1145/3528223.3530168"
+    description: "The Mitsuba 3 paper introducing a production-quality differentiable renderer built on the Dr.Jit compiler."
+    type: "paper"
+  - title: "Laine et al., 'Modular Primitives for High-Performance Differentiable Rendering' (SIGGRAPH Asia 2020)"
+    url: "https://nvlabs.github.io/nvdiffrast/"
+    description: "The nvdiffrast paper presenting high-performance differentiable rasterization on the GPU."
+    type: "paper"
+  - title: "Ravi et al., 'Accelerating 3D Deep Learning with PyTorch3D' (SIGGRAPH Asia 2020)"
+    url: "https://pytorch3d.org/"
+    description: "Meta's PyTorch3D library providing differentiable rendering primitives tightly integrated with PyTorch."
     type: "documentation"
 ---
 
+## What Is Differentiable Rendering?
+
+Traditional renderers are a one-way pipeline: you provide a 3D scene — geometry, materials, lighting, camera — and the renderer produces an image. The process flows strictly from scene to pixels. Differentiable rendering makes this pipeline *reversible*. Given a target image, you can compute how to change the scene parameters to make the rendered output closer to that target.
+
+The key word is "differentiable." In mathematical terms, a differentiable renderer can compute **gradients** — partial derivatives of the rendered image with respect to every scene parameter. These gradients answer precise questions: "If I move this vertex 1mm to the left, how does pixel (243, 517) change in brightness?" "If I make this material 10% rougher, how does the overall image error decrease?" With these gradients in hand, standard optimization algorithms (gradient descent, Adam, L-BFGS) can iteratively adjust scene parameters to achieve a desired result.
+
+This unlocks a powerful class of **inverse problems**: recovering 3D geometry from photographs, estimating material properties from images, optimizing lighting setups, training neural 3D representations, and integrating rendering directly into machine learning training loops. Differentiable rendering is not the same as neural rendering — [NeRF](/learn/neural-radiance-fields) and [Gaussian Splatting](/learn/gaussian-splatting) *use* differentiable rendering as a tool, but the technique itself is a general mathematical framework that applies to any rendering algorithm made gradient-aware.
+
+<PipelineDiagram
+  steps={[
+    { icon: "GitBranch", label: "Scene Params", sublabel: "Geometry, materials" },
+    { icon: "Monitor", label: "Render", sublabel: "Forward pass" },
+    { icon: "ImageIcon", label: "Compare", sublabel: "Loss vs. target" },
+    { icon: "RefreshCw", label: "Gradients", sublabel: "Backward pass" },
+    { icon: "Target", label: "Update", sublabel: "Optimize params" }
+  ]}
+  accentColor="rose"
+  caption="The optimization loop: render, compare to target, compute gradients, update parameters, repeat until convergence."
+/>
+
 ## How It Works
 
-Differentiable rendering makes the rendering process differentiable with respect to scene parameters — geometry, materials, lighting, and camera. This means gradients of the rendered image can be computed through backpropagation, enabling optimization of 3D scene parameters to match a target image using gradient descent.
+Differentiable rendering adds a backward pass to the standard rendering pipeline, creating an optimization loop:
 
-In practice, a differentiable renderer takes scene parameters as input, produces an image, compares it to a target (using a loss function like L2 or perceptual loss), and propagates gradients backward through the entire rendering pipeline to update the scene parameters. This "analysis by synthesis" approach connects rendering to machine learning optimization.
+1. **Forward pass** — Render the scene as normal — rasterize triangles or trace rays, evaluate materials, composite the final image. But unlike a conventional renderer, record the computational graph: every mathematical operation that connects scene parameters to pixel values.
+
+2. **Loss computation** — Compare the rendered image to a target image (or other objective) using a differentiable loss function. The simplest choice is mean squared error (MSE) between pixel colors, but perceptual losses (LPIPS), structural similarity (SSIM), or task-specific objectives can also be used.
+
+3. **Backward pass (backpropagation)** — Propagate the loss gradient backward through the entire rendering pipeline — through compositing, shading, material evaluation, geometric transformations, and visibility — all the way back to the scene parameters. This is the same backpropagation used to train neural networks, applied to the rendering computation graph.
+
+4. **Parameter update** — Use the gradients with an optimizer (Adam, SGD, L-BFGS) to adjust scene parameters. Vertex positions shift to better match the target shape, material colors converge toward the target appearance, light intensities settle at values that reproduce the target illumination.
+
+5. **Iterate** — Repeat steps 1 through 4 for hundreds to thousands of iterations until the rendered image converges to match the target. The loss decreases with each iteration as the optimizer follows the gradient toward the solution.
+
+### The Silhouette Problem
+
+The most significant technical challenge in differentiable rendering is handling **silhouette edges** — the boundaries where an object either covers or does not cover a pixel. At these boundaries, the rendering function has a discontinuity: a tiny change in vertex position can cause a pixel to flip from "covered" to "uncovered," creating a step function that has no meaningful gradient.
+
+Different renderers solve this differently. **SoftRasterizer** replaces the hard coverage test with a smooth probability function, making silhouettes differentiable but introducing blur. **redner** uses edge sampling to explicitly compute the gradient contribution at silhouette boundaries. **nvdiffrast** uses antialiased rasterization to smooth the discontinuity. **Mitsuba 3** handles this through a reparameterization of the rendering integral. No single approach is universally best — each makes different tradeoffs between accuracy, performance, and ease of implementation.
 
 ## Key Concepts
 
-- **Reparameterization** reformulates the rendering integral to make it differentiable with respect to scene parameters, particularly at geometric boundaries (silhouette edges)
-- **Edge sampling** explicitly handles discontinuities where objects occlude each other — a key challenge since naive differentiation produces incorrect gradients at silhouettes
-- **Automatic differentiation** systems (PyTorch, JAX, Dr.Jit) provide the infrastructure for computing gradients through complex rendering code
-- **Inverse rendering** uses differentiable rendering to recover scene properties (shape, reflectance, illumination) from photographs
+**Gradient** — A vector of partial derivatives indicating how much and in which direction each parameter should change to reduce the loss. Gradients are the fundamental quantity that makes optimization possible — without them, finding the right scene parameters would require exhaustive search rather than directed optimization.
 
-## Strengths and Trade-offs
+**Inverse Rendering** — The problem of recovering scene properties — 3D shape, materials, lighting — from one or more images. This is the "inverse" of the forward rendering problem. Differentiable rendering enables solving inverse rendering via gradient-based optimization rather than hand-crafted algorithms, making it applicable to a wide range of scene configurations.
 
-Differentiable rendering bridges the gap between 3D graphics and machine learning, enabling applications that were previously impossible: reconstructing 3D scenes from photographs, optimizing materials to achieve a desired appearance, training neural networks that incorporate rendering in their forward pass, and more.
+**Rasterization Discontinuities** — The hard edges at object silhouettes where a pixel transitions from covered to uncovered. These cause the rendering function to be non-differentiable at boundaries. Handling these discontinuities correctly is the central technical challenge of differentiable rendering, and different approaches (soft rasterization, edge sampling, antialiased rasterization) represent different solutions with different tradeoffs.
 
-The trade-offs include higher computational cost compared to non-differentiable rendering (gradient computation and storage add overhead), numerical challenges at geometric boundaries, and the need for careful handling of discrete operations (visibility, shadow computation) that are not naturally differentiable.
+**Automatic Differentiation (Autodiff)** — A technique for automatically computing derivatives by recording and replaying the computational graph. Libraries like Dr.Jit (used by Mitsuba 3), PyTorch (used by PyTorch3D and SoftRasterizer), and JAX provide autodiff infrastructure. Unlike symbolic differentiation or finite differences, autodiff computes exact derivatives at machine precision with computational cost proportional to the forward pass.
+
+**Differentiable Rasterization vs. Differentiable Ray Tracing** — Two fundamental approaches. Differentiable rasterization (nvdiffrast, SoftRasterizer, PyTorch3D) is faster and integrates well with GPU graphics pipelines but is limited in the light transport effects it can differentiate through. Differentiable ray tracing (Mitsuba 3, redner) can differentiate through global illumination, reflections, and participating media but is computationally more expensive.
+
+## Strengths
+
+Differentiable rendering's defining strength is enabling **optimization-based solutions to inverse problems**. Before differentiable rendering, recovering 3D geometry from images required hand-engineered feature matching, stereo correspondence, or structure-from-motion algorithms — each specialized for specific scenarios. Differentiable rendering provides a general framework: define a loss function that measures what you want, and let gradient descent find the scene parameters that achieve it.
+
+The technique also serves as a **bridge between rendering and machine learning**. Neural networks can be trained with rendering in the loop — a network predicts scene parameters, a differentiable renderer produces an image, the image is compared to ground truth, and gradients flow back through the renderer into the network. This pattern underlies NeRF, Gaussian Splatting, and many other neural 3D methods.
+
+Because differentiable renderers can optimize arbitrary scene parameters, they enable novel workflows like **material estimation from photographs** (capture an object under known lighting, optimize material parameters to match), **lighting design** (specify a desired illumination pattern and optimize light positions), and **shape optimization** (evolve geometry to achieve desired visual or physical properties).
+
+## Tradeoffs
+
+Differentiable rendering is **computationally expensive**. The backward pass typically costs 2 to 4 times the forward pass, and the computational graph must be stored in memory for backpropagation. For a physically based renderer with complex light transport, this means both time and memory requirements increase substantially compared to non-differentiable rendering.
+
+**Handling discontinuities remains an active research challenge.** While existing approaches (soft rasterization, edge sampling) work well for many cases, difficult scenarios — complex occlusion patterns, many overlapping transparent surfaces, intricate shadow boundaries — can still produce noisy or incorrect gradients.
+
+The technique requires **careful setup**. Choosing the right loss function, learning rate, optimization schedule, and regularization terms significantly affects convergence. A poorly configured optimization can get stuck in local minima, produce physically implausible results, or simply fail to converge. Unlike training a neural network where established recipes exist, differentiable rendering optimization often requires problem-specific tuning.
 
 ## History
 
-Early work on differentiable rendering appeared in the 2010s with OpenDR (Loper and Black, 2014) and Neural Mesh Renderer (Kato et al., 2018). The field accelerated rapidly with SoftRas (2019), redner (Li et al., 2018), and PyTorch3D (2020). Mitsuba 3 (2022) brought differentiable rendering to a production-quality physically based renderer using the Dr.Jit compiler. Today, differentiable rendering is a foundational tool in 3D computer vision and the backbone of techniques like NeRF and Gaussian Splatting.
+The conceptual roots of differentiable rendering trace to early work on inverse rendering and image-based optimization. OpenDR (Loper and Black, 2014) was an early practical system for differentiable rendering of approximate models. Kato et al.'s Neural Mesh Renderer (2018) and SoftRasterizer (Liu et al., 2019) demonstrated differentiable rasterization for 3D reconstruction tasks. Li et al.'s redner (2018) solved the silhouette edge problem for differentiable ray tracing through edge sampling. PyTorch3D (Ravi et al., 2020) and nvdiffrast (Laine et al., 2020) brought high-performance differentiable rasterization to the research community. Mitsuba 3 (Jakob et al., 2022) extended differentiable rendering to a full physically based renderer with spectral rendering, polarization, and multiple scattering, all built on the Dr.Jit just-in-time compiler for automatic differentiation. Today, differentiable rendering is a foundational tool in 3D computer vision and is the backbone of techniques like NeRF and Gaussian Splatting that have transformed the field.

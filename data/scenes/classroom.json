@@ -2,24 +2,96 @@
   "id": "classroom",
   "name": "Classroom",
   "description": "A Blender Foundation demo scene depicting a detailed school classroom interior with mixed lighting: directional sunlight through windows combined with artificial interior lights. Tests a wide range of rendering capabilities including caustics, volumetric effects, and complex material interactions.",
-  "tests": ["global_illumination", "caustics", "volumetric", "complex_geometry", "textures"],
+  "tests": [
+    "global_illumination",
+    "caustics",
+    "volumetric",
+    "complex_geometry",
+    "textures"
+  ],
   "complexity": "high",
   "vertices": 756242,
   "faces": 756242,
   "lights": 2,
-  "light_types": ["directional", "area"],
+  "light_types": [
+    "directional",
+    "area"
+  ],
   "textures": 32,
   "source": "Blender Foundation Demo Files",
   "source_url": "https://www.blender.org/download/demo-files/",
   "license": "CC0-1.0",
-  "available_formats": ["blend", "gltf", "obj"],
+  "available_formats": [
+    "blend",
+    "gltf",
+    "obj"
+  ],
   "downloads": {
     "blend": "https://download.blender.org/demo/test/classroom.zip"
   },
   "camera": {
-    "position": [4.6, 1.6, -3.5],
-    "look_at": [0, 1.2, 0],
-    "up": [0, 1, 0],
+    "position": [
+      4.6,
+      1.6,
+      -3.5
+    ],
+    "look_at": [
+      0,
+      1.2,
+      0
+    ],
+    "up": [
+      0,
+      1,
+      0
+    ],
     "fov": 50
-  }
+  },
+  "thumbnail": "/renders/classroom/thumbnail.webp",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "renders": [
+    {
+      "renderer_id": "appleseed",
+      "image_web": "/renders/classroom/appleseed_1920x1080.webp",
+      "image_thumb": "/renders/classroom/appleseed_400x225.webp",
+      "render_time_seconds": 274.9,
+      "samples_per_pixel": 1024,
+      "integrator": "pt"
+    },
+    {
+      "renderer_id": "blender-cycles",
+      "image_web": "/renders/classroom/blender-cycles_1920x1080.webp",
+      "image_thumb": "/renders/classroom/blender-cycles_400x225.webp",
+      "render_time_seconds": 34.7,
+      "samples_per_pixel": 1024,
+      "integrator": "path_tracing"
+    },
+    {
+      "renderer_id": "luxcorerender",
+      "image_web": "/renders/classroom/luxcorerender_1920x1080.webp",
+      "image_thumb": "/renders/classroom/luxcorerender_400x225.webp",
+      "render_time_seconds": 42.1,
+      "samples_per_pixel": 1024,
+      "integrator": "pathgpu"
+    },
+    {
+      "renderer_id": "mitsuba3",
+      "image_web": "/renders/classroom/mitsuba3_1920x1080.webp",
+      "image_thumb": "/renders/classroom/mitsuba3_400x225.webp",
+      "render_time_seconds": 167.3,
+      "samples_per_pixel": 1024,
+      "integrator": "path"
+    },
+    {
+      "renderer_id": "pbrt",
+      "image_web": "/renders/classroom/pbrt_1920x1080.webp",
+      "image_thumb": "/renders/classroom/pbrt_400x225.webp",
+      "render_time_seconds": 198.4,
+      "samples_per_pixel": 1024,
+      "integrator": "volpath"
+    }
+  ]
 }

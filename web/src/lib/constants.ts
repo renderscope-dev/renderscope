@@ -3,9 +3,9 @@ export const siteConfig = {
   description:
     "An open source platform for cataloging, comparing, and benchmarking rendering engines.",
   url: "https://renderscope.dev",
-  github: "https://github.com/renderscope/renderscope",
+  github: "https://github.com/renderscope-dev/renderscope",
   pypi: "https://pypi.org/project/renderscope/",
-  npm: "https://www.npmjs.com/package/renderscope-ui",
+  npm: "https://www.npmjs.com/package/renderscope",
   license: "Apache-2.0",
 } as const;
 
@@ -103,6 +103,8 @@ export const sortOptions = [
   { value: "name-desc", label: "Name (Z → A)" },
   { value: "stars-desc", label: "Most Stars" },
   { value: "stars-asc", label: "Fewest Stars" },
+  { value: "newest", label: "Newest First" },
+  { value: "oldest", label: "Oldest First" },
 ] as const;
 
 export const platformLabels: Record<string, string> = {
@@ -192,6 +194,135 @@ export const gpuApiLabels: Record<string, string> = {
   vulkan: "Vulkan",
   directx: "DirectX",
   opencl: "OpenCL",
+};
+
+/** Placeholder images for renderers without real sample renders */
+export const placeholderRenders = [
+  { src: "/images/placeholders/placeholder-render-1.svg", scene: "Cornell Box" },
+  { src: "/images/placeholders/placeholder-render-2.svg", scene: "Sponza Atrium" },
+  { src: "/images/placeholders/placeholder-render-3.svg", scene: "Stanford Bunny" },
+] as const;
+
+/** Color mapping for release freshness */
+export const releaseFreshnessColors: Record<string, string> = {
+  fresh: "text-emerald-400",
+  aging: "text-amber-400",
+  stale: "text-muted-foreground",
+};
+
+/** Color mapping for star trend */
+export const trendColors: Record<string, string> = {
+  up: "text-emerald-400",
+  down: "text-red-400",
+  stable: "text-muted-foreground",
+};
+
+export const trendIcons: Record<string, string> = {
+  up: "\u25B2",
+  down: "\u25BC",
+  stable: "\u2014",
+};
+
+/** Maps community_links field names → display label + Lucide icon name */
+export const communityLinkConfig: Record<
+  string,
+  { label: string; icon: string }
+> = {
+  discord: { label: "Discord", icon: "MessageSquare" },
+  forum: { label: "Forum", icon: "MessagesSquare" },
+  mailing_list: { label: "Mailing List", icon: "Mail" },
+  stackoverflow_tag: { label: "Stack Overflow", icon: "HelpCircle" },
+};
+
+/** Maps tutorial type → Lucide icon name */
+export const tutorialTypeIcons: Record<string, string> = {
+  video: "Play",
+  article: "FileText",
+  course: "GraduationCap",
+};
+
+// ═══════════════════════════════════════════════════════════════
+// LANDING PAGE CONTENT
+// ═══════════════════════════════════════════════════════════════
+
+export const landingContent = {
+  hero: {
+    title: "RenderScope",
+    tagline:
+      "The open platform for cataloging, comparing, and benchmarking rendering engines.",
+    primaryCta: { label: "Explore Renderers", href: "/explore" },
+    secondaryCta: { label: "Compare Engines", href: "/compare" },
+  },
+  stats: {
+    items: [
+      { label: "Renderers Cataloged", icon: "Layers" as const },
+      { label: "Rendering Techniques", icon: "Sparkles" as const },
+      { label: "Languages Covered", icon: "Code2" as const },
+      { label: "Open Source Projects", icon: "GitBranch" as const },
+    ],
+  },
+  comparison: {
+    heading: "See the Difference",
+    subtitle:
+      "Compare the same scene rendered by different engines — pixel by pixel.",
+    cta: { label: "Try the comparison tool", href: "/compare" },
+  },
+  taxonomy: {
+    heading: "Explore the Rendering Landscape",
+    subtitle:
+      "Navigate an interactive taxonomy of rendering engines. See how techniques, tools, and ecosystems connect.",
+    cta: { label: "Explore the taxonomy", href: "/explore" },
+  },
+  quickStart: {
+    heading: "Get Started in Seconds",
+    subtitle:
+      "Install the CLI to benchmark renderers and compare images from your terminal.",
+    commands: ["pip install renderscope", "renderscope list"],
+  },
+  recentUpdates: {
+    heading: "Latest Additions",
+    subtitle: "The catalog is always growing. Here's what's new.",
+  },
+} as const;
+
+/** Placeholder image data for the hero grid — will be replaced with real images later. */
+export const heroPlaceholderImages: {
+  renderer: string;
+  technique: string;
+  label: string;
+}[] = [
+  { renderer: "PBRT v4", technique: "path-tracing", label: "Path Tracing" },
+  { renderer: "Filament", technique: "rasterization", label: "Rasterization" },
+  { renderer: "Nerfstudio", technique: "neural", label: "Neural" },
+  {
+    renderer: "Mitsuba 3",
+    technique: "differentiable",
+    label: "Differentiable",
+  },
+  { renderer: "OSPRay", technique: "volume", label: "Volume" },
+  {
+    renderer: "Blender Cycles",
+    technique: "path-tracing",
+    label: "Path Tracing",
+  },
+];
+
+/** Placeholder image data for the featured comparison section. */
+export const comparisonPlaceholder = {
+  left: { renderer: "PBRT v4", technique: "path-tracing" },
+  right: { renderer: "Mitsuba 3", technique: "differentiable" },
+} as const;
+
+/** Technique key → gradient CSS classes for placeholder images. */
+export const techniquePlaceholderGradients: Record<string, string> = {
+  "path-tracing": "from-blue-900/40 via-blue-950/20 to-transparent",
+  rasterization: "from-emerald-900/40 via-emerald-950/20 to-transparent",
+  neural: "from-purple-900/40 via-purple-950/20 to-transparent",
+  differentiable: "from-pink-900/40 via-pink-950/20 to-transparent",
+  volume: "from-orange-900/40 via-orange-950/20 to-transparent",
+  educational: "from-amber-900/40 via-amber-950/20 to-transparent",
+  "ray-marching": "from-cyan-900/40 via-cyan-950/20 to-transparent",
+  "gaussian-splatting": "from-violet-900/40 via-violet-950/20 to-transparent",
 };
 
 export const statusConfig: Record<

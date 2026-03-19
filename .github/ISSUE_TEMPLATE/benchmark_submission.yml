@@ -1,0 +1,89 @@
+name: "Benchmark Submission"
+description: "Submit benchmark results you've run using the RenderScope CLI."
+title: "[Benchmark]: "
+labels: ["benchmark", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for contributing benchmark results! Community benchmarks help make RenderScope's data more comprehensive and representative.
+
+        **How to run benchmarks:**
+        ```bash
+        pip install renderscope
+        renderscope benchmark --scene cornell-box --renderer <name> --output results.json
+        ```
+
+        You can either attach the `results.json` file below or submit a Pull Request adding it to `/data/benchmarks/`.
+
+  - type: input
+    id: renderer
+    attributes:
+      label: "Renderer"
+      description: "Which renderer did you benchmark?"
+      placeholder: "e.g., pbrt, mitsuba3, luxcorerender"
+    validations:
+      required: true
+
+  - type: input
+    id: scene
+    attributes:
+      label: "Scene"
+      description: "Which scene(s) did you use?"
+      placeholder: "e.g., cornell-box, bathroom, living-room"
+    validations:
+      required: true
+
+  - type: textarea
+    id: hardware
+    attributes:
+      label: "Hardware Specifications"
+      description: "Describe your hardware setup. Be as specific as possible."
+      placeholder: |
+        CPU: AMD Ryzen 9 7950X
+        GPU: NVIDIA RTX 4090 (24GB)
+        RAM: 64GB DDR5-5600
+        OS: Ubuntu 22.04
+        Driver: NVIDIA 545.29.02
+    validations:
+      required: true
+
+  - type: textarea
+    id: results
+    attributes:
+      label: "Results Summary"
+      description: "Key metrics from your benchmark run."
+      placeholder: |
+        Render time: 45.2s
+        PSNR: 32.5 dB
+        SSIM: 0.965
+        Resolution: 1920x1080
+        Samples: 1024 spp
+    validations:
+      required: true
+
+  - type: textarea
+    id: results_file
+    attributes:
+      label: "Results File"
+      description: "Paste the contents of your `results.json` file or attach it to this issue."
+      render: json
+    validations:
+      required: false
+
+  - type: input
+    id: renderer_version
+    attributes:
+      label: "Renderer Version"
+      description: "Exact version or commit hash of the renderer used."
+      placeholder: "e.g., v4.0.0 or commit abc123"
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: "Notes"
+      description: "Any relevant details about the benchmark run (special settings, compilation flags, issues encountered, etc.)."
+    validations:
+      required: false

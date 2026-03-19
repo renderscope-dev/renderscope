@@ -3,36 +3,82 @@ title: "Rasterization"
 description: "The dominant real-time technique that projects 3D triangles onto a 2D screen at interactive frame rates."
 technique: "rasterization"
 furtherReading:
-  - title: "Real-Time Rendering (4th Edition)"
+  - title: "Real-Time Rendering, 4th Edition (Akenine-Moller et al.)"
     url: "https://www.realtimerendering.com/"
-    description: "The definitive reference on real-time rendering techniques including rasterization."
+    description: "The comprehensive textbook on real-time rendering techniques. Covers the full rasterization pipeline and modern GPU architectures."
     type: "book"
-  - title: "Learn OpenGL"
+  - title: "Learn OpenGL (Joey de Vries)"
     url: "https://learnopengl.com/"
-    description: "A comprehensive, free online tutorial for learning modern OpenGL and rasterization concepts."
+    description: "Excellent free tutorial series that walks through building a rasterization renderer from scratch using OpenGL."
+    type: "tutorial"
+  - title: "Vulkan Tutorial"
+    url: "https://vulkan-tutorial.com/"
+    description: "Step-by-step guide to the modern Vulkan graphics API, which gives explicit control over the GPU rasterization pipeline."
+    type: "tutorial"
+  - title: "A Trip Through the Graphics Pipeline (Fabian Giesen)"
+    url: "https://fgiesen.wordpress.com/2011/07/09/a-trip-through-the-graphics-pipeline-2011-index/"
+    description: "Legendary blog series explaining how the GPU hardware actually executes the rasterization pipeline at the silicon level."
+    type: "tutorial"
+  - title: "WebGPU Fundamentals"
+    url: "https://webgpufundamentals.org/"
+    description: "Introduction to the next-generation web graphics API that brings modern GPU programming to the browser."
     type: "tutorial"
 ---
 
+## What Is Rasterization?
+
+Rasterization is the rendering technique that powers virtually every real-time 3D application: video games, CAD software, virtual reality, web-based 3D viewers, and interactive simulations. It takes 3D geometry (triangles, typically) and efficiently determines which pixels on the screen each triangle covers, then shades those pixels to produce the final image.
+
+Unlike [path tracing](/learn/path-tracing), which simulates light physics from first principles, rasterization works "forward" from geometry to pixels. It processes each triangle independently, projecting it onto the screen and filling in the covered pixels. This approach is inherently parallelizable — GPUs are designed specifically to execute this pipeline across thousands of triangles and millions of pixels simultaneously.
+
+The result is speed: modern GPUs can rasterize complex scenes at 60 to 240+ frames per second, enabling interactive experiences that path tracing cannot yet achieve for equivalent scene complexity.
+
+<PipelineDiagram
+  steps={[
+    { icon: "Triangle", label: "Vertices", sublabel: "3D geometry" },
+    { icon: "Box", label: "Vertex Shader", sublabel: "Transform to clip space" },
+    { icon: "Grid3X3", label: "Rasterize", sublabel: "Generate fragments" },
+    { icon: "Paintbrush", label: "Fragment Shader", sublabel: "Compute pixel color" },
+    { icon: "Monitor", label: "Framebuffer", sublabel: "Depth test and output" }
+  ]}
+  accentColor="green"
+  caption="The GPU executes this pipeline in parallel across millions of triangles and fragments per frame."
+/>
+
 ## How It Works
 
-Rasterization converts 3D geometry into 2D pixels through a pipeline of transformation, projection, and fragment processing stages. Triangles — the fundamental building block — are projected from 3D world space onto the 2D screen, and each pixel covered by a triangle is filled (rasterized) with color computed by a fragment shader.
+Rasterization follows a well-defined pipeline, implemented in hardware by every modern GPU:
 
-The GPU executes this pipeline in a massively parallel fashion, processing millions of triangles per frame. The depth buffer (z-buffer) resolves visibility by storing the closest fragment at each pixel, ensuring correct occlusion without needing to sort geometry.
+1. **Vertex processing** — Each vertex of each triangle is transformed from its local 3D coordinate space through model, view, and projection matrices into **clip space** (a normalized coordinate system relative to the camera). Vertex shaders — small GPU programs written in GLSL, HLSL, or WGSL — can also compute per-vertex lighting, animation, and other attributes.
 
-## Key Concepts
+2. **Primitive assembly and clipping** — Vertices are grouped into primitives (triangles). Triangles partially or fully outside the camera's view frustum are clipped or culled entirely, avoiding wasted computation on invisible geometry.
 
-- **Vertex shaders** transform geometry from model space through view and projection matrices
-- **Fragment shaders** compute per-pixel color using material properties, lighting, and textures
-- **Depth buffering** determines visibility without requiring geometry sorting
-- **Deferred shading** decouples geometry processing from lighting, enabling many dynamic lights
-- **Physically based materials** (PBR) bring energy-conserving shading models to real-time rendering via metallic/roughness workflows
+3. **Rasterization** — Each triangle is "scan-converted" into **fragments**: the individual pixel-sized samples that the triangle covers on screen. For each fragment, the GPU interpolates vertex attributes (position, normal, texture coordinates, color) across the triangle's surface using barycentric coordinates.
 
-## Strengths and Trade-offs
+4. **Fragment shading** — A fragment shader runs for each fragment, computing its final color. This is where material appearance is defined: texture sampling, lighting calculations (using models like Blinn-Phong or physically-based BRDF models), normal mapping, shadow map lookups, screen-space ambient occlusion, and post-processing effects.
 
-Rasterization excels at speed — modern GPUs can render complex scenes at 60+ fps, making it the backbone of games, interactive applications, and web 3D. However, rasterization is fundamentally a local operation: each triangle is processed independently, making global effects like reflections, soft shadows, and global illumination require approximations (shadow maps, screen-space reflections, light probes).
+5. **Per-sample operations** — The depth test compares each fragment's depth against the depth buffer to resolve occlusion — determining which surface is in front. Blending handles transparent surfaces. Stencil operations enable masking effects.
 
-These approximations can produce artifacts visible to trained eyes, but the performance advantage is enormous — orders of magnitude faster than path tracing for equivalent scene complexity.
+6. **Framebuffer output** — The surviving fragments are written to the framebuffer, which is displayed on screen or passed to post-processing stages.
+
+This entire pipeline executes in under 16 milliseconds for a 60 FPS target — often processing millions of triangles and billions of fragment shader invocations per frame.
+
+## Strengths
+
+Rasterization's defining strength is **speed**. The pipeline is so well-suited to parallel execution that dedicated GPU hardware can process it orders of magnitude faster than general-purpose computation. This enables interactivity: users can move the camera, change lighting, animate characters, and see results instantly.
+
+Modern rasterization has also become remarkably capable at approximating effects that traditionally required ray tracing. Techniques like **screen-space reflections**, **screen-space ambient occlusion (SSAO)**, **shadow mapping**, **cascaded shadow maps**, **light probes**, **image-based lighting**, and **temporal anti-aliasing** produce results that are visually convincing in motion, even if not physically exact.
+
+The introduction of **hardware ray tracing** (NVIDIA RTX, AMD RDNA 2+) has enabled hybrid approaches where rasterization handles primary visibility and most shading, while selective ray tracing adds accurate reflections, shadows, or global illumination. This combination is the current state of the art in real-time rendering.
+
+## Tradeoffs
+
+Rasterization processes triangles independently — it has no inherent knowledge of the global light distribution in a scene. This means effects that depend on light bouncing between surfaces (global illumination, color bleeding, caustics) do not emerge naturally and must be approximated with specialized techniques, each with its own limitations and cost.
+
+Shadows require shadow maps (which have resolution and bias artifacts), reflections require screen-space or probe-based approximations (which fail for off-screen objects), and global illumination requires pre-baked lightmaps or real-time approximations (which trade accuracy for speed). Each of these approximations adds complexity to the rendering pipeline and introduces its own failure modes.
+
+For applications where physical accuracy is paramount — visual effects, product visualization, architectural lighting studies — rasterization alone is insufficient. The growing trend is toward hybrid rendering that combines rasterization's speed with selective ray tracing for effects that require global scene knowledge.
 
 ## History
 
-The z-buffer algorithm was invented by Ed Catmull in 1974. Hardware-accelerated rasterization became mainstream with consumer GPUs in the late 1990s (3dfx Voodoo, NVIDIA RIVA TNT). The programmable shader revolution in the early 2000s transformed fixed-function pipelines into the flexible GPU computing platforms we use today. Modern APIs like Vulkan, DirectX 12, and WebGPU give developers unprecedented control over the rendering pipeline.
+The z-buffer algorithm was invented by Ed Catmull in 1974. Hardware-accelerated rasterization became mainstream with consumer GPUs in the late 1990s — the 3dfx Voodoo and NVIDIA RIVA TNT brought 3D acceleration to home PCs. The programmable shader revolution in the early 2000s (NVIDIA GeForce 3, ATI Radeon 9700) transformed fixed-function pipelines into the flexible GPU computing platforms we use today. OpenGL and DirectX standardized the API surface, while modern APIs like Vulkan, DirectX 12, Metal, and WebGPU give developers unprecedented low-level control over the rendering pipeline. The 2018 introduction of hardware ray tracing in NVIDIA RTX GPUs marked the beginning of a convergence between rasterization and ray tracing, producing the hybrid rendering architectures that dominate contemporary game engines.

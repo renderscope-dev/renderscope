@@ -68,8 +68,14 @@ def list_cmd(
     """
     renderers = load_all_renderers()
 
-    # Detect installed renderers
-    detection = registry.detect_all()
+    # Detect installed renderers, filtering out mock/test-only adapters.
+    full_detection = registry.detect_all()
+    detection: dict[str, str | None] = {}
+    for adapter_name, version in full_detection.items():
+        adapter = registry.get(adapter_name)
+        if adapter is not None and adapter.is_mock:
+            continue
+        detection[adapter_name] = version
 
     # Apply filters
     if technique:

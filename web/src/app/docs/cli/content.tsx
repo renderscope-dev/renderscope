@@ -40,7 +40,7 @@ export function CLIReferenceContent() {
           {cliCommands.map((line, i) => (
             <div key={i} className="py-0.5">
               <span className="text-foreground/90">{line.cmd}</span>
-              <span className="ml-4 text-muted-foreground/40">
+              <span className="ml-4 text-muted-foreground">
                 # {line.comment}
               </span>
             </div>
@@ -48,7 +48,7 @@ export function CLIReferenceContent() {
         </div>
       </motion.div>
 
-      <p className="mt-6 text-center text-sm text-muted-foreground/60">
+      <p className="mt-6 text-center text-sm text-muted-foreground">
         Full documentation will be auto-generated from the Python package.
       </p>
 

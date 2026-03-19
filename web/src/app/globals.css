@@ -53,9 +53,9 @@
     --technique-path-tracing:       210 100% 65%;
     --technique-ray-tracing:        195 100% 60%;
     --technique-rasterization:      142 70% 50%;
-    --technique-neural:             280 85% 65%;
-    --technique-gaussian-splatting: 260 80% 70%;
-    --technique-differentiable:     330 85% 60%;
+    --technique-neural:             280 85% 75%;
+    --technique-gaussian-splatting: 260 80% 78%;
+    --technique-differentiable:     330 85% 72%;
     --technique-volume:             25 95% 55%;
     --technique-ray-marching:       185 80% 55%;
     --technique-educational:        45 95% 55%;
@@ -81,7 +81,7 @@
     --secondary-foreground: 240 6% 10%;
 
     --muted:              240 5% 96%;
-    --muted-foreground:   240 4% 46%;
+    --muted-foreground:   240 4% 44%;
 
     --accent:             240 5% 96%;
     --accent-foreground:  240 6% 10%;
@@ -142,6 +142,29 @@
     background: hsl(var(--muted-foreground) / 0.5);
   }
 
+  /* Skip-to-content link — accessibility */
+  .skip-nav {
+    position: absolute;
+    left: -9999px;
+    z-index: 9999;
+    padding: 0.75rem 1.5rem;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0 0 0.5rem 0;
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .skip-nav:focus {
+    left: 0;
+    top: 0;
+    opacity: 1;
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
   /* Focus visible ring — accessibility */
   :focus-visible {
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
@@ -151,6 +174,18 @@
   ::selection {
     background: hsl(var(--primary) / 0.3);
     color: hsl(var(--foreground));
+  }
+}
+
+/* ── REDUCED MOTION ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

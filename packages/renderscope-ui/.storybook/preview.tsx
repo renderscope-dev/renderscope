@@ -1,5 +1,7 @@
 import type { Preview } from "@storybook/react";
 import "../src/styles/theme.css";
+import "../src/styles/components.css";
+import "../src/components/TaxonomyGraph/graph-styles.css";
 
 const preview: Preview = {
   parameters: {

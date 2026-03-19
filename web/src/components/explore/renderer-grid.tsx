@@ -28,7 +28,7 @@ export function RendererGrid({
 
   if (view === "list") {
     return (
-      <div className={cn("flex flex-col gap-2", className)}>
+      <div data-testid="renderer-grid" className={cn("flex flex-col gap-2", className)}>
         {renderers.map((renderer, i) => (
           <RendererCardList
             key={renderer.id}
@@ -43,6 +43,7 @@ export function RendererGrid({
 
   return (
     <div
+      data-testid="renderer-grid"
       className={cn(
         "grid gap-4",
         "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",

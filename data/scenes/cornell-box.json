@@ -1,27 +1,98 @@
 {
   "id": "cornell-box",
   "name": "Cornell Box",
-  "description": "The classic global illumination test scene, originally measured at Cornell University. Tests fundamental light transport: color bleeding between diffuse walls, soft shadows from an area light source, and indirect illumination. The simplest meaningful GI benchmark \u2014 every physically based renderer should produce a recognizable result.",
-  "tests": ["global_illumination", "color_bleeding", "soft_shadows", "indirect_light"],
+  "description": "The classic global illumination test scene, originally measured at Cornell University. Tests fundamental light transport: color bleeding between diffuse walls, soft shadows from an area light source, and indirect illumination. The simplest meaningful GI benchmark — every physically based renderer should produce a recognizable result.",
+  "tests": [
+    "global_illumination",
+    "color_bleeding",
+    "soft_shadows",
+    "indirect_light"
+  ],
   "complexity": "trivial",
   "vertices": 24,
   "faces": 32,
   "lights": 1,
-  "light_types": ["area"],
+  "light_types": [
+    "area"
+  ],
   "textures": 0,
   "source": "Cornell University Program of Computer Graphics",
   "source_url": "https://www.graphics.cornell.edu/online/box/data.html",
   "license": "Public domain",
-  "available_formats": ["obj", "pbrt", "mitsuba_xml", "gltf"],
+  "available_formats": [
+    "obj",
+    "pbrt",
+    "mitsuba_xml",
+    "gltf"
+  ],
   "downloads": {
     "obj": "https://casual-effects.com/g3d/data10/common/model/CornellBox/CornellBox.zip",
     "pbrt": "https://benedikt-bitterli.me/resources/pbrt-v4/cornell-box.zip",
     "mitsuba_xml": "https://benedikt-bitterli.me/resources/mitsuba/cornell-box.zip"
   },
   "camera": {
-    "position": [278, 273, -800],
-    "look_at": [278, 273, 0],
-    "up": [0, 1, 0],
+    "position": [
+      278,
+      273,
+      -800
+    ],
+    "look_at": [
+      278,
+      273,
+      0
+    ],
+    "up": [
+      0,
+      1,
+      0
+    ],
     "fov": 39.3
-  }
+  },
+  "thumbnail": "/renders/cornell-box/thumbnail.webp",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "renders": [
+    {
+      "renderer_id": "appleseed",
+      "image_web": "/renders/cornell-box/appleseed_1920x1080.webp",
+      "image_thumb": "/renders/cornell-box/appleseed_400x225.webp",
+      "render_time_seconds": 56.8,
+      "samples_per_pixel": 1024,
+      "integrator": "pt"
+    },
+    {
+      "renderer_id": "blender-cycles",
+      "image_web": "/renders/cornell-box/blender-cycles_1920x1080.webp",
+      "image_thumb": "/renders/cornell-box/blender-cycles_400x225.webp",
+      "render_time_seconds": 8.4,
+      "samples_per_pixel": 1024,
+      "integrator": "path_tracing"
+    },
+    {
+      "renderer_id": "luxcorerender",
+      "image_web": "/renders/cornell-box/luxcorerender_1920x1080.webp",
+      "image_thumb": "/renders/cornell-box/luxcorerender_400x225.webp",
+      "render_time_seconds": 11.2,
+      "samples_per_pixel": 1024,
+      "integrator": "pathgpu"
+    },
+    {
+      "renderer_id": "mitsuba3",
+      "image_web": "/renders/cornell-box/mitsuba3_1920x1080.webp",
+      "image_thumb": "/renders/cornell-box/mitsuba3_400x225.webp",
+      "render_time_seconds": 38.6,
+      "samples_per_pixel": 1024,
+      "integrator": "path"
+    },
+    {
+      "renderer_id": "pbrt",
+      "image_web": "/renders/cornell-box/pbrt_1920x1080.webp",
+      "image_thumb": "/renders/cornell-box/pbrt_400x225.webp",
+      "render_time_seconds": 47.3,
+      "samples_per_pixel": 1024,
+      "integrator": "volpath"
+    }
+  ]
 }

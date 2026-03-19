@@ -12,13 +12,10 @@
       "tests": ["global_illumination", "color_bleeding", "soft_shadows", "indirect_light"],
       "complexity": "simple",
       "formats": {
-        "pbrt": "cornell-box/cornell-box.pbrt",
-        "mitsuba_xml": "cornell-box/cornell-box.xml",
-        "obj": "cornell-box/cornell-box.obj",
-        "gltf": "cornell-box/cornell-box.gltf"
+        "obj": "cornell-box/CornellBox-Original.obj"
       },
       "reference": {
-        "renderer": "pbrt",
+        "renderer": "blender-cycles",
         "samples": 65536,
         "image": "cornell-box/reference.exr"
       },
@@ -40,13 +37,10 @@
       "tests": ["global_illumination", "indirect_light", "textures", "complex_geometry"],
       "complexity": "moderate",
       "formats": {
-        "obj": "sponza/sponza.obj",
-        "pbrt": "sponza/sponza.pbrt",
-        "gltf": "sponza/sponza.gltf",
-        "mitsuba_xml": "sponza/sponza.xml"
+        "obj": "sponza/sponza.obj"
       },
       "reference": {
-        "renderer": "pbrt",
+        "renderer": "blender-cycles",
         "samples": 65536,
         "image": "sponza/reference.exr"
       },
@@ -68,13 +62,10 @@
       "tests": ["soft_shadows", "reflections", "indirect_light"],
       "complexity": "simple",
       "formats": {
-        "ply": "stanford-bunny/stanford-bunny.ply",
-        "obj": "stanford-bunny/stanford-bunny.obj",
-        "pbrt": "stanford-bunny/stanford-bunny.pbrt",
-        "gltf": "stanford-bunny/stanford-bunny.gltf"
+        "obj": "stanford-bunny/stanford-bunny.obj"
       },
       "reference": {
-        "renderer": "pbrt",
+        "renderer": "blender-cycles",
         "samples": 65536,
         "image": "stanford-bunny/reference.exr"
       },
@@ -96,9 +87,7 @@
       "tests": ["global_illumination", "caustics", "volumetric", "complex_geometry", "textures"],
       "complexity": "complex",
       "formats": {
-        "blend": "classroom/classroom.blend",
-        "gltf": "classroom/classroom.gltf",
-        "obj": "classroom/classroom.obj"
+        "blend": "classroom/classroom/classroom.blend"
       },
       "reference": {
         "renderer": "blender-cycles",
@@ -123,9 +112,7 @@
       "tests": ["reflections", "complex_geometry", "hdri_lighting", "textures"],
       "complexity": "complex",
       "formats": {
-        "blend": "bmw/bmw.blend",
-        "gltf": "bmw/bmw.gltf",
-        "obj": "bmw/bmw.obj"
+        "blend": "bmw/BMW27.blend"
       },
       "reference": {
         "renderer": "blender-cycles",
@@ -150,11 +137,10 @@
       "tests": ["global_illumination", "outdoor_lighting", "complex_geometry", "textures"],
       "complexity": "complex",
       "formats": {
-        "pbrt": "san-miguel/san-miguel.pbrt",
         "obj": "san-miguel/san-miguel.obj"
       },
       "reference": {
-        "renderer": "pbrt",
+        "renderer": "blender-cycles",
         "samples": 65536,
         "image": "san-miguel/reference.exr"
       },
@@ -176,7 +162,7 @@
       "tests": ["global_illumination", "reflections", "soft_shadows"],
       "complexity": "simple",
       "formats": {
-        "pbrt": "veach-mis/veach-mis.pbrt"
+        "pbrt": "veach-mis/veach-mis/scene-v4.pbrt"
       },
       "reference": {
         "renderer": "pbrt",

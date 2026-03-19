@@ -43,7 +43,7 @@ export function APIReferenceContent() {
           <div className="h-3 w-3 rounded-full bg-yellow-500/60" />
           <div className="h-3 w-3 rounded-full bg-green-500/60" />
         </div>
-        <pre className="overflow-x-auto p-4 font-mono text-sm text-foreground/90">
+        <pre role="region" aria-label="Code example" tabIndex={0} className="overflow-x-auto p-4 font-mono text-sm text-foreground/90">
           {codeExample}
         </pre>
       </motion.div>
@@ -55,14 +55,14 @@ export function APIReferenceContent() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.3 }}
       >
-        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground/70">
+        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Components
-        </h3>
+        </h2>
         <ul className="space-y-2">
           {componentList.map((comp) => (
             <li
               key={comp}
-              className="text-sm font-mono text-muted-foreground/60"
+              className="text-sm font-mono text-muted-foreground"
             >
               {comp}
             </li>

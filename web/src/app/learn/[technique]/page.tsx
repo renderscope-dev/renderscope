@@ -10,7 +10,15 @@ import {
   getAllTechniques,
   getRenderersByTechnique,
 } from "@/lib/learn-data";
-import { getRawMdxContent, extractHeadings, parseFrontmatter, getFurtherReading } from "@/lib/mdx";
+import {
+  getRawMdxContent,
+  extractHeadings,
+  parseFrontmatter,
+  getFurtherReading,
+} from "@/lib/mdx";
+import { generatePageMetadata, truncate } from "@/lib/seo";
+import { JsonLd } from "@/components/json-ld";
+import { generateBreadcrumbSchema } from "@/lib/structured-data";
 import { getMdxComponents } from "@/components/learn/mdx-components";
 import { TechniquePageLayout } from "@/components/learn";
 
@@ -29,17 +37,24 @@ export async function generateMetadata({
   const technique = getTechniqueBySlug(slug);
 
   if (!technique) {
-    return { title: "Not Found" };
+    return generatePageMetadata({
+      title: "Technique Not Found",
+      description: "The requested rendering technique could not be found.",
+      path: `/learn/${slug}`,
+    });
   }
 
-  return {
-    title: `${technique.name} — Learn`,
-    description: technique.shortDescription,
-    openGraph: {
-      title: `${technique.name} — Learn | RenderScope`,
-      description: technique.shortDescription,
-    },
-  };
+  return generatePageMetadata({
+    title: `${technique.name} — How It Works`,
+    description: truncate(technique.shortDescription, 160),
+    path: `/learn/${technique.id}`,
+    ogImage: `/og/learn-${technique.id}.png`,
+    keywords: [
+      technique.name,
+      "rendering technique",
+      "computer graphics",
+    ],
+  });
 }
 
 export default async function TechniquePage({ params }: TechniquePageProps) {
@@ -73,14 +88,23 @@ export default async function TechniquePage({ params }: TechniquePageProps) {
   });
 
   return (
-    <TechniquePageLayout
-      technique={technique}
-      allTechniques={allTechniques}
-      headings={headings}
-      relatedRenderers={relatedRenderers}
-      furtherReading={furtherReading}
-    >
-      {content}
-    </TechniquePageLayout>
+    <>
+      <JsonLd
+        data={generateBreadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Learn", path: "/learn" },
+          { name: technique.name, path: `/learn/${technique.id}` },
+        ])}
+      />
+      <TechniquePageLayout
+        technique={technique}
+        allTechniques={allTechniques}
+        headings={headings}
+        relatedRenderers={relatedRenderers}
+        furtherReading={furtherReading}
+      >
+        {content}
+      </TechniquePageLayout>
+    </>
   );
 }

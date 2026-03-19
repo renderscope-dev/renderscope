@@ -1,10 +1,26 @@
 /**
  * Utility functions for renderscope-ui components.
  *
- * Utilities will be added in Phase 22:
- * - imageProcessing — Client-side diff, SSIM computation
- * - colorMaps — Viridis, Inferno, etc. for heatmaps
- * - formatters — Number formatting, unit display
- *
  * @packageDocumentation
  */
+
+export { cx } from "./classnames";
+
+export {
+  loadImageData,
+  computeAbsoluteDiff,
+  computeLuminanceDiff,
+  computeMSE,
+  computePSNR,
+  computeSSIM,
+  generateSSIMHeatmap,
+  computeAllMetrics,
+} from "./imageProcessing";
+export type { LoadedImage } from "./imageProcessing";
+
+export {
+  getColor,
+  getColorMap,
+  COLOR_MAP_NAMES,
+} from "./colorMaps";
+export type { RGB } from "./colorMaps";

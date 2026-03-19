@@ -1,79 +1,66 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Image as ImageIcon, Boxes, Columns, Info } from "lucide-react";
-import { PageHeader } from "@/components/page-header";
-import { FeaturePreviewCard } from "@/components/feature-preview-card";
+import { motion, useReducedMotion } from "framer-motion";
+import { Image as ImageIcon } from "lucide-react";
+import { SceneCard } from "@/components/gallery/scene-card";
+import type { SceneData } from "@/types/scene";
 
-const features = [
-  {
-    icon: <Boxes className="h-5 w-5" />,
-    title: "Standard Scenes",
-    description:
-      "Cornell Box, Sponza Atrium, Stanford Bunny, and more — the classic test scenes of computer graphics.",
-    accentColor: "emerald",
-  },
-  {
-    icon: <Columns className="h-5 w-5" />,
-    title: "Cross-Renderer Views",
-    description:
-      "Every scene rendered by multiple engines with identical camera, resolution, and sample count.",
-    accentColor: "emerald",
-  },
-  {
-    icon: <Info className="h-5 w-5" />,
-    title: "Full Metadata",
-    description:
-      "Render time, memory usage, settings, and image quality metrics for every render.",
-    accentColor: "emerald",
-  },
-];
+interface GalleryGridContentProps {
+  scenes: Array<{ scene: SceneData; renderCount: number }>;
+}
 
-const sceneNames = ["Cornell Box", "Sponza Atrium", "Stanford Bunny", "Classroom"];
+export function GalleryGridContent({ scenes }: GalleryGridContentProps) {
+  const prefersReducedMotion = useReducedMotion();
 
-export function GalleryPageContent() {
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
-      <PageHeader
-        icon={<ImageIcon className="h-12 w-12" />}
-        title="Render Gallery"
-        subtitle="The same canonical scenes rendered by different engines at identical settings. See how each renderer interprets light, materials, and geometry."
-        accentColor="emerald"
-        badge="Coming Soon"
-      />
-
-      {/* Feature hint cards */}
-      <div className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {features.map((feat) => (
-          <FeaturePreviewCard
-            key={feat.title}
-            icon={feat.icon}
-            title={feat.title}
-            description={feat.description}
-            accentColor={feat.accentColor}
-          />
-        ))}
-      </div>
-
-      {/* Placeholder scene image grid */}
+    <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      {/* Page header */}
       <motion.div
-        className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.2 }}
+        className="mb-12 text-center"
+        initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        {sceneNames.map((scene) => (
-          <div key={scene} className="space-y-2">
-            <div className="flex aspect-video items-center justify-center rounded-xl border border-dashed border-border/30 bg-card/30">
-              <ImageIcon className="h-8 w-8 text-muted-foreground/30" />
-            </div>
-            <p className="text-center text-sm text-muted-foreground/60">
-              {scene}
-            </p>
-          </div>
-        ))}
+        <div className="mb-4 text-emerald-500/60">
+          <ImageIcon className="mx-auto h-12 w-12" />
+        </div>
+        <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+          Gallery
+        </h1>
+        <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground sm:text-xl">
+          Explore the same scenes rendered by different engines &mdash; see how
+          path tracers, rasterizers, and neural renderers interpret identical
+          geometry and lighting.
+        </p>
+        <div className="mt-4 h-px w-12 mx-auto bg-gradient-to-r from-emerald-500 to-emerald-400" />
+        <p className="mt-6 text-sm text-muted-foreground">
+          {scenes.length} standard scene{scenes.length !== 1 ? "s" : ""}
+        </p>
       </motion.div>
+
+      {/* Scene grid */}
+      {scenes.length > 0 ? (
+        <div data-testid="scene-grid" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {scenes.map(({ scene, renderCount }, index) => (
+            <SceneCard
+              key={scene.id}
+              scene={scene}
+              renderCount={renderCount}
+              index={index}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <ImageIcon className="mb-4 h-12 w-12 text-muted-foreground/20" />
+          <p className="text-lg font-medium text-muted-foreground">
+            Standard benchmark scenes are being prepared.
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Check back soon!
+          </p>
+        </div>
+      )}
     </div>
   );
 }

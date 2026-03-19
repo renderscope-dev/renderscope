@@ -1,7 +1,19 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getRendererBySlug, getAllRendererSlugs } from "@/lib/data";
-import { siteConfig } from "@/lib/constants";
+import {
+  getRendererBySlug,
+  getAllRendererSlugs,
+  getRenderersByIds,
+} from "@/lib/data";
+import { getBenchmarksForRenderer } from "@/lib/benchmark-data";
+import { getRendererSampleImages } from "@/lib/scenes";
+import { highlightCode } from "@/lib/syntax-highlight";
+import { generatePageMetadata, truncate } from "@/lib/seo";
+import { JsonLd } from "@/components/json-ld";
+import {
+  generateSoftwareApplicationSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/structured-data";
 import { ProfileLayout } from "@/components/renderer/profile-layout";
 
 interface RendererPageProps {
@@ -19,41 +31,41 @@ export async function generateMetadata({
   const renderer = getRendererBySlug(slug);
 
   if (!renderer) {
-    return { title: "Renderer Not Found" };
+    return generatePageMetadata({
+      title: "Renderer Not Found",
+      description: "The requested renderer could not be found.",
+      path: `/renderer/${slug}`,
+    });
   }
 
-  const title = `${renderer.name} — Renderer Profile`;
-  const description =
-    renderer.description ||
-    `Detailed profile, features, benchmarks, and community data for ${renderer.name}.`;
+  const techniqueLabels = renderer.technique
+    .map((t) =>
+      t
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase())
+    )
+    .join(", ");
 
-  return {
+  const title = `${renderer.name} — ${techniqueLabels} Renderer`;
+  const description = truncate(
+    `${renderer.description}. ${renderer.best_for}. Written in ${renderer.language}, licensed under ${renderer.license}.`,
+    160
+  );
+
+  return generatePageMetadata({
     title,
     description,
+    path: `/renderer/${renderer.id}`,
+    ogImage: `/og/renderer-${renderer.id}.png`,
     keywords: [
       renderer.name,
       ...renderer.technique,
       renderer.language,
-      "rendering engine",
-      "comparison",
+      "renderer",
+      "open source",
       ...renderer.tags.slice(0, 5),
     ],
-    openGraph: {
-      title: `${renderer.name} — Renderer Profile | ${siteConfig.name}`,
-      description,
-      url: `${siteConfig.url}/renderer/${slug}/`,
-      siteName: siteConfig.name,
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${renderer.name} — Renderer Profile | ${siteConfig.name}`,
-      description,
-    },
-    alternates: {
-      canonical: `${siteConfig.url}/renderer/${slug}/`,
-    },
-  };
+  });
 }
 
 export default async function RendererProfilePage({
@@ -66,5 +78,37 @@ export default async function RendererProfilePage({
     notFound();
   }
 
-  return <ProfileLayout renderer={renderer} />;
+  // Resolve related renderers from IDs to full objects
+  const relatedRenderers = renderer.related
+    ? getRenderersByIds(renderer.related)
+    : [];
+
+  // Pre-highlight install command at build time (Shiki is async)
+  const highlightedInstallHtml = renderer.install_command
+    ? await highlightCode(renderer.install_command, "bash")
+    : undefined;
+
+  // Load benchmark data and scene-derived sample images for this renderer
+  const benchmarks = getBenchmarksForRenderer(renderer.id);
+  const sceneSampleImages = getRendererSampleImages(renderer.id);
+
+  return (
+    <>
+      <JsonLd data={generateSoftwareApplicationSchema(renderer)} />
+      <JsonLd
+        data={generateBreadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Explore", path: "/explore" },
+          { name: renderer.name, path: `/renderer/${renderer.id}` },
+        ])}
+      />
+      <ProfileLayout
+        renderer={renderer}
+        relatedRenderers={relatedRenderers}
+        highlightedInstallHtml={highlightedInstallHtml}
+        benchmarks={benchmarks}
+        sceneSampleImages={sceneSampleImages}
+      />
+    </>
+  );
 }

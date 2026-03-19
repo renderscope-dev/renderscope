@@ -21,6 +21,7 @@ export function RendererThumbnail({
   if (thumbnail) {
     return (
       <div className={cn("relative overflow-hidden bg-card", className)}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={thumbnail}
           alt={alt}

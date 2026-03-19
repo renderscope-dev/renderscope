@@ -1,0 +1,93 @@
+name: Publish npm Package
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  # ── Job 1: Build & Verify ──────────────────────────────────────────
+  build-and-verify:
+    name: Build, Test & Verify
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      startsWith(github.event.release.tag_name, 'renderscope-ui@')
+    defaults:
+      run:
+        working-directory: packages/renderscope-ui
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: .
+
+      - name: Build package
+        run: npm run build
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Check bundle sizes
+        run: npm run size
+
+      - name: Verify tree-shaking
+        run: npm run verify:treeshake
+
+      - name: Build Storybook (verify compilation)
+        run: npm run build-storybook
+
+      - name: Pack and test fresh install
+        run: |
+          npm pack
+          node scripts/verify-fresh-install.mjs
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-package
+          path: packages/renderscope-ui/*.tgz
+          retention-days: 7
+
+  # ── Job 2: Publish to npm ──────────────────────────────────────────
+  publish:
+    name: Publish to npm
+    needs: build-and-verify
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    permissions:
+      id-token: write
+    defaults:
+      run:
+        working-directory: packages/renderscope-ui
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: .
+
+      - name: Build package
+        run: npm run build
+
+      - name: Publish to npm
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
