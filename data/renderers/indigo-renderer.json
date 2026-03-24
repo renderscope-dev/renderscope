@@ -4,16 +4,32 @@
   "version": "4.4",
   "description": "Unbiased spectral path tracer with physically accurate light simulation, offering a free tier alongside its commercial product",
   "long_description": "Indigo Renderer is a commercial, physically-based, unbiased spectral path tracer developed by Glare Technologies (New Zealand). First released around 2006, it is one of the few production renderers that works in the full spectral domain rather than the standard RGB color space, enabling physically accurate simulation of dispersion, fluorescence, thin-film interference, and other wavelength-dependent phenomena that RGB renderers can only approximate.\n\nIndigo uses Metropolis Light Transport (MLT) and bidirectional path tracing for efficient handling of difficult lighting scenarios such as caustics through glass, complex indirect light paths, and enclosed environments. Its material system is based on physical models with support for subsurface scattering, volumetric rendering, and IES light profiles. The renderer is available as a standalone application and as plugins for Blender, SketchUp, Cinema 4D, 3ds Max, and Revit, with GPU acceleration via OpenCL supporting both NVIDIA and AMD hardware.\n\nIndigo Renderer is the only proprietary renderer in the RenderScope catalog. Its inclusion is justified by two factors: first, its spectral rendering capability represents a category that has no fully open-source equivalent at the same production quality level; second, the free tier (Indigo Free) provides genuine access to the full rendering engine with resolution limits and watermarks, enabling educational comparison. The free tier is useful for understanding what commercial spectral renderers offer versus open-source alternatives like Mitsuba 3 and LuxCoreRender, but it is not suitable for production work without a commercial license.",
-  "technique": ["path_tracing"],
+  "technique": [
+    "path_tracing"
+  ],
   "language": "C++",
   "license": "Proprietary",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["opencl"],
+  "gpu_apis": [
+    "opencl"
+  ],
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["igs", "blend", "skp"],
-  "output_formats": ["exr", "png", "hdr"],
+  "scene_formats": [
+    "igs",
+    "blend",
+    "skp"
+  ],
+  "output_formats": [
+    "exr",
+    "png",
+    "hdr"
+  ],
   "homepage": "https://www.indigorenderer.com",
   "repository": "https://www.indigorenderer.com",
   "documentation": "https://www.indigorenderer.com/documentation",
@@ -50,7 +66,12 @@
   ],
   "best_for": "Reference comparison of spectral rendering quality against open-source alternatives, architectural visualization requiring physically accurate light behavior, and educational exploration of commercial spectral rendering",
   "not_ideal_for": "Open-source workflows, academic research requiring source code access, budget-constrained production work, or users who need to modify or extend the renderer",
-  "related": ["luxcorerender", "mitsuba3", "pbrt", "blender-cycles"],
+  "related": [
+    "luxcorerender",
+    "mitsuba3",
+    "pbrt",
+    "blender-cycles"
+  ],
   "features": {
     "global_illumination": true,
     "path_tracing": true,
@@ -91,7 +112,13 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["Blender", "SketchUp", "Cinema 4D", "3ds Max", "Revit"],
+  "integrations": [
+    "Blender",
+    "SketchUp",
+    "Cinema 4D",
+    "3ds Max",
+    "Revit"
+  ],
   "install_command": "Download from https://www.indigorenderer.com/download",
   "community_links": {
     "forum": "https://www.indigorenderer.com/forum"
@@ -103,5 +130,10 @@
       "url": "https://www.indigorenderer.com/documentation",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/indigo-renderer.webp",
+  "sample_renders": [
+    "/renders/samples/indigo-renderer_sample_1.webp",
+    "/renders/samples/indigo-renderer_sample_2.webp"
   ]
 }

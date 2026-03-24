@@ -177,9 +177,45 @@ class MitsubaAdapter(RendererAdapter):
             mi.set_log_level(mi.LogLevel.Warn)
 
         # Load scene (timed separately)
+        # For non-XML formats (OBJ, PLY, etc.), wrap in a Mitsuba scene dict
+        # with integrator, camera, and emitter since bare meshes lack these.
         load_start = time.perf_counter()
         try:
-            scene = mi.load_file(str(scene_path))
+            if ext in (".xml",):
+                scene = mi.load_file(str(scene_path))
+            else:
+                # Build a scene dict for mesh-only formats
+                scene_dict: dict[str, object] = {
+                    "type": "scene",
+                    "integrator": {
+                        "type": "path",
+                        "max_depth": settings.extra.get("max_bounces", 8),
+                    },
+                    "mesh": {
+                        "type": ext.lstrip("."),
+                        "filename": str(scene_path),
+                    },
+                    "emitter": {
+                        "type": "constant",
+                        "radiance": {"type": "rgb", "value": [0.8, 0.78, 0.72]},
+                    },
+                }
+                # Add camera from settings if available
+                cam_pos = settings.extra.get("camera_position")
+                cam_target = settings.extra.get("camera_target")
+                cam_fov = settings.extra.get("camera_fov", 45)
+                if cam_pos and cam_target:
+                    w = settings.width or 1920
+                    h = settings.height or 1080
+                    scene_dict["sensor"] = {
+                        "type": "perspective",
+                        "fov": float(cam_fov),
+                        "to_world": mi.ScalarTransform4f.look_at(
+                            origin=cam_pos, target=cam_target, up=[0, 1, 0]
+                        ),
+                        "film": {"type": "hdrfilm", "width": w, "height": h},
+                    }
+                scene = mi.load_dict(scene_dict)
         except Exception as exc:
             raise RenderError(
                 self.display_name,

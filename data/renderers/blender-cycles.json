@@ -4,16 +4,46 @@
   "version": "4.2.0",
   "description": "Production path tracer integrated into Blender with exceptionally broad GPU vendor support",
   "long_description": "Blender Cycles is the physically based production renderer built into Blender, the open-source 3D creation suite. Originally developed by Brecht Van Lommel starting in 2011, Cycles has grown into one of the most widely used open-source path tracers, powering professional animation, VFX, and architectural visualization workflows. It is deeply integrated with Blender's modeling, sculpting, texturing, and compositing tools, providing a complete end-to-end pipeline.\n\nCycles stands out for its exceptionally broad GPU support — it can render on NVIDIA GPUs (via CUDA and OptiX), AMD GPUs (via HIP), Intel Arc GPUs (via oneAPI), and Apple Silicon (via Metal), making it the most hardware-agnostic GPU path tracer in the open-source ecosystem. The renderer features the Principled BSDF (based on Disney's material model), node-based material authoring, built-in Intel Open Image Denoise integration, and support for OpenColorIO color management. It handles volumetric rendering, subsurface scattering, motion blur, depth of field, and hair/fur rendering.\n\nBacked by the Blender Foundation with corporate sponsorship from AMD, Apple, Intel, Meta, and NVIDIA, Cycles receives continuous investment and optimization. Its user community numbers in the millions, producing an unmatched wealth of tutorials, material libraries, and add-ons. While Cycles is primarily accessed through Blender, a standalone library version exists for embedding in other applications.",
-  "technique": ["path_tracing"],
+  "technique": [
+    "path_tracing"
+  ],
   "language": "C/C++",
   "license": "Apache-2.0",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["cuda", "optix", "hip", "oneapi", "metal"],
+  "gpu_apis": [
+    "cuda",
+    "optix",
+    "hip",
+    "oneapi",
+    "metal"
+  ],
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["blend", "obj", "gltf", "glb", "fbx", "collada", "stl", "ply", "usd", "abc"],
-  "output_formats": ["exr", "png", "jpg", "tiff", "bmp", "hdr"],
+  "scene_formats": [
+    "blend",
+    "obj",
+    "gltf",
+    "glb",
+    "fbx",
+    "collada",
+    "stl",
+    "ply",
+    "usd",
+    "abc"
+  ],
+  "output_formats": [
+    "exr",
+    "png",
+    "jpg",
+    "tiff",
+    "bmp",
+    "hdr"
+  ],
   "homepage": "https://www.blender.org",
   "repository": "https://projects.blender.org/blender/blender",
   "documentation": "https://docs.blender.org/manual/en/latest/render/cycles/",
@@ -53,7 +83,12 @@
   ],
   "best_for": "Artists and studios wanting a complete production pipeline from modeling to final render with broad GPU hardware support and an active community",
   "not_ideal_for": "Headless research benchmarking workflows, spectral rendering research, or developers needing a lightweight embeddable rendering library",
-  "related": ["pbrt", "mitsuba3", "luxcorerender", "appleseed"],
+  "related": [
+    "pbrt",
+    "mitsuba3",
+    "luxcorerender",
+    "appleseed"
+  ],
   "features": {
     "global_illumination": true,
     "path_tracing": true,
@@ -94,7 +129,9 @@
     "open_shading_language": true,
     "materialx": false
   },
-  "integrations": ["Blender"],
+  "integrations": [
+    "Blender"
+  ],
   "install_command": "Download from https://www.blender.org/download/ — Cycles is included with Blender",
   "community_links": {
     "discord": "https://discord.gg/blender",
@@ -119,5 +156,11 @@
       "url": "https://www.youtube.com/watch?v=nIoXOplUvAw",
       "type": "video"
     }
+  ],
+  "thumbnail": "/renders/samples/blender-cycles.webp",
+  "sample_renders": [
+    "/renders/samples/blender-cycles_sample_1.webp",
+    "/renders/samples/blender-cycles_sample_2.webp",
+    "/renders/samples/blender-cycles_sample_3.webp"
   ]
 }

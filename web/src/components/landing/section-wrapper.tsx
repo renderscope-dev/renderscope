@@ -26,12 +26,12 @@ export function SectionWrapper({
       data-testid={dataTestId}
       className={cn(
         "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8",
-        compact ? "py-12 sm:py-16" : "py-20 sm:py-28 lg:py-32",
+        compact ? "py-10 sm:py-12" : "py-14 sm:py-20 lg:py-24",
         className
       )}
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       {children}

@@ -50,7 +50,7 @@ export function FurtherReading({ links }: FurtherReadingProps) {
               </span>
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-foreground group-hover:text-white transition-colors">
+                  <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
                     {link.title}
                   </span>
                   <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">

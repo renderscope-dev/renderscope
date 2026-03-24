@@ -4,16 +4,38 @@
   "version": "r170",
   "description": "The most widely used JavaScript library for 3D graphics in web browsers, supporting WebGL and WebGPU",
   "long_description": "three.js is the dominant JavaScript library for creating and displaying 3D content in web browsers. Created by Ricardo Cabello (Mr.doob) in 2010, it abstracts the complexity of WebGL into a scene graph API with cameras, lights, materials, geometries, and post-processing effects. With over 100,000 GitHub stars, it has the largest community, the most third-party integrations, and the widest deployment of any web 3D framework — powering everything from creative coding experiments to production e-commerce configurators, data visualizations, and interactive art installations.\n\nthree.js provides a physically based material system through MeshStandardMaterial and MeshPhysicalMaterial, supporting metallic/roughness workflows, clearcoat, transmission, iridescence, and screen-space subsurface scattering approximations. The library includes an extensive loader ecosystem for glTF, OBJ, FBX, Collada, PLY, STL, and dozens of other formats. Post-processing is available through an EffectComposer pipeline offering bloom, depth of field, SSAO, tone mapping, and more.\n\nThe library is actively transitioning to support WebGPU alongside WebGL, introducing a new node-based material system called TSL (Three.js Shading Language) that enables more expressive and composable shaders. three.js also provides built-in WebXR support for VR and AR experiences, skeletal animation, morph targets, instanced rendering, raycasting, and sprite/particle systems. Its zero-dependency, no-build-step approach means it can be loaded via a single script tag, making it uniquely accessible for rapid prototyping.",
-  "technique": ["rasterization"],
+  "technique": [
+    "rasterization"
+  ],
   "language": "JavaScript",
   "license": "MIT",
-  "platforms": ["web"],
+  "platforms": [
+    "web"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["webgl", "webgpu"],
+  "gpu_apis": [
+    "webgl",
+    "webgpu"
+  ],
   "cpu_support": false,
   "real_time": true,
-  "scene_formats": ["gltf", "glb", "obj", "fbx", "collada", "3ds", "stl", "ply", "draco", "usdz"],
-  "output_formats": ["framebuffer", "png", "jpg"],
+  "scene_formats": [
+    "gltf",
+    "glb",
+    "obj",
+    "fbx",
+    "collada",
+    "3ds",
+    "stl",
+    "ply",
+    "draco",
+    "usdz"
+  ],
+  "output_formats": [
+    "framebuffer",
+    "png",
+    "jpg"
+  ],
   "homepage": "https://threejs.org",
   "repository": "https://github.com/mrdoob/three.js",
   "documentation": "https://threejs.org/docs/",
@@ -49,7 +71,10 @@
   ],
   "best_for": "Web-based 3D experiences, interactive data visualizations, product configurators, and creative coding projects that run directly in the browser without installation",
   "not_ideal_for": "Offline physically based rendering, native desktop/mobile applications requiring maximum GPU performance, or projects needing built-in physics and scene editing tools",
-  "related": ["babylonjs", "filament"],
+  "related": [
+    "babylonjs",
+    "filament"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -90,7 +115,11 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["React Three Fiber", "A-Frame", "PlayCanvas"],
+  "integrations": [
+    "React Three Fiber",
+    "A-Frame",
+    "PlayCanvas"
+  ],
   "install_command": "npm install three",
   "community_links": {
     "discord": "https://discord.gg/56GBJwAnUS",
@@ -108,5 +137,11 @@
       "url": "https://discoverthreejs.com/",
       "type": "course"
     }
+  ],
+  "thumbnail": "/renders/samples/threejs.webp",
+  "sample_renders": [
+    "/renders/samples/threejs_sample_1.webp",
+    "/renders/samples/threejs_sample_2.webp",
+    "/renders/samples/threejs_sample_3.webp"
   ]
 }

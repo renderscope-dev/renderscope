@@ -49,7 +49,8 @@ import {
   generateSSIMHeatmap,
 } from "../index";
 
-// Type-only imports to verify type exports compile
+// Type-only imports to verify type exports compile.
+// Each type is used in an assertion below to ensure it remains accessible.
 import type {
   RenderingTechnique,
   RendererStatus,
@@ -264,6 +265,60 @@ describe("Export Verification", () => {
       void _edge;
       void _fc;
       void _fmr;
+
+      expect(true).toBe(true);
+    });
+
+    it("data-model type exports compile correctly", () => {
+      // Verify data model types are accessible at compile time
+      const _renderer: RendererData = {} as RendererData;
+      const _hw: HardwareInfo = {} as HardwareInfo;
+      const _bench: BenchmarkEntry = {} as BenchmarkEntry;
+      const _scene: SceneData = {} as SceneData;
+      const _rgb: RGB = {} as RGB;
+      const _loaded: LoadedImage = {} as LoadedImage;
+      const _pixel: PixelValue = {} as PixelValue;
+      const _pos: PixelPosition = {} as PixelPosition;
+      const _sampler: UsePixelSamplerReturn = {} as UsePixelSamplerReturn;
+      const _zoom: UseSyncedZoomReturn = {} as UseSyncedZoomReturn;
+
+      void _renderer;
+      void _hw;
+      void _bench;
+      void _scene;
+      void _rgb;
+      void _loaded;
+      void _pixel;
+      void _pos;
+      void _sampler;
+      void _zoom;
+
+      expect(true).toBe(true);
+    });
+
+    it("component prop type exports compile correctly", () => {
+      // Verify component prop types are accessible at compile time
+      const _slider: ImageCompareSliderProps = {} as ImageCompareSliderProps;
+      const _diff: ImageDiffProps = {} as ImageDiffProps;
+      const _ssim: ImageSSIMHeatmapProps = {} as ImageSSIMHeatmapProps;
+      const _toggle: ImageToggleProps = {} as ImageToggleProps;
+      const _sbs: ImageSideBySideProps = {} as ImageSideBySideProps;
+      const _region: RegionZoomProps = {} as RegionZoomProps;
+      const _tax: TaxonomyGraphProps = {} as TaxonomyGraphProps;
+      const _fm: FeatureMatrixProps = {} as FeatureMatrixProps;
+      const _cell: FeatureCellProps = {} as FeatureCellProps;
+      const _header: FeatureGroupHeaderProps = {} as FeatureGroupHeaderProps;
+
+      void _slider;
+      void _diff;
+      void _ssim;
+      void _toggle;
+      void _sbs;
+      void _region;
+      void _tax;
+      void _fm;
+      void _cell;
+      void _header;
 
       expect(true).toBe(true);
     });

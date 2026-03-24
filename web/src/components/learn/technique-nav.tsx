@@ -42,7 +42,7 @@ export function TechniqueNav({
         <ArrowLeft className="h-4 w-4 shrink-0 text-muted-foreground group-hover:text-foreground transition-colors" />
         <div className="min-w-0">
           <p className="text-xs text-muted-foreground">Previous</p>
-          <p className="truncate text-sm font-medium text-foreground group-hover:text-white transition-colors">
+          <p className="truncate text-sm font-medium text-foreground group-hover:text-primary transition-colors">
             {prev.name}
           </p>
         </div>
@@ -58,7 +58,7 @@ export function TechniqueNav({
       >
         <div className="min-w-0">
           <p className="text-xs text-muted-foreground">Next</p>
-          <p className="truncate text-sm font-medium text-foreground group-hover:text-white transition-colors">
+          <p className="truncate text-sm font-medium text-foreground group-hover:text-primary transition-colors">
             {next.name}
           </p>
         </div>

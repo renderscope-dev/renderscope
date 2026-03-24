@@ -44,6 +44,14 @@
       "required": ["cpu", "ram_gb", "os"],
       "additionalProperties": false,
       "properties": {
+        "id": {
+          "type": "string",
+          "description": "Hardware configuration identifier (e.g., 'hw1')."
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label for this hardware configuration."
+        },
         "cpu": {
           "type": "string",
           "description": "CPU model name."
@@ -75,6 +83,10 @@
         "os": {
           "type": "string",
           "description": "Operating system name and version."
+        },
+        "driver": {
+          "type": "string",
+          "description": "GPU driver name and version string."
         },
         "driver_version": {
           "type": "string",
@@ -259,7 +271,7 @@
       "description": "Convergence data points for progressive renderers, showing quality at increasing sample counts.",
       "items": {
         "type": "object",
-        "required": ["samples", "time_seconds"],
+        "required": ["samples"],
         "additionalProperties": false,
         "properties": {
           "samples": {
@@ -267,9 +279,14 @@
             "description": "Sample count at this data point.",
             "minimum": 1
           },
+          "time": {
+            "type": "number",
+            "description": "Wall-clock time in seconds at this sample count.",
+            "minimum": 0
+          },
           "time_seconds": {
             "type": "number",
-            "description": "Wall-clock time at this sample count.",
+            "description": "Wall-clock time in seconds at this sample count (alias for 'time').",
             "minimum": 0
           },
           "psnr": {

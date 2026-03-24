@@ -24,7 +24,7 @@ export function GalleryGridContent({ scenes }: GalleryGridContentProps) {
         <div className="mb-4 text-emerald-500/60">
           <ImageIcon className="mx-auto h-12 w-12" />
         </div>
-        <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+        <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
           Gallery
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground sm:text-xl">

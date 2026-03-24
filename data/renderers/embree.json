@@ -4,15 +4,25 @@
   "version": "4.3.3",
   "description": "High-performance ray tracing kernel library providing optimized BVH construction and ray traversal primitives",
   "long_description": "Intel Embree is an open source collection of high-performance ray tracing kernels developed by Intel as part of the oneAPI Rendering Toolkit. Unlike every other entry in the RenderScope catalog, Embree is not a renderer — it is a ray tracing kernel library that provides the fastest available CPU-based BVH (Bounding Volume Hierarchy) construction and ray-scene intersection queries. Applications built on Embree handle all shading, lighting, materials, and image output themselves; Embree provides only the geometric intersection infrastructure.\n\nEmbree's performance comes from hand-tuned ISPC (Intel SPMD Program Compiler) kernels and direct SSE, AVX, and AVX-512 vectorization. It supports single-ray, ray packet (4/8/16 wide), and ray stream tracing modes that enable efficient SIMD utilization across Intel architectures. Beyond triangles, Embree handles intersection with quads, curves and hair primitives, subdivision surfaces, points and spheres, user-defined geometries, and more. It natively supports geometry instancing and BVH-level motion blur with linear and quaternion interpolation — capabilities that higher-level renderers inherit transparently.\n\nThe impact of Embree on the rendering ecosystem is difficult to overstate. It is used as the ray tracing acceleration backend by PBRT v4, Mitsuba 3, Blender Cycles, LuxCoreRender, appleseed, Intel OSPRay, and numerous commercial renderers including Arnold, V-Ray, Corona Renderer, and KeyShot. This makes Embree arguably the single most impactful open source project in the ray tracing ecosystem — virtually every serious CPU-based renderer either uses Embree directly or competes against it. Embree 4 introduced experimental GPU support via SYCL for Intel Arc GPUs, though the CPU path remains the primary and most mature interface.",
-  "technique": ["ray_tracing"],
+  "technique": [
+    "ray_tracing"
+  ],
   "language": "C++",
   "license": "Apache-2.0",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": false,
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["obj"],
-  "output_formats": ["ppm"],
+  "scene_formats": [
+    "obj"
+  ],
+  "output_formats": [
+    "ppm"
+  ],
   "homepage": "https://www.embree.org",
   "repository": "https://github.com/RenderKit/embree",
   "documentation": "https://www.embree.org/api.html",
@@ -56,7 +66,13 @@
   ],
   "best_for": "Developers building or optimizing ray tracing applications who need the fastest possible CPU ray-scene intersection queries as a foundation for their renderer",
   "not_ideal_for": "End users wanting to render images directly, artists needing a visual workflow, or anyone looking for a complete rendering solution rather than a building block",
-  "related": ["ospray", "pbrt", "mitsuba3", "blender-cycles", "luxcorerender"],
+  "related": [
+    "ospray",
+    "pbrt",
+    "mitsuba3",
+    "blender-cycles",
+    "luxcorerender"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -97,7 +113,17 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["Intel OSPRay", "PBRT v4", "Mitsuba 3", "Blender Cycles", "LuxCoreRender", "appleseed", "Arnold", "V-Ray", "Corona Renderer"],
+  "integrations": [
+    "Intel OSPRay",
+    "PBRT v4",
+    "Mitsuba 3",
+    "Blender Cycles",
+    "LuxCoreRender",
+    "appleseed",
+    "Arnold",
+    "V-Ray",
+    "Corona Renderer"
+  ],
   "install_command": "Download from https://github.com/RenderKit/embree/releases or build from source with CMake",
   "community_links": {
     "forum": "https://github.com/RenderKit/embree/issues",
@@ -121,5 +147,10 @@
       "url": "https://github.com/RenderKit/embree#tutorials",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/embree.webp",
+  "sample_renders": [
+    "/renders/samples/embree_sample_1.webp",
+    "/renders/samples/embree_sample_2.webp"
   ]
 }

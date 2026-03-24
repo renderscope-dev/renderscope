@@ -4,16 +4,33 @@
   "version": "0.7.8",
   "description": "Meta's modular differentiable rendering and 3D deep learning library with native PyTorch integration",
   "long_description": "PyTorch3D is a library developed by Meta's Fundamental AI Research (FAIR) team that provides efficient, reusable components for 3D computer vision research within the PyTorch ecosystem. At its core is a differentiable mesh rasterizer and point cloud renderer designed for integration into gradient-based training pipelines, enabling tasks such as 3D reconstruction from images, novel view synthesis, shape prediction, and texture estimation.\n\nThe library's architecture is built around batched operations — it can render hundreds of meshes or point clouds simultaneously in a single forward pass, which is critical for efficient training with mini-batches. Beyond rendering, PyTorch3D provides a comprehensive set of differentiable 3D operators: mesh I/O and manipulation, rigid and non-rigid transforms, surface sampling, Chamfer distance and Earth Mover's distance loss functions, and a volumetric renderer for NeRF-style implicit representations.\n\nPyTorch3D's renderer uses simplified shading models (Phong, flat, textured) rather than physically based light transport, reflecting its design goal of fast gradient computation at training resolutions rather than photorealistic output. The C++/CUDA backend provides GPU-accelerated implementations of all core operations, while the Python API offers the familiar PyTorch tensor interface. The library has become one of the most widely cited tools in 3D deep learning research, with adoption across thousands of papers and projects in the computer vision community.",
-  "technique": ["differentiable", "rasterization"],
+  "technique": [
+    "differentiable",
+    "rasterization"
+  ],
   "language": "Python/C++/CUDA",
   "license": "BSD-3-Clause",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["cuda"],
+  "gpu_apis": [
+    "cuda"
+  ],
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["obj", "ply", "gltf", "programmatic"],
-  "output_formats": ["tensor", "png"],
+  "scene_formats": [
+    "obj",
+    "ply",
+    "gltf",
+    "programmatic"
+  ],
+  "output_formats": [
+    "tensor",
+    "png"
+  ],
   "homepage": "https://pytorch3d.org",
   "repository": "https://github.com/facebookresearch/pytorch3d",
   "documentation": "https://pytorch3d.readthedocs.io/en/latest/",
@@ -24,8 +41,74 @@
   "latest_release_version": "0.7.8",
   "status": "active",
   "github_stars": 8800,
-  "github_stars_trend": [7400, 7600, 7800, 8000, 8100, 8200, 8300, 8400, 8500, 8600, 8700, 8800],
-  "commit_activity_52w": [5, 3, 8, 12, 7, 4, 2, 0, 6, 9, 11, 3, 5, 7, 4, 2, 1, 8, 6, 10, 14, 5, 3, 2, 7, 6, 4, 3, 9, 8, 5, 2, 1, 4, 6, 7, 3, 5, 8, 11, 6, 4, 2, 3, 5, 7, 9, 4, 3, 6, 8, 5],
+  "github_stars_trend": [
+    7400,
+    7600,
+    7800,
+    8000,
+    8100,
+    8200,
+    8300,
+    8400,
+    8500,
+    8600,
+    8700,
+    8800
+  ],
+  "commit_activity_52w": [
+    5,
+    3,
+    8,
+    12,
+    7,
+    4,
+    2,
+    0,
+    6,
+    9,
+    11,
+    3,
+    5,
+    7,
+    4,
+    2,
+    1,
+    8,
+    6,
+    10,
+    14,
+    5,
+    3,
+    2,
+    7,
+    6,
+    4,
+    3,
+    9,
+    8,
+    5,
+    2,
+    1,
+    4,
+    6,
+    7,
+    3,
+    5,
+    8,
+    11,
+    6,
+    4,
+    2,
+    3,
+    5,
+    7,
+    9,
+    4,
+    3,
+    6,
+    8,
+    5
+  ],
   "contributor_count": 120,
   "open_issues": 250,
   "fork_count": 1350,
@@ -56,7 +139,15 @@
   ],
   "best_for": "Researchers integrating 3D mesh or point cloud rendering into PyTorch training pipelines for reconstruction, view synthesis, shape prediction, or texture estimation tasks",
   "not_ideal_for": "Producing photorealistic images or any workflow that does not involve gradient-based optimization — classical path tracers like PBRT or Cycles are better suited for visual quality",
-  "related": ["nvdiffrast", "nvidia-kaolin", "redner", "drjit", "nerfstudio", "3d-gaussian-splatting", "mitsuba3"],
+  "related": [
+    "nvdiffrast",
+    "nvidia-kaolin",
+    "redner",
+    "drjit",
+    "nerfstudio",
+    "3d-gaussian-splatting",
+    "mitsuba3"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -97,7 +188,9 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["PyTorch"],
+  "integrations": [
+    "PyTorch"
+  ],
   "install_command": "pip install pytorch3d",
   "community_links": {
     "forum": "https://github.com/facebookresearch/pytorch3d/discussions"
@@ -120,5 +213,11 @@
       "url": "https://pytorch3d.org/tutorials/deform_source_mesh_to_target_mesh",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/pytorch3d.webp",
+  "sample_renders": [
+    "/renders/samples/pytorch3d_sample_1.webp",
+    "/renders/samples/pytorch3d_sample_2.webp",
+    "/renders/samples/pytorch3d_sample_3.webp"
   ]
 }

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { renderHook } from "@testing-library/react";
 import { useResizeObserver } from "./useResizeObserver";
 
 describe("useResizeObserver", () => {
@@ -17,18 +17,14 @@ describe("useResizeObserver", () => {
 
   it("updates dimensions when ResizeObserver fires", () => {
     // Capture the ResizeObserver callback
-    let observerCallback: ResizeObserverCallback | null = null;
     const mockObserve = vi.fn();
     const mockDisconnect = vi.fn();
 
-    const MockRO = vi.fn((cb: ResizeObserverCallback) => {
-      observerCallback = cb;
-      return {
-        observe: mockObserve,
-        unobserve: vi.fn(),
-        disconnect: mockDisconnect,
-      };
-    }) as unknown as typeof ResizeObserver;
+    const MockRO = vi.fn((_cb: ResizeObserverCallback) => ({
+      observe: mockObserve,
+      unobserve: vi.fn(),
+      disconnect: mockDisconnect,
+    })) as unknown as typeof ResizeObserver;
 
     const originalRO = global.ResizeObserver;
     global.ResizeObserver = MockRO;

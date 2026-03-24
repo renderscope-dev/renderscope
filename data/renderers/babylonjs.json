@@ -4,16 +4,34 @@
   "version": "7.0",
   "description": "Microsoft-backed WebGL and WebGPU engine with a visual node material editor, built-in physics, and a comprehensive feature set",
   "long_description": "Babylon.js is a batteries-included web rendering engine created by David Catuhe at Microsoft in 2013 and actively maintained by a dedicated team within Microsoft's Mixed Reality group. Written entirely in TypeScript, Babylon.js provides a feature-complete 3D engine for the browser that goes well beyond rendering — it includes built-in Havok physics, a GUI system, audio management, particle effects, sprite rendering, and extensive tooling.\n\nBabylon.js differentiates itself through its visual tooling. The Node Material Editor enables visual shader authoring directly in the browser, producing shaders without writing GLSL. The Inspector provides runtime scene debugging and property editing. The Playground (playground.babylonjs.com) allows instant experimentation and sharing of code snippets with live preview. These tools lower the barrier to entry for artists and designers who are not comfortable with code-only workflows.\n\nThe rendering pipeline supports PBR materials with metallic/roughness and specular/glossiness workflows, a built-in GPU path tracer for high-quality offline-style renders in the browser, a denoiser for the path tracer output, screen-space reflections, volumetric light scattering, shadow generators, and a comprehensive post-processing pipeline. Babylon.js has among the most mature WebGPU implementations in the web 3D ecosystem, with compute shader support. It also provides native Gaussian splatting rendering and strong WebXR support for VR/AR experiences. Microsoft's long-term backing provides confidence in continued development and support.",
-  "technique": ["rasterization"],
+  "technique": [
+    "rasterization"
+  ],
   "language": "TypeScript",
   "license": "Apache-2.0",
-  "platforms": ["web"],
+  "platforms": [
+    "web"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["webgl", "webgpu"],
+  "gpu_apis": [
+    "webgl",
+    "webgpu"
+  ],
   "cpu_support": false,
   "real_time": true,
-  "scene_formats": ["gltf", "glb", "obj", "stl", "babylon", "splat"],
-  "output_formats": ["framebuffer", "png", "jpg"],
+  "scene_formats": [
+    "gltf",
+    "glb",
+    "obj",
+    "stl",
+    "babylon",
+    "splat"
+  ],
+  "output_formats": [
+    "framebuffer",
+    "png",
+    "jpg"
+  ],
   "homepage": "https://www.babylonjs.com",
   "repository": "https://github.com/BabylonJS/Babylon.js",
   "documentation": "https://doc.babylonjs.com",
@@ -51,7 +69,11 @@
   ],
   "best_for": "Enterprise web 3D applications, interactive product configurators, browser-based games, and mixed reality experiences requiring a batteries-included engine with visual tooling",
   "not_ideal_for": "Minimalist web 3D projects where bundle size is critical, native desktop/mobile rendering without browser overhead, or offline physically based rendering workflows",
-  "related": ["threejs", "filament", "godot"],
+  "related": [
+    "threejs",
+    "filament",
+    "godot"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": true,
@@ -92,7 +114,11 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["Havok Physics", "WebXR", "Microsoft Mixed Reality"],
+  "integrations": [
+    "Havok Physics",
+    "WebXR",
+    "Microsoft Mixed Reality"
+  ],
   "install_command": "npm install @babylonjs/core",
   "community_links": {
     "discord": "https://discord.gg/babylonjs",
@@ -110,5 +136,11 @@
       "url": "https://playground.babylonjs.com/",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/babylonjs.webp",
+  "sample_renders": [
+    "/renders/samples/babylonjs_sample_1.webp",
+    "/renders/samples/babylonjs_sample_2.webp",
+    "/renders/samples/babylonjs_sample_3.webp"
   ]
 }

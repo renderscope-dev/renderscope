@@ -4,15 +4,31 @@
   "version": "3.2.0",
   "description": "High-performance CPU ray tracing framework for scientific visualization and rendering",
   "long_description": "Intel OSPRay is an open source, scalable, and portable CPU ray tracing framework designed for high-fidelity scientific visualization. Part of Intel's oneAPI Rendering Toolkit, OSPRay builds on Intel Embree for ray tracing acceleration and Intel Open Volume Kernel Library (OpenVKL) for volume rendering, delivering performance levels that typically require GPU hardware while running entirely on CPU — a critical advantage for HPC clusters where GPU availability is limited or where datasets exceed GPU memory capacity.\n\nOSPRay provides two primary renderers: a SciVis renderer optimized for scientific visualization with ambient occlusion, shadows, and efficient basic shading, and a physically based path tracer supporting global illumination, PBR materials (principled BSDF), and HDRI environment lighting for publication-quality imagery. The framework excels at volume rendering of structured and unstructured grids via OpenVKL, isosurface extraction, and particle and molecular visualization. ISPC (Intel SPMD Program Compiler) enables vectorized execution that exploits SSE, AVX, and AVX-512 on modern CPUs, while MPI-based distributed rendering scales across hundreds of nodes for petascale data visualization.\n\nOSPRay is deeply integrated into the scientific visualization ecosystem. It serves as an alternative high-quality rendering backend for VTK, ParaView, and VisIt, enabling users of those tools to produce ray-traced imagery with global illumination and physically accurate shadows without changing their workflow. Intel Open Image Denoise integration provides fast AI-driven denoising for the path tracer mode. The framework is actively maintained by Intel with regular releases and a growing user community in HPC, scientific visualization, and architectural visualization.",
-  "technique": ["ray_tracing", "volume_rendering"],
+  "technique": [
+    "ray_tracing",
+    "volume_rendering"
+  ],
   "language": "C++",
   "license": "Apache-2.0",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": false,
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["obj", "gltf", "glb"],
-  "output_formats": ["png", "jpg", "ppm", "exr"],
+  "scene_formats": [
+    "obj",
+    "gltf",
+    "glb"
+  ],
+  "output_formats": [
+    "png",
+    "jpg",
+    "ppm",
+    "exr"
+  ],
   "homepage": "https://www.ospray.org",
   "repository": "https://github.com/RenderKit/ospray",
   "documentation": "https://www.ospray.org/documentation.html",
@@ -55,7 +71,12 @@
   ],
   "best_for": "High-quality CPU ray tracing for scientific visualization, particularly on HPC clusters without GPU hardware, and as a rendering backend for VTK and ParaView",
   "not_ideal_for": "GPU-accelerated rendering, real-time game development, artists wanting a GUI-based workflow, or applications preferring GPU ray tracing via OptiX or DXR",
-  "related": ["embree", "vtk", "paraview", "pbrt"],
+  "related": [
+    "embree",
+    "vtk",
+    "paraview",
+    "pbrt"
+  ],
   "features": {
     "global_illumination": true,
     "path_tracing": true,
@@ -96,7 +117,12 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["VTK", "ParaView", "VisIt", "Blender"],
+  "integrations": [
+    "VTK",
+    "ParaView",
+    "VisIt",
+    "Blender"
+  ],
   "install_command": "Download from https://www.ospray.org/downloads.html or build from source with CMake",
   "community_links": {
     "forum": "https://github.com/RenderKit/ospray/issues",
@@ -120,5 +146,11 @@
       "url": "https://www.ospray.org/documentation.html",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/ospray.webp",
+  "sample_renders": [
+    "/renders/samples/ospray_sample_1.webp",
+    "/renders/samples/ospray_sample_2.webp",
+    "/renders/samples/ospray_sample_3.webp"
   ]
 }

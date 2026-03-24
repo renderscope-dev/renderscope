@@ -530,6 +530,13 @@
     "thumbnail": {
       "type": "string",
       "description": "Path to a representative rendered image relative to /assets/renders/."
+    },
+    "sample_renders": {
+      "type": "array",
+      "description": "Paths to additional sample render images for the gallery.",
+      "items": {
+        "type": "string"
+      }
     }
   }
 }

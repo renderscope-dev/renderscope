@@ -86,7 +86,7 @@ class LuxCoreAdapter(RendererAdapter):
 
     @property
     def name(self) -> str:
-        return "luxcore"
+        return "luxcorerender"
 
     @property
     def display_name(self) -> str:

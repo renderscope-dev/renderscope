@@ -4,16 +4,32 @@
   "version": "0.5.3",
   "description": "Efficient volumetric rendering acceleration library for NeRF with occupancy grids and proposal networks",
   "long_description": "Nerfacc is a specialized acceleration library for NeRF-style volumetric rendering, developed as part of the Nerfstudio ecosystem by Ruilong Li at UC Berkeley. It provides high-performance CUDA implementations of the two dominant acceleration strategies for neural radiance fields: occupancy grids (which maintain a 3D grid of binary occupancy to skip empty space) and proposal networks (which learn to allocate ray samples where they matter most, following the Mip-NeRF 360 approach).\n\nThe library's value proposition is clear: rather than reimplementing these well-understood acceleration techniques from scratch for each new NeRF project, researchers can integrate nerfacc's optimized kernels into their training pipeline with minimal code changes. The result is a 5-20x speedup in both training and rendering, achieved by concentrating computation on regions of the scene that actually contain content. The Python API is designed to integrate naturally with PyTorch training loops.\n\nNerfacc is used as the acceleration backbone for several of Nerfstudio's NeRF methods and has been adopted by numerous independent research projects. However, as the neural rendering field has increasingly shifted toward Gaussian Splatting (which uses rasterization rather than volume rendering), nerfacc's development has slowed. It remains the best option for researchers working with NeRF-style volumetric representations who need optimized sampling and rendering acceleration.",
-  "technique": ["neural", "differentiable", "volume_rendering"],
+  "technique": [
+    "neural",
+    "differentiable",
+    "volume_rendering"
+  ],
   "language": "Python/CUDA",
   "license": "MIT",
-  "platforms": ["linux", "windows"],
+  "platforms": [
+    "linux",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["cuda"],
+  "gpu_apis": [
+    "cuda"
+  ],
   "cpu_support": false,
   "real_time": false,
-  "scene_formats": ["colmap", "nerf-synthetic", "images"],
-  "output_formats": ["png", "ckpt"],
+  "scene_formats": [
+    "colmap",
+    "nerf-synthetic",
+    "images"
+  ],
+  "output_formats": [
+    "png",
+    "ckpt"
+  ],
   "homepage": "https://www.nerfacc.com",
   "repository": "https://github.com/nerfstudio-project/nerfacc",
   "documentation": "https://www.nerfacc.com",
@@ -48,7 +64,12 @@
   ],
   "best_for": "NeRF researchers who need to accelerate volumetric rendering in custom pipelines without reimplementing occupancy grids or proposal networks from scratch",
   "not_ideal_for": "Gaussian Splatting workflows, standalone rendering applications, or users without NVIDIA GPU hardware",
-  "related": ["nerfstudio", "instant-ngp", "3d-gaussian-splatting", "gsplat"],
+  "related": [
+    "nerfstudio",
+    "instant-ngp",
+    "3d-gaussian-splatting",
+    "gsplat"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -90,12 +111,81 @@
     "materialx": false
   },
   "github_stars": 1400,
-  "github_stars_trend": [900, 950, 1000, 1050, 1100, 1130, 1170, 1200, 1250, 1300, 1350, 1400],
-  "commit_activity_52w": [2, 1, 0, 1, 3, 0, 1, 0, 2, 1, 0, 0, 1, 0, 2, 0, 1, 0, 0, 1, 0, 0, 2, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 2, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1],
+  "github_stars_trend": [
+    900,
+    950,
+    1000,
+    1050,
+    1100,
+    1130,
+    1170,
+    1200,
+    1250,
+    1300,
+    1350,
+    1400
+  ],
+  "commit_activity_52w": [
+    2,
+    1,
+    0,
+    1,
+    3,
+    0,
+    1,
+    0,
+    2,
+    1,
+    0,
+    0,
+    1,
+    0,
+    2,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0,
+    0,
+    2,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    2,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1
+  ],
   "contributor_count": 15,
   "open_issues": 45,
   "fork_count": 150,
-  "integrations": ["Nerfstudio", "PyTorch"],
+  "integrations": [
+    "Nerfstudio",
+    "PyTorch"
+  ],
   "install_command": "pip install nerfacc",
   "community_links": {
     "forum": "https://github.com/nerfstudio-project/nerfacc/issues"
@@ -113,5 +203,9 @@
       "url": "https://www.nerfacc.com",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/nerfacc.webp",
+  "sample_renders": [
+    "/renders/samples/nerfacc_sample_1.webp"
   ]
 }

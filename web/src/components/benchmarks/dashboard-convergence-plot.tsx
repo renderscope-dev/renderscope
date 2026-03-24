@@ -175,7 +175,7 @@ export function DashboardConvergencePlot({
             className={cn(
               "rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
               xAxis === "samples"
-                ? "bg-blue-700 text-white"
+                ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
@@ -188,7 +188,7 @@ export function DashboardConvergencePlot({
             className={cn(
               "rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
               xAxis === "time"
-                ? "bg-blue-700 text-white"
+                ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:text-foreground"
             )}
           >

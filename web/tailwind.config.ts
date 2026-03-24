@@ -67,7 +67,13 @@ const config: Config = {
   		},
   		fontFamily: {
   			sans: [
-  				'var(--font-inter)',
+  				'var(--font-dm-sans)',
+  				'system-ui',
+  				'sans-serif'
+  			],
+  			display: [
+  				'var(--font-plus-jakarta)',
+  				'var(--font-dm-sans)',
   				'system-ui',
   				'sans-serif'
   			],

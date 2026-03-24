@@ -55,36 +55,12 @@
   ],
   "renders": [
     {
-      "renderer_id": "appleseed",
-      "image_web": "/renders/cornell-box/appleseed_1920x1080.webp",
-      "image_thumb": "/renders/cornell-box/appleseed_400x225.webp",
-      "render_time_seconds": 56.8,
-      "samples_per_pixel": 1024,
-      "integrator": "pt"
-    },
-    {
-      "renderer_id": "blender-cycles",
-      "image_web": "/renders/cornell-box/blender-cycles_1920x1080.webp",
-      "image_thumb": "/renders/cornell-box/blender-cycles_400x225.webp",
-      "render_time_seconds": 8.4,
-      "samples_per_pixel": 1024,
-      "integrator": "path_tracing"
-    },
-    {
-      "renderer_id": "luxcorerender",
-      "image_web": "/renders/cornell-box/luxcorerender_1920x1080.webp",
-      "image_thumb": "/renders/cornell-box/luxcorerender_400x225.webp",
-      "render_time_seconds": 11.2,
-      "samples_per_pixel": 1024,
-      "integrator": "pathgpu"
-    },
-    {
       "renderer_id": "mitsuba3",
       "image_web": "/renders/cornell-box/mitsuba3_1920x1080.webp",
       "image_thumb": "/renders/cornell-box/mitsuba3_400x225.webp",
-      "render_time_seconds": 38.6,
+      "render_time_seconds": null,
       "samples_per_pixel": 1024,
-      "integrator": "path"
+      "integrator": null
     },
     {
       "renderer_id": "pbrt",

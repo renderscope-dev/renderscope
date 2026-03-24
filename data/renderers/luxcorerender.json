@@ -4,16 +4,35 @@
   "version": "2.6",
   "description": "Physically based unbiased renderer with both OpenCL and CUDA GPU acceleration and strong Blender integration",
   "long_description": "LuxCoreRender is a physically based, unbiased rendering engine that traces its lineage to LuxRender, which was itself inspired by PBRT. It is designed to produce highly accurate images by faithfully simulating light transport without introducing systematic bias, making it a popular choice for architectural visualization and product rendering where physical plausibility is paramount.\n\nThe renderer supports both CPU and GPU rendering, with GPU acceleration available through both OpenCL and CUDA paths. LuxCoreRender offers a diverse set of integrators including unidirectional and bidirectional path tracing, with photon mapping support through hybrid integrator modes that can handle difficult light transport paths like caustics more efficiently than pure path tracing. It integrates Intel Open Image Denoise for post-process denoising, supports network rendering for distributed workloads, and provides a comprehensive physically based material system.\n\nLuxCoreRender is most commonly used through its Blender integration, BlendLuxCore, which provides a full material editor and render settings panel within Blender's interface. It can also run standalone via command line or through its Python API (pyluxcore). While its community is smaller than Blender Cycles, it maintains an active user forum and benefits from users who specifically value its unbiased rendering approach and bidirectional path tracing capabilities.",
-  "technique": ["path_tracing"],
+  "technique": [
+    "path_tracing"
+  ],
   "language": "C++",
   "license": "Apache-2.0",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["cuda", "opencl"],
+  "gpu_apis": [
+    "cuda",
+    "opencl"
+  ],
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["luxcore", "gltf", "obj"],
-  "output_formats": ["exr", "png", "hdr", "jpg", "tiff"],
+  "scene_formats": [
+    "luxcore",
+    "gltf",
+    "obj"
+  ],
+  "output_formats": [
+    "exr",
+    "png",
+    "hdr",
+    "jpg",
+    "tiff"
+  ],
   "homepage": "https://luxcorerender.org",
   "repository": "https://github.com/LuxCoreRender/LuxCore",
   "documentation": "https://wiki.luxcorerender.org/",
@@ -53,7 +72,12 @@
   ],
   "best_for": "Architectural visualization and product rendering where physically unbiased rendering and bidirectional path tracing provide measurable accuracy advantages",
   "not_ideal_for": "Real-time applications, spectral rendering research, or users who need the largest possible community and ecosystem of resources",
-  "related": ["pbrt", "mitsuba3", "blender-cycles", "appleseed"],
+  "related": [
+    "pbrt",
+    "mitsuba3",
+    "blender-cycles",
+    "appleseed"
+  ],
   "features": {
     "global_illumination": true,
     "path_tracing": true,
@@ -94,7 +118,9 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["Blender"],
+  "integrations": [
+    "Blender"
+  ],
   "install_command": "Download from https://luxcorerender.org/download/ or install BlendLuxCore add-on for Blender",
   "community_links": {
     "forum": "https://forums.luxcorerender.org/"
@@ -111,5 +137,11 @@
       "url": "https://wiki.luxcorerender.org/BlendLuxCore_Getting_Started",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/luxcorerender.webp",
+  "sample_renders": [
+    "/renders/samples/luxcorerender_sample_1.webp",
+    "/renders/samples/luxcorerender_sample_2.webp",
+    "/renders/samples/luxcorerender_sample_3.webp"
   ]
 }

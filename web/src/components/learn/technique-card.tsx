@@ -93,7 +93,7 @@ export function TechniqueCard({ technique, index }: TechniqueCardProps) {
           {Icon && <Icon className="h-5 w-5" />}
         </div>
 
-        <h3 className="mb-2 text-lg font-semibold text-foreground group-hover:text-white transition-colors">
+        <h3 className="mb-2 text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
           {technique.name}
         </h3>
 

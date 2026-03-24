@@ -4,16 +4,39 @@
   "version": "5.6.2",
   "description": "Open-source medical image visualization and analysis platform with GPU-accelerated volume rendering",
   "long_description": "3D Slicer is an open-source platform for medical image informatics, image processing, and three-dimensional visualization. Originally developed at the Surgical Planning Laboratory at Brigham and Women's Hospital (Harvard Medical School) starting in 1998, it is now maintained by Kitware and a worldwide community of developers under the umbrella of the National Alliance for Medical Image Computing (NA-MIC). It is the de facto standard for interactive medical image visualization in academic research, supporting CT, MRI, PET, ultrasound, and dozens of other modalities.\n\nBuilt on three foundational libraries — VTK (Visualization Toolkit) for rendering, ITK (Insight Toolkit) for image segmentation and registration, and Qt for the GUI — Slicer provides GPU-accelerated volume rendering via VTK's ray-casting volume mapper, surface rendering, multi-planar reconstruction (axial, coronal, sagittal views), and comprehensive DICOM handling including DICOM-SEG, DICOM-RT, and DICOM-SR. Its rendering pipeline handles medical datasets from standard clinical CTs to high-resolution microscopy volumes.\n\nSlicer's plugin architecture (Extensions Manager) hosts over 100 community-contributed modules covering segmentation, registration, diffusion MRI analysis, radiomics, surgical navigation, and machine learning integration (TotalSegmentator, MONAI). With over 1.5 million downloads and citations in thousands of medical imaging publications, Slicer is not a rendering engine in the traditional computer graphics sense — it is a domain-specific visualization platform whose volume rendering capabilities are world-class within its niche but not comparable to general-purpose rendering engines on artistic or physically-based rendering tasks.",
-  "technique": ["volume_rendering"],
+  "technique": [
+    "volume_rendering"
+  ],
   "language": "C++/Python",
   "license": "BSD-3-Clause",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["opencl"],
+  "gpu_apis": [
+    "opencl"
+  ],
   "cpu_support": true,
   "real_time": true,
-  "scene_formats": ["dicom", "nifti", "nrrd", "vtk", "stl", "obj", "mrml"],
-  "output_formats": ["png", "jpg", "stl", "obj", "vtk", "nrrd"],
+  "scene_formats": [
+    "dicom",
+    "nifti",
+    "nrrd",
+    "vtk",
+    "stl",
+    "obj",
+    "mrml"
+  ],
+  "output_formats": [
+    "png",
+    "jpg",
+    "stl",
+    "obj",
+    "vtk",
+    "nrrd"
+  ],
   "homepage": "https://www.slicer.org",
   "repository": "https://github.com/Slicer/Slicer",
   "documentation": "https://slicer.readthedocs.io",
@@ -56,7 +79,12 @@
   ],
   "best_for": "Medical imaging researchers and clinicians who need interactive 3D volume rendering, segmentation, and analysis of DICOM, NIfTI, and NRRD datasets",
   "not_ideal_for": "General-purpose 3D rendering, game development, architectural visualization, or any task requiring physically-based material and lighting models",
-  "related": ["vtk", "paraview", "open3d", "ospray"],
+  "related": [
+    "vtk",
+    "paraview",
+    "open3d",
+    "ospray"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -97,7 +125,13 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["VTK", "ITK", "DCMTK", "SimpleITK", "TotalSegmentator"],
+  "integrations": [
+    "VTK",
+    "ITK",
+    "DCMTK",
+    "SimpleITK",
+    "TotalSegmentator"
+  ],
   "install_command": "Download from https://download.slicer.org",
   "community_links": {
     "forum": "https://discourse.slicer.org",
@@ -121,5 +155,11 @@
       "url": "https://www.slicer.org/wiki/Documentation/4.10/Training",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/3d-slicer.webp",
+  "sample_renders": [
+    "/renders/samples/3d-slicer_sample_1.webp",
+    "/renders/samples/3d-slicer_sample_2.webp",
+    "/renders/samples/3d-slicer_sample_3.webp"
   ]
 }

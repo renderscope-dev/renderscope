@@ -4,16 +4,33 @@
   "version": "4.2.0",
   "description": "Blender's built-in real-time PBR viewport renderer using rasterization with physically based approximations",
   "long_description": "EEVEE (Extra Easy Virtual Environment Engine) is Blender's built-in real-time rendering engine, first introduced in Blender 2.80 in July 2019. Created by Clément Foucault as part of the Blender Foundation development team, EEVEE was designed as a fast-preview counterpart to Blender's offline path tracer, Cycles. Its defining characteristic is full compatibility with Blender's Principled BSDF material system — materials authored for physically accurate Cycles rendering automatically work in EEVEE with perceptually convincing rasterization-based approximations, enabling artists to switch between real-time preview and path-traced final output with a single click.\n\nEEVEE Next, a major architectural rewrite that landed in Blender 4.0 (November 2023), substantially advanced the renderer's capabilities. The rewrite introduced ray-traced reflections, refractions, and diffuse lighting (a screen-space and world-space hybrid, not full path tracing), virtual shadow maps for improved shadow quality, improved volumetric rendering, and reworked light probes with irradiance volumes and reflection cubemaps. The rendering pipeline is transitioning from OpenGL to Vulkan. Key features include screen-space reflections, screen-space ambient occlusion, volumetric lighting and fog, bloom, depth of field, motion blur, PBR materials, IBL via HDRI environments, and approximate subsurface scattering.\n\nEEVEE cannot be used outside of Blender — there is no standalone library, API, or executable. This tight integration is both its strength and its limitation: it provides seamless viewport rendering within Blender's comprehensive 3D creation suite, but it is completely inaccessible to developers building custom rendering pipelines, web applications, or non-Blender tools. EEVEE benefits from Blender's massive community of millions of users, extensive documentation, thousands of tutorials, and continuous development funded by the Blender Foundation and major studio sponsors. Its GPL-2.0-or-later license is inherited from Blender.",
-  "technique": ["rasterization"],
+  "technique": [
+    "rasterization"
+  ],
   "language": "C/C++",
   "license": "GPL-2.0-or-later",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["vulkan"],
+  "gpu_apis": [
+    "vulkan"
+  ],
   "cpu_support": false,
   "real_time": true,
-  "scene_formats": ["blend"],
-  "output_formats": ["png", "exr", "jpg", "tiff", "hdr", "bmp"],
+  "scene_formats": [
+    "blend"
+  ],
+  "output_formats": [
+    "png",
+    "exr",
+    "jpg",
+    "tiff",
+    "hdr",
+    "bmp"
+  ],
   "homepage": "https://www.blender.org",
   "repository": "https://projects.blender.org/blender/blender",
   "documentation": "https://docs.blender.org/manual/en/latest/render/eevee/index.html",
@@ -51,7 +68,12 @@
   ],
   "best_for": "Blender artists and animators who need fast, interactive preview rendering with Cycles-compatible materials for scene iteration, motion graphics, architectural visualization previews, and animation lookdev",
   "not_ideal_for": "Standalone or embedded rendering use cases outside Blender, physically accurate final-quality rendering (use Cycles instead), projects requiring permissive licensing, or custom rendering pipelines",
-  "related": ["blender-cycles", "filament", "godot", "luxcorerender"],
+  "related": [
+    "blender-cycles",
+    "filament",
+    "godot",
+    "luxcorerender"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -92,7 +114,9 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["Blender"],
+  "integrations": [
+    "Blender"
+  ],
   "install_command": "Download from https://www.blender.org/download/ — EEVEE is included with Blender",
   "community_links": {
     "forum": "https://devtalk.blender.org/",
@@ -106,5 +130,11 @@
       "url": "https://docs.blender.org/manual/en/latest/render/eevee/index.html",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/blender-eevee.webp",
+  "sample_renders": [
+    "/renders/samples/blender-eevee_sample_1.webp",
+    "/renders/samples/blender-eevee_sample_2.webp",
+    "/renders/samples/blender-eevee_sample_3.webp"
   ]
 }

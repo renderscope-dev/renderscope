@@ -218,7 +218,7 @@ export function DashboardBarChart({
               className={cn(
                 "rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
                 metric === m
-                  ? "bg-blue-700 text-white"
+                  ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
@@ -236,7 +236,7 @@ export function DashboardBarChart({
             className={cn(
               "rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
               groupBy === "scene"
-                ? "bg-blue-700 text-white"
+                ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
@@ -249,7 +249,7 @@ export function DashboardBarChart({
             className={cn(
               "rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
               groupBy === "renderer"
-                ? "bg-blue-700 text-white"
+                ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:text-foreground"
             )}
           >

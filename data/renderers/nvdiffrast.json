@@ -4,16 +4,29 @@
   "version": "0.3.3",
   "description": "High-performance modular differentiable rasterization primitives from NVIDIA Research for 3D deep learning",
   "long_description": "nvdiffrast is a library from NVIDIA Research that provides high-performance differentiable rasterization primitives — the fundamental building blocks for constructing custom differentiable rendering pipelines. Rather than offering a complete renderer with built-in shading, materials, and lighting, nvdiffrast exposes four core operations (vertex transformation, rasterization, interpolation, and anti-aliasing) as differentiable modules that researchers compose into application-specific pipelines.\n\nThe library's key technical contribution is its approach to differentiable anti-aliasing, which addresses the discontinuity problem that plagues naive differentiable rasterizers. When object silhouettes move across pixel boundaries during gradient-based optimization, standard rasterization produces zero or incorrect gradients. nvdiffrast solves this by analytically computing coverage at silhouette edges, producing clean gradients that enable reliable optimization of geometry, texture, and camera parameters.\n\nnvdiffrast achieves its performance through custom CUDA kernels with OpenGL or Vulkan interop for hardware-accelerated rasterization, making it fast enough for training loops that require millions of rendering iterations. It supports both PyTorch and TensorFlow as frontend frameworks, though the PyTorch path receives more active maintenance. The library has become a standard backend for several high-profile NVIDIA research projects including nvdiffrec (3D reconstruction) and GET3D (3D generative model), and is integrated into NVIDIA Kaolin as the default differentiable rasterization engine.",
-  "technique": ["differentiable", "rasterization"],
+  "technique": [
+    "differentiable",
+    "rasterization"
+  ],
   "language": "Python/C++/CUDA",
   "license": "Custom (NVIDIA)",
-  "platforms": ["linux", "windows"],
+  "platforms": [
+    "linux",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["cuda", "vulkan"],
+  "gpu_apis": [
+    "cuda",
+    "vulkan"
+  ],
   "cpu_support": false,
   "real_time": false,
-  "scene_formats": ["programmatic"],
-  "output_formats": ["tensor"],
+  "scene_formats": [
+    "programmatic"
+  ],
+  "output_formats": [
+    "tensor"
+  ],
   "homepage": "https://nvlabs.github.io/nvdiffrast/",
   "repository": "https://github.com/NVlabs/nvdiffrast",
   "documentation": "https://nvlabs.github.io/nvdiffrast/",
@@ -24,8 +37,74 @@
   "latest_release_version": "0.3.3",
   "status": "active",
   "github_stars": 1400,
-  "github_stars_trend": [1050, 1080, 1120, 1160, 1200, 1240, 1270, 1300, 1320, 1350, 1380, 1400],
-  "commit_activity_52w": [0, 0, 2, 0, 0, 0, 1, 0, 3, 5, 0, 0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 4, 7, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 5, 3, 0, 0, 0, 1, 0],
+  "github_stars_trend": [
+    1050,
+    1080,
+    1120,
+    1160,
+    1200,
+    1240,
+    1270,
+    1300,
+    1320,
+    1350,
+    1380,
+    1400
+  ],
+  "commit_activity_52w": [
+    0,
+    0,
+    2,
+    0,
+    0,
+    0,
+    1,
+    0,
+    3,
+    5,
+    0,
+    0,
+    0,
+    0,
+    2,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    4,
+    7,
+    2,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    3,
+    0,
+    0,
+    0,
+    0,
+    2,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    5,
+    3,
+    0,
+    0,
+    0,
+    1,
+    0
+  ],
   "contributor_count": 12,
   "open_issues": 65,
   "fork_count": 180,
@@ -56,7 +135,13 @@
   ],
   "best_for": "Researchers who need maximum-performance differentiable rasterization primitives and want full control over the rendering pipeline, particularly for large-scale 3D reconstruction, inverse rendering, and generative 3D model training",
   "not_ideal_for": "Users who want a turnkey differentiable renderer with built-in shading and materials — PyTorch3D or NVIDIA Kaolin provide a higher-level experience with less pipeline engineering",
-  "related": ["pytorch3d", "nvidia-kaolin", "redner", "drjit", "mitsuba3"],
+  "related": [
+    "pytorch3d",
+    "nvidia-kaolin",
+    "redner",
+    "drjit",
+    "mitsuba3"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -97,7 +182,11 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["NVIDIA Kaolin", "PyTorch", "TensorFlow"],
+  "integrations": [
+    "NVIDIA Kaolin",
+    "PyTorch",
+    "TensorFlow"
+  ],
   "install_command": "pip install nvdiffrast",
   "community_links": {
     "forum": "https://github.com/NVlabs/nvdiffrast/issues"
@@ -120,5 +209,9 @@
       "url": "https://nvlabs.github.io/nvdiffrast/",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/nvdiffrast.webp",
+  "sample_renders": [
+    "/renders/samples/nvdiffrast_sample_1.webp"
   ]
 }

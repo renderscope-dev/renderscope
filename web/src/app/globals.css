@@ -4,52 +4,107 @@
 
 @layer base {
   /* ================================================================
-     DARK THEME (Default)
+     LIGHT THEME (Default)
+
+     Design philosophy:
+     - Warm ivory/cream background — NOT plain white
+     - Indigo-violet primary for a distinctive identity
+     - Deep, readable text with strong contrast
+     - Soft shadows and elegant borders
+     ================================================================ */
+  :root {
+    --background:         40 25% 97%;
+    --foreground:         230 25% 14%;
+
+    --card:               40 20% 96%;
+    --card-foreground:    230 25% 14%;
+
+    --popover:            40 20% 99%;
+    --popover-foreground: 230 25% 14%;
+
+    --primary:            252 62% 52%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary:          250 15% 93%;
+    --secondary-foreground: 230 25% 18%;
+
+    --muted:              240 12% 95%;
+    --muted-foreground:   230 10% 40%;
+
+    --accent:             250 15% 94%;
+    --accent-foreground:  230 25% 14%;
+
+    --destructive:        0 84% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border:             240 10% 88%;
+    --input:              240 10% 88%;
+    --ring:               252 62% 52%;
+
+    --radius:             0.625rem;
+
+    --chart-1: 252 62% 52%;
+    --chart-2: 160 60% 40%;
+    --chart-3: 280 70% 50%;
+    --chart-4: 25 85% 45%;
+    --chart-5: 330 75% 50%;
+
+    /* ── TECHNIQUE BADGE COLORS ────────────────────────────────── */
+    --technique-path-tracing:       215 85% 45%;
+    --technique-ray-tracing:        195 80% 38%;
+    --technique-rasterization:      152 55% 35%;
+    --technique-neural:             268 70% 50%;
+    --technique-gaussian-splatting: 258 65% 50%;
+    --technique-differentiable:     330 70% 46%;
+    --technique-volume:             25 85% 44%;
+    --technique-ray-marching:       185 70% 36%;
+    --technique-educational:        42 85% 38%;
+  }
+
+  /* ================================================================
+     DARK THEME (Override)
 
      Design philosophy:
      - Near-black backgrounds to make rendered images "pop"
-     - Subtle blue-gray tint for warmth (not pure black)
+     - Subtle violet tint for warmth
      - High contrast text for readability
      - Glowing accent colors for technique badges
      ================================================================ */
-  :root {
-    --background:         240 10% 4%;
+  .dark {
+    --background:         250 15% 5%;
     --foreground:         0 0% 95%;
 
-    --card:               240 6% 8%;
+    --card:               250 10% 8%;
     --card-foreground:    0 0% 95%;
 
-    --popover:            240 6% 10%;
+    --popover:            250 10% 10%;
     --popover-foreground: 0 0% 95%;
 
-    --primary:            217 92% 60%;
+    --primary:            252 85% 65%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary:          240 4% 16%;
+    --secondary:          250 8% 16%;
     --secondary-foreground: 0 0% 85%;
 
-    --muted:              240 4% 16%;
-    --muted-foreground:   240 5% 55%;
+    --muted:              250 8% 16%;
+    --muted-foreground:   250 8% 55%;
 
-    --accent:             240 4% 16%;
+    --accent:             250 8% 16%;
     --accent-foreground:  0 0% 95%;
 
     --destructive:        0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border:             240 4% 16%;
-    --input:              240 4% 16%;
-    --ring:               217 92% 60%;
+    --border:             250 8% 16%;
+    --input:              250 8% 16%;
+    --ring:               252 85% 65%;
 
-    --radius:             0.625rem;
-
-    --chart-1: 217 92% 60%;
+    --chart-1: 252 85% 65%;
     --chart-2: 142 70% 50%;
     --chart-3: 280 85% 65%;
     --chart-4: 25 95% 55%;
     --chart-5: 330 85% 60%;
 
-    /* ── TECHNIQUE BADGE COLORS ────────────────────────────────── */
     --technique-path-tracing:       210 100% 65%;
     --technique-ray-tracing:        195 100% 60%;
     --technique-rasterization:      142 70% 50%;
@@ -59,55 +114,6 @@
     --technique-volume:             25 95% 55%;
     --technique-ray-marching:       185 80% 55%;
     --technique-educational:        45 95% 55%;
-  }
-
-  /* ================================================================
-     LIGHT THEME (Override)
-     ================================================================ */
-  .light {
-    --background:         0 0% 100%;
-    --foreground:         240 10% 4%;
-
-    --card:               0 0% 98%;
-    --card-foreground:    240 10% 4%;
-
-    --popover:            0 0% 100%;
-    --popover-foreground: 240 10% 4%;
-
-    --primary:            217 92% 50%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary:          240 5% 92%;
-    --secondary-foreground: 240 6% 10%;
-
-    --muted:              240 5% 96%;
-    --muted-foreground:   240 4% 44%;
-
-    --accent:             240 5% 96%;
-    --accent-foreground:  240 6% 10%;
-
-    --destructive:        0 84% 50%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border:             240 6% 90%;
-    --input:              240 6% 90%;
-    --ring:               217 92% 50%;
-
-    --chart-1: 217 80% 50%;
-    --chart-2: 142 60% 40%;
-    --chart-3: 280 70% 50%;
-    --chart-4: 25 85% 45%;
-    --chart-5: 330 75% 50%;
-
-    --technique-path-tracing:       210 100% 45%;
-    --technique-ray-tracing:        195 100% 40%;
-    --technique-rasterization:      142 70% 38%;
-    --technique-neural:             280 85% 50%;
-    --technique-gaussian-splatting: 260 80% 50%;
-    --technique-differentiable:     330 85% 45%;
-    --technique-volume:             25 95% 45%;
-    --technique-ray-marching:       185 80% 40%;
-    --technique-educational:        45 95% 40%;
   }
 
   /* ── BASE ELEMENT STYLES ────────────────────────────────────── */
@@ -172,8 +178,11 @@
 
   /* Selection color */
   ::selection {
-    background: hsl(var(--primary) / 0.3);
+    background: hsl(var(--primary) / 0.15);
     color: hsl(var(--foreground));
+  }
+  .dark ::selection {
+    background: hsl(var(--primary) / 0.3);
   }
 }
 
@@ -192,14 +201,39 @@
 /* ── UTILITY CLASSES ──────────────────────────────────────────── */
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-[hsl(280,85%,65%)];
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(252, 62%, 52%) 0%, hsl(280, 75%, 55%) 50%, hsl(252, 62%, 52%) 100%);
+  }
+
+  .dark .text-gradient {
+    background-image: linear-gradient(135deg, hsl(252, 85%, 65%) 0%, hsl(280, 85%, 70%) 50%, hsl(252, 85%, 65%) 100%);
+  }
+
+  .text-gradient-hero {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(252, 65%, 48%) 0%, hsl(280, 70%, 48%) 35%, hsl(320, 65%, 45%) 65%, hsl(252, 65%, 48%) 100%);
+    background-size: 200% auto;
+  }
+
+  .dark .text-gradient-hero {
+    background-image: linear-gradient(135deg, hsl(252, 90%, 72%) 0%, hsl(280, 85%, 72%) 35%, hsl(330, 80%, 68%) 65%, hsl(252, 90%, 72%) 100%);
+    background-size: 200% auto;
   }
 
   .glow-border {
     box-shadow: 0 0 0 1px hsl(var(--border)),
-                0 0 15px -3px hsl(var(--primary) / 0.1);
+                0 0 15px -3px hsl(var(--primary) / 0.08);
   }
   .glow-border-hover:hover {
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.2),
+                0 0 25px -5px hsl(var(--primary) / 0.1);
+  }
+
+  .dark .glow-border {
+    box-shadow: 0 0 0 1px hsl(var(--border)),
+                0 0 15px -3px hsl(var(--primary) / 0.1);
+  }
+  .dark .glow-border-hover:hover {
     box-shadow: 0 0 0 1px hsl(var(--primary) / 0.3),
                 0 0 25px -5px hsl(var(--primary) / 0.15);
   }
@@ -207,5 +241,33 @@
   .glass {
     backdrop-filter: blur(12px) saturate(180%);
     -webkit-backdrop-filter: blur(12px) saturate(180%);
+  }
+
+  /* Premium shadow for cards in light mode */
+  .shadow-card {
+    box-shadow: 0 1px 3px 0 hsl(var(--foreground) / 0.04),
+                0 4px 12px -2px hsl(var(--foreground) / 0.06);
+  }
+  .shadow-card-hover:hover {
+    box-shadow: 0 2px 8px 0 hsl(var(--foreground) / 0.06),
+                0 8px 24px -4px hsl(var(--foreground) / 0.1);
+  }
+  .dark .shadow-card {
+    box-shadow: 0 0 0 1px hsl(var(--border));
+  }
+  .dark .shadow-card-hover:hover {
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.3),
+                0 0 20px -5px hsl(var(--primary) / 0.1);
+  }
+
+  /* Subtle mesh gradient background for sections */
+  .bg-mesh-light {
+    background-image:
+      radial-gradient(at 27% 37%, hsl(252, 60%, 94%) 0px, transparent 50%),
+      radial-gradient(at 77% 30%, hsl(280, 60%, 94%) 0px, transparent 50%),
+      radial-gradient(at 52% 75%, hsl(200, 60%, 94%) 0px, transparent 50%);
+  }
+  .dark .bg-mesh-light {
+    background-image: none;
   }
 }

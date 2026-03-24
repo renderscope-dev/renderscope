@@ -552,7 +552,6 @@ export const ForceGraph = forwardRef<ForceGraphHandle, ForceGraphProps>(
         resizeObserver.disconnect();
       };
       // Re-run only when graph data or interactive mode changes
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [nodes, edges, interactive, highlightedNodes, onNodeClick, onNodeHover]);
 
     return (

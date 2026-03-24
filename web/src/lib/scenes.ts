@@ -155,6 +155,7 @@ export function getHeroRenderImages(count: number): LandingRenderImage[] {
     }
   }
 
+  // Phase 1: Collect images from scene renders (highest quality)
   for (const scene of scenes) {
     if (images.length >= count) break;
     if (!scene.renders) continue;
@@ -173,6 +174,77 @@ export function getHeroRenderImages(count: number): LandingRenderImage[] {
         scene: scene.name,
         technique: meta?.technique ?? "path_tracing",
       });
+    }
+  }
+
+  // Phase 2: If we still need more, fill from renderer thumbnail images.
+  // Prioritise diverse techniques — pick renderers whose technique differs
+  // from what we already have.
+  if (images.length < count && fs.existsSync(RENDERERS_DIR)) {
+    const seenTechniques = new Set(images.map((img) => img.technique));
+    const files = fs
+      .readdirSync(RENDERERS_DIR)
+      .filter((f) => f.endsWith(".json") && !f.startsWith("_"));
+
+    // First pass: renderers with a technique we haven't shown yet
+    for (const file of files) {
+      if (images.length >= count) break;
+      try {
+        const raw = fs.readFileSync(path.join(RENDERERS_DIR, file), "utf-8");
+        const data = JSON.parse(raw) as {
+          id: string;
+          name: string;
+          technique: string[];
+          thumbnail?: string;
+        };
+        if (seenRenderers.has(data.id) || !data.thumbnail) continue;
+        const tech = data.technique[0] ?? "path_tracing";
+        if (seenTechniques.has(tech)) continue;
+
+        const thumbPath = path.join(process.cwd(), "public", data.thumbnail);
+        if (!fs.existsSync(thumbPath)) continue;
+
+        seenRenderers.add(data.id);
+        seenTechniques.add(tech);
+        images.push({
+          src: data.thumbnail,
+          renderer: data.id,
+          rendererName: data.name,
+          scene: data.name,
+          technique: tech,
+        });
+      } catch {
+        // Skip malformed files
+      }
+    }
+
+    // Second pass: any remaining renderers with thumbnails
+    for (const file of files) {
+      if (images.length >= count) break;
+      try {
+        const raw = fs.readFileSync(path.join(RENDERERS_DIR, file), "utf-8");
+        const data = JSON.parse(raw) as {
+          id: string;
+          name: string;
+          technique: string[];
+          thumbnail?: string;
+        };
+        if (seenRenderers.has(data.id) || !data.thumbnail) continue;
+
+        const thumbPath = path.join(process.cwd(), "public", data.thumbnail);
+        if (!fs.existsSync(thumbPath)) continue;
+
+        seenRenderers.add(data.id);
+        images.push({
+          src: data.thumbnail,
+          renderer: data.id,
+          rendererName: data.name,
+          scene: data.name,
+          technique: data.technique[0] ?? "path_tracing",
+        });
+      } catch {
+        // Skip malformed files
+      }
     }
   }
 

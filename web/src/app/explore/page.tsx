@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { generatePageMetadata } from "@/lib/seo";
-import { getAllRenderers, getCatalogStats } from "@/lib/data";
+import { getAllRenderers, getCatalogStats, enrichRenderersWithThumbnails } from "@/lib/data";
 import { getTaxonomyData, processGraphData } from "@/lib/taxonomy";
 import { JsonLd } from "@/components/json-ld";
 import { generateBreadcrumbSchema } from "@/lib/structured-data";
@@ -24,7 +24,8 @@ export const metadata: Metadata = generatePageMetadata({
 });
 
 export default function ExplorePage() {
-  const renderers = getAllRenderers();
+  const rawRenderers = getAllRenderers();
+  const renderers = enrichRenderersWithThumbnails(rawRenderers);
   const stats = getCatalogStats(renderers);
 
   // Load and process taxonomy data for graph view

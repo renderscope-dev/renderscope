@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import type { RendererData } from "@/types/renderer";
+import type { SceneData } from "@/types/scene";
 
 // ═══════════════════════════════════════════════════════════════
 // DATA LOADING — BUILD TIME ONLY
@@ -218,4 +219,53 @@ export function getRecentRenderers(count: number): RendererData[] {
   }
 
   return curated.slice(0, count);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDERER THUMBNAIL ENRICHMENT — BUILD TIME ONLY
+// ═══════════════════════════════════════════════════════════════
+
+const SCENES_DIR = path.join(process.cwd(), "..", "data", "scenes");
+
+/**
+ * Enrich renderer data with thumbnail images from scene render data.
+ *
+ * Iterates through all scenes and picks the first available `image_thumb`
+ * for each renderer.  Renderers that already have a `thumbnail` set (e.g.
+ * from the JSON file) are left unchanged.
+ */
+export function enrichRenderersWithThumbnails(
+  renderers: RendererData[]
+): RendererData[] {
+  if (!fs.existsSync(SCENES_DIR)) return renderers;
+
+  // Build a renderer-id -> thumbnail map from scene render data.
+  const thumbMap = new Map<string, string>();
+
+  const sceneFiles = fs
+    .readdirSync(SCENES_DIR)
+    .filter((f) => f.endsWith(".json") && !f.startsWith("_"));
+
+  for (const file of sceneFiles) {
+    try {
+      const raw = fs.readFileSync(path.join(SCENES_DIR, file), "utf-8");
+      const scene = JSON.parse(raw) as SceneData;
+      if (!scene.renders) continue;
+
+      for (const render of scene.renders) {
+        if (!thumbMap.has(render.renderer_id) && render.image_thumb) {
+          thumbMap.set(render.renderer_id, render.image_thumb);
+        }
+      }
+    } catch {
+      // Skip malformed scene files.
+    }
+  }
+
+  return renderers.map((r) => {
+    if (r.thumbnail) return r;
+    const thumb = thumbMap.get(r.id);
+    if (thumb) return { ...r, thumbnail: thumb };
+    return r;
+  });
 }

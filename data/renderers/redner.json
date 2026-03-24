@@ -4,16 +4,34 @@
   "version": "0.4.1",
   "description": "Differentiable path tracer with correct edge-sampling gradients for physically based inverse rendering",
   "long_description": "redner is a differentiable renderer developed by Tzu-Mao Li (MIT/UC San Diego) that solves a fundamental problem in differentiable rendering: computing correct gradients at object silhouettes and geometric discontinuities. While rasterization-based differentiable renderers (nvdiffrast, PyTorch3D) produce zero or incorrect gradients when object boundaries cross pixel boundaries, redner uses an edge-sampling algorithm that analytically accounts for these discontinuities, producing mathematically correct derivatives even at silhouette edges.\n\nUnlike the rasterization-based tools common in the differentiable rendering ecosystem, redner is a full physically based path tracer that computes global illumination — soft shadows, interreflections, color bleeding, and caustics all participate in the gradient computation. This makes redner uniquely suited for inverse rendering tasks where physical accuracy matters: material estimation from photographs, lighting reconstruction, and geometry optimization in scenes with complex light transport.\n\nredner supports both CPU and GPU execution paths. The CPU path uses multi-threaded rendering and is fully functional without an NVIDIA GPU, making redner more accessible than GPU-only alternatives. The renderer integrates with PyTorch through a custom autograd function, accepts OBJ meshes and Mitsuba XML scene files, and supports physically based materials including microfacet BSDFs, depth of field, and HDRI environment lighting. The project is in maintenance mode — while the codebase is stable and functional, active feature development has slowed as the author has moved to newer projects.",
-  "technique": ["differentiable", "path_tracing", "ray_tracing"],
+  "technique": [
+    "differentiable",
+    "path_tracing",
+    "ray_tracing"
+  ],
   "language": "C++/Python",
   "license": "MIT",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["cuda"],
+  "gpu_apis": [
+    "cuda"
+  ],
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["obj", "mitsuba_xml", "programmatic"],
-  "output_formats": ["tensor", "png", "exr"],
+  "scene_formats": [
+    "obj",
+    "mitsuba_xml",
+    "programmatic"
+  ],
+  "output_formats": [
+    "tensor",
+    "png",
+    "exr"
+  ],
   "homepage": "https://github.com/BachiLi/redner",
   "repository": "https://github.com/BachiLi/redner",
   "documentation": "https://redner.readthedocs.io/en/latest/",
@@ -24,8 +42,74 @@
   "latest_release_version": "0.4.1",
   "status": "maintenance",
   "github_stars": 1200,
-  "github_stars_trend": [1020, 1040, 1060, 1080, 1100, 1110, 1130, 1140, 1150, 1170, 1185, 1200],
-  "commit_activity_52w": [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+  "github_stars_trend": [
+    1020,
+    1040,
+    1060,
+    1080,
+    1100,
+    1110,
+    1130,
+    1140,
+    1150,
+    1170,
+    1185,
+    1200
+  ],
+  "commit_activity_52w": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    2,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
   "contributor_count": 18,
   "open_issues": 45,
   "fork_count": 160,
@@ -56,7 +140,13 @@
   ],
   "best_for": "Researchers who need physically correct differentiable gradients through full global illumination effects including silhouette edges — particularly for inverse rendering, material estimation, and lighting reconstruction papers",
   "not_ideal_for": "Large-scale training loops requiring fast rendering throughput or real-time performance — use nvdiffrast or PyTorch3D when rasterization-level accuracy is sufficient and speed is the priority",
-  "related": ["pytorch3d", "nvdiffrast", "drjit", "mitsuba3", "pbrt"],
+  "related": [
+    "pytorch3d",
+    "nvdiffrast",
+    "drjit",
+    "mitsuba3",
+    "pbrt"
+  ],
   "features": {
     "global_illumination": true,
     "path_tracing": true,
@@ -97,7 +187,9 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["PyTorch"],
+  "integrations": [
+    "PyTorch"
+  ],
   "install_command": "pip install redner-gpu",
   "community_links": {
     "forum": "https://github.com/BachiLi/redner/issues"
@@ -125,5 +217,9 @@
       "url": "https://github.com/BachiLi/redner/tree/master/tutorials",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/redner.webp",
+  "sample_renders": [
+    "/renders/samples/redner_sample_1.webp"
   ]
 }

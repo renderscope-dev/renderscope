@@ -4,16 +4,28 @@
   "version": "1.0.0",
   "description": "Just-in-time compiler for vectorized and differentiable computation — the computational backbone of Mitsuba 3",
   "long_description": "Dr.Jit is a just-in-time (JIT) compiler for vectorized and differentiable numerical computation, developed at EPFL by Wenzel Jakob and collaborators. It is not a renderer — it is the computational infrastructure layer that powers Mitsuba 3's differentiable rendering capabilities. Dr.Jit transforms Python or C++ numerical programs into optimized machine code targeting multiple backends: scalar (for debugging), LLVM (for vectorized CPU execution), and CUDA (for GPU execution), all from a single source without code changes.\n\nThe system's core contribution is enabling efficient automatic differentiation of arbitrary numerical programs, not just predefined rendering operations. Where PyTorch's autograd is limited to its own tensor operations and computational graph, Dr.Jit can differentiate custom algorithms — including physically based rendering integrators, custom BSDF evaluation, Monte Carlo sampling strategies, and physics simulations — at compiled-code performance levels. It supports both forward-mode and reverse-mode differentiation, with lazy evaluation and kernel fusion for memory-efficient computation.\n\nDr.Jit provides a NumPy-like array programming interface in Python, making it familiar to scientific computing users. Its arrays track computational graphs across operations and compile them into fused kernels on demand. While its primary use case is as the engine behind Mitsuba 3, Dr.Jit is a standalone library that can be used for any differentiable computation task — optimization, physics simulation, inverse problems, or custom rendering algorithms. The system requires a conceptual understanding of JIT tracing, lazy evaluation, and kernel compilation that sets it apart from eager-execution frameworks.",
-  "technique": ["differentiable"],
+  "technique": [
+    "differentiable"
+  ],
   "language": "C++/Python",
   "license": "BSD-3-Clause",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["cuda"],
+  "gpu_apis": [
+    "cuda"
+  ],
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["programmatic"],
-  "output_formats": ["tensor"],
+  "scene_formats": [
+    "programmatic"
+  ],
+  "output_formats": [
+    "tensor"
+  ],
   "homepage": "https://drjit.readthedocs.io/en/latest/",
   "repository": "https://github.com/mitsuba-renderer/drjit",
   "documentation": "https://drjit.readthedocs.io/en/latest/",
@@ -24,8 +36,74 @@
   "latest_release_version": "1.0.0",
   "status": "active",
   "github_stars": 600,
-  "github_stars_trend": [350, 380, 400, 430, 450, 470, 490, 510, 530, 555, 580, 600],
-  "commit_activity_52w": [8, 12, 5, 7, 10, 6, 3, 9, 14, 8, 5, 7, 11, 6, 4, 8, 12, 9, 5, 3, 7, 10, 8, 6, 4, 9, 13, 7, 5, 8, 11, 6, 3, 7, 10, 8, 5, 4, 9, 12, 7, 6, 3, 8, 10, 5, 7, 9, 6, 4, 8, 11],
+  "github_stars_trend": [
+    350,
+    380,
+    400,
+    430,
+    450,
+    470,
+    490,
+    510,
+    530,
+    555,
+    580,
+    600
+  ],
+  "commit_activity_52w": [
+    8,
+    12,
+    5,
+    7,
+    10,
+    6,
+    3,
+    9,
+    14,
+    8,
+    5,
+    7,
+    11,
+    6,
+    4,
+    8,
+    12,
+    9,
+    5,
+    3,
+    7,
+    10,
+    8,
+    6,
+    4,
+    9,
+    13,
+    7,
+    5,
+    8,
+    11,
+    6,
+    3,
+    7,
+    10,
+    8,
+    5,
+    4,
+    9,
+    12,
+    7,
+    6,
+    3,
+    8,
+    10,
+    5,
+    7,
+    9,
+    6,
+    4,
+    8,
+    11
+  ],
   "contributor_count": 25,
   "open_issues": 40,
   "fork_count": 55,
@@ -56,7 +134,13 @@
   ],
   "best_for": "Researchers building custom differentiable rendering, physics simulation, or optimization algorithms who need compiled-code performance from Python — particularly those already using or planning to use Mitsuba 3",
   "not_ideal_for": "Users who want a ready-to-use differentiable renderer — Dr.Jit is computational infrastructure, not an application. Use Mitsuba 3 (built on Dr.Jit) or PyTorch3D for a higher-level rendering experience",
-  "related": ["mitsuba3", "redner", "pytorch3d", "nvdiffrast", "nvidia-kaolin"],
+  "related": [
+    "mitsuba3",
+    "redner",
+    "pytorch3d",
+    "nvdiffrast",
+    "nvidia-kaolin"
+  ],
   "features": {
     "global_illumination": null,
     "path_tracing": null,
@@ -97,7 +181,9 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["Mitsuba 3"],
+  "integrations": [
+    "Mitsuba 3"
+  ],
   "install_command": "pip install drjit",
   "community_links": {
     "forum": "https://github.com/mitsuba-renderer/drjit/discussions"
@@ -120,5 +206,9 @@
       "url": "https://drjit.readthedocs.io/en/latest/basics.html",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/drjit.webp",
+  "sample_renders": [
+    "/renders/samples/drjit_sample_1.webp"
   ]
 }

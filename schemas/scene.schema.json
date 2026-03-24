@@ -130,6 +130,51 @@
         "format": "uri"
       }
     },
+    "resolution": {
+      "type": "array",
+      "description": "Default render resolution as [width, height].",
+      "items": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "renders": {
+      "type": "array",
+      "description": "Pre-rendered images for this scene from various renderers.",
+      "items": {
+        "type": "object",
+        "required": ["renderer_id"],
+        "additionalProperties": true,
+        "properties": {
+          "renderer_id": {
+            "type": "string",
+            "description": "Renderer id that produced this render."
+          },
+          "image_web": {
+            "type": "string",
+            "description": "Path to web-resolution rendered image."
+          },
+          "image_thumb": {
+            "type": "string",
+            "description": "Path to thumbnail rendered image."
+          },
+          "render_time_seconds": {
+            "type": ["number", "null"],
+            "description": "Render time in seconds."
+          },
+          "samples_per_pixel": {
+            "type": ["integer", "null"],
+            "description": "Samples per pixel used."
+          },
+          "integrator": {
+            "type": ["string", "null"],
+            "description": "Integrator or algorithm used."
+          }
+        }
+      }
+    },
     "camera": {
       "type": "object",
       "description": "Standard camera position for consistent benchmarking.",

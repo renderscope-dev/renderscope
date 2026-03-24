@@ -4,16 +4,41 @@
   "version": "4.4",
   "description": "Open source game engine with Vulkan and OpenGL renderers, GDScript and C# scripting, and a full visual editor",
   "long_description": "Godot Engine is a fully integrated, community-driven open source game engine offering both 2D and 3D rendering capabilities. Since the release of Godot 4.0 in 2023, the engine features a modern Vulkan-based rendering backend (Forward+ and Mobile renderers) alongside an OpenGL-based Compatibility renderer for older hardware and web export. Godot is developed by a global community of contributors and funded through donations and grants, with no corporate parent company or revenue-sharing model.\n\nGodot 4.x introduced several advanced rendering features uncommon in open source engines: Signed Distance Field Global Illumination (SDFGI) for real-time indirect lighting without baking, VoxelGI for dynamic volumetric global illumination, volumetric fog and atmospheric effects, screen-space reflections, and a comprehensive post-processing pipeline. The engine supports PBR materials via a StandardMaterial3D with metallic/roughness workflows, and provides a visual shader editor alongside code-based shading.\n\nBeyond rendering, Godot is a complete game development environment with a node-based scene system, GDScript (a Python-like scripting language), C# support via .NET, GDExtension for native C/C++ plugins, a built-in physics engine, audio system, animation tools, and one-click export to desktop, mobile, and web platforms. Its MIT license with no royalties or usage restrictions has made it the leading fully open source alternative to proprietary engines like Unity and Unreal. Godot is one of the most starred projects on GitHub, reflecting its massive and rapidly growing community.",
-  "technique": ["rasterization"],
+  "technique": [
+    "rasterization"
+  ],
   "language": "C++",
   "license": "MIT",
-  "platforms": ["linux", "macos", "windows", "android", "ios", "web"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows",
+    "android",
+    "ios",
+    "web"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["vulkan"],
+  "gpu_apis": [
+    "vulkan"
+  ],
   "cpu_support": true,
   "real_time": true,
-  "scene_formats": ["gltf", "glb", "obj", "collada", "fbx", "tscn", "escn"],
-  "output_formats": ["framebuffer", "png", "jpg", "webp", "exr"],
+  "scene_formats": [
+    "gltf",
+    "glb",
+    "obj",
+    "collada",
+    "fbx",
+    "tscn",
+    "escn"
+  ],
+  "output_formats": [
+    "framebuffer",
+    "png",
+    "jpg",
+    "webp",
+    "exr"
+  ],
   "homepage": "https://godotengine.org",
   "repository": "https://github.com/godotengine/godot",
   "documentation": "https://docs.godotengine.org/en/stable/",
@@ -50,7 +75,14 @@
   ],
   "best_for": "Indie game development, interactive 3D applications, and educational game programming where a fully integrated open source engine with no licensing costs is preferred",
   "not_ideal_for": "AAA-quality cinematic rendering, large open world games requiring advanced streaming, or applications that need only an embeddable rendering library without engine overhead",
-  "related": ["filament", "bevy", "blender-eevee", "panda3d", "wicked-engine", "ogre3d"],
+  "related": [
+    "filament",
+    "bevy",
+    "blender-eevee",
+    "panda3d",
+    "wicked-engine",
+    "ogre3d"
+  ],
   "features": {
     "global_illumination": true,
     "path_tracing": false,
@@ -91,7 +123,10 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["Blender (community exporter)", "Jolt Physics"],
+  "integrations": [
+    "Blender (community exporter)",
+    "Jolt Physics"
+  ],
   "install_command": "Download from https://godotengine.org/download or build from source: scons platform=linuxbsd",
   "community_links": {
     "discord": "https://discord.gg/4JBkykG",
@@ -109,5 +144,9 @@
       "url": "https://docs.godotengine.org/en/stable/getting_started/first_3d_game/index.html",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/godot.webp",
+  "sample_renders": [
+    "/renders/samples/godot_sample_1.webp"
   ]
 }

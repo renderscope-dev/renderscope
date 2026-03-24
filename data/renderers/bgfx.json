@@ -4,16 +4,36 @@
   "version": "2024.11",
   "description": "Cross-platform rendering abstraction supporting 12+ graphics APIs from a single codebase",
   "long_description": "bgfx is a cross-platform, graphics API-agnostic rendering library created and maintained by Branimir Karadžić. It provides a thin abstraction layer over a remarkable breadth of GPU backends: Direct3D 9, Direct3D 11, Direct3D 12, Metal, OpenGL 2.1+, OpenGL ES 2+, Vulkan, WebGL 1/2, WebGPU, and console-specific APIs including GNM (PS4), AGC (PS5), and NVN (Nintendo Switch). No other open-source rendering library matches this backend coverage from a single, unified C99 API.\n\nbgfx's philosophy is deliberately minimalist: it handles GPU command submission, state management, resource creation, and shader compilation, but provides no scene graph, no material system, no asset pipeline, and no physics. This 'bring your own engine' approach makes bgfx ideal for developers building custom rendering stacks who need a portable GPU abstraction without opinionated higher-level systems. The library ships with shaderc, a cross-platform shader compiler that translates a GLSL-like shading language into backend-specific formats.\n\nThe project includes over 40 example programs demonstrating techniques ranging from basic triangle rendering to deferred shading, physically based rendering, order-independent transparency, and GPU-driven rendering. These examples serve as the primary learning resource, as bgfx has no formal documentation beyond well-commented C99 headers. bgfx is used in production by game studios, visualization tools, and development environments including the LÖVE 2D framework and various indie titles.",
-  "technique": ["rasterization"],
+  "technique": [
+    "rasterization"
+  ],
   "language": "C/C++",
   "license": "BSD-2-Clause",
-  "platforms": ["linux", "macos", "windows", "ios", "android", "web"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows",
+    "ios",
+    "android",
+    "web"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["vulkan", "metal", "directx", "webgl", "webgpu"],
+  "gpu_apis": [
+    "vulkan",
+    "metal",
+    "directx",
+    "webgl",
+    "webgpu"
+  ],
   "cpu_support": false,
   "real_time": true,
-  "scene_formats": ["custom"],
-  "output_formats": ["framebuffer", "png"],
+  "scene_formats": [
+    "custom"
+  ],
+  "output_formats": [
+    "framebuffer",
+    "png"
+  ],
   "homepage": "https://bkaradzic.github.io/bgfx/",
   "repository": "https://github.com/bkaradzic/bgfx",
   "documentation": "https://bkaradzic.github.io/bgfx/",
@@ -48,7 +68,12 @@
   ],
   "best_for": "Engine developers and tool creators who need a thin, portable GPU abstraction layer without opinionated scene management or material systems",
   "not_ideal_for": "Developers who want a ready-to-use rendering engine with built-in materials, scene management, or beginner-friendly documentation",
-  "related": ["ogre3d", "the-forge", "sokol", "filament"],
+  "related": [
+    "ogre3d",
+    "the-forge",
+    "sokol",
+    "filament"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -90,8 +115,74 @@
     "materialx": false
   },
   "github_stars": 15200,
-  "github_stars_trend": [14000, 14100, 14250, 14400, 14500, 14600, 14700, 14800, 14900, 15000, 15100, 15200],
-  "commit_activity_52w": [5, 8, 3, 12, 7, 4, 9, 6, 11, 5, 3, 8, 7, 10, 4, 6, 9, 3, 5, 8, 11, 7, 4, 6, 9, 3, 8, 5, 10, 7, 4, 6, 12, 3, 5, 9, 8, 4, 7, 6, 3, 11, 5, 8, 4, 9, 7, 3, 6, 10, 5, 8],
+  "github_stars_trend": [
+    14000,
+    14100,
+    14250,
+    14400,
+    14500,
+    14600,
+    14700,
+    14800,
+    14900,
+    15000,
+    15100,
+    15200
+  ],
+  "commit_activity_52w": [
+    5,
+    8,
+    3,
+    12,
+    7,
+    4,
+    9,
+    6,
+    11,
+    5,
+    3,
+    8,
+    7,
+    10,
+    4,
+    6,
+    9,
+    3,
+    5,
+    8,
+    11,
+    7,
+    4,
+    6,
+    9,
+    3,
+    8,
+    5,
+    10,
+    7,
+    4,
+    6,
+    12,
+    3,
+    5,
+    9,
+    8,
+    4,
+    7,
+    6,
+    3,
+    11,
+    5,
+    8,
+    4,
+    9,
+    7,
+    3,
+    6,
+    10,
+    5,
+    8
+  ],
   "contributor_count": 250,
   "open_issues": 320,
   "fork_count": 2100,
@@ -111,5 +202,10 @@
       "url": "https://bkaradzic.github.io/bgfx/bgfx.html",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/bgfx.webp",
+  "sample_renders": [
+    "/renders/samples/bgfx_sample_1.webp",
+    "/renders/samples/bgfx_sample_2.webp"
   ]
 }

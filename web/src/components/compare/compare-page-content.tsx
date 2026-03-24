@@ -166,7 +166,7 @@ export function ComparePageContent({ renderers, scenes }: ComparePageContentProp
             <div className="mb-3 text-purple-500/60">
               <GitCompareArrows className="h-10 w-10" />
             </div>
-            <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Compare Renderers
             </h1>
             <p className="mt-2 text-base text-muted-foreground sm:text-lg">

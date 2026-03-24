@@ -4,16 +4,35 @@
   "version": "1.0",
   "description": "NVIDIA's lightning-fast Neural Graphics Primitives with multiresolution hash encoding for near-instant NeRF training",
   "long_description": "Instant Neural Graphics Primitives (Instant-NGP) is NVIDIA Research's implementation of the breakthrough multiresolution hash encoding technique, published at SIGGRAPH 2022. The core innovation is a learned multiresolution hash table that replaces the costly MLP evaluations in traditional NeRF with fast hash lookups followed by small neural networks, reducing NeRF training from hours to seconds and enabling interactive rendering.\n\nThe implementation is a high-performance C++/CUDA codebase with a fully-fused neural network inference pipeline. Beyond NeRF (neural radiance fields), it supports multiple neural graphics primitives including signed distance functions (SDFs) for geometry, neural images for 2D compression, and neural radiance caching. The system includes an interactive real-time viewer with immediate visual feedback during training, enabling rapid exploration of reconstruction quality across different hyperparameters.\n\nInstant-NGP's hash encoding technique has been one of the most influential contributions in neural rendering — it has been adopted by numerous subsequent works including Nerfstudio, which integrates instant-ngp as one of its built-in methods. While the original NVIDIA repository is no longer actively developed (the team has moved on to newer research), the fundamental technique continues to power many current neural rendering systems. The restrictive NVIDIA Source Code License limits use to non-commercial research.",
-  "technique": ["neural", "differentiable", "volume_rendering"],
+  "technique": [
+    "neural",
+    "differentiable",
+    "volume_rendering"
+  ],
   "language": "C++/CUDA",
   "license": "Custom (NVIDIA)",
-  "platforms": ["linux", "windows"],
+  "platforms": [
+    "linux",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["cuda"],
+  "gpu_apis": [
+    "cuda"
+  ],
   "cpu_support": false,
   "real_time": true,
-  "scene_formats": ["transforms-json", "colmap", "images", "nerf-synthetic"],
-  "output_formats": ["png", "exr", "mp4", "msgpack"],
+  "scene_formats": [
+    "transforms-json",
+    "colmap",
+    "images",
+    "nerf-synthetic"
+  ],
+  "output_formats": [
+    "png",
+    "exr",
+    "mp4",
+    "msgpack"
+  ],
   "homepage": "https://nvlabs.github.io/instant-ngp/",
   "repository": "https://github.com/NVlabs/instant-ngp",
   "paper": "https://arxiv.org/abs/2201.05989",
@@ -48,7 +67,12 @@
   ],
   "best_for": "Researchers who need the fastest possible NeRF training and interactive visualization on NVIDIA hardware, and as a reference implementation for hash encoding-based neural rendering",
   "not_ideal_for": "Commercial applications due to restrictive licensing, projects requiring cross-platform GPU support, or workflows needing easy extensibility via Python",
-  "related": ["nerfstudio", "3d-gaussian-splatting", "nerfacc", "gsplat"],
+  "related": [
+    "nerfstudio",
+    "3d-gaussian-splatting",
+    "nerfacc",
+    "gsplat"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -90,12 +114,81 @@
     "materialx": false
   },
   "github_stars": 16000,
-  "github_stars_trend": [14000, 14200, 14500, 14800, 15000, 15200, 15400, 15500, 15600, 15700, 15900, 16000],
-  "commit_activity_52w": [1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+  "github_stars_trend": [
+    14000,
+    14200,
+    14500,
+    14800,
+    15000,
+    15200,
+    15400,
+    15500,
+    15600,
+    15700,
+    15900,
+    16000
+  ],
+  "commit_activity_52w": [
+    1,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    2,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
+  ],
   "contributor_count": 40,
   "open_issues": 400,
   "fork_count": 1900,
-  "integrations": ["Nerfstudio", "tiny-cuda-nn"],
+  "integrations": [
+    "Nerfstudio",
+    "tiny-cuda-nn"
+  ],
   "install_command": "git clone --recursive https://github.com/NVlabs/instant-ngp && cd instant-ngp && cmake . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo && cmake --build build --config RelWithDebInfo -j",
   "community_links": {
     "forum": "https://github.com/NVlabs/instant-ngp/discussions"
@@ -113,5 +206,10 @@
       "url": "https://nvlabs.github.io/instant-ngp/",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/instant-ngp.webp",
+  "sample_renders": [
+    "/renders/samples/instant-ngp_sample_1.webp",
+    "/renders/samples/instant-ngp_sample_2.webp"
   ]
 }

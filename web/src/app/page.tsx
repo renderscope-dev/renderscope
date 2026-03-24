@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getLandingPageStats, getRecentRenderers } from "@/lib/data";
 import { getHeroRenderImages, getComparisonPair } from "@/lib/scenes";
 import { JsonLd } from "@/components/json-ld";
@@ -7,11 +8,12 @@ import {
   generateBreadcrumbSchema,
 } from "@/lib/structured-data";
 import { HeroSection } from "@/components/landing/hero-section";
-import { StatsBar } from "@/components/landing/stats-bar";
 import { FeaturedComparison } from "@/components/landing/featured-comparison";
 import { TaxonomyPreview } from "@/components/landing/taxonomy-preview";
 import { QuickStartTerminal } from "@/components/landing/quick-start-terminal";
 import { RecentUpdates } from "@/components/landing/recent-updates";
+import { Github, ArrowRight } from "lucide-react";
+import { siteConfig } from "@/lib/constants";
 
 const SITE_URL = "https://renderscope.dev";
 
@@ -94,12 +96,44 @@ export default function HomePage() {
       <JsonLd
         data={generateBreadcrumbSchema([{ name: "Home", path: "/" }])}
       />
-      <HeroSection images={heroImages} />
-      <StatsBar stats={stats} />
+      <HeroSection images={heroImages} stats={stats} />
       <FeaturedComparison left={comparisonLeft} right={comparisonRight} />
       <TaxonomyPreview />
       <QuickStartTerminal />
       <RecentUpdates renderers={recentRenderers} />
+
+      {/* ── Final CTA Section ───────────────────────────────────── */}
+      <section className="relative overflow-hidden border-t border-border/50">
+        {/* Subtle gradient background */}
+        <div className="absolute inset-0 bg-mesh-light" />
+        <div className="relative mx-auto max-w-4xl px-4 py-24 text-center sm:px-6 sm:py-32 lg:px-8">
+          <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Ready to explore the rendering landscape?
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+            Dive into 50+ rendering engines, compare techniques side by side,
+            and benchmark performance &mdash; all in one place.
+          </p>
+          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <Link
+              href="/explore"
+              className="group inline-flex h-12 items-center gap-2 rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 hover:brightness-110"
+            >
+              Start Exploring
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+            <a
+              href={siteConfig.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex h-12 items-center gap-2 rounded-xl border border-border bg-background/80 px-8 text-sm font-semibold text-foreground shadow-sm backdrop-blur-sm transition-all hover:border-foreground/20 hover:shadow-md"
+            >
+              <Github className="h-4 w-4" />
+              Star on GitHub
+            </a>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

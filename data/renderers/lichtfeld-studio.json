@@ -4,16 +4,31 @@
   "version": "0.1.0",
   "description": "High-performance C++/CUDA 3D Gaussian Splatting implementation with real-time viewer and training capabilities",
   "long_description": "LichtFeld Studio is a C++ and CUDA implementation of 3D Gaussian Splatting (3DGS), the neural rendering technique that represents scenes as millions of oriented 3D Gaussians for real-time novel view synthesis. Developed by MrNeRF (Tobias Fischer) and contributors, it provides an alternative to the dominant Python-based 3DGS ecosystem by implementing the entire training and rendering pipeline in native C++ and CUDA, eliminating Python interpreter overhead.\n\nThe name 'LichtFeld' is German for 'light field,' referencing the light field rendering concept that 3DGS extends to achieve real-time radiance field rendering. The project's C++ architecture enables faster throughput for large-scale scenes compared to Python-centric alternatives like the original INRIA implementation, gsplat, or Nerfstudio. It includes an integrated real-time viewer with interactive camera controls for inspecting trained 3DGS models, and supports the standard COLMAP-based input pipeline for training from multi-view photographs.\n\nWhile the C++ codebase offers significant deployment advantages — standalone binaries without Python dependencies, easier integration into C++ production pipelines, and reduced runtime overhead — it trades away the rapid prototyping flexibility that makes Python-based tools preferred in the ML research community. LichtFeld Studio is particularly relevant for production scenarios where Python overhead is unacceptable, where integration with existing C++ infrastructure is required, or where deploying a standalone application without a Python runtime is necessary.",
-  "technique": ["gaussian_splatting", "neural"],
+  "technique": [
+    "gaussian_splatting",
+    "neural"
+  ],
   "language": "C++/CUDA",
   "license": "GPL-3.0",
-  "platforms": ["linux", "windows"],
+  "platforms": [
+    "linux",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["cuda"],
+  "gpu_apis": [
+    "cuda"
+  ],
   "cpu_support": false,
   "real_time": true,
-  "scene_formats": ["colmap", "ply"],
-  "output_formats": ["png", "jpg", "ply"],
+  "scene_formats": [
+    "colmap",
+    "ply"
+  ],
+  "output_formats": [
+    "png",
+    "jpg",
+    "ply"
+  ],
   "homepage": "https://github.com/MrNeRF/LichtFeld-Studio",
   "repository": "https://github.com/MrNeRF/LichtFeld-Studio",
   "paper": "https://doi.org/10.1145/3592433",
@@ -23,8 +38,74 @@
   "latest_release_version": "0.1.0",
   "status": "active",
   "github_stars": 600,
-  "github_stars_trend": [80, 130, 190, 250, 310, 350, 400, 440, 480, 520, 560, 600],
-  "commit_activity_52w": [5, 8, 3, 6, 10, 4, 7, 2, 9, 5, 8, 3, 6, 4, 7, 10, 5, 3, 8, 6, 4, 9, 5, 7, 3, 8, 6, 4, 10, 5, 7, 3, 6, 8, 4, 9, 5, 7, 3, 6, 8, 4, 10, 5, 7, 3, 8, 6, 4, 9, 5, 7],
+  "github_stars_trend": [
+    80,
+    130,
+    190,
+    250,
+    310,
+    350,
+    400,
+    440,
+    480,
+    520,
+    560,
+    600
+  ],
+  "commit_activity_52w": [
+    5,
+    8,
+    3,
+    6,
+    10,
+    4,
+    7,
+    2,
+    9,
+    5,
+    8,
+    3,
+    6,
+    4,
+    7,
+    10,
+    5,
+    3,
+    8,
+    6,
+    4,
+    9,
+    5,
+    7,
+    3,
+    8,
+    6,
+    4,
+    10,
+    5,
+    7,
+    3,
+    6,
+    8,
+    4,
+    9,
+    5,
+    7,
+    3,
+    6,
+    8,
+    4,
+    10,
+    5,
+    7,
+    3,
+    8,
+    6,
+    4,
+    9,
+    5,
+    7
+  ],
   "contributor_count": 10,
   "open_issues": 25,
   "fork_count": 70,
@@ -54,7 +135,12 @@
   ],
   "best_for": "High-performance 3D Gaussian Splatting training and real-time viewing in C++ environments, or scenarios where Python overhead is unacceptable",
   "not_ideal_for": "Rapid research prototyping and experimentation with novel 3DGS variants — Python-based tools like gsplat and Nerfstudio offer faster iteration cycles and a larger ecosystem of research extensions",
-  "related": ["3d-gaussian-splatting", "gsplat", "nerfstudio", "instant-ngp"],
+  "related": [
+    "3d-gaussian-splatting",
+    "gsplat",
+    "nerfstudio",
+    "instant-ngp"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -102,5 +188,9 @@
       "year": 2023
     }
   ],
-  "tutorials": []
+  "tutorials": [],
+  "thumbnail": "/renders/samples/lichtfeld-studio.webp",
+  "sample_renders": [
+    "/renders/samples/lichtfeld-studio_sample_1.webp"
+  ]
 }

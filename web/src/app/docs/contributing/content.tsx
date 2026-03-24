@@ -191,7 +191,7 @@ export function ContributingPageContent() {
           >
             <div className="text-sky-400">{p.icon}</div>
             <div className="flex-1">
-              <h2 className="mb-1 text-sm font-semibold text-foreground group-hover:text-white">
+              <h2 className="mb-1 text-sm font-semibold text-foreground group-hover:text-primary">
                 {p.title}
               </h2>
               <p className="text-xs text-muted-foreground">{p.description}</p>

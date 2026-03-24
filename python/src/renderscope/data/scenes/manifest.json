@@ -12,10 +12,12 @@
       "tests": ["global_illumination", "color_bleeding", "soft_shadows", "indirect_light"],
       "complexity": "simple",
       "formats": {
-        "obj": "cornell-box/CornellBox-Original.obj"
+        "obj": "cornell-box/CornellBox-Original.obj",
+        "pbrt": "cornell-box/pbrt/cornell-box/scene-v4.pbrt",
+        "glb": "cornell-box/cornell-box.glb"
       },
       "reference": {
-        "renderer": "blender-cycles",
+        "renderer": "pbrt",
         "samples": 65536,
         "image": "cornell-box/reference.exr"
       },
@@ -37,7 +39,8 @@
       "tests": ["global_illumination", "indirect_light", "textures", "complex_geometry"],
       "complexity": "moderate",
       "formats": {
-        "obj": "sponza/sponza.obj"
+        "obj": "sponza/sponza.obj",
+        "glb": "sponza/sponza.glb"
       },
       "reference": {
         "renderer": "blender-cycles",
@@ -62,7 +65,8 @@
       "tests": ["soft_shadows", "reflections", "indirect_light"],
       "complexity": "simple",
       "formats": {
-        "obj": "stanford-bunny/stanford-bunny.obj"
+        "obj": "stanford-bunny/stanford-bunny.obj",
+        "glb": "stanford-bunny/stanford-bunny.glb"
       },
       "reference": {
         "renderer": "blender-cycles",
@@ -87,7 +91,8 @@
       "tests": ["global_illumination", "caustics", "volumetric", "complex_geometry", "textures"],
       "complexity": "complex",
       "formats": {
-        "blend": "classroom/classroom/classroom.blend"
+        "blend": "classroom/classroom/classroom.blend",
+        "glb": "classroom/classroom.glb"
       },
       "reference": {
         "renderer": "blender-cycles",
@@ -112,7 +117,8 @@
       "tests": ["reflections", "complex_geometry", "hdri_lighting", "textures"],
       "complexity": "complex",
       "formats": {
-        "blend": "bmw/BMW27.blend"
+        "blend": "bmw/BMW27.blend",
+        "glb": "bmw/bmw.glb"
       },
       "reference": {
         "renderer": "blender-cycles",
@@ -137,7 +143,8 @@
       "tests": ["global_illumination", "outdoor_lighting", "complex_geometry", "textures"],
       "complexity": "complex",
       "formats": {
-        "obj": "san-miguel/san-miguel.obj"
+        "obj": "san-miguel/san-miguel.obj",
+        "glb": "san-miguel/san-miguel.glb"
       },
       "reference": {
         "renderer": "blender-cycles",

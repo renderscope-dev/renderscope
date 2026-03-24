@@ -8,14 +8,14 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border/50 bg-background">
+    <footer className="border-t border-border/50 bg-card/30">
       <div className="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">
         {/* Main footer grid */}
         <div className="grid grid-cols-2 gap-8 py-12 md:grid-cols-4">
           {/* Brand column */}
           <div className="col-span-2 md:col-span-1">
             <Logo className="mb-4" />
-            <p className="max-w-xs text-sm text-muted-foreground">
+            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
               An open source platform for cataloging, comparing, and
               benchmarking rendering engines.
             </p>
@@ -23,10 +23,10 @@ export function Footer() {
 
           {/* Product links */}
           <div>
-            <h3 className="mb-3 text-sm font-semibold text-foreground">
+            <h3 className="mb-3 font-display text-sm font-semibold text-foreground">
               Product
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               {footerLinks.product.map((link) => (
                 <li key={link.href}>
                   <Link
@@ -42,10 +42,10 @@ export function Footer() {
 
           {/* Resources links */}
           <div>
-            <h3 className="mb-3 text-sm font-semibold text-foreground">
+            <h3 className="mb-3 font-display text-sm font-semibold text-foreground">
               Resources
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               {footerLinks.resources.map((link) => (
                 <li key={link.href}>
                   <Link
@@ -61,10 +61,10 @@ export function Footer() {
 
           {/* Community links */}
           <div>
-            <h3 className="mb-3 text-sm font-semibold text-foreground">
+            <h3 className="mb-3 font-display text-sm font-semibold text-foreground">
               Community
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               {footerLinks.community.map((link) => (
                 <li key={link.label}>
                   {"external" in link && link.external ? (

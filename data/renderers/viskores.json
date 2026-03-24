@@ -4,16 +4,31 @@
   "version": "2.2.0",
   "description": "Massively parallel visualization toolkit for multi-core and many-core architectures, the next-generation successor to VTK algorithms",
   "long_description": "Viskores, formerly known as VTK-m (VTK-many-core), is a ground-up redesign of VTK's computational visualization algorithms for modern massively parallel hardware. Developed by Kitware in collaboration with Sandia National Laboratories, Oak Ridge National Laboratory, and Los Alamos National Laboratory under US Department of Energy funding, it provides hardware-portable implementations of key visualization algorithms — isosurface extraction, volume rendering, contouring, particle advection, and connected components — that run efficiently on CPUs, NVIDIA GPUs, AMD GPUs, and other many-core architectures.\n\nThe framework's central abstraction is the \"worklet\" — a small, portable function that developers write once and Viskores automatically maps to the target hardware via backend dispatchers for serial execution, TBB, OpenMP, CUDA, and Kokkos. This design enables a single algorithm implementation to run on Intel Xeon processors, NVIDIA A100 GPUs, and AMD MI250X accelerators without code changes. The Flying Edges algorithm for isosurface extraction, developed within this project, is significantly faster than traditional Marching Cubes on both CPU and GPU.\n\nViskores is not a standalone visualization application — it is an infrastructure library designed for integration into VTK, ParaView, and custom HPC visualization pipelines. Its primary use case is in-situ visualization: processing simulation data at the point of generation on the same supercomputer, without intermediate I/O. This capability is critical for exascale computational science where writing full simulation output to disk is prohibitively expensive. The library integrates directly with VTK as a backend filter implementation and is used by ParaView for GPU-accelerated filter execution.",
-  "technique": ["volume_rendering"],
+  "technique": [
+    "volume_rendering"
+  ],
   "language": "C++",
   "license": "BSD-3-Clause",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["cuda"],
+  "gpu_apis": [
+    "cuda"
+  ],
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["vtk", "vti", "vtr"],
-  "output_formats": ["vtk", "vti"],
+  "scene_formats": [
+    "vtk",
+    "vti",
+    "vtr"
+  ],
+  "output_formats": [
+    "vtk",
+    "vti"
+  ],
   "homepage": "https://m.vtk.org",
   "repository": "https://github.com/Kitware/VTK-m",
   "documentation": "https://m.vtk.org/index.php/VTK-m_Users_Guide",
@@ -56,7 +71,12 @@
   ],
   "best_for": "HPC visualization developers building in-situ analysis pipelines, Kitware ecosystem integrators accelerating VTK/ParaView with GPU backends, and computational scientists needing portable parallel visualization algorithms",
   "not_ideal_for": "End-user visualization, small datasets, web-based rendering, or anyone seeking a standalone visualization application with a GUI",
-  "related": ["vtk", "paraview", "ospray", "embree"],
+  "related": [
+    "vtk",
+    "paraview",
+    "ospray",
+    "embree"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -97,7 +117,10 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["VTK", "ParaView"],
+  "integrations": [
+    "VTK",
+    "ParaView"
+  ],
   "install_command": "git clone https://github.com/Kitware/VTK-m && cd VTK-m && cmake -B build && cmake --build build",
   "community_links": {
     "mailing_list": "https://vtk.org/mailman/listinfo/vtkusers"
@@ -115,5 +138,9 @@
       "url": "https://m.vtk.org/index.php/VTK-m_Users_Guide",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/viskores.webp",
+  "sample_renders": [
+    "/renders/samples/viskores_sample_1.webp"
   ]
 }

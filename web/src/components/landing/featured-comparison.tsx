@@ -94,15 +94,15 @@ export function FeaturedComparison({ left, right }: FeaturedComparisonProps) {
     <SectionWrapper id="comparison" data-testid="featured-comparison">
       {/* Heading */}
       <div className="mb-10 text-center sm:mb-14">
-        <h2 className="text-display-sm text-foreground">{comparison.heading}</h2>
-        <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+        <h2 className="font-display text-display-sm text-foreground">{comparison.heading}</h2>
+        <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
           {comparison.subtitle}
         </p>
       </div>
 
       {/* Comparison preview */}
       <div className="mx-auto max-w-4xl">
-        <div className="relative overflow-hidden rounded-xl border border-border shadow-2xl shadow-black/20">
+        <div className="relative overflow-hidden rounded-2xl border border-border/50 shadow-card dark:shadow-2xl dark:shadow-black/20">
           {/* Side-by-side images */}
           <div className="flex flex-col sm:flex-row">
             {/* Left image */}
@@ -114,7 +114,7 @@ export function FeaturedComparison({ left, right }: FeaturedComparisonProps) {
                 className="aspect-[16/10]"
               />
               {/* Left label chip */}
-              <div className="absolute left-3 top-3 rounded-md bg-black/60 px-2.5 py-1 text-xs font-medium text-white/80 backdrop-blur-sm">
+              <div className="absolute left-3 top-3 rounded-lg bg-black/60 px-2.5 py-1 text-xs font-medium text-white/80 backdrop-blur-sm">
                 {leftData.renderer}
               </div>
             </div>
@@ -140,7 +140,7 @@ export function FeaturedComparison({ left, right }: FeaturedComparisonProps) {
                 className="aspect-[16/10]"
               />
               {/* Right label chip */}
-              <div className="absolute right-3 top-3 rounded-md bg-black/60 px-2.5 py-1 text-xs font-medium text-white/80 backdrop-blur-sm">
+              <div className="absolute right-3 top-3 rounded-lg bg-black/60 px-2.5 py-1 text-xs font-medium text-white/80 backdrop-blur-sm">
                 {rightData.renderer}
               </div>
             </div>
@@ -148,10 +148,10 @@ export function FeaturedComparison({ left, right }: FeaturedComparisonProps) {
         </div>
 
         {/* CTA link */}
-        <div className="mt-6 text-center">
+        <div className="mt-8 text-center">
           <Link
             href={comparison.cta.href}
-            className="group inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+            className="group inline-flex items-center gap-1.5 rounded-full bg-primary/5 px-5 py-2 text-sm font-medium text-primary transition-all hover:bg-primary/10 dark:bg-primary/10 dark:hover:bg-primary/15"
           >
             {comparison.cta.label}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

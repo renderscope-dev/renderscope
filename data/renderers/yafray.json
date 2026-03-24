@@ -4,15 +4,30 @@
   "version": "4.0.0",
   "description": "Classic open-source ray tracer with a long history in the Blender rendering ecosystem",
   "long_description": "YafaRay (Yet Another Free Amazing Raytracer) is an open-source rendering engine with roots dating back to the early 2000s. Originally released as YafRay (Yet Another Free Raytracer) around 2001-2002, the project was rebranded to YafaRay in 2008 when the codebase was substantially rewritten. It holds a notable place in rendering history as one of the first external render engines to integrate with Blender, predating the arrival of Blender Cycles in 2011 and helping establish the ecosystem of third-party Blender rendering addons.\n\nThe renderer now exists as libYafaRay — a rendering library with C and Python bindings. It offers an unusually diverse set of integrators for its size: direct lighting, photon mapping, unidirectional and bidirectional path tracing, and Stochastic Progressive Photon Mapping (SPPM). This flexibility allows users to trade accuracy for speed depending on the scene. It supports subsurface scattering, volumetric media, depth of field, HDRI environment lighting, and various material models including Glossy and ShinyDiffuse BSDFs. Output formats include PNG, JPEG, TGA, HDR, and EXR.\n\nDevelopment has been sporadic in recent years, maintained primarily by a small number of contributors. While YafaRay's Blender integration was once its primary selling point, compatibility with recent Blender versions (3.x and 4.x) is uncertain as the addon has not kept pace with Blender's rapidly evolving Python API. The project's significance is primarily historical — it demonstrated the viability of external rendering engines in Blender and influenced the ecosystem that Cycles and LuxCoreRender would later dominate.",
-  "technique": ["path_tracing", "ray_tracing"],
+  "technique": [
+    "path_tracing",
+    "ray_tracing"
+  ],
   "language": "C++",
   "license": "LGPL-2.1-only",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": false,
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["yafaray-xml"],
-  "output_formats": ["png", "jpg", "tga", "hdr", "exr"],
+  "scene_formats": [
+    "yafaray-xml"
+  ],
+  "output_formats": [
+    "png",
+    "jpg",
+    "tga",
+    "hdr",
+    "exr"
+  ],
   "homepage": "https://www.yafaray.org",
   "repository": "https://github.com/YafaRay/libYafaRay",
   "documentation": "https://www.yafaray.org",
@@ -52,7 +67,12 @@
   ],
   "best_for": "Exploring the history of open-source rendering, projects needing an LGPL-licensed rendering library for embedding, and researchers studying the evolution of Blender rendering integration",
   "not_ideal_for": "Production rendering, modern Blender workflows where Cycles and EEVEE are superior in every practical dimension, GPU-accelerated rendering, or active research",
-  "related": ["blender-cycles", "luxcorerender", "povray", "appleseed"],
+  "related": [
+    "blender-cycles",
+    "luxcorerender",
+    "povray",
+    "appleseed"
+  ],
   "features": {
     "global_illumination": true,
     "path_tracing": true,
@@ -93,9 +113,15 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["Blender"],
+  "integrations": [
+    "Blender"
+  ],
   "community_links": {
     "stackoverflow_tag": "yafray"
   },
-  "tutorials": []
+  "tutorials": [],
+  "thumbnail": "/renders/samples/yafray.webp",
+  "sample_renders": [
+    "/renders/samples/yafray_sample_1.webp"
+  ]
 }

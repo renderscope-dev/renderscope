@@ -276,6 +276,10 @@ class TestCyclesAdapter:
             samples=128,
             use_gpu=False,
             is_blend=True,
+            camera_position=None,
+            camera_target=None,
+            camera_up=None,
+            camera_fov=None,
         )
         compile(script, "<render_script>", "exec")
 
@@ -301,7 +305,7 @@ class TestLuxCoreAdapter:
         return LuxCoreAdapter()
 
     def test_name(self) -> None:
-        assert self._make_adapter().name == "luxcore"
+        assert self._make_adapter().name == "luxcorerender"
 
     def test_display_name(self) -> None:
         assert self._make_adapter().display_name == "LuxCoreRender"
@@ -611,7 +615,7 @@ class TestAllAdaptersRegistered:
             "pbrt",
             "mitsuba3",
             "blender-cycles",
-            "luxcore",
+            "luxcorerender",
             "appleseed",
             "filament",
             "ospray",
@@ -622,7 +626,7 @@ class TestAllAdaptersRegistered:
     def test_get_each_adapter(self) -> None:
         from renderscope.core.registry import registry
 
-        for name in ("luxcore", "appleseed", "filament", "ospray", "mock"):
+        for name in ("luxcorerender", "appleseed", "filament", "ospray", "mock"):
             adapter = registry.get(name)
             assert adapter is not None, f"Adapter '{name}' not found in registry"
             assert adapter.name == name

@@ -114,10 +114,10 @@ export function RendererPicker({
     <div data-testid="renderer-picker" className="rounded-xl border border-border/60 bg-card/50 p-4 sm:p-5">
       {/* Search input + dropdown */}
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <PopoverTrigger asChild>
                 <button
                   type="button"
                   role="combobox"
@@ -142,15 +142,15 @@ export function RendererPicker({
                   </span>
                   <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
                 </button>
-              </TooltipTrigger>
-              {isAtMax && (
-                <TooltipContent>
-                  <p>Remove a renderer to add a different one</p>
-                </TooltipContent>
-              )}
-            </Tooltip>
-          </TooltipProvider>
-        </PopoverTrigger>
+              </PopoverTrigger>
+            </TooltipTrigger>
+            {isAtMax && (
+              <TooltipContent>
+                <p>Remove a renderer to add a different one</p>
+              </TooltipContent>
+            )}
+          </Tooltip>
+        </TooltipProvider>
 
         <PopoverContent
           className="w-[var(--radix-popover-trigger-width)] p-0"

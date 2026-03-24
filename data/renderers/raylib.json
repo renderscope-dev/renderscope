@@ -4,16 +4,33 @@
   "version": "5.5",
   "description": "Beginner-friendly C library for games and graphical applications with zero external dependencies",
   "long_description": "raylib is a simple and easy-to-use C library for videogames programming, created by Ramón Santamaría (raysan5) in 2013. Originally developed as a teaching tool for programming students, it has grown into one of the most popular open-source graphics libraries in the C ecosystem with over 23,000 GitHub stars. The library's design philosophy is inspired by the Borland BGI graphics library and Microsoft XNA framework: provide an API so simple that beginners can produce visual output in their first hour, with function names like DrawCircle(), LoadTexture(), and PlaySound() that read almost like pseudocode.\n\nThe library is written in pure C99 with zero external dependencies — all platform abstraction (windowing, input, OpenGL loading), image decoding, audio playback, and font rendering are implemented internally. The rendering backend uses OpenGL 3.3 on desktop, OpenGL ES 2.0 on mobile and web (via Emscripten), and OpenGL 1.1 for legacy support. raylib supports both 2D and basic 3D rendering, including model loading (glTF, OBJ, IQM, VOX), skeletal animation, basic lighting (up to 4 lights), skybox rendering, mesh generation, and a shader system that allows custom GLSL shaders. An internal OpenGL abstraction layer called rlgl provides lower-level access when the high-level API is insufficient.\n\nWhat sets raylib apart is its extraordinary ecosystem of over 70 community-maintained language bindings, covering virtually every programming language from Python and Rust to Zig, Haskell, and Odin. This has made raylib the de facto standard library for learning graphics programming across languages. The project has an exceptionally active and welcoming community, with over 140 bundled examples, a comprehensive API cheatsheet, and a culture explicitly oriented toward helping beginners. raylib is a library, not an engine — there is no editor, no project system, and no asset pipeline. This is intentional: everything is code-driven, keeping the tool simple and the learning curve gentle.",
-  "technique": ["rasterization"],
+  "technique": [
+    "rasterization"
+  ],
   "language": "C",
   "license": "Zlib",
-  "platforms": ["linux", "macos", "windows", "web", "android"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows",
+    "web",
+    "android"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["webgl"],
+  "gpu_apis": [
+    "webgl"
+  ],
   "cpu_support": false,
   "real_time": true,
-  "scene_formats": ["obj", "gltf", "iqm", "vox"],
-  "output_formats": ["png"],
+  "scene_formats": [
+    "obj",
+    "gltf",
+    "iqm",
+    "vox"
+  ],
+  "output_formats": [
+    "png"
+  ],
   "homepage": "https://www.raylib.com",
   "repository": "https://github.com/raysan5/raylib",
   "documentation": "https://www.raylib.com/cheatsheet/cheatsheet.html",
@@ -51,7 +68,12 @@
   ],
   "best_for": "Students learning graphics programming, hobbyists prototyping 2D/3D games, game jam participants needing rapid iteration, and programmers in any language wanting the simplest possible path to rendering pixels on screen",
   "not_ideal_for": "Production game development, projects requiring advanced 3D rendering quality, mobile apps targeting App Store/Play Store, large team projects needing engine-level tooling, or applications requiring Vulkan/DX12 capabilities",
-  "related": ["sokol", "bgfx", "panda3d", "godot"],
+  "related": [
+    "sokol",
+    "bgfx",
+    "panda3d",
+    "godot"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -111,5 +133,10 @@
       "url": "https://www.raylib.com/cheatsheet/cheatsheet.html",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/raylib.webp",
+  "sample_renders": [
+    "/renders/samples/raylib_sample_1.webp",
+    "/renders/samples/raylib_sample_2.webp"
   ]
 }

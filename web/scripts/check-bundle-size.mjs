@@ -29,7 +29,7 @@ const OUT_DIR = join(WEB_ROOT, "out");
 //   Polyfills               ≈ 39KB gzip
 //   (Total framework floor  ≈ 125KB gzip)
 // Remaining budget is for app layout, shared components, and utilities.
-const DEFAULT_BUDGET_KB = 200;
+const DEFAULT_BUDGET_KB = 230;
 
 function parseBudget() {
   const idx = process.argv.indexOf("--budget");

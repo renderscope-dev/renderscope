@@ -4,15 +4,27 @@
   "version": "0.1.17",
   "description": "C-based differentiable mesh renderer with both PyTorch and TensorFlow interfaces for 3D-from-2D optimization",
   "long_description": "DEODR (Differentiable Estimator of Optical properties through Differentiable Rendering) is a unique differentiable mesh renderer whose core is implemented in C rather than CUDA. Developed by Martin de La Gorce, it stands apart from every other differentiable renderer in the ecosystem by running entirely on CPU, making it the only option that works on machines without NVIDIA GPUs — including Apple Silicon Macs, CI servers without GPUs, and lightweight laptops.\n\nThe renderer supports triangle mesh rasterization with vertex colors and texture mapping, computing derivatives with respect to vertex positions, colors, texture, camera parameters, and lighting parameters. Its edge-based approach to handling occlusion boundaries differs from SoftRasterizer's probabilistic assignment and nvdiffrast's hardware-accelerated approach, offering a third perspective on the problem of differentiable visibility. DEODR's most distinctive feature beyond CPU portability is its dual-framework support: the C core is wrapped for both PyTorch and TensorFlow, plus a pure NumPy/SciPy mode for environments without deep learning frameworks. This three-way interface is unmatched by any other differentiable renderer.\n\nThe trade-off is performance — CPU rendering is significantly slower than GPU-based alternatives for large scenes — but for moderate-scale problems (meshes with fewer than 100K faces at moderate resolution), the hardware accessibility and framework flexibility are genuine advantages. DEODR is installable via pip with no CUDA compilation step, eliminating the setup friction that plagues most differentiable rendering tools. The BSD-2-Clause license is maximally permissive, and the C core enables potential embedding in non-Python environments.",
-  "technique": ["differentiable", "rasterization"],
+  "technique": [
+    "differentiable",
+    "rasterization"
+  ],
   "language": "C/Python",
   "license": "BSD-2-Clause",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": false,
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["obj", "programmatic"],
-  "output_formats": ["png"],
+  "scene_formats": [
+    "obj",
+    "programmatic"
+  ],
+  "output_formats": [
+    "png"
+  ],
   "homepage": "https://github.com/martinResearch/DEODR",
   "repository": "https://github.com/martinResearch/DEODR",
   "paper": "https://arxiv.org/abs/2011.06988",
@@ -22,8 +34,74 @@
   "latest_release_version": "0.1.17",
   "status": "maintenance",
   "github_stars": 200,
-  "github_stars_trend": [140, 148, 155, 162, 168, 174, 179, 184, 188, 192, 196, 200],
-  "commit_activity_52w": [0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+  "github_stars_trend": [
+    140,
+    148,
+    155,
+    162,
+    168,
+    174,
+    179,
+    184,
+    188,
+    192,
+    196,
+    200
+  ],
+  "commit_activity_52w": [
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0
+  ],
   "contributor_count": 3,
   "open_issues": 12,
   "fork_count": 30,
@@ -53,7 +131,12 @@
   ],
   "best_for": "CPU-based differentiable mesh rendering and 3D-from-2D optimization on machines without CUDA-capable GPUs, or when dual PyTorch/TensorFlow support is needed",
   "not_ideal_for": "High-resolution or large-scale differentiable rendering where GPU acceleration is available — use PyTorch3D or nvdiffrast for production GPU workflows",
-  "related": ["pytorch3d", "softrasterizer", "nvdiffrast", "tensorflow-graphics"],
+  "related": [
+    "pytorch3d",
+    "softrasterizer",
+    "nvdiffrast",
+    "tensorflow-graphics"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -94,7 +177,11 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["PyTorch", "TensorFlow", "NumPy"],
+  "integrations": [
+    "PyTorch",
+    "TensorFlow",
+    "NumPy"
+  ],
   "install_command": "pip install deodr",
   "citations": [
     {
@@ -103,5 +190,10 @@
       "year": 2020
     }
   ],
-  "tutorials": []
+  "tutorials": [],
+  "thumbnail": "/renders/samples/deodr.webp",
+  "sample_renders": [
+    "/renders/samples/deodr_sample_1.webp",
+    "/renders/samples/deodr_sample_2.webp"
+  ]
 }

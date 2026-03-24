@@ -4,16 +4,36 @@
   "version": "0.15",
   "description": "Data-driven game engine built in Rust with an ECS architecture, modern rendering pipeline, and modular plugin system",
   "long_description": "Bevy is an open source game engine written in Rust that uses an Entity Component System (ECS) architecture as its foundational design pattern. Created by Cart (Carter Anderson) in 2020, Bevy treats every engine subsystem — rendering, audio, input, UI, physics — as a composable plugin that can be added, removed, or replaced independently. This modularity, combined with Rust's ownership model for memory safety and fearless concurrency, makes Bevy uniquely positioned among modern game engines.\n\nBevy's rendering pipeline is built on wgpu, a safe and portable graphics abstraction layer that maps to Vulkan, Metal, DirectX 12, and WebGPU. The renderer supports PBR materials with metallic/roughness workflows, cascaded shadow maps, screen-space ambient occlusion, bloom, tone mapping, volumetric fog, irradiance volumes for diffuse global illumination, and environment map reflections. Bevy uses a render graph architecture where rendering passes are defined as nodes in a directed acyclic graph, enabling flexible composition of rendering techniques.\n\nAs a pre-1.0 engine, Bevy is evolving rapidly with breaking API changes between releases. It does not yet have an official visual scene editor — all scene setup is done through Rust code — though community-built editor projects are emerging. Despite its youth, Bevy has attracted one of the fastest-growing communities in the Rust ecosystem, with thousands of contributors and a rich plugin ecosystem. Its compile-time safety guarantees, parallel ECS scheduling, and zero-cost abstractions appeal to developers who value performance and correctness, even at the cost of Rust's steeper learning curve.",
-  "technique": ["rasterization"],
+  "technique": [
+    "rasterization"
+  ],
   "language": "Rust",
   "license": "MIT/Apache-2.0",
-  "platforms": ["linux", "macos", "windows", "web", "android", "ios"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows",
+    "web",
+    "android",
+    "ios"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["vulkan", "metal", "directx", "webgpu"],
+  "gpu_apis": [
+    "vulkan",
+    "metal",
+    "directx",
+    "webgpu"
+  ],
   "cpu_support": false,
   "real_time": true,
-  "scene_formats": ["gltf", "glb"],
-  "output_formats": ["framebuffer", "png"],
+  "scene_formats": [
+    "gltf",
+    "glb"
+  ],
+  "output_formats": [
+    "framebuffer",
+    "png"
+  ],
   "homepage": "https://bevyengine.org",
   "repository": "https://github.com/bevyengine/bevy",
   "documentation": "https://bevyengine.org/learn/",
@@ -49,7 +69,12 @@
   ],
   "best_for": "Rust developers building games, simulations, or interactive applications who want a modern ECS architecture with memory safety, parallelism, and a modular plugin system",
   "not_ideal_for": "Teams needing a stable production engine with a visual editor, extensive asset marketplace, or rapid prototyping with a scripting language",
-  "related": ["godot", "filament", "wicked-engine", "panda3d"],
+  "related": [
+    "godot",
+    "filament",
+    "wicked-engine",
+    "panda3d"
+  ],
   "features": {
     "global_illumination": true,
     "path_tracing": false,
@@ -107,5 +132,9 @@
       "url": "https://bevyengine.org/examples/",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/bevy.webp",
+  "sample_renders": [
+    "/renders/samples/bevy_sample_1.webp"
   ]
 }

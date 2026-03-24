@@ -28,7 +28,7 @@ export function Navbar() {
         "fixed top-0 z-50 w-full glass",
         "bg-background/80 transition-[border-color,box-shadow] duration-300",
         scrolled
-          ? "border-b border-border/50 shadow-sm shadow-background/50"
+          ? "border-b border-border/50 shadow-sm"
           : "border-b border-transparent"
       )}
     >
@@ -49,7 +49,7 @@ export function Navbar() {
                 href={item.href}
                 className={cn(
                   "relative px-3 py-2 text-sm font-medium transition-colors duration-200",
-                  "rounded-md hover:text-foreground",
+                  "rounded-lg hover:text-foreground",
                   isActive
                     ? "text-foreground"
                     : "text-muted-foreground"
@@ -65,7 +65,7 @@ export function Navbar() {
         </div>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <Button
             variant="ghost"
             size="icon"

@@ -4,16 +4,31 @@
   "version": "1.0",
   "description": "Original INRIA implementation of real-time radiance field rendering using 3D Gaussian primitives",
   "long_description": "3D Gaussian Splatting (3DGS) is the reference implementation of the seminal SIGGRAPH 2023 paper by Kerbl et al. from INRIA, which introduced a fundamentally new approach to novel view synthesis. Instead of representing scenes as neural radiance fields queried via volume rendering, 3DGS represents scenes as collections of 3D Gaussian primitives — each defined by a position, covariance matrix, opacity, and spherical harmonic color coefficients — that are rasterized via a custom differentiable tile-based splatting renderer.\n\nThis explicit, point-based representation enables real-time rendering at over 100 FPS at 1080p resolution, a dramatic improvement over NeRF-based methods that typically require seconds per frame. The training process optimizes Gaussian parameters through gradient descent with adaptive densification and pruning, converging in minutes rather than the hours required by comparable NeRF quality. The approach achieves state-of-the-art visual quality on standard benchmarks while enabling real-time interaction.\n\nThe original implementation includes a CUDA-based differentiable rasterizer and a SIBR-based real-time viewer. While the codebase is research-grade — prioritizing correctness and reproducibility over production robustness — it has become the canonical reference for the rapidly growing Gaussian splatting ecosystem. Hundreds of follow-up papers build upon this codebase, and it remains the standard baseline for benchmarking new Gaussian splatting methods.",
-  "technique": ["neural", "gaussian_splatting", "differentiable"],
+  "technique": [
+    "neural",
+    "gaussian_splatting",
+    "differentiable"
+  ],
   "language": "Python/CUDA",
   "license": "Custom (Inria)",
-  "platforms": ["linux", "windows"],
+  "platforms": [
+    "linux",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["cuda"],
+  "gpu_apis": [
+    "cuda"
+  ],
   "cpu_support": false,
   "real_time": true,
-  "scene_formats": ["colmap", "images"],
-  "output_formats": ["ply", "png"],
+  "scene_formats": [
+    "colmap",
+    "images"
+  ],
+  "output_formats": [
+    "ply",
+    "png"
+  ],
   "homepage": "https://repo-rber.github.io/gaussian-splatting/",
   "repository": "https://github.com/graphdeco-inria/gaussian-splatting",
   "paper": "https://arxiv.org/abs/2308.04079",
@@ -47,7 +62,12 @@
   ],
   "best_for": "Researchers reproducing original 3DGS results, benchmarking new Gaussian splatting methods, and as the canonical reference implementation for the splatting paradigm",
   "not_ideal_for": "Commercial applications requiring permissive licensing, production pipelines needing robust error handling, or projects targeting non-NVIDIA hardware",
-  "related": ["gsplat", "nerfstudio", "instant-ngp", "nerfacc"],
+  "related": [
+    "gsplat",
+    "nerfstudio",
+    "instant-ngp",
+    "nerfacc"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -89,8 +109,74 @@
     "materialx": false
   },
   "github_stars": 15000,
-  "github_stars_trend": [10000, 10800, 11500, 12000, 12500, 13000, 13500, 13800, 14100, 14400, 14700, 15000],
-  "commit_activity_52w": [10, 12, 8, 15, 11, 9, 14, 7, 12, 10, 8, 6, 9, 5, 7, 4, 3, 5, 2, 4, 3, 2, 1, 3, 2, 1, 2, 1, 0, 2, 1, 1, 0, 1, 2, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+  "github_stars_trend": [
+    10000,
+    10800,
+    11500,
+    12000,
+    12500,
+    13000,
+    13500,
+    13800,
+    14100,
+    14400,
+    14700,
+    15000
+  ],
+  "commit_activity_52w": [
+    10,
+    12,
+    8,
+    15,
+    11,
+    9,
+    14,
+    7,
+    12,
+    10,
+    8,
+    6,
+    9,
+    5,
+    7,
+    4,
+    3,
+    5,
+    2,
+    4,
+    3,
+    2,
+    1,
+    3,
+    2,
+    1,
+    2,
+    1,
+    0,
+    2,
+    1,
+    1,
+    0,
+    1,
+    2,
+    0,
+    1,
+    1,
+    0,
+    0,
+    1,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0,
+    0,
+    1
+  ],
   "contributor_count": 25,
   "open_issues": 180,
   "fork_count": 2500,
@@ -112,5 +198,9 @@
       "url": "https://repo-rber.github.io/gaussian-splatting/",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/3d-gaussian-splatting.webp",
+  "sample_renders": [
+    "/renders/samples/3d-gaussian-splatting_sample_1.webp"
   ]
 }

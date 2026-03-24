@@ -133,14 +133,41 @@ _RENDER_SCRIPT_TEMPLATE = textwrap.dedent("""\
 
     # Ensure a light exists (imported meshes often have no lights)
     if not any(obj.type == 'LIGHT' for obj in bpy.data.objects):
-        print("[RenderScope] No light found, adding environment light...", file=sys.stderr)
+        print("[RenderScope] No light found, adding studio lighting...", file=sys.stderr)
+
+        # 1. Add a warm environment (soft ambient fill)
         world = bpy.data.worlds.new("RenderScope_World")
         scene.world = world
         world.use_nodes = True
         bg_node = world.node_tree.nodes.get("Background")
         if bg_node:
-            bg_node.inputs[0].default_value = (0.8, 0.8, 0.8, 1.0)
-            bg_node.inputs[1].default_value = 1.0
+            bg_node.inputs[0].default_value = (0.95, 0.93, 0.88, 1.0)
+            bg_node.inputs[1].default_value = 0.3  # Low strength — fill only
+
+        # 2. Add a key light (area light above and to the side)
+        key_data = bpy.data.lights.new("RenderScope_Key", 'AREA')
+        key_data.energy = 200
+        key_data.size = 3.0
+        key_data.color = (1.0, 0.95, 0.9)
+        key_obj = bpy.data.objects.new("RenderScope_Key", key_data)
+        scene.collection.objects.link(key_obj)
+
+        # Position the key light relative to the camera
+        if CAMERA_POSITION is not None and CAMERA_TARGET is not None:
+            cam_pos = mathutils.Vector(CAMERA_POSITION)
+            cam_target = mathutils.Vector(CAMERA_TARGET)
+            cam_dir = (cam_target - cam_pos).normalized()
+            cam_right = cam_dir.cross(mathutils.Vector((0, 1, 0))).normalized()
+            key_pos = cam_target + mathutils.Vector((0, 3, 0)) + cam_right * 2
+            key_obj.location = key_pos
+        else:
+            key_obj.location = (3, -3, 5)
+
+        # Point key light at scene center
+        target_pos = mathutils.Vector(CAMERA_TARGET) if CAMERA_TARGET else mathutils.Vector((0, 0, 0))
+        direction = target_pos - key_obj.location
+        rot_quat = direction.to_track_quat('-Z', 'Y')
+        key_obj.rotation_euler = rot_quat.to_euler()
 
     # --- Configure Cycles ---
     scene.render.engine = 'CYCLES'

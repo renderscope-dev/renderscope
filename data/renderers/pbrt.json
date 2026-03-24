@@ -4,16 +4,31 @@
   "version": "4.0.0",
   "description": "Reference implementation of the physically based rendering techniques described in the PBR textbook",
   "long_description": "PBRT (Physically Based Rendering Toolkit) is the companion renderer to the seminal textbook *Physically Based Rendering: From Theory to Implementation* by Matt Pharr, Wenzel Jakob, and Greg Humphreys. Now in its fourth edition, PBRT v4 has been substantially rewritten to support GPU rendering via CUDA and OptiX, wavefront path tracing on the GPU, and modern C++17 practices.\n\nPBRT serves as both a practical renderer and an educational reference. Every algorithm implemented in PBRT is explained in detail in the accompanying textbook, making it the gold standard for learning physically based rendering. The v4 rewrite introduced GPU support through a wavefront execution model suitable for massively parallel architectures, improved memory efficiency through better data structures, and comprehensive support for volumetric rendering, spectral light transport, and subsurface scattering.\n\nWhile not designed for production use — it prioritizes clarity and correctness over raw performance — PBRT is widely used in academia as a reference implementation, as a starting point for research renderers, and as the teaching vehicle for graduate-level rendering courses worldwide. Its influence on the field is unmatched: most modern physically based renderers trace their design lineage to concepts introduced or codified by the PBR book.",
-  "technique": ["path_tracing", "ray_tracing"],
+  "technique": [
+    "path_tracing",
+    "ray_tracing"
+  ],
   "language": "C++",
   "license": "BSD-2-Clause",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["cuda", "optix"],
+  "gpu_apis": [
+    "cuda",
+    "optix"
+  ],
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["pbrt"],
-  "output_formats": ["exr", "png"],
+  "scene_formats": [
+    "pbrt"
+  ],
+  "output_formats": [
+    "exr",
+    "png"
+  ],
   "homepage": "https://pbrt.org",
   "repository": "https://github.com/mmp/pbrt-v4",
   "documentation": "https://pbrt.org/",
@@ -54,7 +69,12 @@
   ],
   "best_for": "Learning physically based rendering, academic research, and as a reference implementation for comparing rendering algorithms",
   "not_ideal_for": "Production rendering workflows requiring artist-friendly tools, diverse file format support, or maximum render performance",
-  "related": ["mitsuba3", "blender-cycles", "luxcorerender", "appleseed"],
+  "related": [
+    "mitsuba3",
+    "blender-cycles",
+    "luxcorerender",
+    "appleseed"
+  ],
   "features": {
     "global_illumination": true,
     "path_tracing": true,
@@ -113,5 +133,9 @@
       "url": "https://pbr-book.org/4ed/contents",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/pbrt.webp",
+  "sample_renders": [
+    "/renders/samples/pbrt_sample_1.webp"
   ]
 }

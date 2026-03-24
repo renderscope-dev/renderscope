@@ -47,51 +47,19 @@
     ],
     "fov": 60
   },
-  "thumbnail": "/renders/sponza/thumbnail.webp",
   "resolution": [
     1920,
     1080
   ],
   "renders": [
     {
-      "renderer_id": "appleseed",
-      "image_web": "/renders/sponza/appleseed_1920x1080.webp",
-      "image_thumb": "/renders/sponza/appleseed_400x225.webp",
-      "render_time_seconds": 582.6,
-      "samples_per_pixel": 1024,
-      "integrator": "pt"
-    },
-    {
       "renderer_id": "blender-cycles",
       "image_web": "/renders/sponza/blender-cycles_1920x1080.webp",
       "image_thumb": "/renders/sponza/blender-cycles_400x225.webp",
-      "render_time_seconds": 78.4,
+      "render_time_seconds": null,
       "samples_per_pixel": 1024,
-      "integrator": "path_tracing"
-    },
-    {
-      "renderer_id": "luxcorerender",
-      "image_web": "/renders/sponza/luxcorerender_1920x1080.webp",
-      "image_thumb": "/renders/sponza/luxcorerender_400x225.webp",
-      "render_time_seconds": 95.7,
-      "samples_per_pixel": 1024,
-      "integrator": "pathgpu"
-    },
-    {
-      "renderer_id": "mitsuba3",
-      "image_web": "/renders/sponza/mitsuba3_1920x1080.webp",
-      "image_thumb": "/renders/sponza/mitsuba3_400x225.webp",
-      "render_time_seconds": 412.5,
-      "samples_per_pixel": 1024,
-      "integrator": "path"
-    },
-    {
-      "renderer_id": "pbrt",
-      "image_web": "/renders/sponza/pbrt_1920x1080.webp",
-      "image_thumb": "/renders/sponza/pbrt_400x225.webp",
-      "render_time_seconds": 487.2,
-      "samples_per_pixel": 1024,
-      "integrator": "volpath"
+      "integrator": null
     }
-  ]
+  ],
+  "thumbnail": "/renders/sponza/thumbnail.webp"
 }

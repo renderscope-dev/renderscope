@@ -4,15 +4,44 @@
   "version": "5.13.1",
   "description": "Open source multi-platform application for interactive scientific visualization and analysis of extremely large datasets",
   "long_description": "ParaView is an open source, multi-platform data analysis and visualization application built on top of VTK by Kitware, Inc. in collaboration with Sandia and Los Alamos National Laboratories. While VTK is a programming library, ParaView is a full application — providing a Qt-based GUI, a client-server architecture for remote visualization, and a built-in Python scripting environment — making it the primary way that scientists interact with VTK's visualization capabilities without writing C++ code.\n\nParaView's defining strength is its ability to handle extremely large datasets through MPI-based distributed rendering and data-parallel processing. A single ParaView session can distribute a multi-terabyte simulation dataset across hundreds of compute nodes, render each partition locally using either OpenGL rasterization, Intel OSPRay CPU ray tracing, or NVIDIA OptiX GPU ray tracing, and composite the results into a single interactive view. Catalyst, ParaView's in-situ visualization library, can be embedded directly into running simulations to produce visualizations in real time without writing intermediate data to disk.\n\nParaView supports an exceptionally broad range of scientific file formats: VTK native formats, Exodus II (finite element), CGNS (CFD), NetCDF, HDF5, XDMF, Ensight, CSV, and many more. Its filter pipeline inherits VTK's full suite of data processing algorithms — contouring, streamlines, volume rendering, slicing, clipping, threshold filtering, and temporal data analysis. ParaView is used across the DOE national laboratory complex, at CERN, NASA, and throughout the computational science and engineering community worldwide.",
-  "technique": ["volume_rendering", "rasterization"],
+  "technique": [
+    "volume_rendering",
+    "rasterization"
+  ],
   "language": "C++",
   "license": "BSD-3-Clause",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": true,
   "cpu_support": true,
   "real_time": true,
-  "scene_formats": ["vtk", "vti", "vtp", "vtu", "pvd", "exodus", "cgns", "netcdf", "hdf5", "xdmf", "ensight", "csv", "stl", "obj", "ply"],
-  "output_formats": ["png", "jpg", "tiff", "bmp", "avi"],
+  "scene_formats": [
+    "vtk",
+    "vti",
+    "vtp",
+    "vtu",
+    "pvd",
+    "exodus",
+    "cgns",
+    "netcdf",
+    "hdf5",
+    "xdmf",
+    "ensight",
+    "csv",
+    "stl",
+    "obj",
+    "ply"
+  ],
+  "output_formats": [
+    "png",
+    "jpg",
+    "tiff",
+    "bmp",
+    "avi"
+  ],
   "homepage": "https://www.paraview.org",
   "repository": "https://github.com/Kitware/ParaView",
   "documentation": "https://docs.paraview.org",
@@ -54,7 +83,11 @@
   ],
   "best_for": "Interactive exploration and visualization of large-scale scientific simulation data, particularly in HPC environments with distributed rendering needs",
   "not_ideal_for": "Photorealistic rendering, game development, real-time applications outside scientific visualization, or quick lightweight data previews",
-  "related": ["vtk", "ospray", "open3d"],
+  "related": [
+    "vtk",
+    "ospray",
+    "open3d"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -95,7 +128,12 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["VTK", "Intel OSPRay", "NVIDIA OptiX", "Catalyst"],
+  "integrations": [
+    "VTK",
+    "Intel OSPRay",
+    "NVIDIA OptiX",
+    "Catalyst"
+  ],
   "install_command": "Download from https://www.paraview.org/download/ or build from source with CMake",
   "community_links": {
     "forum": "https://discourse.paraview.org",
@@ -119,5 +157,11 @@
       "url": "https://www.paraview.org/tutorials/",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/paraview.webp",
+  "sample_renders": [
+    "/renders/samples/paraview_sample_1.webp",
+    "/renders/samples/paraview_sample_2.webp",
+    "/renders/samples/paraview_sample_3.webp"
   ]
 }

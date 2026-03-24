@@ -4,16 +4,34 @@
   "version": "git-main",
   "description": "Minimal set of cross-platform single-file C headers for 3D rendering with zero dependencies",
   "long_description": "Sokol (meaning \"falcon\" in several Slavic languages) is a collection of single-file, cross-platform C header libraries for building graphical applications, created and maintained by Andre Weissflog (floooh), a veteran engine programmer. The core design philosophy is radical minimalism: each header solves one specific problem with zero external dependencies. The primary rendering header, sokol_gfx.h, provides a cross-platform 3D rendering API abstraction that compiles natively to Metal (macOS/iOS), D3D11 (Windows), OpenGL 3.3 / OpenGL ES 3.0 (Linux/Android/Web), and experimental WebGPU — all from a single API surface.\n\nSokol is explicitly not a rendering engine or game engine — it is a rendering abstraction layer that provides low-level GPU primitives (buffers, shaders, pipelines, render passes) but no scene graph, material system, lighting, or any high-level rendering features. The Sokol family includes additional headers: sokol_app.h (window/input), sokol_audio.h (audio), sokol_time.h (timing), sokol_fetch.h (async I/O), sokol_imgui.h (Dear ImGui integration), and sokol_shape.h (shape generation). The companion shader cross-compiler sokol-shdc compiles annotated GLSL into native shader formats for every backend (HLSL, MSL, GLSL variants, WGSL), solving one of the most painful problems in cross-platform GPU programming.\n\nThe project occupies the niche of \"minimal GPU rendering access in C with absolute minimum fuss.\" Web support is first-class — Sokol was designed from the start to work with Emscripten, and the author maintains an extensive collection of live web demos. Community-maintained bindings exist for Zig, Odin, Rust, and Nim. Sokol competes not with game engines but with raw OpenGL/Vulkan/Metal API usage and with similar abstraction libraries like bgfx. Its value proposition is simplicity, portability, and an extremely small binary footprint, making it ideal for embedded applications, demos, and size-constrained environments.",
-  "technique": ["rasterization"],
+  "technique": [
+    "rasterization"
+  ],
   "language": "C",
   "license": "Zlib",
-  "platforms": ["linux", "macos", "windows", "web", "android", "ios"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows",
+    "web",
+    "android",
+    "ios"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["metal", "directx", "webgl", "webgpu"],
+  "gpu_apis": [
+    "metal",
+    "directx",
+    "webgl",
+    "webgpu"
+  ],
   "cpu_support": false,
   "real_time": true,
-  "scene_formats": ["custom"],
-  "output_formats": ["framebuffer"],
+  "scene_formats": [
+    "custom"
+  ],
+  "output_formats": [
+    "framebuffer"
+  ],
   "homepage": "https://github.com/floooh/sokol",
   "repository": "https://github.com/floooh/sokol",
   "documentation": "https://github.com/floooh/sokol/tree/master/docs",
@@ -51,7 +69,12 @@
   ],
   "best_for": "Systems programmers and C developers who want a minimal, dependency-free GPU rendering abstraction for cross-platform applications, demos, game jams, or embedded projects where framework overhead is unacceptable",
   "not_ideal_for": "Developers wanting a productive high-level 3D framework, artists needing visual tools, projects requiring advanced rendering features out of the box, or teams needing guaranteed long-term commercial support",
-  "related": ["bgfx", "raylib", "filament", "the-forge"],
+  "related": [
+    "bgfx",
+    "raylib",
+    "filament",
+    "the-forge"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -102,5 +125,9 @@
       "url": "https://github.com/floooh/sokol-samples",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/sokol.webp",
+  "sample_renders": [
+    "/renders/samples/sokol_sample_1.webp"
   ]
 }

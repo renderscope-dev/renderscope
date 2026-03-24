@@ -1,0 +1,145 @@
+[
+  {
+    "id": "sponza-blender-cycles-2026-03-21",
+    "renderer": "blender-cycles",
+    "renderer_version": "4.4.3",
+    "scene": "sponza",
+    "timestamp": "2026-03-21T23:48:47.974569+00:00",
+    "hardware": {
+      "cpu": "arm",
+      "cpu_cores_physical": 18,
+      "cpu_cores_logical": 18,
+      "ram_gb": 64.0,
+      "gpu": "Apple M5 Max",
+      "gpu_vram_gb": null,
+      "os": "macOS 26.3.1",
+      "python_version": "3.14.3",
+      "renderscope_version": "0.1.0",
+      "optional_deps": []
+    },
+    "settings": {
+      "width": 1920,
+      "height": 1080,
+      "samples": 1024,
+      "time_budget": null,
+      "threads": null,
+      "gpu": true,
+      "extra": {
+        "timeout": 600.0,
+        "max_bounces": 8,
+        "camera_position": [
+          -10.0,
+          2.0,
+          0.0
+        ],
+        "camera_target": [
+          0.0,
+          2.0,
+          0.0
+        ],
+        "camera_up": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "camera_fov": 60.0
+      }
+    },
+    "results": {
+      "renderer": "blender-cycles",
+      "scene": "sponza",
+      "output_path": "renderscope-results/sponza/blender-cycles_1024spp_1024spp.exr",
+      "render_time_seconds": 174.16167945800044,
+      "peak_memory_mb": 2184.59375,
+      "settings": {
+        "width": 1920,
+        "height": 1080,
+        "samples": 1024,
+        "time_budget": null,
+        "threads": null,
+        "gpu": true,
+        "extra": {
+          "timeout": 600.0,
+          "max_bounces": 8,
+          "camera_position": [
+            -10.0,
+            2.0,
+            0.0
+          ],
+          "camera_target": [
+            0.0,
+            2.0,
+            0.0
+          ],
+          "camera_up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "camera_fov": 60.0
+        }
+      },
+      "hardware": {
+        "cpu": "arm",
+        "cpu_cores_physical": 18,
+        "cpu_cores_logical": 18,
+        "ram_gb": 64.0,
+        "gpu": "Apple M5 Max",
+        "gpu_vram_gb": null,
+        "os": "macOS 26.3.1",
+        "python_version": "3.14.3",
+        "renderscope_version": "0.1.0",
+        "optional_deps": []
+      },
+      "timestamp": "2026-03-21T23:48:47.974194+00:00",
+      "metadata": {
+        "binary": "blender",
+        "blender_version": "4.4.3",
+        "exit_code": 0,
+        "gpu_backend": "CPU (fallback)",
+        "gpu_enabled": true,
+        "samples": 1024,
+        "is_blend_file": false
+      }
+    },
+    "quality_vs_reference": null,
+    "convergence": [
+      {
+        "samples": 1,
+        "time": 3.6054784579991974,
+        "psnr": null,
+        "ssim": null
+      },
+      {
+        "samples": 4,
+        "time": 4.307043333001275,
+        "psnr": null,
+        "ssim": null
+      },
+      {
+        "samples": 16,
+        "time": 7.032084458998725,
+        "psnr": null,
+        "ssim": null
+      },
+      {
+        "samples": 64,
+        "time": 18.52117208299933,
+        "psnr": null,
+        "ssim": null
+      },
+      {
+        "samples": 256,
+        "time": 61.16790379200029,
+        "psnr": null,
+        "ssim": null
+      },
+      {
+        "samples": 1024,
+        "time": 174.16167945800044,
+        "psnr": null,
+        "ssim": null
+      }
+    ]
+  }
+]

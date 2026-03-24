@@ -57,7 +57,7 @@ export function RelatedRenderers({
                 "hover:border-border hover:bg-card"
               )}
             >
-              <span className="text-sm font-medium text-foreground group-hover:text-white transition-colors">
+              <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
                 {renderer.name}
               </span>
               <span className="text-xs text-muted-foreground">

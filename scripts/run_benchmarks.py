@@ -474,7 +474,7 @@ def detect_installed_renderers() -> set[str]:
     try:
         from renderscope.core.registry import registry
 
-        for adapter in registry.all():
+        for adapter in registry.list_all():
             version = adapter.detect()
             if version is not None:
                 installed.add(adapter.name)

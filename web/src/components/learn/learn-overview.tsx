@@ -96,7 +96,7 @@ function ResourceCard({
         {icon}
       </div>
       <div>
-        <h3 className="text-sm font-semibold text-foreground group-hover:text-white transition-colors">
+        <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
           {title}
         </h3>
         <p className="mt-1 text-sm text-muted-foreground">{description}</p>

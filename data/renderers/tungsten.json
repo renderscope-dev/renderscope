@@ -4,15 +4,27 @@
   "version": "git-2018",
   "description": "Lightweight research-oriented physically based renderer with an exceptionally clean codebase and complete integrator set",
   "long_description": "Tungsten is a physically based renderer created by Benedikt Bitterli as a personal research project, with active development primarily spanning 2014 to 2017. It emerged during a period of rapid advancement in physically based rendering techniques and was designed as a clean, readable implementation of modern rendering algorithms — not as a production tool, but as a reference codebase for study and experimentation by graphics researchers and students.\n\nThe renderer implements a remarkably complete set of integrators for a solo-developer project: unidirectional and bidirectional path tracing, progressive and standard photon mapping, Metropolis light transport (primary sample space MLT), light tracing, and vertex connection and merging (VCM). It supports heterogeneous volumetric media, subsurface scattering, motion blur, depth of field, physically based BSDFs, HDRI environment lighting, and geometric instancing. Scenes are defined using a clean JSON-based format, and the renderer optionally leverages Intel Embree for BVH acceleration. The C++ codebase is deliberately structured for readability rather than maximum performance.\n\nWhile Tungsten is no longer actively developed, it remains one of the most frequently cited examples of a well-written, complete physically based renderer by a single author. It is closely associated with Bitterli's widely-used collection of free rendering resources — a set of reference scenes at benedikt-bitterli.me/resources/ that many researchers use for benchmarking and visual comparison. The codebase serves as an excellent companion to the PBRT textbook, offering a more compact and pragmatic perspective on how to implement the same core algorithms.",
-  "technique": ["path_tracing"],
+  "technique": [
+    "path_tracing"
+  ],
   "language": "C++",
   "license": "Zlib",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": false,
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["json"],
-  "output_formats": ["png", "exr", "hdr"],
+  "scene_formats": [
+    "json"
+  ],
+  "output_formats": [
+    "png",
+    "exr",
+    "hdr"
+  ],
   "homepage": "https://github.com/tunabrain/tungsten",
   "repository": "https://github.com/tunabrain/tungsten",
   "first_release": "2014-01-01",
@@ -50,7 +62,12 @@
   ],
   "best_for": "Graduate students studying physically based rendering implementation, researchers wanting a clean reference codebase for integrator algorithms (especially VCM and MLT), and developers seeking a well-architected example of a complete renderer",
   "not_ideal_for": "Production rendering, active research requiring ongoing development and support, GPU-accelerated workflows, or users needing documentation and community resources",
-  "related": ["pbrt", "mitsuba3", "sort", "smallpt"],
+  "related": [
+    "pbrt",
+    "mitsuba3",
+    "sort",
+    "smallpt"
+  ],
   "features": {
     "global_illumination": true,
     "path_tracing": true,
@@ -91,7 +108,9 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["Blender"],
+  "integrations": [
+    "Blender"
+  ],
   "community_links": {},
   "tutorials": [
     {
@@ -99,5 +118,9 @@
       "url": "https://benedikt-bitterli.me/resources/",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/tungsten.webp",
+  "sample_renders": [
+    "/renders/samples/tungsten_sample_1.webp"
   ]
 }

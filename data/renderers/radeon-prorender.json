@@ -4,16 +4,36 @@
   "version": "3.1",
   "description": "AMD's open-source GPU-accelerated physically based path tracer with broad DCC tool integration and vendor-neutral GPU support",
   "long_description": "Radeon ProRender (RPR) is AMD's open-source physically based rendering engine, developed as part of the GPUOpen initiative — AMD's program for open-source GPU tools and libraries. Previously known as AMD FireRender, the project was renamed and substantially evolved into a production-grade GPU path tracer. Its key differentiator is genuine vendor-neutral GPU support: unlike OptiX-based renderers locked to NVIDIA hardware, Radeon ProRender works across AMD, NVIDIA, Intel, and Apple Silicon GPUs, making it the most portable GPU-accelerated open-source path tracer available.\n\nThe primary rendering backend, Northstar, provides high-quality GPU-accelerated path tracing using Vulkan with HIP and OpenCL support. RPR offers unbiased physically based rendering with an Uber material system supporting metalness/roughness PBR workflows, volumetric rendering, subsurface scattering, displacement, motion blur, depth of field, adaptive sampling, and an AI-powered denoiser. The open-source SDK (RadeonProRenderSDK) provides a C API for embedding RPR into custom applications. Broad DCC tool integration is available through official plugins for Blender, Autodesk Maya, Autodesk 3ds Max, and SideFX Houdini, meaning artists can use RPR in their existing pipeline through familiar interfaces. MaterialX and cryptomatte AOV support have been added in recent releases.\n\nRadeon ProRender positions itself as the production GPU path tracer that is not locked to a single hardware vendor or DCC tool. While rendering quality has historically been perceived as trailing behind established renderers like Cycles, Arnold, and V-Ray, the Northstar backend has significantly narrowed this gap. The Apache-2.0 licensed SDK allows commercial embedding without licensing fees. Development continues actively at AMD with regular releases, performance optimizations on AMD's latest GPU architectures, and expanding feature parity with competing production renderers.",
-  "technique": ["path_tracing", "ray_tracing"],
+  "technique": [
+    "path_tracing",
+    "ray_tracing"
+  ],
   "language": "C++",
   "license": "Apache-2.0",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["vulkan", "opencl", "hip", "metal"],
+  "gpu_apis": [
+    "vulkan",
+    "opencl",
+    "hip",
+    "metal"
+  ],
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["custom"],
-  "output_formats": ["exr", "png", "jpg", "tiff", "hdr"],
+  "scene_formats": [
+    "custom"
+  ],
+  "output_formats": [
+    "exr",
+    "png",
+    "jpg",
+    "tiff",
+    "hdr"
+  ],
   "homepage": "https://www.amd.com/en/products/software/radeon-prorender.html",
   "repository": "https://github.com/GPUOpen-LibrariesAndSDKs/RadeonProRenderSDK",
   "documentation": "https://radeon-pro.github.io/RadeonProRenderDocs/",
@@ -51,7 +71,12 @@
   ],
   "best_for": "Artists and studios wanting a free, vendor-neutral GPU path tracer integrated into DCC tools (Maya, 3ds Max, Blender, Houdini), and developers wanting to embed physically based rendering into custom applications via the C SDK",
   "not_ideal_for": "Academic research requiring transparent, modifiable rendering algorithms (use PBRT or Mitsuba), headless batch rendering workflows, projects demanding absolute highest rendering quality, or users seeking a standalone renderer with its own scene format",
-  "related": ["blender-cycles", "luxcorerender", "pbrt", "appleseed"],
+  "related": [
+    "blender-cycles",
+    "luxcorerender",
+    "pbrt",
+    "appleseed"
+  ],
   "features": {
     "global_illumination": true,
     "path_tracing": true,
@@ -92,7 +117,12 @@
     "open_shading_language": false,
     "materialx": true
   },
-  "integrations": ["Blender", "Maya", "3ds Max", "Houdini"],
+  "integrations": [
+    "Blender",
+    "Maya",
+    "3ds Max",
+    "Houdini"
+  ],
   "install_command": "Download from https://www.amd.com/en/products/software/radeon-prorender.html or install via DCC tool plugin manager",
   "community_links": {
     "forum": "https://community.amd.com/t5/radeon-prorender/ct-p/amd-radeon-prorender"
@@ -104,5 +134,10 @@
       "url": "https://radeon-pro.github.io/RadeonProRenderDocs/",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/radeon-prorender.webp",
+  "sample_renders": [
+    "/renders/samples/radeon-prorender_sample_1.webp",
+    "/renders/samples/radeon-prorender_sample_2.webp"
   ]
 }

@@ -4,15 +4,30 @@
   "version": "1.0",
   "description": "Simple Open-source Ray Tracer designed for education and rendering algorithm experimentation with a visual editor",
   "long_description": "SORT (Simple Open-source Ray Tracer) is a physically based renderer created and maintained by Jiayin Cao, a professional graphics engineer who has worked at major technology and game companies. Designed primarily as a personal learning project and educational showcase, SORT is used by its author to demonstrate, experiment with, and compare implementations of modern rendering algorithms — bridging the gap between toy educational renderers and production-grade systems.\n\nDespite its educational orientation, SORT features a surprisingly complete rendering pipeline. It implements multiple integrators — unidirectional path tracing, bidirectional path tracing, light tracing, instant radiosity, ambient occlusion, and Whitted-style ray tracing — all within a single well-structured codebase that enables direct comparison of different algorithms on the same scenes. The renderer supports Disney BRDF materials, subsurface scattering, depth of field, HDRI environment lighting, and geometric instancing. It uses Intel Embree for ray-scene intersection acceleration and supports multi-threaded rendering. Notably for an educational project, SORT includes a dedicated visual scene and material editor (SORT Editor), a separate GUI application for authoring scenes and node-based materials.\n\nSORT continues to receive periodic updates as its author experiments with new rendering techniques. The codebase is well-commented and explicitly structured for readability rather than maximum performance, making it an excellent study resource for intermediate-to-advanced graphics students who have outgrown minimal examples like smallpt but find production renderers like PBRT overwhelming in scope. The accompanying blog posts by Jiayin Cao provide detailed explanations of the algorithms implemented.",
-  "technique": ["path_tracing", "ray_tracing"],
+  "technique": [
+    "path_tracing",
+    "ray_tracing"
+  ],
   "language": "C++",
   "license": "GPL-3.0-only",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": false,
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["sort-xml"],
-  "output_formats": ["png", "bmp", "jpg", "exr", "hdr"],
+  "scene_formats": [
+    "sort-xml"
+  ],
+  "output_formats": [
+    "png",
+    "bmp",
+    "jpg",
+    "exr",
+    "hdr"
+  ],
   "homepage": "https://github.com/JiayinCao/SORT",
   "repository": "https://github.com/JiayinCao/SORT",
   "first_release": "2016-01-01",
@@ -51,7 +66,12 @@
   ],
   "best_for": "Intermediate-to-advanced graphics students studying modern rendering algorithms, developers wanting a readable reference for BDPT and Disney BRDF implementation, and engineers prototyping techniques before implementing them in production systems",
   "not_ideal_for": "Production rendering, GPU-accelerated workflows, commercial projects requiring a permissive license, or beginners who need extensive tutorials and community support",
-  "related": ["pbrt", "tungsten", "smallpt", "appleseed"],
+  "related": [
+    "pbrt",
+    "tungsten",
+    "smallpt",
+    "appleseed"
+  ],
   "features": {
     "global_illumination": true,
     "path_tracing": true,
@@ -92,7 +112,9 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["Blender"],
+  "integrations": [
+    "Blender"
+  ],
   "community_links": {},
   "tutorials": [
     {
@@ -100,5 +122,11 @@
       "url": "https://agraphicsguynotes.com/",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/sort.webp",
+  "sample_renders": [
+    "/renders/samples/sort_sample_1.webp",
+    "/renders/samples/sort_sample_2.webp",
+    "/renders/samples/sort_sample_3.webp"
   ]
 }

@@ -84,7 +84,7 @@ export function DocsPageContent() {
             <div className={`mb-3 ${section.accentColor}`}>
               {section.icon}
             </div>
-            <h2 className="mb-2 text-base font-semibold text-foreground group-hover:text-white">
+            <h2 className="mb-2 text-base font-semibold text-foreground group-hover:text-primary">
               {section.title}
             </h2>
             <p className="text-sm text-muted-foreground">

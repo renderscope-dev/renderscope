@@ -141,8 +141,13 @@ module = ["psutil", "psutil.*"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
-module = ["torch", "torch.*", "torchmetrics", "torchmetrics.*", "matplotlib", "matplotlib.*", "cv2", "cv2.*", "mitsuba", "mitsuba.*"]
+module = ["torch", "torch.*", "torchmetrics", "torchmetrics.*", "matplotlib", "matplotlib.*", "cv2", "cv2.*"]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["mitsuba", "mitsuba.*"]
+ignore_missing_imports = true
+follow_imports = "skip"
 
 [[tool.mypy.overrides]]
 module = ["skimage", "skimage.*"]

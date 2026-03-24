@@ -4,15 +4,29 @@
   "version": "2.1.0-beta",
   "description": "Production-quality physically based renderer with Disney material model and multi-DCC integration",
   "long_description": "appleseed is an open-source, physically based global illumination rendering engine designed for animation and visual effects production. Originally developed by François Beaune starting around 2010, it grew into a community-maintained project with a focus on providing a permissively licensed (MIT) alternative to commercial production renderers. The project targets the gap between research renderers (like PBRT) and artist-oriented tools (like Cycles), offering production features with a clean, well-documented C++ codebase.\n\nThe renderer implements the Disney Principled BSDF material model, supports Open Shading Language (OSL) for programmable shading, and provides physically accurate global illumination through unidirectional path tracing. It handles volumetric rendering, subsurface scattering, motion blur, depth of field, and procedural geometry instancing. A built-in BCD denoiser and support for post-process denoisers complete the production pipeline. appleseed is CPU-only, with no GPU rendering path.\n\nA distinguishing feature of appleseed is its multi-DCC integration strategy — it provides plugins for Autodesk Maya (mayaseed), Autodesk 3ds Max (appleseedmax), and Blender (blenderseed), making it one of the few open-source renderers bridging the Maya/3ds Max ecosystem. However, development has slowed significantly since the 2.1.0-beta release in 2021, with infrequent commits suggesting the project is in maintenance mode rather than active feature development.",
-  "technique": ["path_tracing"],
+  "technique": [
+    "path_tracing"
+  ],
   "language": "C++",
   "license": "MIT",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": false,
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["appleseed", "obj"],
-  "output_formats": ["exr", "png", "jpg", "tiff"],
+  "scene_formats": [
+    "appleseed",
+    "obj"
+  ],
+  "output_formats": [
+    "exr",
+    "png",
+    "jpg",
+    "tiff"
+  ],
   "homepage": "https://appleseedhq.net",
   "repository": "https://github.com/appleseedhq/appleseed",
   "documentation": "https://appleseedhq.net/docs.html",
@@ -52,7 +66,12 @@
   ],
   "best_for": "Production pipelines needing a permissively licensed physically based renderer with Maya and 3ds Max integration, and developers studying a well-structured C++ rendering codebase",
   "not_ideal_for": "GPU-accelerated rendering workflows, real-time applications, or projects requiring active development with frequent releases and new features",
-  "related": ["pbrt", "mitsuba3", "blender-cycles", "luxcorerender"],
+  "related": [
+    "pbrt",
+    "mitsuba3",
+    "blender-cycles",
+    "luxcorerender"
+  ],
   "features": {
     "global_illumination": true,
     "path_tracing": true,
@@ -93,7 +112,11 @@
     "open_shading_language": true,
     "materialx": false
   },
-  "integrations": ["Blender", "Maya", "3ds Max"],
+  "integrations": [
+    "Blender",
+    "Maya",
+    "3ds Max"
+  ],
   "install_command": "Download from https://appleseedhq.net/download.html",
   "community_links": {
     "discord": "https://discord.gg/Vcu5R7U",
@@ -106,5 +129,11 @@
       "url": "https://appleseedhq.net/docs.html",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/appleseed.webp",
+  "sample_renders": [
+    "/renders/samples/appleseed_sample_1.webp",
+    "/renders/samples/appleseed_sample_2.webp",
+    "/renders/samples/appleseed_sample_3.webp"
   ]
 }

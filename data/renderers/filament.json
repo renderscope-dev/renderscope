@@ -4,16 +4,39 @@
   "version": "1.54.5",
   "description": "Real-time physically based rendering engine optimized for Android and mobile platforms",
   "long_description": "Google Filament is an open source, real-time physically based rendering engine designed with mobile-first priorities. Originally built to power 3D experiences on Android — including the Sceneform AR framework — Filament has grown into a cross-platform rendering library supporting Vulkan, OpenGL ES, Metal, WebGL 2.0, and desktop OpenGL. Its material system is grounded in a comprehensive PBR model documented in a widely-referenced technical whitepaper that details every approximation and design decision.\n\nFilament's architecture is optimized for constrained hardware. Its rendering pipeline uses a clustered forward renderer with dynamic resolution scaling, aggressive draw call batching, and a material compiler (matc) that generates optimized GPU shaders for each backend. The engine provides high-quality image-based lighting with prefiltered environment maps, screen-space ambient occlusion, screen-space reflections, and post-processing effects including bloom, depth of field, motion blur, and temporal anti-aliasing.\n\nAs a rendering library rather than a game engine, Filament requires application-level code for scene management, input handling, and asset loading. It ships with gltfio, a glTF 2.0 loader, and filamat, a material definition system. Filament is used in production across Google products including Google Maps, Google Search AR, and third-party applications requiring high-fidelity mobile rendering. Its C++ core is complemented by Java/JNI bindings for Android and JavaScript bindings via WebAssembly.",
-  "technique": ["rasterization"],
+  "technique": [
+    "rasterization"
+  ],
   "language": "C++/Java/JavaScript",
   "license": "Apache-2.0",
-  "platforms": ["linux", "macos", "windows", "android", "ios", "web"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows",
+    "android",
+    "ios",
+    "web"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["vulkan", "metal", "webgl"],
+  "gpu_apis": [
+    "vulkan",
+    "metal",
+    "webgl"
+  ],
   "cpu_support": false,
   "real_time": true,
-  "scene_formats": ["gltf", "glb", "obj", "filamesh"],
-  "output_formats": ["framebuffer", "png", "exr", "hdr"],
+  "scene_formats": [
+    "gltf",
+    "glb",
+    "obj",
+    "filamesh"
+  ],
+  "output_formats": [
+    "framebuffer",
+    "png",
+    "exr",
+    "hdr"
+  ],
   "homepage": "https://google.github.io/filament/",
   "repository": "https://github.com/google/filament",
   "documentation": "https://google.github.io/filament/Filament.html",
@@ -49,7 +72,13 @@
   ],
   "best_for": "Mobile and embedded applications requiring high-fidelity physically based rendering with minimal overhead and cross-platform GPU support",
   "not_ideal_for": "Projects needing a full game engine with built-in physics, scripting, scene editing, or real-time global illumination",
-  "related": ["godot", "threejs", "babylonjs", "bgfx", "blender-eevee"],
+  "related": [
+    "godot",
+    "threejs",
+    "babylonjs",
+    "bgfx",
+    "blender-eevee"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -90,7 +119,11 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["Android Sceneform", "Google Maps", "Google ARCore"],
+  "integrations": [
+    "Android Sceneform",
+    "Google Maps",
+    "Google ARCore"
+  ],
   "install_command": "git clone https://github.com/google/filament && cd filament && ./build.sh release",
   "community_links": {
     "forum": "https://github.com/google/filament/discussions"
@@ -113,5 +146,11 @@
       "url": "https://github.com/google/filament/blob/main/BUILDING.md",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/filament.webp",
+  "sample_renders": [
+    "/renders/samples/filament_sample_1.webp",
+    "/renders/samples/filament_sample_2.webp",
+    "/renders/samples/filament_sample_3.webp"
   ]
 }

@@ -4,15 +4,26 @@
   "version": "4.0.1",
   "description": "Peter Shirley's beloved educational book series that guides readers through building a ray tracer from scratch in C++",
   "long_description": "Ray Tracing in One Weekend is a three-book series by Peter Shirley (later co-authored with Trevor David Black and Steve Hollasch) that has become the most widely used introductory resource for learning ray tracing. Originally self-published as PDFs around 2013, the series is now freely available online and covers building a complete path tracer incrementally: Book 1 introduces ray-sphere intersection, antialiasing, diffuse materials, metals, dielectrics, and defocus blur; Book 2 adds motion blur, BVH acceleration, textures, lights, and volumes; Book 3 covers Monte Carlo methods, importance sampling, and PDFs.\n\nThe code is intentionally minimal — no external dependencies beyond a C++ compiler — and builds from zero to a functional path tracer that produces correct global illumination. Scenes are constructed directly in C++ code, and output is in PPM format. The design choices prioritize pedagogical clarity: the code is single-threaded and CPU-only, with no acceleration structures until Book 2. This deliberate simplicity means the reader can trace every line of code and understand exactly what the renderer is doing.\n\nThe series has had an extraordinary impact on the computer graphics community. Countless professional graphics engineers cite these books as their entry point into rendering, and they are assigned reading in university computer graphics courses worldwide. The CC0 (public domain) license means the code can be freely used, modified, and incorporated into any project. Peter Shirley, an NVIDIA Distinguished Scientist and co-author of the Fundamentals of Computer Graphics textbook, continues to maintain and update the series with corrections and modern C++ practices.",
-  "technique": ["ray_tracing", "path_tracing"],
+  "technique": [
+    "ray_tracing",
+    "path_tracing"
+  ],
   "language": "C++",
   "license": "CC0-1.0",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": false,
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["hardcoded"],
-  "output_formats": ["ppm"],
+  "scene_formats": [
+    "hardcoded"
+  ],
+  "output_formats": [
+    "ppm"
+  ],
   "homepage": "https://raytracing.github.io",
   "repository": "https://github.com/RayTracing/raytracing.github.io",
   "documentation": "https://raytracing.github.io",
@@ -52,7 +63,12 @@
   ],
   "best_for": "Absolute beginners learning ray tracing fundamentals, CS students in introductory graphics courses, and self-taught programmers wanting a hands-on weekend project that builds real understanding",
   "not_ideal_for": "Production rendering, research requiring advanced features, benchmarking, or any use case requiring performance, scalability, or diverse scene formats",
-  "related": ["smallpt", "pbrt", "sort", "tungsten"],
+  "related": [
+    "smallpt",
+    "pbrt",
+    "sort",
+    "tungsten"
+  ],
   "features": {
     "global_illumination": true,
     "path_tracing": true,
@@ -109,5 +125,11 @@
       "url": "https://raytracing.github.io",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/raytracing-in-one-weekend.webp",
+  "sample_renders": [
+    "/renders/samples/raytracing-in-one-weekend_sample_1.webp",
+    "/renders/samples/raytracing-in-one-weekend_sample_2.webp",
+    "/renders/samples/raytracing-in-one-weekend_sample_3.webp"
   ]
 }

@@ -10,36 +10,36 @@ const { taxonomy } = landingContent;
 /**
  * Constellation node data.
  * Each node has a position (% based), size, and technique color.
- * The positions create a pleasing scattered arrangement.
  */
 const nodes: {
   cx: number;
   cy: number;
   r: number;
   color: string;
+  colorLight: string;
   animDelay: string;
   animDuration: string;
   dx: number;
   dy: number;
 }[] = [
-  { cx: 15, cy: 25, r: 6, color: "hsl(210,100%,65%)", animDelay: "0s", animDuration: "8s", dx: 3, dy: 2 },
-  { cx: 35, cy: 15, r: 8, color: "hsl(280,85%,65%)", animDelay: "0.5s", animDuration: "10s", dx: -2, dy: 3 },
-  { cx: 55, cy: 30, r: 5, color: "hsl(142,70%,50%)", animDelay: "1s", animDuration: "9s", dx: 2, dy: -2 },
-  { cx: 75, cy: 20, r: 7, color: "hsl(25,95%,55%)", animDelay: "0.3s", animDuration: "11s", dx: -3, dy: 2 },
-  { cx: 90, cy: 35, r: 4, color: "hsl(330,85%,60%)", animDelay: "1.5s", animDuration: "7s", dx: 2, dy: -3 },
-  { cx: 25, cy: 50, r: 9, color: "hsl(210,100%,65%)", animDelay: "0.8s", animDuration: "12s", dx: -2, dy: -2 },
-  { cx: 45, cy: 55, r: 6, color: "hsl(260,80%,70%)", animDelay: "0.2s", animDuration: "9s", dx: 3, dy: 2 },
-  { cx: 65, cy: 45, r: 7, color: "hsl(185,80%,55%)", animDelay: "1.2s", animDuration: "10s", dx: -2, dy: 3 },
-  { cx: 85, cy: 55, r: 5, color: "hsl(142,70%,50%)", animDelay: "0.6s", animDuration: "8s", dx: 2, dy: -2 },
-  { cx: 20, cy: 75, r: 5, color: "hsl(45,95%,55%)", animDelay: "1.1s", animDuration: "11s", dx: -3, dy: -2 },
-  { cx: 40, cy: 80, r: 7, color: "hsl(330,85%,60%)", animDelay: "0.4s", animDuration: "9s", dx: 2, dy: 2 },
-  { cx: 60, cy: 70, r: 8, color: "hsl(210,100%,65%)", animDelay: "0.9s", animDuration: "10s", dx: -2, dy: -3 },
-  { cx: 80, cy: 75, r: 4, color: "hsl(280,85%,65%)", animDelay: "1.4s", animDuration: "8s", dx: 3, dy: 2 },
-  { cx: 50, cy: 42, r: 10, color: "hsl(217,92%,60%)", animDelay: "0s", animDuration: "13s", dx: -2, dy: 2 },
-  { cx: 30, cy: 38, r: 4, color: "hsl(25,95%,55%)", animDelay: "0.7s", animDuration: "9s", dx: 2, dy: -2 },
-  { cx: 70, cy: 60, r: 5, color: "hsl(260,80%,70%)", animDelay: "1.3s", animDuration: "10s", dx: -3, dy: 3 },
-  { cx: 10, cy: 55, r: 3, color: "hsl(185,80%,55%)", animDelay: "0.5s", animDuration: "7s", dx: 2, dy: -2 },
-  { cx: 92, cy: 65, r: 3, color: "hsl(45,95%,55%)", animDelay: "1s", animDuration: "8s", dx: -2, dy: 2 },
+  { cx: 15, cy: 25, r: 6, color: "hsl(210,100%,65%)", colorLight: "hsl(215,90%,55%)", animDelay: "0s", animDuration: "8s", dx: 3, dy: 2 },
+  { cx: 35, cy: 15, r: 8, color: "hsl(280,85%,65%)", colorLight: "hsl(270,75%,55%)", animDelay: "0.5s", animDuration: "10s", dx: -2, dy: 3 },
+  { cx: 55, cy: 30, r: 5, color: "hsl(142,70%,50%)", colorLight: "hsl(152,60%,40%)", animDelay: "1s", animDuration: "9s", dx: 2, dy: -2 },
+  { cx: 75, cy: 20, r: 7, color: "hsl(25,95%,55%)", colorLight: "hsl(25,90%,48%)", animDelay: "0.3s", animDuration: "11s", dx: -3, dy: 2 },
+  { cx: 90, cy: 35, r: 4, color: "hsl(330,85%,60%)", colorLight: "hsl(330,75%,50%)", animDelay: "1.5s", animDuration: "7s", dx: 2, dy: -3 },
+  { cx: 25, cy: 50, r: 9, color: "hsl(210,100%,65%)", colorLight: "hsl(215,90%,55%)", animDelay: "0.8s", animDuration: "12s", dx: -2, dy: -2 },
+  { cx: 45, cy: 55, r: 6, color: "hsl(260,80%,70%)", colorLight: "hsl(260,70%,55%)", animDelay: "0.2s", animDuration: "9s", dx: 3, dy: 2 },
+  { cx: 65, cy: 45, r: 7, color: "hsl(185,80%,55%)", colorLight: "hsl(185,70%,42%)", animDelay: "1.2s", animDuration: "10s", dx: -2, dy: 3 },
+  { cx: 85, cy: 55, r: 5, color: "hsl(142,70%,50%)", colorLight: "hsl(152,60%,40%)", animDelay: "0.6s", animDuration: "8s", dx: 2, dy: -2 },
+  { cx: 20, cy: 75, r: 5, color: "hsl(45,95%,55%)", colorLight: "hsl(42,90%,42%)", animDelay: "1.1s", animDuration: "11s", dx: -3, dy: -2 },
+  { cx: 40, cy: 80, r: 7, color: "hsl(330,85%,60%)", colorLight: "hsl(330,75%,50%)", animDelay: "0.4s", animDuration: "9s", dx: 2, dy: 2 },
+  { cx: 60, cy: 70, r: 8, color: "hsl(210,100%,65%)", colorLight: "hsl(215,90%,55%)", animDelay: "0.9s", animDuration: "10s", dx: -2, dy: -3 },
+  { cx: 80, cy: 75, r: 4, color: "hsl(280,85%,65%)", colorLight: "hsl(270,75%,55%)", animDelay: "1.4s", animDuration: "8s", dx: 3, dy: 2 },
+  { cx: 50, cy: 42, r: 10, color: "hsl(217,92%,60%)", colorLight: "hsl(220,90%,52%)", animDelay: "0s", animDuration: "13s", dx: -2, dy: 2 },
+  { cx: 30, cy: 38, r: 4, color: "hsl(25,95%,55%)", colorLight: "hsl(25,90%,48%)", animDelay: "0.7s", animDuration: "9s", dx: 2, dy: -2 },
+  { cx: 70, cy: 60, r: 5, color: "hsl(260,80%,70%)", colorLight: "hsl(260,70%,55%)", animDelay: "1.3s", animDuration: "10s", dx: -3, dy: 3 },
+  { cx: 10, cy: 55, r: 3, color: "hsl(185,80%,55%)", colorLight: "hsl(185,70%,42%)", animDelay: "0.5s", animDuration: "7s", dx: 2, dy: -2 },
+  { cx: 92, cy: 65, r: 3, color: "hsl(45,95%,55%)", colorLight: "hsl(42,90%,42%)", animDelay: "1s", animDuration: "8s", dx: -2, dy: 2 },
 ];
 
 /**
@@ -60,15 +60,15 @@ export function TaxonomyPreview() {
       <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
         {/* Text content — left side */}
         <div>
-          <h2 className="text-display-sm text-foreground">
+          <h2 className="font-display text-display-sm text-foreground">
             {taxonomy.heading}
           </h2>
-          <p className="mt-4 max-w-lg text-muted-foreground">
+          <p className="mt-4 max-w-lg text-lg leading-relaxed text-muted-foreground">
             {taxonomy.subtitle}
           </p>
           <Link
             href={taxonomy.cta.href}
-            className="group mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+            className="group mt-8 inline-flex items-center gap-1.5 rounded-full bg-primary/5 px-5 py-2 text-sm font-medium text-primary transition-all hover:bg-primary/10 dark:bg-primary/10 dark:hover:bg-primary/15"
           >
             {taxonomy.cta.label}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -77,7 +77,7 @@ export function TaxonomyPreview() {
 
         {/* SVG constellation — right side */}
         <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
-          <div className="aspect-[4/3] w-full overflow-hidden rounded-xl">
+          <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border/30 bg-card/30 shadow-card dark:bg-transparent dark:border-transparent dark:shadow-none">
             {/* Edge fade overlay */}
             <div
               className="pointer-events-none absolute inset-0 z-10"
@@ -116,17 +116,49 @@ export function TaxonomyPreview() {
                   cx={node.cx}
                   cy={node.cy}
                   r={node.r}
-                  fill={node.color}
-                  opacity="0.6"
-                  className="taxonomy-node"
+                  fill={node.colorLight}
+                  className="dark:hidden"
+                  opacity="0.5"
                   style={{
                     filter: `blur(${node.r > 6 ? 0.8 : 0.4}px)`,
-                    animationDelay: node.animDelay,
-                    animationDuration: node.animDuration,
-                    // Custom properties for the CSS animation
-                    "--dx": `${node.dx}px`,
-                    "--dy": `${node.dy}px`,
-                  } as React.CSSProperties}
+                  }}
+                >
+                  <animate
+                    attributeName="cx"
+                    values={`${node.cx};${node.cx + node.dx};${node.cx - node.dx * 0.5};${node.cx}`}
+                    dur={node.animDuration}
+                    repeatCount="indefinite"
+                    calcMode="spline"
+                    keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+                  />
+                  <animate
+                    attributeName="cy"
+                    values={`${node.cy};${node.cy + node.dy};${node.cy - node.dy * 0.5};${node.cy}`}
+                    dur={node.animDuration}
+                    repeatCount="indefinite"
+                    calcMode="spline"
+                    keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+                  />
+                  <animate
+                    attributeName="opacity"
+                    values="0.4;0.7;0.4"
+                    dur={node.animDuration}
+                    repeatCount="indefinite"
+                  />
+                </circle>
+              ))}
+              {nodes.map((node, i) => (
+                <circle
+                  key={`node-dark-${i}`}
+                  cx={node.cx}
+                  cy={node.cy}
+                  r={node.r}
+                  fill={node.color}
+                  className="hidden dark:block"
+                  opacity="0.6"
+                  style={{
+                    filter: `blur(${node.r > 6 ? 0.8 : 0.4}px)`,
+                  }}
                 >
                   <animate
                     attributeName="cx"

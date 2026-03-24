@@ -486,7 +486,7 @@ class OSPRayAdapter(RendererAdapter):
         """
         cmd = [
             _STUDIO_BINARY,
-            "--batch",
+            "--saveImageOnExit",
             "--renderer",
             renderer_type,
             "--image",
@@ -494,7 +494,7 @@ class OSPRayAdapter(RendererAdapter):
         ]
 
         if settings.width is not None and settings.height is not None:
-            cmd.extend(["--size", str(settings.width), str(settings.height)])
+            cmd.extend(["--resolution", f"{settings.width}x{settings.height}"])
 
         if settings.samples is not None:
             cmd.extend(["--spp", str(settings.samples)])

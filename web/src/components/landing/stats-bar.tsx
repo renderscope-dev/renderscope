@@ -22,11 +22,13 @@ function StatItem({ icon, value, label }: StatItemProps) {
   const Icon = iconMap[icon];
 
   return (
-    <div className="flex flex-col items-center gap-2 px-4 py-3">
-      <Icon className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+    <div className="flex flex-col items-center gap-2 px-4 py-5">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/[0.08] dark:bg-primary/10">
+        <Icon className="h-5 w-5 text-primary" aria-hidden="true" />
+      </div>
       <AnimatedCounter
         target={value}
-        className="text-3xl font-bold text-foreground sm:text-4xl"
+        className="font-display text-3xl font-bold text-foreground sm:text-4xl"
       />
       <span className="text-sm text-muted-foreground">{label}</span>
     </div>
@@ -47,7 +49,7 @@ export function StatsBar({ stats }: StatsBarProps) {
 
   return (
     <SectionWrapper compact className="!max-w-6xl">
-      <div data-testid="stats-bar" className="rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm">
+      <div data-testid="stats-bar" className="rounded-2xl border border-border/50 bg-card/80 shadow-card backdrop-blur-sm">
         <div className="grid grid-cols-2 divide-border/30 sm:grid-cols-4 sm:divide-x">
           {items.map((item) => (
             <StatItem key={item.label} {...item} />

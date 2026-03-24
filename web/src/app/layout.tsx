@@ -4,7 +4,7 @@ import { MotionProvider } from "@/components/layout/motion-provider";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { ClientToaster } from "@/components/layout/client-toaster";
-import { inter, jetbrainsMono } from "@/styles/fonts";
+import { dmSans, plusJakartaSans, jetbrainsMono } from "@/styles/fonts";
 import { siteConfig } from "@/lib/constants";
 import "./globals.css";
 
@@ -58,8 +58,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#09090f" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f5f2" },
+    { media: "(prefers-color-scheme: dark)", color: "#0d0b14" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -73,7 +73,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${dmSans.variable} ${plusJakartaSans.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-background font-sans antialiased">
@@ -85,7 +85,7 @@ export default function RootLayout({
         </a>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >

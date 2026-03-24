@@ -4,16 +4,31 @@
   "version": "1.10.14",
   "description": "Game and simulation engine with first-class Python bindings and Disney/Carnegie Mellon heritage",
   "long_description": "Panda3D is an open-source 3D game and simulation engine originally developed by Walt Disney Imagineering for building large-scale virtual reality attractions, with development beginning in the early 2000s. It was later maintained by Carnegie Mellon University's Entertainment Technology Center before becoming an independent open-source project. What fundamentally distinguishes Panda3D from nearly every other 3D engine is its Python-first design philosophy — while the engine core is C++ for performance, the primary user-facing API is Python, making it one of the very few engines where Python is a first-class citizen rather than an afterthought scripting layer. It is installable with a single `pip install panda3d` command.\n\nThe engine uses its own scene graph architecture with a configurable rendering pipeline supporting OpenGL as its primary backend. It provides built-in subsystems for physics (Bullet integration), audio (OpenAL/FMOD), networking, GUI (DirectGUI), shader generation, hardware skinning, skeletal animation, particle systems, terrain rendering, and procedural geometry. Scene formats include Panda3D's own .egg and .bam formats alongside importers for glTF, OBJ, and FBX (via Assimp), with a Blender export plugin available. PBR material support was added in recent versions through the shader pipeline, along with screen-space ambient occlusion, environment mapping, and image-based lighting.\n\nPanda3D occupies a unique niche as the most Python-friendly 3D engine in existence. While Godot, Unity, and Unreal dominate mainstream game development, Panda3D attracts a different audience: Python developers who want 3D without learning a new language or editor workflow, simulation researchers who need scriptable 3D environments, and educational programs teaching 3D graphics through Python. The project maintains an active Discourse forum, Discord server, and comprehensive documentation. Its BSD-3-Clause license and pip-installable distribution make it exceptionally accessible for academic and research use.",
-  "technique": ["rasterization"],
+  "technique": [
+    "rasterization"
+  ],
   "language": "C++/Python",
   "license": "BSD-3-Clause",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": true,
   "gpu_apis": [],
   "cpu_support": true,
   "real_time": true,
-  "scene_formats": ["egg", "bam", "gltf", "obj", "fbx"],
-  "output_formats": ["png", "jpg"],
+  "scene_formats": [
+    "egg",
+    "bam",
+    "gltf",
+    "obj",
+    "fbx"
+  ],
+  "output_formats": [
+    "png",
+    "jpg"
+  ],
   "homepage": "https://www.panda3d.org",
   "repository": "https://github.com/panda3d/panda3d",
   "documentation": "https://docs.panda3d.org",
@@ -51,7 +66,12 @@
   ],
   "best_for": "Python developers building 3D simulations, educational games, research visualizations, or interactive applications who want a full-featured engine accessible entirely through Python code",
   "not_ideal_for": "AAA game development, mobile or web deployment, artists needing a visual scene editor, or projects requiring cutting-edge rendering features like ray tracing or advanced global illumination",
-  "related": ["godot", "bevy", "ogre3d", "threejs"],
+  "related": [
+    "godot",
+    "bevy",
+    "ogre3d",
+    "threejs"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -92,7 +112,9 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["Blender"],
+  "integrations": [
+    "Blender"
+  ],
   "install_command": "pip install panda3d",
   "community_links": {
     "forum": "https://discourse.panda3d.org/",
@@ -106,5 +128,9 @@
       "url": "https://docs.panda3d.org/1.10/python/introduction/index",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/panda3d.webp",
+  "sample_renders": [
+    "/renders/samples/panda3d_sample_1.webp"
   ]
 }

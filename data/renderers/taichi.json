@@ -4,16 +4,31 @@
   "version": "1.7.2",
   "description": "High-performance parallel programming language for GPU-accelerated computing, differentiable simulation, and visual computing",
   "long_description": "Taichi is a domain-specific programming language embedded in Python for writing high-performance parallel programs that compile to multiple GPU and CPU backends — CUDA, Vulkan, Metal, OpenGL, and LLVM. Created by Yuanming Hu at MIT CSAIL, it enables anyone who can write Python to produce GPU-accelerated code without learning CUDA, OpenCL, or shader languages. While not a renderer itself, Taichi has become one of the primary tools for building differentiable renderers, physics simulations, and visual computing applications in the research community.\n\nThe language's key innovation is its multi-backend compilation model: a single Taichi program, written in decorated Python functions using `@ti.kernel` and `@ti.func`, compiles to native GPU code for whichever backend is available — CUDA on NVIDIA hardware, Vulkan for cross-platform GPU, Metal on Apple devices, or LLVM for CPU execution. This write-once-run-anywhere portability is unmatched by any other high-performance computing tool in the catalog. Combined with built-in automatic differentiation (forward and reverse mode) and sparse data structures optimized for volumetric computation, Taichi is uniquely positioned for differentiable physics and rendering research.\n\nThe Taichi ecosystem includes official path tracer examples, real-time fluid and physics simulation demos, and a growing collection of community-built renderers and neural rendering implementations. Taichi Graphics Inc. (now Taichi) commercially supports the open-source project with regular releases, extensive documentation, and educational courses. With over 25,000 GitHub stars, Taichi has one of the largest communities in the visual computing space, bridging the gap between accessible Python programming and compiled-code GPU performance.",
-  "technique": ["differentiable"],
+  "technique": [
+    "differentiable"
+  ],
   "language": "Python/C++",
   "license": "Apache-2.0",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["cuda", "vulkan", "metal"],
+  "gpu_apis": [
+    "cuda",
+    "vulkan",
+    "metal"
+  ],
   "cpu_support": true,
   "real_time": true,
-  "scene_formats": ["programmatic"],
-  "output_formats": ["png", "jpg"],
+  "scene_formats": [
+    "programmatic"
+  ],
+  "output_formats": [
+    "png",
+    "jpg"
+  ],
   "homepage": "https://taichi-lang.org",
   "repository": "https://github.com/taichi-dev/taichi",
   "documentation": "https://docs.taichi-lang.org",
@@ -24,8 +39,74 @@
   "latest_release_version": "1.7.2",
   "status": "active",
   "github_stars": 25200,
-  "github_stars_trend": [22000, 22400, 22800, 23100, 23500, 23800, 24100, 24400, 24600, 24800, 25000, 25200],
-  "commit_activity_52w": [15, 12, 18, 8, 10, 14, 20, 11, 9, 16, 13, 7, 12, 15, 18, 10, 8, 14, 11, 13, 16, 9, 12, 15, 10, 8, 14, 17, 12, 9, 11, 15, 13, 8, 10, 16, 12, 14, 9, 11, 13, 15, 10, 8, 12, 14, 16, 11, 9, 13, 15, 10],
+  "github_stars_trend": [
+    22000,
+    22400,
+    22800,
+    23100,
+    23500,
+    23800,
+    24100,
+    24400,
+    24600,
+    24800,
+    25000,
+    25200
+  ],
+  "commit_activity_52w": [
+    15,
+    12,
+    18,
+    8,
+    10,
+    14,
+    20,
+    11,
+    9,
+    16,
+    13,
+    7,
+    12,
+    15,
+    18,
+    10,
+    8,
+    14,
+    11,
+    13,
+    16,
+    9,
+    12,
+    15,
+    10,
+    8,
+    14,
+    17,
+    12,
+    9,
+    11,
+    15,
+    13,
+    8,
+    10,
+    16,
+    12,
+    14,
+    9,
+    11,
+    13,
+    15,
+    10,
+    8,
+    12,
+    14,
+    16,
+    11,
+    9,
+    13,
+    15,
+    10
+  ],
   "contributor_count": 200,
   "open_issues": 600,
   "fork_count": 2500,
@@ -56,7 +137,11 @@
   ],
   "best_for": "GPU-accelerated computing, differentiable simulation, and building custom renderers with an accessible Python-like syntax and multi-backend portability",
   "not_ideal_for": "Users who need a ready-to-use rendering solution — Taichi requires writing your own rendering code. For production differentiable rendering, PyTorch3D or nvdiffrast provide more complete, tested pipelines",
-  "related": ["drjit", "pytorch3d", "softrasterizer"],
+  "related": [
+    "drjit",
+    "pytorch3d",
+    "softrasterizer"
+  ],
   "features": {
     "global_illumination": null,
     "path_tracing": null,
@@ -97,7 +182,10 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["PyTorch", "NumPy"],
+  "integrations": [
+    "PyTorch",
+    "NumPy"
+  ],
   "install_command": "pip install taichi",
   "community_links": {
     "forum": "https://forum.taichi-lang.org"
@@ -125,5 +213,11 @@
       "url": "https://docs.taichi-lang.org/docs/tutorials",
       "type": "course"
     }
+  ],
+  "thumbnail": "/renders/samples/taichi.webp",
+  "sample_renders": [
+    "/renders/samples/taichi_sample_1.webp",
+    "/renders/samples/taichi_sample_2.webp",
+    "/renders/samples/taichi_sample_3.webp"
   ]
 }

@@ -1,10 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
   heroPlaceholderImages,
-  techniquePlaceholderGradients,
 } from "@/lib/constants";
 
 /** A render image with real src or placeholder data. */
@@ -34,7 +32,23 @@ const TECHNIQUE_LABELS: Record<string, string> = {
   gaussian_splatting: "Gaussian Splatting",
   differentiable: "Differentiable",
   volume_rendering: "Volume",
+  volume: "Volume",
   hybrid: "Hybrid",
+  "path-tracing": "Path Tracing",
+};
+
+/** Map technique IDs to strong, visible gradient classes.
+ *  Full opacity for rich, saturated placeholder cards. */
+const TECHNIQUE_GRADIENTS: Record<string, string> = {
+  "path-tracing": "from-blue-500 via-indigo-600 to-blue-800",
+  path_tracing: "from-blue-500 via-indigo-600 to-blue-800",
+  rasterization: "from-emerald-500 via-teal-600 to-emerald-800",
+  neural: "from-purple-500 via-violet-600 to-purple-800",
+  differentiable: "from-rose-400 via-pink-600 to-fuchsia-800",
+  volume: "from-amber-400 via-orange-500 to-red-700",
+  "gaussian-splatting": "from-violet-400 via-purple-600 to-indigo-800",
+  "ray-marching": "from-cyan-400 via-teal-600 to-cyan-800",
+  educational: "from-amber-400 via-yellow-500 to-orange-700",
 };
 
 /** Map snake_case technique IDs to kebab-case gradient keys. */
@@ -42,16 +56,18 @@ function toGradientKey(technique: string): string {
   return technique.replace(/_/g, "-");
 }
 
+/**
+ * Horizontal row of render image cards — full-width, edge-to-edge feeling.
+ * Shows 5 cards on desktop, 3 on tablet, 2 on mobile.
+ * The center card is slightly taller for visual interest.
+ */
 export function HeroImageGrid({ className, images }: HeroImageGridProps) {
-  const reduced = useReducedMotion();
-
-  // Merge real images with placeholder fallbacks to always have 6 items
+  // Build 5 items from real images + placeholder fallbacks
   const gridItems: HeroGridImage[] = [];
   if (images && images.length > 0) {
-    gridItems.push(...images);
+    gridItems.push(...images.slice(0, 5));
   }
-  // Fill remaining slots with placeholders
-  while (gridItems.length < 6) {
+  while (gridItems.length < 5) {
     const placeholder = heroPlaceholderImages[gridItems.length];
     if (placeholder) {
       gridItems.push({
@@ -65,37 +81,29 @@ export function HeroImageGrid({ className, images }: HeroImageGridProps) {
   }
 
   return (
-    <motion.div
-      className={cn("relative w-full", className)}
-      initial={reduced ? undefined : { opacity: 0, scale: 0.95 }}
-      animate={reduced ? undefined : { opacity: 1, scale: 1 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-    >
-      {/* Asymmetric grid: 3 columns, 2 rows, with varying spans */}
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:gap-4">
+    <div className={cn("relative w-full", className)}>
+      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-5 lg:gap-3">
         {gridItems.map((img, i) => {
           const gradientKey = toGradientKey(img.technique);
           const gradient =
-            techniquePlaceholderGradients[gradientKey] ??
-            techniquePlaceholderGradients["path-tracing"]!;
-          const label = img.label || TECHNIQUE_LABELS[img.technique] || img.technique;
-          // First and last images span 2 rows for visual interest
-          const isLarge = i === 0 || i === 5;
+            TECHNIQUE_GRADIENTS[gradientKey] ??
+            TECHNIQUE_GRADIENTS[img.technique] ??
+            TECHNIQUE_GRADIENTS["path-tracing"]!;
+          const label = img.label || TECHNIQUE_LABELS[img.technique] || TECHNIQUE_LABELS[gradientKey] || img.technique;
           const hasRealImage = !!img.src;
+          const isFeatured = i === 2;
 
           return (
             <div
               key={`${img.renderer}-${i}`}
               className={cn(
-                "group relative overflow-hidden rounded-lg border border-border/30",
-                "transition-[filter] duration-300 hover:brightness-110",
-                isLarge
-                  ? "row-span-2 hidden sm:block"
-                  : "aspect-[4/3]",
-                // On mobile (2-col), hide last two items to fit nicely
-                i >= 4 && "hidden sm:block"
+                "group relative overflow-hidden rounded-xl shadow-md",
+                "transition-all duration-300 hover:shadow-xl hover:scale-[1.02]",
+                isFeatured ? "aspect-[4/3]" : "aspect-[3/2]",
+                // Responsive visibility
+                i >= 3 && "hidden lg:block",
+                i >= 2 && i < 3 && "hidden sm:block",
               )}
-              style={isLarge ? { minHeight: "100%" } : undefined}
             >
               {hasRealImage ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
@@ -103,42 +111,45 @@ export function HeroImageGrid({ className, images }: HeroImageGridProps) {
                   src={img.src}
                   alt={`${img.renderer} render`}
                   className="absolute inset-0 h-full w-full object-cover"
-                  loading={i < 4 ? "eager" : "lazy"}
-                  fetchPriority={i === 0 ? "high" : undefined}
-                  decoding={i < 4 ? "sync" : "async"}
+                  loading={i < 3 ? "eager" : "lazy"}
+                  fetchPriority={isFeatured ? "high" : undefined}
+                  decoding={i < 3 ? "sync" : "async"}
                 />
               ) : (
                 <>
-                  {/* Gradient background */}
+                  {/* Base gradient — full saturation */}
+                  <div className={cn("absolute inset-0 bg-gradient-to-br", gradient)} />
+                  {/* Radial light spot for depth */}
                   <div
-                    className={cn(
-                      "absolute inset-0 bg-gradient-to-br",
-                      gradient
-                    )}
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        "radial-gradient(ellipse 60% 50% at 30% 30%, rgba(255,255,255,0.25) 0%, transparent 70%)",
+                    }}
                   />
-                  {/* Noise texture overlay */}
+                  {/* Noise texture */}
                   <div
-                    className="absolute inset-0 opacity-60"
+                    className="absolute inset-0 opacity-30"
                     style={{ backgroundImage: noiseSvg, backgroundSize: "256px" }}
                   />
-                  {/* Subtle inner grid pattern */}
+                  {/* Wireframe grid pattern — evokes 3D rendering */}
                   <div
-                    className="absolute inset-0 opacity-[0.03]"
+                    className="absolute inset-0 opacity-[0.1]"
                     style={{
                       backgroundImage:
-                        "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-                      backgroundSize: "40px 40px",
+                        "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+                      backgroundSize: "28px 28px",
                     }}
                   />
                 </>
               )}
 
               {/* Renderer label */}
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-3 sm:p-4">
-                <p className="text-[10px] font-medium uppercase tracking-wider text-white/40 sm:text-xs">
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent px-3 pb-2.5 pt-8">
+                <p className="text-[10px] font-medium uppercase tracking-wider text-white/60">
                   {label}
                 </p>
-                <p className="text-xs font-semibold text-white/60 sm:text-sm">
+                <p className="text-xs font-semibold text-white/90 sm:text-sm">
                   {img.renderer}
                 </p>
               </div>
@@ -146,9 +157,6 @@ export function HeroImageGrid({ className, images }: HeroImageGridProps) {
           );
         })}
       </div>
-
-      {/* Bottom gradient fade into page background */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background via-background/80 to-transparent sm:h-32" />
-    </motion.div>
+    </div>
   );
 }

@@ -4,16 +4,31 @@
   "version": "2021.12.3",
   "description": "Google's collection of differentiable graphics layers for 3D reasoning within the TensorFlow ecosystem",
   "long_description": "TensorFlow Graphics is a library of differentiable graphics modules developed by Google Research, providing building blocks for 3D reasoning within TensorFlow computational graphs. Rather than a single renderer, it offers a comprehensive collection of modules covering differentiable rendering, camera models, 3D transformations, mesh operations, point cloud processing, and geometric utilities — all designed to be composable within TensorFlow training pipelines.\n\nReleased publicly in May 2019 and announced at CVPR, the library brought Google's internal 3D graphics research tooling to the open-source community. The rendering module supports differentiable rasterization with interpolated vertex attributes, enabling gradient-based optimization of 3D geometry from 2D image supervision. Additional modules provide spherical harmonics, sRGB/linear color space conversion, quaternion and rotation matrix operations, and various interpolation methods — a breadth of differentiable graphics primitives that distinguishes it from more narrowly focused rendering tools.\n\nTensorFlow Graphics has seen significantly reduced development activity since 2021, as Google's internal graphics research has shifted toward JAX-based tools and frameworks. While the library remains functional with recent TensorFlow versions and still receives occasional maintenance, no new features are being added. For new projects, the PyTorch ecosystem (PyTorch3D, nvdiffrast) offers more active development and broader community support. However, for teams already invested in TensorFlow infrastructure, the library provides a stable, well-structured set of differentiable graphics primitives with Google-quality code standards.",
-  "technique": ["differentiable", "rasterization"],
+  "technique": [
+    "differentiable",
+    "rasterization"
+  ],
   "language": "Python",
   "license": "Apache-2.0",
-  "platforms": ["linux", "macos", "windows"],
+  "platforms": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "gpu_support": true,
-  "gpu_apis": ["cuda"],
+  "gpu_apis": [
+    "cuda"
+  ],
   "cpu_support": true,
   "real_time": false,
-  "scene_formats": ["obj", "programmatic"],
-  "output_formats": ["tensor", "png"],
+  "scene_formats": [
+    "obj",
+    "programmatic"
+  ],
+  "output_formats": [
+    "tensor",
+    "png"
+  ],
   "homepage": "https://github.com/tensorflow/graphics",
   "repository": "https://github.com/tensorflow/graphics",
   "documentation": "https://www.tensorflow.org/graphics/overview",
@@ -24,8 +39,74 @@
   "latest_release_version": "2021.12.3",
   "status": "maintenance",
   "github_stars": 2800,
-  "github_stars_trend": [2500, 2530, 2560, 2590, 2620, 2650, 2680, 2700, 2720, 2740, 2770, 2800],
-  "commit_activity_52w": [0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+  "github_stars_trend": [
+    2500,
+    2530,
+    2560,
+    2590,
+    2620,
+    2650,
+    2680,
+    2700,
+    2720,
+    2740,
+    2770,
+    2800
+  ],
+  "commit_activity_52w": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    2,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
+  ],
   "contributor_count": 50,
   "open_issues": 180,
   "fork_count": 430,
@@ -56,7 +137,12 @@
   ],
   "best_for": "Differentiable graphics operations within existing TensorFlow training pipelines, particularly for researchers already committed to the TensorFlow ecosystem",
   "not_ideal_for": "New projects — the PyTorch ecosystem (PyTorch3D, nvdiffrast) is more actively maintained with broader community support and is not suitable for high-performance rendering",
-  "related": ["pytorch3d", "nvdiffrast", "deodr", "softrasterizer"],
+  "related": [
+    "pytorch3d",
+    "nvdiffrast",
+    "deodr",
+    "softrasterizer"
+  ],
   "features": {
     "global_illumination": false,
     "path_tracing": false,
@@ -97,7 +183,10 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "integrations": ["TensorFlow", "Keras"],
+  "integrations": [
+    "TensorFlow",
+    "Keras"
+  ],
   "install_command": "pip install tensorflow-graphics",
   "community_links": {
     "stackoverflow_tag": "tensorflow-graphics"
@@ -115,5 +204,9 @@
       "url": "https://www.tensorflow.org/graphics/overview",
       "type": "article"
     }
+  ],
+  "thumbnail": "/renders/samples/tensorflow-graphics.webp",
+  "sample_renders": [
+    "/renders/samples/tensorflow-graphics_sample_1.webp"
   ]
 }

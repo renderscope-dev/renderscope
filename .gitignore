@@ -81,3 +81,5 @@ web/test-results/
 # === Misc ===
 *.log
 npm-debug.log*
+imgui.ini
+logs/
