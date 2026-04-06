@@ -9,22 +9,31 @@ description = "CLI tool and library for benchmarking, comparing, and cataloging 
 readme = "README.md"
 license = { text = "Apache-2.0" }
 authors = [
-    { name = "Ashutosh Mishra" },
+    { name = "RenderScope Contributors" },
 ]
 requires-python = ">=3.10"
 keywords = [
     "rendering",
     "benchmarking",
-    "computer graphics",
+    "computer-graphics",
     "comparison",
-    "path tracing",
-    "ray tracing",
+    "path-tracing",
+    "ray-tracing",
+    "pbrt",
+    "mitsuba",
+    "image-quality",
+    "psnr",
+    "ssim",
+    "lpips",
+    "renderer",
+    "3d-rendering",
 ]
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -32,7 +41,9 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Topic :: Multimedia :: Graphics :: 3D Rendering",
     "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Scientific/Engineering :: Image Processing",
     "Typing :: Typed",
+    "Environment :: Console",
 ]
 
 dependencies = [
@@ -68,16 +79,19 @@ dev = [
     "pytest-xdist>=3.5",
     "mypy>=1.10",
     "ruff>=0.4",
+    "build>=1.0",
+    "twine>=5.0",
 ]
 
 [project.scripts]
 renderscope = "renderscope.cli.main:app"
 
 [project.urls]
-Homepage = "https://github.com/renderscope-dev/renderscope"
+Homepage = "https://renderscope.dev"
+Documentation = "https://renderscope.dev/docs"
 Repository = "https://github.com/renderscope-dev/renderscope"
-Documentation = "https://github.com/renderscope-dev/renderscope#readme"
-Issues = "https://github.com/renderscope-dev/renderscope/issues"
+Changelog = "https://github.com/renderscope-dev/renderscope/blob/main/python/CHANGELOG.md"
+"Issue Tracker" = "https://github.com/renderscope-dev/renderscope/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/renderscope"]
@@ -86,6 +100,18 @@ packages = ["src/renderscope"]
 "../data/renderers" = "renderscope/data/renderers"
 "src/renderscope/data/scenes" = "renderscope/data/scenes"
 "src/renderscope/report/templates" = "renderscope/report/templates"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/",
+    "tests/",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+]
+
+[tool.hatch.build.targets.sdist.force-include]
+"../data/renderers" = "data/renderers"
 
 [tool.ruff]
 target-version = "py310"

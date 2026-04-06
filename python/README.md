@@ -1,8 +1,20 @@
 # renderscope
 
-A CLI tool and Python library for benchmarking, comparing, and cataloging open-source rendering engines.
+[![PyPI version](https://img.shields.io/pypi/v/renderscope)](https://pypi.org/project/renderscope/)
+[![Python](https://img.shields.io/pypi/pyversions/renderscope)](https://pypi.org/project/renderscope/)
+[![License](https://img.shields.io/pypi/l/renderscope)](https://github.com/renderscope-dev/renderscope/blob/main/LICENSE)
 
-> Part of the [RenderScope](https://github.com/renderscope-dev/renderscope) ecosystem.
+A CLI tool and Python library for benchmarking, comparing, and cataloging 50+ open-source rendering engines. Compare path tracers, rasterizers, neural renderers, and more with standardized image quality metrics and reproducible benchmarks.
+
+## Features
+
+- **Renderer catalog** with metadata for 50+ engines (PBRT, Mitsuba 3, Cycles, LuxCore, and more)
+- **Image quality metrics** including PSNR, SSIM, MSE, and optional LPIPS
+- **Benchmark runner** with convergence tracking and structured JSON output
+- **Report generation** as self-contained HTML, JSON, CSV, or Markdown
+- **Scene management** with download and format conversion
+- **Renderer adapters** for automated rendering via PBRT, Mitsuba 3, Blender Cycles, LuxCore, appleseed, Filament, and OSPRay
+- **Hardware detection** for CPU, GPU, RAM, and OS
 
 ## Installation
 
@@ -10,90 +22,96 @@ A CLI tool and Python library for benchmarking, comparing, and cataloging open-s
 pip install renderscope
 ```
 
-For development:
-
-```bash
-cd python
-pip install -e ".[dev]"
-```
-
 With optional dependencies:
 
 ```bash
 pip install renderscope[ml]      # LPIPS metric (requires PyTorch)
 pip install renderscope[plots]   # Benchmark chart generation
+pip install renderscope[cv]      # Advanced image operations
 pip install renderscope[all]     # Everything
 ```
 
-## Usage
-
-### List Renderers
+## Quick Start
 
 ```bash
-# Show all cataloged renderers in a formatted table
+# Browse the renderer catalog
 renderscope list
 
-# Filter by rendering technique
+# Filter by technique or language
 renderscope list --technique path_tracing
-renderscope list -t neural
+renderscope list --language Rust --status active
 
-# Filter by language or status
-renderscope list --language Python
-renderscope list --status active
+# Compare two rendered images
+renderscope compare reference.exr test.exr --metrics psnr ssim
 
-# Machine-readable JSON output
-renderscope list --format json
-```
+# Run benchmarks across renderers and scenes
+renderscope benchmark --scene cornell-box --renderer pbrt mitsuba3
 
-### System Information
+# Generate an HTML report from benchmark results
+renderscope report results.json --format html --output report.html
 
-```bash
-# Show detected hardware (CPU, GPU, RAM, OS)
+# Check your hardware
 renderscope system-info
-
-# JSON output for scripting
-renderscope system-info --format json
 ```
 
-### Version
+## Commands
 
-```bash
-renderscope --version
-```
-
-## Coming Soon
-
-These commands are defined but not yet implemented:
-
-- **`renderscope info <renderer>`** — Detailed renderer profile
-- **`renderscope benchmark`** — Run standardized benchmarks
-- **`renderscope compare`** — Compute image quality metrics (PSNR, SSIM, LPIPS)
-- **`renderscope report`** — Generate HTML/JSON/CSV comparison reports
-- **`renderscope download-scenes`** — Download standard benchmark scenes
+| Command | Description |
+|---------|-------------|
+| `renderscope list` | Browse and filter the renderer catalog |
+| `renderscope info <renderer>` | Detailed renderer profile |
+| `renderscope system-info` | Detect and display hardware specs |
+| `renderscope compare` | Compute image quality metrics (PSNR, SSIM, LPIPS) |
+| `renderscope benchmark` | Run standardized benchmarks with convergence tracking |
+| `renderscope report` | Generate HTML/JSON/CSV/Markdown reports |
+| `renderscope download-scenes` | Download standard benchmark scenes |
 
 ## Library Usage
 
-RenderScope can also be used as a Python library:
-
 ```python
-from renderscope.models import RendererMetadata, HardwareInfo
 from renderscope.core.data_loader import load_all_renderers, load_renderer
+from renderscope.core.metrics import ImageMetrics
 from renderscope.utils.hardware import detect_hardware
 
-# Load all renderer metadata
+# Load renderer metadata
 renderers = load_all_renderers()
-print(f"Loaded {len(renderers)} renderers")
+print(f"Cataloged {len(renderers)} renderers")
 
-# Load a specific renderer
 pbrt = load_renderer("pbrt")
 if pbrt:
     print(f"{pbrt.name}: {pbrt.description}")
+
+# Compare images
+metrics = ImageMetrics()
+result = metrics.compare("reference.png", "test.png")
+print(f"PSNR: {result.psnr:.2f} dB, SSIM: {result.ssim:.4f}")
 
 # Detect hardware
 hw = detect_hardware()
 print(f"CPU: {hw.cpu}, RAM: {hw.ram_gb} GB")
 ```
 
+## Part of the RenderScope Ecosystem
+
+RenderScope is a three-part platform:
+
+- **Web app** at [renderscope.dev](https://renderscope.dev) for interactive browsing and comparison
+- **Python package** (this) for benchmarking, metrics, and reports
+- **npm package** [`renderscope-ui`](https://www.npmjs.com/package/renderscope-ui) for reusable React visualization components
+
+## Citation
+
+If you use RenderScope in academic work, please cite:
+
+```bibtex
+@software{renderscope,
+  author       = {Mishra, Ashutosh},
+  title        = {RenderScope: Benchmarking and Comparing Open-Source Rendering Engines},
+  url          = {https://github.com/renderscope-dev/renderscope},
+  license      = {Apache-2.0}
+}
+```
+
 ## License
 
-[Apache-2.0](../LICENSE)
+[Apache-2.0](https://github.com/renderscope-dev/renderscope/blob/main/LICENSE)

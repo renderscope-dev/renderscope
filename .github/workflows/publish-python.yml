@@ -1,0 +1,97 @@
+name: Publish Python Package
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  # ── Job 1: Build & Verify ──────────────────────────────────────────
+  build:
+    name: Build & Smoke Test
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      startsWith(github.event.release.tag_name, 'python-v')
+    defaults:
+      run:
+        working-directory: python
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build tools
+        run: pip install build twine
+
+      - name: Build wheel and sdist
+        run: |
+          python -m build --wheel
+          python -m build --sdist
+
+      - name: Validate distributions
+        run: twine check dist/*
+
+      - name: Verify version matches tag
+        if: github.event_name == 'release'
+        run: |
+          TAG="${GITHUB_REF#refs/tags/python-v}"
+          PKG_VERSION=$(python -c "import ast; f=open('src/renderscope/__init__.py'); tree=ast.parse(f.read()); print([node.value.value for node in ast.walk(tree) if isinstance(node, ast.Assign) and any(t.id == '__version__' for t in node.targets if isinstance(t, ast.Name))][0])")
+          if [ "$TAG" != "$PKG_VERSION" ]; then
+            echo "ERROR: Tag version ($TAG) does not match package version ($PKG_VERSION)"
+            exit 1
+          fi
+          echo "Version match confirmed: $PKG_VERSION"
+
+      - name: Smoke test — install wheel in fresh venv
+        run: |
+          python -m venv /tmp/smoke-test-venv
+          source /tmp/smoke-test-venv/bin/activate
+
+          pip install dist/renderscope-*.whl
+
+          echo "=== CLI commands ==="
+          renderscope --help
+          renderscope list
+          renderscope system-info
+
+          echo "=== Import checks ==="
+          python -c "import renderscope; print(f'Version: {renderscope.__version__}')"
+          python -c "from renderscope.core.metrics import ImageMetrics; print('Metrics: OK')"
+          python -c "from renderscope.report.html_report import HTMLReportGenerator; print('Report: OK')"
+          python -c "from renderscope.core.data_loader import load_all_renderers; r = load_all_renderers(); print(f'Bundled renderers: {len(r)}'); assert len(r) > 0"
+
+          deactivate
+
+      - name: Upload distributions
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-dist
+          path: python/dist/
+          retention-days: 7
+
+  # ── Job 2: Publish to PyPI ─────────────────────────────────────────
+  publish-pypi:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    environment: pypi
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: python-dist
+          path: dist/
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

@@ -24,6 +24,7 @@ env/
 .ruff_cache/
 .pytest_cache/
 htmlcov/
+coverage/
 .coverage
 .coverage.*
 coverage.xml
