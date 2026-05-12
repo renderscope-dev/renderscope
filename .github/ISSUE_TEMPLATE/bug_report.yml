@@ -14,7 +14,7 @@ body:
       label: "Affected Package"
       description: "Which part of RenderScope is affected?"
       options:
-        - "Web App (renderscope.dev)"
+        - "Web App (render-scope.web.app)"
         - "Python CLI/Library (pip install renderscope)"
         - "npm Package (renderscope-ui)"
         - "Data / JSON files"

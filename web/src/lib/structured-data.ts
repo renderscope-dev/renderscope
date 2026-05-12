@@ -6,7 +6,7 @@ import type { RendererData } from "@/types/renderer";
 // Each function returns a plain object ready for JSON.stringify.
 // ═══════════════════════════════════════════════════════════════
 
-const SITE_URL = "https://renderscope.dev";
+const SITE_URL = "https://render-scope.web.app";
 
 // ── WebSite (Landing Page) ──────────────────────────────────────────────────
 

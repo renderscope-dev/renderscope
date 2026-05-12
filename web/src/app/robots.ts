@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/", "/_next/"],
       },
     ],
-    sitemap: "https://renderscope.dev/sitemap.xml",
+    sitemap: "https://render-scope.web.app/sitemap.xml",
   };
 }

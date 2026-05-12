@@ -1,6 +1,6 @@
 {
   "name": "renderscope-ui",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "React components for renderer comparison — image sliders, diff heatmaps, feature matrices, benchmark charts, and taxonomy graphs. Part of the RenderScope ecosystem.",
   "keywords": [
     "react",
@@ -23,7 +23,7 @@
   ],
   "author": "RenderScope Contributors",
   "license": "Apache-2.0",
-  "homepage": "https://renderscope.dev",
+  "homepage": "https://render-scope.web.app",
   "repository": {
     "type": "git",
     "url": "https://github.com/renderscope-dev/renderscope.git",

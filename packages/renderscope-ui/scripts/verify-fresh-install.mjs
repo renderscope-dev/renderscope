@@ -9,7 +9,7 @@
  *
  * Prerequisites: Run `npm pack` first to produce the .tgz tarball.
  *
- * @author Ashutosh Mishra
+ * @author RenderScope Contributors
  * @license Apache-2.0
  */
 

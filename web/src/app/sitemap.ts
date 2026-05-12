@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { getAllRenderers } from "@/lib/data";
 import { getAllTechniqueSlugs } from "@/lib/learn-data";
 
-const SITE_URL = "https://renderscope.dev";
+const SITE_URL = "https://render-scope.web.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const renderers = getAllRenderers();

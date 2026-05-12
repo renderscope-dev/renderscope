@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "RenderScope",
   description:
     "An open source platform for cataloging, comparing, and benchmarking rendering engines.",
-  url: "https://renderscope.dev",
+  url: "https://render-scope.web.app",
   github: "https://github.com/renderscope-dev/renderscope",
   pypi: "https://pypi.org/project/renderscope/",
   npm: "https://www.npmjs.com/package/renderscope",

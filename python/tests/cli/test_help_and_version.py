@@ -23,10 +23,12 @@ class TestHelpAndVersion:
 
     def test_version(self) -> None:
         """--version should print the version string."""
+        from renderscope import __version__
+
         result = runner.invoke(app, ["--version"])
         assert result.exit_code == 0
         assert "RenderScope" in result.output
-        assert "0.1.0" in result.output
+        assert __version__ in result.output
 
     def test_no_args_shows_help(self) -> None:
         """Running with no arguments should show help text."""

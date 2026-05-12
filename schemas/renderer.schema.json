@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://renderscope.dev/schemas/renderer.schema.json",
+  "$id": "https://render-scope.web.app/schemas/renderer.schema.json",
   "title": "RenderScope Renderer",
   "description": "Metadata for a single rendering engine in the RenderScope catalog.",
   "type": "object",

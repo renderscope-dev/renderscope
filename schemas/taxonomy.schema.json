@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://renderscope.dev/schemas/taxonomy.schema.json",
+  "$id": "https://render-scope.web.app/schemas/taxonomy.schema.json",
   "title": "RenderScope Taxonomy",
   "description": "Classification graph connecting renderers, techniques, and relationships.",
   "type": "object",

@@ -145,7 +145,7 @@ function OGLayout({
               display: "flex",
             }}
           >
-            renderscope.dev
+            render-scope.web.app
           </div>
         </div>
       </div>

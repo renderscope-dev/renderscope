@@ -15,7 +15,7 @@ import { RecentUpdates } from "@/components/landing/recent-updates";
 import { Github, ArrowRight } from "lucide-react";
 import { siteConfig } from "@/lib/constants";
 
-const SITE_URL = "https://renderscope.dev";
+const SITE_URL = "https://render-scope.web.app";
 
 export const metadata: Metadata = {
   title: {

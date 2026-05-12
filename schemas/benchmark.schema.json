@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://renderscope.dev/schemas/benchmark.schema.json",
+  "$id": "https://render-scope.web.app/schemas/benchmark.schema.json",
   "title": "RenderScope Benchmark Result",
   "description": "A single benchmark run: one renderer, one scene, one hardware configuration.",
   "type": "object",

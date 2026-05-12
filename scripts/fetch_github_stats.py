@@ -6,7 +6,7 @@ Reads renderer JSON files from data/renderers/, queries the GitHub API
 for each renderer with a GitHub repository URL, and updates the dynamic
 fields in-place. Editorial content is never touched.
 
-Author: Ashutosh Mishra
+Author: RenderScope Contributors
 
 Usage:
     python scripts/fetch_github_stats.py [--dry-run] [--renderer SLUG]

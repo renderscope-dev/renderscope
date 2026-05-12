@@ -95,7 +95,7 @@ print(f"CPU: {hw.cpu}, RAM: {hw.ram_gb} GB")
 
 RenderScope is a three-part platform:
 
-- **Web app** at [renderscope.dev](https://renderscope.dev) for interactive browsing and comparison
+- **Web app** at [render-scope.web.app](https://render-scope.web.app) for interactive browsing and comparison
 - **Python package** (this) for benchmarking, metrics, and reports
 - **npm package** [`renderscope-ui`](https://www.npmjs.com/package/renderscope-ui) for reusable React visualization components
 

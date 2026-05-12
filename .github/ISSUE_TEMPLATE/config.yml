@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name: "Documentation"
-    url: "https://renderscope.dev/docs"
+    url: "https://render-scope.web.app/docs"
     about: "Check the documentation before filing an issue — your question may already be answered."
   - name: "Discussions"
     url: "https://github.com/renderscope-dev/renderscope/discussions"

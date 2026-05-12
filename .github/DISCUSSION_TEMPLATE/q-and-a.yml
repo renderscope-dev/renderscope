@@ -4,7 +4,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Ask a question about using RenderScope — the web app, Python CLI, npm package, or data schema. Check the [documentation](https://renderscope.dev/docs) first, as your question may already be answered there.
+        Ask a question about using RenderScope — the web app, Python CLI, npm package, or data schema. Check the [documentation](https://render-scope.web.app/docs) first, as your question may already be answered there.
 
   - type: textarea
     id: question

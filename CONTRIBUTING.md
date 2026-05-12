@@ -7,7 +7,7 @@ Thank you for your interest in contributing to RenderScope! This project thrives
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Security Policy](SECURITY.md)
 - [Changelog](CHANGELOG.md)
-- [Documentation](https://renderscope.dev/docs)
+- [Documentation](https://render-scope.web.app/docs)
 
 ## Ways to Contribute
 
@@ -16,7 +16,7 @@ Thank you for your interest in contributing to RenderScope! This project thrives
 The easiest and most impactful way to contribute. No coding required!
 
 1. Copy `data/renderers/_template.json` to `data/renderers/<renderer-id>.json`
-2. Fill in all required fields (see [Data Schema docs](https://renderscope.dev/docs/schema))
+2. Fill in all required fields (see [Data Schema docs](https://render-scope.web.app/docs/schema))
 3. Run validation: `python scripts/validate_data.py`
 4. Submit a Pull Request
 
@@ -90,7 +90,7 @@ cd python && pip install -e ".[dev]" && cd ..
 
 ### Improve Documentation
 
-Documentation improvements are always welcome. You can edit pages directly on GitHub or submit a PR. Documentation lives in the `web/` app and is deployed to renderscope.dev.
+Documentation improvements are always welcome. You can edit pages directly on GitHub or submit a PR. Documentation lives in the `web/` app and is deployed to render-scope.web.app.
 
 ## Recognition
 

@@ -8,13 +8,13 @@ React components for comparing, benchmarking, and exploring rendering engines.
 [![license](https://img.shields.io/npm/l/renderscope-ui.svg)](https://github.com/renderscope-dev/renderscope/blob/main/LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 
-[Website](https://renderscope.dev) · [Storybook](https://storybook.renderscope.dev) · [GitHub](https://github.com/renderscope-dev/renderscope) · [Python CLI](https://pypi.org/project/renderscope/)
+[Website](https://render-scope.web.app) · [Storybook](https://storybook.render-scope.web.app) · [GitHub](https://github.com/renderscope-dev/renderscope) · [Python CLI](https://pypi.org/project/renderscope/)
 
 ## Overview
 
 **renderscope-ui** provides production-ready React components for visual comparison of rendering engine outputs. It ships three component categories — image comparison tools, an interactive feature matrix, and a D3-powered taxonomy graph — all with full TypeScript support, CSS custom property theming, and tree-shakeable imports.
 
-Part of the [RenderScope](https://renderscope.dev) ecosystem for cataloging, comparing, and benchmarking open source rendering engines.
+Part of the [RenderScope](https://render-scope.web.app) ecosystem for cataloging, comparing, and benchmarking open source rendering engines.
 
 ## Installation
 
@@ -240,12 +240,12 @@ Importing `ImageCompareSlider` alone does **not** pull in D3. Each component cat
 
 ## Links
 
-- [RenderScope Website](https://renderscope.dev)
-- [Storybook Documentation](https://storybook.renderscope.dev)
+- [RenderScope Website](https://render-scope.web.app)
+- [Storybook Documentation](https://storybook.render-scope.web.app)
 - [GitHub Repository](https://github.com/renderscope-dev/renderscope)
 - [Python CLI Package](https://pypi.org/project/renderscope/)
 - [Contributing Guide](https://github.com/renderscope-dev/renderscope/blob/main/CONTRIBUTING.md)
 
 ## License
 
-[Apache-2.0](https://github.com/renderscope-dev/renderscope/blob/main/LICENSE) — Copyright 2026 Ashutosh Mishra
+[Apache-2.0](https://github.com/renderscope-dev/renderscope/blob/main/LICENSE) — Copyright 2026 RenderScope Contributors

@@ -4,8 +4,8 @@
     <strong>The open-source platform for cataloging, comparing, and benchmarking rendering engines.</strong>
   </p>
   <p align="center">
-    <a href="https://renderscope.dev">Website</a> &middot;
-    <a href="https://renderscope.dev/docs">Documentation</a> &middot;
+    <a href="https://render-scope.web.app">Website</a> &middot;
+    <a href="https://render-scope.web.app/docs">Documentation</a> &middot;
     <a href="https://pypi.org/project/renderscope/">PyPI</a> &middot;
     <a href="https://www.npmjs.com/package/renderscope-ui">npm</a>
   </p>
@@ -220,7 +220,7 @@ cd web && npx playwright test
 Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 Common contributions include:
-- **Adding a new renderer** — Submit a JSON profile following the [data schema](https://renderscope.dev/docs/schema)
+- **Adding a new renderer** — Submit a JSON profile following the [data schema](https://render-scope.web.app/docs/schema)
 - **Submitting benchmark results** — Run benchmarks on your hardware and submit via pull request
 - **Improving educational content** — Add glossary terms, technique explanations, or renderer write-ups
 - **Bug reports and feature requests** — Use the [issue templates](https://github.com/renderscope-dev/renderscope/issues/new/choose)
@@ -233,7 +233,7 @@ If you use RenderScope in academic work, please cite:
 
 ```bibtex
 @software{renderscope,
-  author       = {{Ashutosh Mishra}},
+  author       = {{RenderScope Contributors}},
   title        = {{RenderScope}: An Open-Source Platform for Cataloging, Comparing, and Benchmarking Rendering Engines},
   url          = {https://github.com/renderscope-dev/renderscope},
   license      = {Apache-2.0}
@@ -266,7 +266,7 @@ graph LR
         T[("Taxonomy &<br>Glossary")]
     end
 
-    subgraph Web["Web App — renderscope.dev"]
+    subgraph Web["Web App — render-scope.web.app"]
         E["Explore &<br>Filter"]
         C["Compare<br>Renderers"]
         B["Benchmark<br>Dashboard"]
@@ -407,7 +407,7 @@ flowchart TD
     D --> G["Run validation"]
     G --> H["Submit pull request"]
     H --> I["CI validates schema,<br>lint, and tests"]
-    I --> J["Merged & live on<br>renderscope.dev"]
+    I --> J["Merged & live on<br>render-scope.web.app"]
 ```
 
 **Step 1 — Create the renderer profile** at `data/renderers/<id>.json`:
@@ -477,4 +477,4 @@ renderscope benchmark --scene cornell-box sponza --renderer pbrt mitsuba3 --outp
 # Submit results.json via pull request to data/benchmarks/
 ```
 
-Benchmark results from diverse hardware configurations make the comparison data more representative. All submissions are validated against the data schema and appear on the benchmark dashboard at [renderscope.dev/benchmarks](https://renderscope.dev/benchmarks).
+Benchmark results from diverse hardware configurations make the comparison data more representative. All submissions are validated against the data schema and appear on the benchmark dashboard at [render-scope.web.app/benchmarks](https://render-scope.web.app/benchmarks).

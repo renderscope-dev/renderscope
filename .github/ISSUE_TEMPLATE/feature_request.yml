@@ -14,7 +14,7 @@ body:
       label: "Relevant Package"
       description: "Which part of RenderScope would this feature affect?"
       options:
-        - "Web App (renderscope.dev)"
+        - "Web App (render-scope.web.app)"
         - "Python CLI/Library"
         - "npm Package (renderscope-ui)"
         - "Data Schema / Content"

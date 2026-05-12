@@ -16,7 +16,7 @@ const bibtex = `@software{renderscope2026,
   title        = {{RenderScope}: An Open Source Platform for Cataloging,
                   Comparing, and Benchmarking Rendering Engines},
   year         = {2026},
-  url          = {https://renderscope.dev},
+  url          = {https://render-scope.web.app},
   note         = {Open source software, Apache-2.0 license}
 }`;
 
@@ -31,10 +31,10 @@ authors:
 version: "1.0.0"
 date-released: "2026-01-01"
 license: Apache-2.0
-url: "https://renderscope.dev"
+url: "https://render-scope.web.app"
 repository-code: "https://github.com/renderscope-dev/renderscope"`;
 
-const plainText = `Ashutosh Singh (2026). RenderScope: An Open Source Platform for Cataloging, Comparing, and Benchmarking Rendering Engines [Computer software]. https://renderscope.dev`;
+const plainText = `Ashutosh Singh (2026). RenderScope: An Open Source Platform for Cataloging, Comparing, and Benchmarking Rendering Engines [Computer software]. https://render-scope.web.app`;
 
 /* ------------------------------------------------------------------ */
 /*  Callout                                                            */
@@ -90,7 +90,7 @@ export function CitationPageContent() {
         <p className="text-sm font-medium leading-relaxed text-foreground">
           Ashutosh Singh. RenderScope: An Open Source Platform for Cataloging,
           Comparing, and Benchmarking Rendering Engines. 2026. Available at:{" "}
-          <span className="text-sky-400">https://renderscope.dev</span>
+          <span className="text-sky-400">https://render-scope.web.app</span>
         </p>
       </motion.div>
 
@@ -145,7 +145,7 @@ export function CitationPageContent() {
           be cited directly:
         </p>
         <p className="mt-2 font-mono text-sm text-sky-400">
-          https://renderscope.dev/renderer/[renderer-id]
+          https://render-scope.web.app/renderer/[renderer-id]
         </p>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           For example, to reference the Mitsuba 3 profile:{" "}
@@ -153,7 +153,7 @@ export function CitationPageContent() {
             href="/renderer/mitsuba3"
             className="text-sky-400 underline decoration-sky-400/30 underline-offset-2 hover:decoration-sky-400"
           >
-            https://renderscope.dev/renderer/mitsuba3
+            https://render-scope.web.app/renderer/mitsuba3
           </Link>
         </p>
       </motion.section>

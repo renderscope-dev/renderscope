@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 // Centralized metadata generation for every page.
 // ═══════════════════════════════════════════════════════════════
 
-const SITE_URL = "https://renderscope.dev";
+const SITE_URL = "https://render-scope.web.app";
 const SITE_NAME = "RenderScope";
 const DEFAULT_OG_IMAGE = "/og/default.png";
 

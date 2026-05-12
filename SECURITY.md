@@ -24,7 +24,7 @@ The security scope covers:
 If you discover a security vulnerability, please report it responsibly:
 
 1. **Do NOT open a public GitHub issue.**
-2. Email **security@renderscope.dev** with:
+2. Email **security@render-scope.web.app** with:
    - Description of the vulnerability
    - Steps to reproduce
    - Potential impact

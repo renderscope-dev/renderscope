@@ -7,7 +7,7 @@
  *
  * Usage: node scripts/verify-treeshake.mjs
  *
- * @author Ashutosh Mishra
+ * @author RenderScope Contributors
  * @license Apache-2.0
  */
 

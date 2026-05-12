@@ -170,7 +170,7 @@ def download_scenes_cmd(
         console.print(f"  \u25cf {s.name} ({s.id}) — {_fmt_size(s.download_size_mb)}")
 
         # Note: The actual download infrastructure (scene hosting at
-        # renderscope.dev/scenes) is set up in Phase 26.  For now, the
+        # render-scope.web.app/scenes) is set up in Phase 26.  For now, the
         # download command creates the scene directory structure and marks
         # it as "ready" so the rest of the CLI can operate in demo mode.
         # When the hosting infrastructure is available, the download logic

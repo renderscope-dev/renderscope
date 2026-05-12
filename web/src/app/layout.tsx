@@ -28,8 +28,8 @@ export const metadata: Metadata = {
     "Mitsuba",
     "Blender Cycles",
   ],
-  authors: [{ name: "Ashutosh Mishra" }],
-  creator: "Ashutosh Mishra",
+  authors: [{ name: "RenderScope Contributors" }],
+  creator: "RenderScope Contributors",
   openGraph: {
     type: "website",
     locale: "en_US",
