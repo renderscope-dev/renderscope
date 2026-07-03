@@ -20,6 +20,7 @@ import { ImagesTabContent } from "./images-tab";
 import { PerformanceTabSkeleton } from "./performance-tab-skeleton";
 import type { RendererData } from "@/types/renderer";
 import type { SceneData } from "@/types/scene";
+import type { ChartBenchmarkDataset } from "@/types/benchmark";
 
 /**
  * Dynamically import the Recharts-heavy PerformanceTab.
@@ -37,6 +38,7 @@ const PerformanceTab = dynamic(
 interface ComparePageContentProps {
   renderers: RendererData[];
   scenes: SceneData[];
+  benchmarkDataset: ChartBenchmarkDataset;
 }
 
 /**
@@ -49,7 +51,11 @@ interface ComparePageContentProps {
  * The entire page state is a function of its URL, making it
  * fully shareable and bookmarkable.
  */
-export function ComparePageContent({ renderers, scenes }: ComparePageContentProps) {
+export function ComparePageContent({
+  renderers,
+  scenes,
+  benchmarkDataset,
+}: ComparePageContentProps) {
   // ── URL state ─────────────────────────────────────────────
 
   const [selectedIds, setSelectedIds] = useQueryState(
@@ -147,6 +153,7 @@ export function ComparePageContent({ renderers, scenes }: ComparePageContentProp
     performance: (
       <PerformanceTab
         selectedRendererIds={selectedRenderers.map((r) => r.id)}
+        benchmarkDataset={benchmarkDataset}
       />
     ),
   };

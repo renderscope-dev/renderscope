@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `renderscope.core.quality` module — reusable, fully-typed PSNR/SSIM/MSE and convergence-series computation from rendered images, using the same tone-mapping/`data_range` conventions as the benchmark runner. Includes a degeneracy guard that detects when per-sample-count renders are numerically identical (so no genuine convergence exists to publish).
+- `scripts/compute_benchmarks_from_renders.py` — derives real benchmark quality metrics from existing convergence-checkpoint EXRs and measured run timings, emitting `benchmark.schema.json`-conforming JSON. Publishes a run only when its convergence series is genuine.
+
+### Changed
+- Benchmark data is now measurement-backed end to end. The Compare page's Performance tab reads the same real benchmark files as the dashboard (loaded at build time and passed from the server) instead of its own mock data module, so the two views can no longer drift apart.
+- Added the real Sponza / Blender Cycles benchmark (measured on Apple M5 Max) with a genuine convergence curve computed from the existing renders.
+
+### Removed
+- Fabricated benchmark JSON that had no measured render backing (18 placeholder files across pbrt, mitsuba3, appleseed, luxcorerender, and Blender Cycles) and the web `mock-benchmark-data` module. The cornell-box and stanford-bunny runs were found to be degenerate (renders identical across sample counts) and are intentionally not published.
+
 ## [1.0.0] — 2026-05-11
 
 First public release of RenderScope.

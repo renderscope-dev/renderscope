@@ -182,6 +182,14 @@ ignore_missing_imports = true
 module = ["imageio", "imageio.*", "OpenEXR", "Imath"]
 ignore_missing_imports = true
 
+# tifffile is pulled in transitively by scikit-image / imageio. Recent releases
+# use PEP 695 `type` statements that mypy cannot parse under python_version 3.10,
+# so skip analysing its source rather than following into it.
+[[tool.mypy.overrides]]
+module = ["tifffile", "tifffile.*"]
+ignore_missing_imports = true
+follow_imports = "skip"
+
 [[tool.mypy.overrides]]
 module = ["pyluxcore", "pyluxcore.*", "pyfilament", "pyfilament.*", "ospray", "ospray.*"]
 ignore_missing_imports = true

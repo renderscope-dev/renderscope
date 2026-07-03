@@ -1,0 +1,71 @@
+{
+  "id": "sponza-blender-cycles-2026-03-21",
+  "renderer": "blender-cycles",
+  "renderer_version": "4.4.3",
+  "scene": "sponza",
+  "timestamp": "2026-03-21T23:48:47.974569+00:00",
+  "hardware": {
+    "id": "m5max",
+    "label": "Apple M5 Max",
+    "cpu": "Apple M5 Max",
+    "cpu_cores": 18,
+    "gpu": "Apple M5 Max",
+    "ram_gb": 64,
+    "os": "macOS 26.3.1"
+  },
+  "settings": {
+    "resolution": [
+      1920,
+      1080
+    ],
+    "samples_per_pixel": 256,
+    "integrator": "path",
+    "gpu_enabled": false,
+    "max_bounces": 8
+  },
+  "results": {
+    "render_time_seconds": 61.168,
+    "output_image": "renderscope-results/sponza/blender-cycles_256spp_256spp.exr",
+    "peak_memory_mb": 2184.6
+  },
+  "quality_vs_reference": {
+    "reference_renderer": "blender-cycles",
+    "reference_samples": 1024,
+    "psnr": 67.41,
+    "ssim": 0.99993,
+    "mse": 1.81e-07
+  },
+  "convergence": [
+    {
+      "samples": 1,
+      "time": 3.605,
+      "psnr": 45.52,
+      "ssim": 0.99668
+    },
+    {
+      "samples": 4,
+      "time": 4.307,
+      "psnr": 53.04,
+      "ssim": 0.99891
+    },
+    {
+      "samples": 16,
+      "time": 7.032,
+      "psnr": 59.46,
+      "ssim": 0.99961
+    },
+    {
+      "samples": 64,
+      "time": 18.521,
+      "psnr": 63.55,
+      "ssim": 0.99984
+    },
+    {
+      "samples": 256,
+      "time": 61.168,
+      "psnr": 67.41,
+      "ssim": 0.99993
+    }
+  ],
+  "notes": "Measured on Apple M5 Max (Blender Cycles 4.4.3, CPU path tracing). Quality is computed against this renderer's own 1024-spp render as the converged reference (Reinhard tone-map, PSNR/SSIM/MSE at data_range=1.0); no independent ground-truth renderer was available for this scene."
+}

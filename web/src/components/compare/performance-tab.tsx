@@ -3,35 +3,41 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import {
-  getMockBenchmarkData,
-  getRendererChartColor,
-} from "@/lib/mock-benchmark-data";
+import { getRendererChartColor } from "@/lib/chart-utils";
+import type { ChartBenchmarkDataset } from "@/types/benchmark";
 import { HardwareContext } from "./hardware-context";
 import { BenchmarkChart } from "./benchmark-chart";
 import { ConvergencePlot } from "./convergence-plot";
 
 interface PerformanceTabProps {
   selectedRendererIds: string[];
+  /**
+   * The full set of real benchmark entries, loaded at build time on the
+   * server and passed down. The tab filters it to the selected renderers.
+   */
+  benchmarkDataset: ChartBenchmarkDataset;
   className?: string;
 }
 
 /**
  * Performance tab orchestrator for the Compare page.
  *
- * Assembles the hardware context banner, benchmark bar chart,
- * and convergence line chart from mock data. The data source
- * can be swapped to real benchmark data in Phase 28 by replacing
- * the getMockBenchmarkData import — component tree stays the same.
+ * Assembles the hardware context banner, benchmark bar chart, and convergence
+ * line chart from the real benchmark dataset. Renderers without benchmark data
+ * are surfaced explicitly rather than silently omitted.
  */
 export function PerformanceTab({
   selectedRendererIds,
+  benchmarkDataset,
   className,
 }: PerformanceTabProps) {
-  const dataset = useMemo(
-    () => getMockBenchmarkData(selectedRendererIds),
-    [selectedRendererIds]
-  );
+  const dataset = useMemo(() => {
+    const idSet = new Set(selectedRendererIds);
+    return {
+      hardware: benchmarkDataset.hardware,
+      entries: benchmarkDataset.entries.filter((e) => idSet.has(e.renderer)),
+    };
+  }, [benchmarkDataset, selectedRendererIds]);
 
   const rendererColors = useMemo(() => {
     const colors: Record<string, string> = {};

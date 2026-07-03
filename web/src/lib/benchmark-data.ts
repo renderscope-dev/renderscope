@@ -5,6 +5,9 @@ import type {
   BenchmarkTableRow,
   HardwareProfile,
   BenchmarkOverviewData,
+  ChartBenchmarkDataset,
+  ChartBenchmarkEntry,
+  ChartHardware,
 } from "@/types/benchmark";
 
 // ═══════════════════════════════════════════════════════════════
@@ -165,6 +168,56 @@ export function getBenchmarksForRenderer(
   return all
     .filter((b) => b.renderer === rendererId)
     .sort((a, b) => a.scene.localeCompare(b.scene));
+}
+
+/**
+ * Fallback hardware banner used when no benchmarks exist yet.
+ */
+const EMPTY_CHART_HARDWARE: ChartHardware = {
+  cpu: "—",
+  ram_gb: 0,
+  os: "—",
+};
+
+/**
+ * Build the chart-shaped dataset consumed by the Compare page's Performance
+ * tab. Reuses the same real benchmark files as the dashboard, so the two
+ * views can never drift out of sync. Runs at build time (uses `fs`).
+ */
+export function getCompareBenchmarkDataset(): ChartBenchmarkDataset {
+  const benchmarks = getAllBenchmarks();
+  const rendererNames = getRendererNameMap();
+  const sceneNames = getSceneNameMap();
+
+  const entries: ChartBenchmarkEntry[] = benchmarks.map((b) => ({
+    id: b.id,
+    renderer: b.renderer,
+    renderer_name: rendererNames[b.renderer]?.name ?? b.renderer,
+    scene: b.scene,
+    scene_name: sceneNames[b.scene]?.name ?? b.scene,
+    render_time_seconds: b.results.render_time_seconds,
+    peak_memory_mb: b.results.peak_memory_mb,
+    psnr: b.quality_vs_reference?.psnr,
+    ssim: b.quality_vs_reference?.ssim,
+    convergence: (b.convergence ?? []).map((c) => ({
+      samples: c.samples,
+      time_seconds: c.time,
+      psnr: c.psnr,
+      ssim: c.ssim,
+    })),
+  }));
+
+  const source = benchmarks[0]?.hardware;
+  const hardware: ChartHardware = source
+    ? {
+        cpu: source.cpu,
+        gpu: source.gpu,
+        ram_gb: source.ram_gb,
+        os: source.os,
+      }
+    : EMPTY_CHART_HARDWARE;
+
+  return { hardware, entries };
 }
 
 /**

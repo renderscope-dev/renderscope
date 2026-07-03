@@ -56,6 +56,7 @@ export interface ConvergencePoint {
   samples: number;
   time: number;
   psnr: number;
+  ssim?: number;
 }
 
 /**

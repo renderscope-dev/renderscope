@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { generatePageMetadata } from "@/lib/seo";
 import { getAllRenderers } from "@/lib/data";
 import { getAllScenes } from "@/lib/scenes";
+import { getCompareBenchmarkDataset } from "@/lib/benchmark-data";
 import { JsonLd } from "@/components/json-ld";
 import { generateBreadcrumbSchema } from "@/lib/structured-data";
 import { ComparePageContent } from "@/components/compare";
@@ -25,6 +26,7 @@ export const metadata: Metadata = generatePageMetadata({
 export default function ComparePage() {
   const allRenderers = getAllRenderers();
   const allScenes = getAllScenes();
+  const benchmarkDataset = getCompareBenchmarkDataset();
 
   return (
     <div className="min-h-screen">
@@ -35,7 +37,11 @@ export default function ComparePage() {
         ])}
       />
       <Suspense fallback={null}>
-        <ComparePageContent renderers={allRenderers} scenes={allScenes} />
+        <ComparePageContent
+          renderers={allRenderers}
+          scenes={allScenes}
+          benchmarkDataset={benchmarkDataset}
+        />
       </Suspense>
     </div>
   );

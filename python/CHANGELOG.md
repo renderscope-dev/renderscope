@@ -5,6 +5,12 @@ All notable changes to the RenderScope Python package will be documented in this
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- `renderscope.core.quality` module — computes PSNR/SSIM/MSE and full convergence series from in-memory image arrays (reusing `ImageMetrics` and the runner's tone-mapping conventions), plus `is_degenerate()` to reject "convergence" series whose renders don't actually vary with sample count.
+
 ## [1.0.0] - 2026-05-11
 
 First public release.
