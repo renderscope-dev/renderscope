@@ -25,8 +25,24 @@ The easiest and most impactful way to contribute. No coding required!
 ### Submit Benchmark Results
 
 1. Install the CLI: `pip install renderscope`
-2. Run a benchmark: `renderscope benchmark --scene cornell-box --renderer <name>`
-3. Submit via [Benchmark Submission issue](../../issues/new?template=benchmark_submission.yml) or open a PR adding results to `data/benchmarks/`
+2. Run a benchmark:
+   ```bash
+   renderscope benchmark --scene cornell-box --renderer <name> --output results.json
+   ```
+3. Convert the run into catalog records:
+   ```bash
+   renderscope publish results.json --output-dir data/benchmarks --submitted-by <your-handle>
+   ```
+   Add `--dry-run` first to preview. Steps 2 and 3 collapse into one with
+   `renderscope benchmark ... --publish-dir data/benchmarks`.
+4. Validate: `python scripts/validate_data.py`
+5. Submit via [Benchmark Submission issue](../../issues/new?template=benchmark_submission.yml) or open a PR adding the published records to `data/benchmarks/`
+
+> **Do not copy `results.json` into `data/benchmarks/` directly.** It is a *run
+> record* — nested render results, adapter internals, your Python environment —
+> not a catalog entry, and it does not conform to
+> [`schemas/benchmark.schema.json`](schemas/benchmark.schema.json).
+> `renderscope publish` is what converts one into the other.
 
 ### Report Bugs
 

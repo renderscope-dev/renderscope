@@ -5,57 +5,81 @@
 /**
  * Hardware configuration used for a benchmark run.
  * Each unique combination of CPU+GPU+RAM+OS represents a "hardware profile."
+ *
+ * `gpu` is absent or null on a CPU-only run, which `schemas/benchmark.schema.json`
+ * permits and which is the common case for reference path-tracing benchmarks.
  */
 export interface HardwareProfile {
   id: string;
   label: string;
   cpu: string;
-  gpu: string;
+  gpu?: string | null;
   ram_gb: number;
   os: string;
+  cpu_cores?: number;
+  cpu_threads?: number;
+  gpu_vram_gb?: number;
   driver?: string;
+  driver_version?: string;
 }
 
 /**
  * Benchmark settings — the renderer configuration used during the test.
+ *
+ * `samples_per_pixel` is absent for time-budgeted runs and for rasterization
+ * renderers, which measure frame times instead.
  */
 export interface BenchmarkSettings {
   resolution: [number, number];
-  samples_per_pixel: number;
+  samples_per_pixel?: number;
+  time_budget_seconds?: number;
   integrator?: string;
   max_bounces?: number;
   threads?: number;
   gpu_enabled?: boolean;
+  denoiser?: string | null;
+  renderer_type?: string;
+  ospray_renderer?: string;
 }
 
 /**
  * Raw benchmark results — timing and resource usage.
+ *
+ * Optionality here mirrors `schemas/benchmark.schema.json` exactly. Treating an
+ * optional field as guaranteed crashes the static build on a valid submission,
+ * so anything the schema does not require is optional in TypeScript too.
  */
 export interface BenchmarkResults {
   render_time_seconds: number;
-  peak_memory_mb: number;
-  output_image?: string;
+  output_image: string;
+  peak_memory_mb?: number;
 }
 
 /**
  * Image quality metrics compared against a reference render.
+ *
+ * Absent entirely when a run had no reference image to compare against — which
+ * is the normal case for a scene with no published ground-truth render.
  */
 export interface QualityMetrics {
   reference_renderer: string;
   reference_samples: number;
-  psnr: number;
-  ssim: number;
+  psnr?: number;
+  ssim?: number;
   mse?: number;
   lpips?: number;
 }
 
 /**
  * A single convergence data point — quality at a specific sample count / time.
+ *
+ * Only `samples` is guaranteed: a run can record timing checkpoints without a
+ * reference to measure quality against.
  */
 export interface ConvergencePoint {
   samples: number;
-  time: number;
-  psnr: number;
+  time?: number;
+  psnr?: number;
   ssim?: number;
 }
 
@@ -72,8 +96,8 @@ export interface BenchmarkEntry {
   hardware: HardwareProfile;
   settings: BenchmarkSettings;
   results: BenchmarkResults;
-  quality_vs_reference: QualityMetrics;
-  convergence: ConvergencePoint[];
+  quality_vs_reference?: QualityMetrics;
+  convergence?: ConvergencePoint[];
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -92,12 +116,15 @@ export interface BenchmarkTableRow {
   scene: string;
   sceneName: string;
   renderTime: number;
-  peakMemory: number;
-  psnr: number;
-  ssim: number;
+  /** Absent when the run did not record memory usage. */
+  peakMemory?: number;
+  /** Absent when the run had no reference image to compare against. */
+  psnr?: number;
+  ssim?: number;
   hardwareId: string;
   hardwareLabel: string;
-  spp: number;
+  /** Absent for time-budgeted runs and rasterization renderers. */
+  spp?: number;
   resolution: string;
   timestamp: string;
 }
@@ -154,7 +181,8 @@ export interface BenchmarkOverviewData {
 export interface ChartHardware {
   cpu: string;
   cpu_cores?: number;
-  gpu?: string;
+  /** Null or absent on a CPU-only run. */
+  gpu?: string | null;
   gpu_vram_gb?: number;
   ram_gb: number;
   os: string;

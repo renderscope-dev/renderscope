@@ -8,13 +8,22 @@ body:
       value: |
         Thank you for contributing benchmark results! Community benchmarks help make RenderScope's data more comprehensive and representative.
 
-        **How to run benchmarks:**
+        **How to run and submit benchmarks:**
         ```bash
         pip install renderscope
+
+        # Measure
         renderscope benchmark --scene cornell-box --renderer <name> --output results.json
+
+        # Convert the run into catalog records (one per renderer × scene × machine)
+        renderscope publish results.json --output-dir data/benchmarks --submitted-by <your-handle>
         ```
 
-        You can either attach the `results.json` file below or submit a Pull Request adding it to `/data/benchmarks/`.
+        Attach the **published** records below, or open a Pull Request adding them to `/data/benchmarks/`.
+
+        > `results.json` itself is a *run record*, not a catalog entry — it does not conform to
+        > `schemas/benchmark.schema.json`. `renderscope publish` is what converts it.
+        > Attaching `results.json` is still useful for diagnosing a problem, just label it as raw output.
 
   - type: input
     id: renderer

@@ -52,14 +52,18 @@ const RADAR_METRIC_CONFIG: Record<
   },
 };
 
-function extractRadarValue(entry: BenchmarkEntry, metric: RadarMetric): number {
+/** Returns `undefined` when the run did not record this metric. */
+function extractRadarValue(
+  entry: BenchmarkEntry,
+  metric: RadarMetric
+): number | undefined {
   switch (metric) {
     case "renderTime":
       return entry.results.render_time_seconds;
     case "memory":
       return entry.results.peak_memory_mb;
     case "psnr":
-      return entry.quality_vs_reference.psnr;
+      return entry.quality_vs_reference?.psnr;
   }
 }
 
@@ -123,7 +127,10 @@ export function SceneBreakdown({
         sceneMap = new Map();
         map.set(entry.renderer, sceneMap);
       }
-      sceneMap.set(entry.scene, extractRadarValue(entry, metric));
+      // Unmeasured metrics stay out of the map; downstream already treats a
+      // missing entry as "no data for this scene".
+      const value = extractRadarValue(entry, metric);
+      if (value != null) sceneMap.set(entry.scene, value);
     }
     return map;
   }, [entries, metric]);

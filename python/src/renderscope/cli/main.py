@@ -15,6 +15,7 @@ from renderscope.cli.compare import compare_cmd
 from renderscope.cli.download import download_scenes_cmd
 from renderscope.cli.info import info_cmd
 from renderscope.cli.list_renderers import list_cmd
+from renderscope.cli.publish import publish_cmd
 from renderscope.cli.report import report_cmd
 from renderscope.cli.system_info import system_info_cmd
 from renderscope.utils.console import console
@@ -61,4 +62,8 @@ app.command(name="compare", help="Compute image quality metrics between rendered
     compare_cmd
 )
 app.command(name="report", help="Generate comparison reports from benchmark results.")(report_cmd)
+app.command(
+    name="publish",
+    help="Convert benchmark results into catalog records for data/benchmarks/.",
+)(publish_cmd)
 app.command(name="download-scenes", help="Download standard benchmark scenes.")(download_scenes_cmd)

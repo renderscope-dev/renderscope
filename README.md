@@ -63,12 +63,14 @@ renderscope list --technique neural       # Filter by technique
 renderscope compare ref.exr test.exr      # PSNR, SSIM, MSE, LPIPS
 renderscope benchmark --scene sponza      # Run standardized benchmarks
 renderscope report results.json -f html   # Generate self-contained HTML reports
+renderscope publish results.json          # Prepare results for data/benchmarks/
 renderscope system-info                   # Detect CPU, GPU, RAM
 ```
 
 - **7 renderer adapters** — PBRT, Mitsuba 3, Blender Cycles, LuxCoreRender, appleseed, Filament, OSPRay
 - **Image quality metrics** — PSNR, SSIM, MSE, false-color diff maps, and optional LPIPS (via PyTorch)
 - **Report generation** — Self-contained HTML with embedded images, plus JSON, CSV, and Markdown
+- **Catalog publishing** — Convert your run into schema-conforming records ready to submit as a pull request
 - **Scene management** — Download, convert, and manage standard benchmark scenes
 
 ### npm Package &nbsp; `npm install renderscope-ui`
@@ -465,16 +467,33 @@ How community benchmark contributions flow from local hardware to the public das
 ```mermaid
 flowchart LR
     A["Install renderscope"] --> B["Run benchmarks<br>on your hardware"]
-    B --> C["Results saved<br>as JSON"]
-    C --> D["Submit PR to<br>data/benchmarks/"]
-    D --> E["CI validates<br>schema & format"]
-    E --> F["Merged into<br>dashboard"]
+    B --> C["Run record saved<br>as results.json"]
+    C --> D["renderscope publish<br>→ catalog records"]
+    D --> E["Submit PR to<br>data/benchmarks/"]
+    E --> F["CI validates<br>schema & format"]
+    F --> G["Merged into<br>dashboard"]
 ```
 
 ```bash
 pip install renderscope
+
+# 1. Measure
 renderscope benchmark --scene cornell-box sponza --renderer pbrt mitsuba3 --output results.json
-# Submit results.json via pull request to data/benchmarks/
+
+# 2. Convert the run into catalog records (one per renderer × scene × machine)
+renderscope publish results.json --output-dir data/benchmarks --submitted-by <your-github-handle>
+
+# 3. Check them, then open a pull request
+python scripts/validate_data.py
 ```
+
+Steps 1 and 2 collapse into one with `renderscope benchmark --publish-dir data/benchmarks`.
+
+`results.json` is a *run record*: nested render results, adapter internals, and
+your Python environment — everything you need to debug a benchmark, and more
+than the catalog publishes. `renderscope publish` projects it onto
+[`schemas/benchmark.schema.json`](schemas/benchmark.schema.json), the format the
+dashboard reads. Copying `results.json` into `data/benchmarks/` directly will
+not work; `publish` is what makes a run contributable.
 
 Benchmark results from diverse hardware configurations make the comparison data more representative. All submissions are validated against the data schema and appear on the benchmark dashboard at [render-scope.web.app/benchmarks](https://render-scope.web.app/benchmarks).

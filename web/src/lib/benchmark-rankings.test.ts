@@ -32,6 +32,7 @@ function makeBenchmark(
     results: {
       render_time_seconds: renderTime,
       peak_memory_mb: peakMemory,
+      output_image: `renderscope-results/${scene}/${renderer}.exr`,
     },
     quality_vs_reference: {
       reference_renderer: "reference",

@@ -23,21 +23,48 @@ these conventions to locate files by construction rather than by index.
 
 ---
 
-## Benchmark Result JSON Files
+## Benchmark JSON Files
+
+`data/benchmarks/` holds two different things, in two different formats. Keeping
+them straight matters: only one of them is catalog data.
+
+### Published records — the catalog
 
 ```
-data/benchmarks/<scene-id>/<renderer-id>.json
+data/benchmarks/<scene-id>-<renderer-id>-<hardware-id>.json
 ```
 
-**Examples:**
+Flat, one JSON **object** per file, conforming to `schemas/benchmark.schema.json`.
+This is what the web dashboard reads at build time and what
+`scripts/validate_data.py` validates. The hardware component distinguishes the
+same renderer and scene measured on different machines.
 
-| File                                           | Description                      |
-|------------------------------------------------|----------------------------------|
-| `data/benchmarks/cornell-box/pbrt.json`        | PBRT × Cornell Box result        |
-| `data/benchmarks/sponza/mitsuba3.json`         | Mitsuba 3 × Sponza result       |
-| `data/benchmarks/stanford-bunny/blender-cycles.json` | Cycles × Stanford Bunny result |
+| File                                                  | Description                        |
+|-------------------------------------------------------|------------------------------------|
+| `data/benchmarks/cornell-box-pbrt-ryzen-7950x.json`   | PBRT × Cornell Box on a Ryzen 7950X |
+| `data/benchmarks/sponza-blender-cycles-m5max.json`    | Cycles × Sponza on an Apple M5 Max  |
 
-Each file conforms to `schemas/benchmark.schema.json`.
+Do not hand-write these. Generate them from a run:
+
+```bash
+renderscope publish results.json --output-dir data/benchmarks
+```
+
+### Raw run records — inputs
+
+```
+data/benchmarks/_raw/<scene-id>/<renderer-id>.json
+```
+
+The unprocessed output of `renderscope benchmark --output`: a JSON **array** of
+run records carrying nested render results, adapter metadata, and the Python
+environment. Useful for debugging and for recomputing metrics later, but **not**
+catalog data — it does not conform to the benchmark schema and never will.
+
+The leading underscore is load-bearing: both the web data loader and
+`scripts/validate_data.py` skip underscore-prefixed files and directories, so
+raw records stay out of the site and out of validation. See
+[`data/benchmarks/_raw/README.md`](../data/benchmarks/_raw/README.md).
 
 ---
 
@@ -251,7 +278,7 @@ compatibility matrix and can auto-generate `skip_combinations` config entries.
 If a render times out or crashes:
 
 - The error log is saved: `logs/benchmarks/<scene-id>_<renderer-id>_error.log`
-- No benchmark JSON is produced in `data/benchmarks/`
+- No run record is produced in `data/benchmarks/_raw/`
 - No image files are produced in `assets/renders/`
 - The failure is recorded in `logs/benchmarks/batch_summary.json`
 
@@ -261,7 +288,8 @@ If a render times out or crashes:
 
 | Path                          | Tracked in Git? | Notes                                  |
 |-------------------------------|-----------------|----------------------------------------|
-| `data/benchmarks/**/*.json`   | **Yes**         | Small JSON — web app reads at build time |
+| `data/benchmarks/*.json`      | **Yes**         | Published records — web app reads at build time |
+| `data/benchmarks/_raw/**/*.json` | **Yes**      | Raw run records; small, and the input to re-deriving metrics |
 | `assets/renders/**/*.webp`    | Optional        | ~6 MB total for Batch 1; OK to commit  |
 | `assets/renders/**/*.exr`     | **No**          | 10–50 MB each; use Git LFS if needed   |
 | `assets/renders/**/*.png`     | Optional        | Rasterizer output; small per file      |

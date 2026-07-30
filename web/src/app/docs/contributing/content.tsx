@@ -370,17 +370,43 @@ export function ContributingPageContent() {
               ),
             },
             {
+              title: "Publish",
+              content: (
+                <>
+                  <CodeBlock code="renderscope publish results.json --output-dir data/benchmarks" />
+                  <p className="mt-3">
+                    This converts your run into the schema-conforming records
+                    the catalog accepts — one file per renderer × scene ×
+                    machine. Add{" "}
+                    <code className="rounded bg-card px-1.5 py-0.5 text-xs text-foreground/80">
+                      --dry-run
+                    </code>{" "}
+                    to preview, or{" "}
+                    <code className="rounded bg-card px-1.5 py-0.5 text-xs text-foreground/80">
+                      --submitted-by
+                    </code>{" "}
+                    to be credited. Copying the raw results file in by hand will
+                    not work: it records a whole run, not a catalog entry.
+                  </p>
+                </>
+              ),
+            },
+            {
               title: "Submit",
               content: (
-                <p>
-                  Copy the results JSON into{" "}
-                  <code className="rounded bg-card px-1.5 py-0.5 text-xs text-foreground/80">
-                    data/benchmarks/
-                  </code>{" "}
-                  and submit a pull request, or open a GitHub Issue with the
-                  &ldquo;Benchmark Submission&rdquo; template and attach the
-                  file.
-                </p>
+                <>
+                  <CodeBlock code="python scripts/validate_data.py" />
+                  <p className="mt-3">
+                    Once validation passes, open a pull request with the new
+                    files in{" "}
+                    <code className="rounded bg-card px-1.5 py-0.5 text-xs text-foreground/80">
+                      data/benchmarks/
+                    </code>
+                    , or open a GitHub Issue with the &ldquo;Benchmark
+                    Submission&rdquo; template and attach them. CI re-validates
+                    on every push.
+                  </p>
+                </>
               ),
             },
           ]}

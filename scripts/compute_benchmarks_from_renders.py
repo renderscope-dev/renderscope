@@ -17,7 +17,10 @@ runs whose per-sample-count renders are numerically identical (the sample-count
 override never took effect, so the "convergence" is an artifact) are detected
 and skipped, with a clear explanation.
 
-The web-facing output conforms to ``schemas/benchmark.schema.json`` and is
+The web-facing output is assembled with the same
+:mod:`renderscope.report.benchmark_export` models that ``renderscope publish``
+uses, so this script and the CLI cannot drift apart in what they consider a
+valid catalog record.  It conforms to ``schemas/benchmark.schema.json`` and is
 written to ``data/benchmarks/<scene>-<renderer>-<hw>.json``.  The headline
 render is the highest *non-reference* sample count, measured against the
 converged reference render, so every published number is a real measurement.
@@ -52,27 +55,41 @@ from renderscope.core.quality import (  # noqa: E402  (after sys.path bootstrap)
     compare_images,
     is_degenerate,
 )
+from renderscope.report.benchmark_export import (  # noqa: E402
+    CanonicalBenchmark,
+    CanonicalConvergencePoint,
+    CanonicalHardware,
+    CanonicalQuality,
+    CanonicalResults,
+    CanonicalSettings,
+    canonical_filename,
+    check_against_schema,
+)
 from renderscope.utils.image_io import load_image  # noqa: E402
 
 # ── Locations ─────────────────────────────────────────────────────────────────
 BENCHMARKS_DIR = _REPO_ROOT / "data" / "benchmarks"
+# Raw run records are inputs, not catalog data; the underscore keeps them out of
+# the web loader and the data validator.  See data/benchmarks/_raw/README.md.
+RAW_RUNS_DIR = BENCHMARKS_DIR / "_raw"
 RENDERS_DIR = _REPO_ROOT / "renderscope-results"
 
 # Checkpoint EXRs are named "<renderer>_<spp>spp_<spp>spp.exr".
 _CHECKPOINT_RE = re.compile(r"_(\d+)spp_\d+spp\.exr$")
 
-# Hardware profiles keyed by a short, stable id.  The raw run records identify
-# the machine only loosely ("arm"); this maps that run to a descriptive,
-# schema-valid hardware profile for display.
-_HARDWARE_PROFILE = {
-    "id": "m5max",
-    "label": "Apple M5 Max",
-    "cpu": "Apple M5 Max",
-    "cpu_cores": 18,
-    "gpu": "Apple M5 Max",
-    "ram_gb": 64,
-    "os": "macOS 26.3.1",
-}
+# The machine these runs were measured on.  Records written before the CPU
+# detection fix identify it only as "arm" (``platform.processor()`` on Apple
+# Silicon), so the profile is stated here rather than derived from them.  Runs
+# recorded since then carry a real CPU model and need no override.
+_HARDWARE_PROFILE = CanonicalHardware(
+    id="m5max",
+    label="Apple M5 Max",
+    cpu="Apple M5 Max",
+    cpu_cores=18,
+    gpu="Apple M5 Max",
+    ram_gb=64,
+    os="macOS 26.3.1",
+)
 
 
 def _load_json(path: Path) -> Any:
@@ -88,15 +105,10 @@ def _first_record(raw: Any) -> dict[str, Any] | None:
 
 
 def _discover_runs() -> list[Path]:
-    """Find non-empty raw run records under data/benchmarks/<scene>/<renderer>.json."""
-    if not BENCHMARKS_DIR.is_dir():
+    """Find non-empty raw run records under data/benchmarks/_raw/<scene>/<renderer>.json."""
+    if not RAW_RUNS_DIR.is_dir():
         return []
-    runs: list[Path] = []
-    for path in sorted(BENCHMARKS_DIR.glob("*/*.json")):
-        if path.stat().st_size == 0:
-            continue
-        runs.append(path)
-    return runs
+    return [path for path in sorted(RAW_RUNS_DIR.glob("*/*.json")) if path.stat().st_size > 0]
 
 
 def _checkpoint_exrs(scene: str, renderer: str) -> dict[int, Path]:
@@ -136,11 +148,16 @@ def _round(value: float, digits: int) -> float:
     return round(native, digits)
 
 
+def _display_name(renderer_id: str) -> str:
+    """Turn a renderer id into a readable name for prose ("blender-cycles" -> "Blender Cycles")."""
+    return renderer_id.replace("-", " ").replace("_", " ").title()
+
+
 def _build_web_benchmark(
     record: dict[str, Any],
     checkpoints: dict[int, Path],
-) -> dict[str, Any] | None:
-    """Compute a schema-conforming web benchmark, or ``None`` if not genuine.
+) -> CanonicalBenchmark | None:
+    """Compute a publishable catalog record, or ``None`` if not genuine.
 
     Returns ``None`` (with an explanation printed) when there is insufficient
     data or the convergence series is degenerate.
@@ -188,59 +205,54 @@ def _build_web_benchmark(
         print(f"  SKIP {label}: no measured render time for {primary.samples} spp")
         return None
 
-    settings: dict[str, Any] = {
-        "resolution": [width, height],
-        "samples_per_pixel": primary.samples,
-        "integrator": "path",
-        "gpu_enabled": gpu_enabled,
-    }
-    if isinstance(extra.get("max_bounces"), int):
-        settings["max_bounces"] = extra["max_bounces"]
-
-    results: dict[str, Any] = {
-        "render_time_seconds": _round(render_time, 3),
-        "output_image": _relpath(checkpoints[primary.samples]),
-    }
     peak_memory = record.get("results", {}).get("peak_memory_mb")
-    if isinstance(peak_memory, (int, float)) and peak_memory > 0:
-        results["peak_memory_mb"] = _round(float(peak_memory), 1)
+    has_memory = isinstance(peak_memory, (int, float)) and peak_memory > 0
 
-    convergence = [
-        {
-            "samples": point.samples,
-            "time": _round(times.get(point.samples, 0.0), 3),
-            "psnr": _round(point.psnr, 2),
-            "ssim": _round(point.ssim, 5),
-        }
-        for point in series
-    ]
-
-    return {
-        "id": f"{scene}-{renderer}-{date}",
-        "renderer": renderer,
-        "renderer_version": str(record.get("renderer_version", "")),
-        "scene": scene,
-        "timestamp": timestamp,
-        "hardware": dict(_HARDWARE_PROFILE),
-        "settings": settings,
-        "results": results,
-        "quality_vs_reference": {
-            "reference_renderer": renderer,
-            "reference_samples": reference_spp,
-            "psnr": _round(primary.psnr, 2),
-            "ssim": _round(primary.ssim, 5),
-            "mse": _round(primary.mse, -3),
-        },
-        "convergence": convergence,
-        "notes": (
-            f"Measured on {_HARDWARE_PROFILE['label']} (Blender Cycles "
-            f"{record.get('renderer_version', '')}, CPU path tracing). "
+    return CanonicalBenchmark(
+        id=f"{scene}-{renderer}-{_HARDWARE_PROFILE.id}-{date}",
+        renderer=renderer,
+        renderer_version=str(record.get("renderer_version", "")),
+        scene=scene,
+        timestamp=timestamp,
+        hardware=_HARDWARE_PROFILE.model_copy(deep=True),
+        settings=CanonicalSettings(
+            resolution=(width, height),
+            samples_per_pixel=primary.samples,
+            integrator="path",
+            gpu_enabled=gpu_enabled,
+            max_bounces=extra["max_bounces"] if isinstance(extra.get("max_bounces"), int) else None,
+        ),
+        results=CanonicalResults(
+            render_time_seconds=_round(render_time, 3),
+            output_image=_relpath(checkpoints[primary.samples]),
+            peak_memory_mb=_round(float(peak_memory), 1) if has_memory else None,
+        ),
+        quality_vs_reference=CanonicalQuality(
+            reference_renderer=renderer,
+            reference_samples=reference_spp,
+            psnr=_round(primary.psnr, 2),
+            ssim=_round(primary.ssim, 5),
+            mse=_round(primary.mse, -3),
+        ),
+        convergence=[
+            CanonicalConvergencePoint(
+                samples=point.samples,
+                time=_round(times.get(point.samples, 0.0), 3),
+                psnr=_round(point.psnr, 2),
+                ssim=_round(point.ssim, 5),
+            )
+            for point in series
+        ],
+        notes=(
+            f"Measured on {_HARDWARE_PROFILE.label} ({_display_name(renderer)} "
+            f"{record.get('renderer_version', '')}, "
+            f"{'GPU' if gpu_enabled else 'CPU'} path tracing). "
             f"Quality is computed against this renderer's own {reference_spp}-spp "
             "render as the converged reference (Reinhard tone-map, PSNR/SSIM/MSE "
             "at data_range=1.0); no independent ground-truth renderer was "
             "available for this scene."
         ),
-    }
+    )
 
 
 def _relpath(path: Path) -> str:
@@ -261,7 +273,7 @@ def main() -> int:
 
     runs = _discover_runs()
     if not runs:
-        print("No raw benchmark run records found under data/benchmarks/<scene>/.")
+        print(f"No raw benchmark run records found under {_relpath(RAW_RUNS_DIR)}/<scene>/.")
         return 0
 
     print(f"Found {len(runs)} raw run record(s).\n")
@@ -281,21 +293,22 @@ def main() -> int:
             skipped += 1
             continue
 
-        out_name = f"{record['scene']}-{record['renderer']}-{_HARDWARE_PROFILE['id']}.json"
-        out_path = BENCHMARKS_DIR / out_name
-        q = benchmark["quality_vs_reference"]
+        # Cross-check the assembled record against the published schema, so a
+        # schema change is caught here rather than in a failing pull request.
+        check_against_schema([benchmark])
+
+        quality = benchmark.quality_vs_reference
+        assert quality is not None  # always set by _build_web_benchmark
         print(
-            f"  OK   {record['scene']}/{record['renderer']}: "
-            f"{benchmark['settings']['samples_per_pixel']} spp vs "
-            f"{q['reference_samples']} spp ref -> PSNR {q['psnr']} dB, "
-            f"SSIM {q['ssim']}, {len(benchmark['convergence'])} convergence points"
+            f"  OK   {benchmark.scene}/{benchmark.renderer}: "
+            f"{benchmark.settings.samples_per_pixel} spp vs "
+            f"{quality.reference_samples} spp ref -> PSNR {quality.psnr} dB, "
+            f"SSIM {quality.ssim}, {len(benchmark.convergence)} convergence points"
         )
         if args.dry_run:
             continue
 
-        with out_path.open("w", encoding="utf-8") as fh:
-            json.dump(benchmark, fh, indent=2)
-            fh.write("\n")
+        out_path = benchmark.write(BENCHMARKS_DIR)
         print(f"       wrote {_relpath(out_path)}")
         written += 1
 

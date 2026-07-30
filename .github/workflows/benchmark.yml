@@ -66,12 +66,18 @@ jobs:
         if: ${{ inputs.include_reference == true }}
         run: python scripts/generate_reference_renders.py --skip-existing
 
+      - name: Publish catalog records from the raw run records
+        # run_benchmarks.py writes raw run records to data/benchmarks/_raw/.
+        # This derives the schema-conforming files the web dashboard reads.
+        run: python scripts/compute_benchmarks_from_renders.py
+
       - name: Generate web images
         run: python scripts/generate_web_images.py
 
       - name: Validate benchmark results
-        run: python scripts/validate_data.py --type benchmark
-        continue-on-error: true  # Don't fail the whole workflow on validation warnings
+        run: |
+          pip install jsonschema
+          python scripts/validate_data.py
 
       - name: Commit results
         run: |
@@ -91,6 +97,9 @@ jobs:
           fi
 
       - name: Upload artifacts
+        # Always upload: a benchmark run can take hours, so a validation or
+        # commit failure must not throw away the measurements.
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: benchmark-results

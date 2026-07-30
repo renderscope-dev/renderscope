@@ -18,7 +18,7 @@
   "properties": {
     "id": {
       "type": "string",
-      "description": "Unique identifier in the format '{scene}-{renderer}-{YYYY-MM-DD}'.",
+      "description": "Unique identifier in the format '{scene}-{renderer}-{hardware}-{YYYY-MM-DD}'. The hardware component keeps two contributors who benchmark the same renderer and scene on the same day from colliding. Generated for you by 'renderscope publish'.",
       "pattern": "^[a-z0-9-]+$"
     },
     "renderer": {

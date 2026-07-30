@@ -81,6 +81,9 @@ dev = [
     "ruff>=0.4",
     "build>=1.0",
     "twine>=5.0",
+    # Validates `renderscope publish` output against schemas/benchmark.schema.json.
+    # Development-only: publishing itself never requires it.
+    "jsonschema>=4.18",
 ]
 
 [project.scripts]
@@ -111,6 +114,7 @@ include = [
 
 [tool.hatch.build.targets.sdist.force-include]
 "../data/renderers" = "data/renderers"
+"../schemas/benchmark.schema.json" = "schemas/benchmark.schema.json"
 
 [tool.ruff]
 target-version = "py310"
@@ -196,6 +200,13 @@ ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
 module = ["jinja2", "jinja2.*"]
+ignore_missing_imports = true
+
+# jsonschema is a development dependency, imported lazily so publishing works
+# without it. Type stubs ship separately (types-jsonschema) and are not worth a
+# dependency for one optional import site.
+[[tool.mypy.overrides]]
+module = ["jsonschema", "jsonschema.*"]
 ignore_missing_imports = true
 
 [tool.pydantic-mypy]

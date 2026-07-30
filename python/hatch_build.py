@@ -1,10 +1,15 @@
-"""Hatchling build hook that locates the canonical renderer data directory.
+"""Hatchling build hook that bundles monorepo data files into the wheel.
 
-The renderer JSON files live at the monorepo root (`renderscope/data/renderers/`),
-one level above this Python project. The wheel must bundle them, but a wheel
-rebuilt from the published sdist sees the data at a different relative path.
-This hook picks the right source location at build time, so both
-`python -m build` (sdist → wheel) and direct `python -m build --wheel` succeed.
+Two sets of files live at the monorepo root, one level above this Python
+project, and must be copied into the package so an installed `renderscope`
+is self-contained:
+
+* `data/renderers/` — the renderer catalog read by `renderscope list`/`info`.
+* `schemas/` — the published JSON Schemas `renderscope publish` writes against.
+
+A wheel rebuilt from the published sdist sees these at a different relative
+path, so each source is resolved at build time against both layouts. That way
+`python -m build` (sdist → wheel) and `python -m build --wheel` both succeed.
 """
 
 from __future__ import annotations
@@ -12,6 +17,12 @@ from __future__ import annotations
 from pathlib import Path
 
 from hatchling.builders.hooks.plugin.interface import BuildHookInterface
+
+# (relative source path, destination inside the wheel)
+_BUNDLES: tuple[tuple[str, str], ...] = (
+    ("data/renderers", "renderscope/data/renderers"),
+    ("schemas/benchmark.schema.json", "renderscope/data/schemas/benchmark.schema.json"),
+)
 
 
 class RendererDataHook(BuildHookInterface):
@@ -21,14 +32,15 @@ class RendererDataHook(BuildHookInterface):
         if self.target_name != "wheel":
             return
         root = Path(self.root)
-        candidates = [
-            root.parent / "data" / "renderers",  # monorepo checkout
-            root / "data" / "renderers",          # extracted sdist
-        ]
-        source = next((p for p in candidates if p.is_dir()), None)
-        if source is None:
-            raise FileNotFoundError(
-                "Renderer data directory not found. Looked in: "
-                + ", ".join(str(p) for p in candidates)
-            )
-        build_data["force_include"][str(source)] = "renderscope/data/renderers"
+        for relative, destination in _BUNDLES:
+            candidates = [
+                root.parent / relative,  # monorepo checkout
+                root / relative,         # extracted sdist
+            ]
+            source = next((p for p in candidates if p.exists()), None)
+            if source is None:
+                raise FileNotFoundError(
+                    f"Bundled data source '{relative}' not found. Looked in: "
+                    + ", ".join(str(p) for p in candidates)
+                )
+            build_data["force_include"][str(source)] = destination

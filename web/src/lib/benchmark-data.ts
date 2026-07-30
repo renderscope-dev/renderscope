@@ -146,8 +146,11 @@ export function toBenchmarkTableRows(
       sceneName: sceneNames[b.scene]?.name ?? b.scene,
       renderTime: b.results.render_time_seconds,
       peakMemory: b.results.peak_memory_mb,
-      psnr: b.quality_vs_reference.psnr,
-      ssim: b.quality_vs_reference.ssim,
+      // Optional per the schema: a run with no reference image has no quality
+      // block at all. Reading through it unconditionally used to throw here and
+      // fail the whole static export.
+      psnr: b.quality_vs_reference?.psnr,
+      ssim: b.quality_vs_reference?.ssim,
       hardwareId: b.hardware.id,
       hardwareLabel: b.hardware.label,
       spp: b.settings.samples_per_pixel,
@@ -199,12 +202,15 @@ export function getCompareBenchmarkDataset(): ChartBenchmarkDataset {
     peak_memory_mb: b.results.peak_memory_mb,
     psnr: b.quality_vs_reference?.psnr,
     ssim: b.quality_vs_reference?.ssim,
-    convergence: (b.convergence ?? []).map((c) => ({
-      samples: c.samples,
-      time_seconds: c.time,
-      psnr: c.psnr,
-      ssim: c.ssim,
-    })),
+    convergence: (b.convergence ?? [])
+      // A checkpoint without a measured time cannot be plotted against time.
+      .filter((c) => c.time != null)
+      .map((c) => ({
+        samples: c.samples,
+        time_seconds: c.time as number,
+        psnr: c.psnr,
+        ssim: c.ssim,
+      })),
   }));
 
   const source = benchmarks[0]?.hardware;

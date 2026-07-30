@@ -258,3 +258,101 @@ def sample_results_json(
     data = [r.model_dump() for r in sample_benchmark_results]
     output.write_text(json.dumps(data, indent=2, default=str), encoding="utf-8")
     return output
+
+
+# ---------------------------------------------------------------------------
+# Catalog publishing fixtures
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture()
+def benchmark_schema() -> dict[str, Any]:
+    """The published benchmark JSON Schema, loaded from the monorepo checkout.
+
+    Tests validate against the same file `scripts/validate_data.py` and CI use,
+    so a schema change that the exporter has not kept up with fails here first.
+    """
+    from renderscope.report.schema import SchemaNotAvailableError, load_benchmark_schema
+
+    try:
+        return load_benchmark_schema()
+    except SchemaNotAvailableError as exc:  # pragma: no cover - monorepo always has it
+        pytest.skip(f"Benchmark schema unavailable: {exc}")
+
+
+@pytest.fixture()
+def schema_validator(benchmark_schema: dict[str, Any]) -> Any:
+    """A Draft 2020-12 validator bound to the published benchmark schema."""
+    jsonschema = pytest.importorskip("jsonschema")
+    return jsonschema.Draft202012Validator(benchmark_schema)
+
+
+@pytest.fixture()
+def assert_schema_valid(schema_validator: Any) -> Any:
+    """Return a callable asserting a document satisfies the published schema."""
+
+    def _assert(document: dict[str, Any]) -> None:
+        errors = sorted(schema_validator.iter_errors(document), key=lambda e: list(e.path))
+        if errors:
+            detail = "\n".join(
+                f"  {'.'.join(str(p) for p in e.absolute_path) or '(root)'}: {e.message}"
+                for e in errors
+            )
+            pytest.fail(f"Document does not satisfy benchmark.schema.json:\n{detail}")
+
+    return _assert
+
+
+@pytest.fixture()
+def full_benchmark_result(
+    sample_hardware_info: HardwareInfo,
+) -> BenchmarkResult:
+    """A run record with every optional field populated.
+
+    Exercises the full mapping surface: quality metrics, a convergence series,
+    adapter metadata, and a GPU-enabled run.
+    """
+    from renderscope.models.benchmark import ConvergencePoint, QualityMetrics
+
+    settings = RenderSettings(
+        width=1920,
+        height=1080,
+        samples=1024,
+        threads=16,
+        gpu=True,
+        extra={"max_bounces": 8, "timeout": 600.0},
+    )
+    render_result = RenderResult(
+        renderer="pbrt",
+        scene="cornell-box",
+        output_path="/home/someone/work/renderscope-results/cornell-box/pbrt_1024spp.exr",
+        render_time_seconds=47.3,
+        peak_memory_mb=1240.5,
+        settings=settings,
+        hardware=sample_hardware_info,
+        timestamp="2026-05-01T09:15:00+00:00",
+        metadata={"binary": "pbrt", "exit_code": 0, "gpu_enabled": True, "integrator": "volpath"},
+    )
+    return BenchmarkResult(
+        id="cornell-box-pbrt-2026-05-01",
+        renderer="pbrt",
+        renderer_version="4.0.0",
+        scene="cornell-box",
+        timestamp="2026-05-01T09:15:00+00:00",
+        hardware=sample_hardware_info,
+        settings=settings,
+        results=render_result,
+        quality_vs_reference=QualityMetrics(
+            reference_renderer="pbrt",
+            reference_samples=65536,
+            psnr=38.12,
+            ssim=0.9871,
+            mse=0.000154,
+            lpips=0.021,
+        ),
+        convergence=[
+            ConvergencePoint(samples=16, time=1.1, psnr=22.4, ssim=0.81),
+            ConvergencePoint(samples=256, time=12.0, psnr=33.9, ssim=0.96),
+            ConvergencePoint(samples=1024, time=47.3, psnr=38.12, ssim=0.9871),
+        ],
+    )

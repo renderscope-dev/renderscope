@@ -74,6 +74,24 @@ export function useBenchmarkFilters(allRows: BenchmarkTableRow[]) {
     const { field, direction } = sortConfig;
     const mult = direction === "asc" ? 1 : -1;
 
+    /**
+     * Order two optional metrics, keeping unmeasured rows at the bottom.
+     *
+     * Returning a direction-independent value for missing entries means they
+     * stay last whether the column is sorted ascending or descending — a row
+     * with no data is not "the best" in either direction.
+     */
+    const compareOptional = (
+      left: number | undefined,
+      right: number | undefined
+    ): number => {
+      if (left == null && right == null) return 0;
+      // `mult` is applied by the caller, so pre-divide to cancel it out.
+      if (left == null) return 1 / mult;
+      if (right == null) return -1 / mult;
+      return left - right;
+    };
+
     sorted.sort((a, b) => {
       switch (field) {
         case "renderer":
@@ -83,11 +101,11 @@ export function useBenchmarkFilters(allRows: BenchmarkTableRow[]) {
         case "renderTime":
           return mult * (a.renderTime - b.renderTime);
         case "peakMemory":
-          return mult * (a.peakMemory - b.peakMemory);
+          return mult * compareOptional(a.peakMemory, b.peakMemory);
         case "psnr":
-          return mult * (a.psnr - b.psnr);
+          return mult * compareOptional(a.psnr, b.psnr);
         case "ssim":
-          return mult * (a.ssim - b.ssim);
+          return mult * compareOptional(a.ssim, b.ssim);
         case "hardwareLabel":
           return mult * a.hardwareLabel.localeCompare(b.hardwareLabel);
         default:

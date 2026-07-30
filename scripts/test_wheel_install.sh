@@ -55,7 +55,16 @@ renderscope system-info > /dev/null 2>&1 && pass "renderscope system-info" || fa
 renderscope compare --help > /dev/null 2>&1 && pass "renderscope compare --help" || fail "renderscope compare --help"
 renderscope benchmark --help > /dev/null 2>&1 && pass "renderscope benchmark --help" || fail "renderscope benchmark --help"
 renderscope report --help > /dev/null 2>&1 && pass "renderscope report --help" || fail "renderscope report --help"
+renderscope publish --help > /dev/null 2>&1 && pass "renderscope publish --help" || fail "renderscope publish --help"
 renderscope download-scenes --help > /dev/null 2>&1 && pass "renderscope download-scenes --help" || fail "renderscope download-scenes --help"
+
+# The wheel must carry the published JSON Schema, not rely on a monorepo checkout —
+# `renderscope publish` validates its own output against it before writing.
+python -c "
+from renderscope.report.schema import load_benchmark_schema
+schema = load_benchmark_schema()
+assert schema['title'] == 'RenderScope Benchmark Result', schema.get('title')
+" > /dev/null 2>&1 && pass "bundled benchmark schema loads" || fail "bundled benchmark schema loads"
 
 python -c "import renderscope; print(f'  Version: {renderscope.__version__}')" || fail "import renderscope"
 pass "import renderscope"

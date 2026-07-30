@@ -15,6 +15,24 @@ import psutil
 import renderscope
 from renderscope.models.hardware import HardwareInfo
 
+# Values ``platform.processor()`` returns that name an instruction set rather
+# than a chip. Treated as "not detected" so the platform-specific probes run.
+_ARCHITECTURE_NAMES = frozenset(
+    {"x86_64", "aarch64", "arm64", "arm", "amd64", "i386", "i686", "x86"}
+)
+
+
+def _is_architecture_name(cpu: str) -> bool:
+    """Return True if a string names a CPU architecture rather than a model.
+
+    ``platform.processor()`` returns an architecture on several platforms — most
+    notably ``"arm"`` on Apple Silicon — which identifies a machine no better
+    than "a computer" does.  Benchmark results are stamped with this value and
+    grouped by it in the dashboard's hardware filter, so an architecture name
+    must not be mistaken for a chip name.
+    """
+    return cpu.strip().lower() in _ARCHITECTURE_NAMES
+
 
 def _detect_cpu() -> str:
     """Detect the CPU model name.
@@ -23,9 +41,9 @@ def _detect_cpu() -> str:
     so we fall back to parsing ``/proc/cpuinfo``.  On macOS we use
     ``sysctl``.  On Windows, ``platform.processor()`` usually works.
     """
-    # Try platform.processor() first
+    # Try platform.processor() first, but only when it names an actual model.
     cpu = platform.processor()
-    if cpu and cpu.strip() and cpu.strip() not in ("", "x86_64", "aarch64", "ARM64"):
+    if cpu and cpu.strip() and not _is_architecture_name(cpu):
         return cpu.strip()
 
     system = platform.system()

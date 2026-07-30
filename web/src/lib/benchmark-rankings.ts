@@ -43,16 +43,22 @@ interface RendererAvg {
 function computeRendererAverages(
   entries: BenchmarkEntry[],
   rendererNames: Record<string, string>,
-  extractValue: (entry: BenchmarkEntry) => number
+  extractValue: (entry: BenchmarkEntry) => number | undefined
 ): RendererAvg[] {
   const groups = new Map<string, number[]>();
 
   for (const entry of entries) {
+    // Skip entries that did not record this metric rather than averaging in a
+    // zero, which would rank a renderer below one that simply measured less.
+    const value = extractValue(entry);
+    if (value == null || !Number.isFinite(value)) {
+      continue;
+    }
     const values = groups.get(entry.renderer);
     if (values) {
-      values.push(extractValue(entry));
+      values.push(value);
     } else {
-      groups.set(entry.renderer, [extractValue(entry)]);
+      groups.set(entry.renderer, [value]);
     }
   }
 
@@ -155,7 +161,7 @@ export function computeRankings(
   const psnrAvgs = computeRendererAverages(
     entries,
     rendererNames,
-    (e) => e.quality_vs_reference.psnr
+    (e) => e.quality_vs_reference?.psnr
   ).sort((a, b) => b.avg - a.avg);
 
   if (psnrAvgs.length >= 1) {

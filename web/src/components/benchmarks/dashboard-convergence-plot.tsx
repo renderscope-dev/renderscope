@@ -78,8 +78,10 @@ export function DashboardConvergencePlot({
     // Collect all unique x-values across all renderers
     const xValues = new Set<number>();
     for (const entry of sceneEntries) {
-      for (const pt of entry.convergence) {
-        xValues.add(xAxis === "time" ? pt.time : pt.samples);
+      for (const pt of entry.convergence ?? []) {
+        // A checkpoint without a measured time has no position on a time axis.
+        const x = xAxis === "time" ? pt.time : pt.samples;
+        if (x != null) xValues.add(x);
       }
     }
 
@@ -88,7 +90,7 @@ export function DashboardConvergencePlot({
     return sortedX.map((x) => {
       const point: Record<string, number | undefined> = { x };
       for (const entry of sceneEntries) {
-        const match = entry.convergence.find((pt) =>
+        const match = (entry.convergence ?? []).find((pt) =>
           xAxis === "time" ? pt.time === x : pt.samples === x
         );
         if (match) {
@@ -210,7 +212,8 @@ export function DashboardConvergencePlot({
         <figcaption className="sr-only">
           {describeConvergencePlot(
             sceneEntries.map((e) => {
-              const lastPt = e.convergence[e.convergence.length - 1];
+              const series = e.convergence ?? [];
+              const lastPt = series[series.length - 1];
               return {
                 name: rendererNames[e.renderer] ?? e.renderer,
                 finalValue: lastPt?.psnr ?? 0,

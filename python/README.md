@@ -12,6 +12,7 @@ A CLI tool and Python library for benchmarking, comparing, and cataloging 50+ op
 - **Image quality metrics** including PSNR, SSIM, MSE, and optional LPIPS
 - **Benchmark runner** with convergence tracking and structured JSON output
 - **Report generation** as self-contained HTML, JSON, CSV, or Markdown
+- **Catalog publishing** that converts a run into schema-conforming records ready to contribute
 - **Scene management** with download and format conversion
 - **Renderer adapters** for automated rendering via PBRT, Mitsuba 3, Blender Cycles, LuxCore, appleseed, Filament, and OSPRay
 - **Hardware detection** for CPU, GPU, RAM, and OS
@@ -50,6 +51,9 @@ renderscope benchmark --scene cornell-box --renderer pbrt mitsuba3
 # Generate an HTML report from benchmark results
 renderscope report results.json --format html --output report.html
 
+# Turn the run into catalog records you can submit as a pull request
+renderscope publish results.json --output-dir data/benchmarks
+
 # Check your hardware
 renderscope system-info
 ```
@@ -64,6 +68,7 @@ renderscope system-info
 | `renderscope compare` | Compute image quality metrics (PSNR, SSIM, LPIPS) |
 | `renderscope benchmark` | Run standardized benchmarks with convergence tracking |
 | `renderscope report` | Generate HTML/JSON/CSV/Markdown reports |
+| `renderscope publish` | Convert results into catalog records for `data/benchmarks/` |
 | `renderscope download-scenes` | Download standard benchmark scenes |
 
 ## Library Usage

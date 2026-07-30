@@ -93,6 +93,49 @@ def load_json(path: Path) -> Any:
         return json.load(fh)
 
 
+def discover_data_files(directory: Path) -> list[Path]:
+    """Find every catalog JSON file under *directory*, recursively.
+
+    Files and directories whose name starts with an underscore are skipped.
+    That convention marks non-catalog content — templates such as
+    `_template.json`, and raw benchmark run records under
+    `data/benchmarks/_raw/` — and it matches the filter the web app's data
+    loader applies, so the validator sees exactly the files the site publishes.
+
+    The recursive walk matters: a nested file that no one validates is a file
+    that reaches production unchecked.
+    """
+    if not directory.is_dir():
+        return []
+    return sorted(
+        path
+        for path in directory.rglob("*.json")
+        if not any(part.startswith("_") for part in path.relative_to(directory).parts)
+    )
+
+
+def check_readable(path: Path) -> list[str]:
+    """Check that a file has content and parses as JSON.
+
+    An empty file is called out separately from a syntax error: it usually means
+    a generation step wrote nothing, and the generic "Expecting value" message
+    sends people hunting for a typo that isn't there.
+    """
+    try:
+        if path.stat().st_size == 0:
+            return ["  file is empty (0 bytes) -- remove it or write valid JSON"]
+    except OSError as exc:
+        return [f"  cannot read file: {exc}"]
+
+    try:
+        if not path.read_text(encoding="utf-8").strip():
+            return ["  file contains only whitespace -- remove it or write valid JSON"]
+    except (OSError, UnicodeDecodeError) as exc:
+        return [f"  cannot read file: {exc}"]
+
+    return []
+
+
 def load_schema(name: str) -> dict[str, Any]:
     """Load a JSON Schema file from the schemas directory."""
     schema_path = SCHEMAS_DIR / name
@@ -175,27 +218,22 @@ def cross_reference_checks(
                 )
 
     # Benchmark cross-references
-    benchmark_dir = DATA_DIR / "benchmarks"
-    if benchmark_dir.exists():
-        for path in sorted(benchmark_dir.glob("*.json")):
-            if path.name.startswith("_"):
-                continue
-            try:
-                bdata = load_json(path)
-            except (json.JSONDecodeError, OSError):
-                continue
-            renderer_ref = bdata.get("renderer", "")
-            if renderer_ref and renderer_ref not in renderer_ids:
-                errors.append(
-                    f"data/benchmarks/{path.name}: 'renderer' references "
-                    f"unknown renderer '{renderer_ref}'"
-                )
-            scene_ref = bdata.get("scene", "")
-            if scene_ref and scene_ref not in scene_ids:
-                errors.append(
-                    f"data/benchmarks/{path.name}: 'scene' references "
-                    f"unknown scene '{scene_ref}'"
-                )
+    for path in discover_data_files(DATA_DIR / "benchmarks"):
+        try:
+            bdata = load_json(path)
+        except (json.JSONDecodeError, OSError):
+            continue
+        if not isinstance(bdata, dict):
+            continue
+        rel = relative_path(path)
+        renderer_ref = bdata.get("renderer", "")
+        if renderer_ref and renderer_ref not in renderer_ids:
+            errors.append(
+                f"{rel}: 'renderer' references unknown renderer '{renderer_ref}'"
+            )
+        scene_ref = bdata.get("scene", "")
+        if scene_ref and scene_ref not in scene_ids:
+            errors.append(f"{rel}: 'scene' references unknown scene '{scene_ref}'")
 
     # Taxonomy cross-references
     if taxonomy_data:
@@ -397,9 +435,7 @@ def main() -> int:
                 print(_dim(f"\n  {subdir}/ directory not found --skipping"))
             continue
 
-        json_files = sorted(
-            p for p in data_path.glob("*.json") if not p.name.startswith("_")
-        )
+        json_files = discover_data_files(data_path)
 
         if not json_files:
             if args.verbose:
@@ -413,6 +449,16 @@ def main() -> int:
             total_files += 1
             rel = relative_path(path)
 
+            # Readability first: an empty file produces a confusing schema error.
+            readability_errors = check_readable(path)
+            if readability_errors:
+                failed += 1
+                print(f"  {_red(_CROSS)} {rel}")
+                for err in readability_errors:
+                    print(f"    {_red(err)}")
+                all_errors.extend(f"{rel}: {e.strip()}" for e in readability_errors)
+                continue
+
             # Schema validation
             errors = validate_file(path, schema, verbose=args.verbose)
 
@@ -420,9 +466,27 @@ def main() -> int:
             extra_errors: list[str] = []
             warnings: list[str] = []
             try:
-                data = load_json(path)
+                loaded = load_json(path)
             except (json.JSONDecodeError, OSError):
-                data = {}
+                loaded = None
+
+            # Every catalog file holds exactly one record. A JSON array here is
+            # almost always a raw `renderscope benchmark --output` file, which
+            # records a whole run rather than a catalog entry -- so say that,
+            # instead of letting the follow-up checks fail on the wrong type.
+            data: dict[str, Any] = {}
+            if isinstance(loaded, dict):
+                data = loaded
+            elif isinstance(loaded, list):
+                extra_errors.append(
+                    "  file is a JSON array; each file must hold a single record. "
+                    "If this is raw 'renderscope benchmark' output, convert it with: "
+                    f"renderscope publish {relative_path(path)} --output-dir data/benchmarks"
+                )
+            elif loaded is not None:
+                extra_errors.append(
+                    f"  top level must be a JSON object, got {type(loaded).__name__}"
+                )
 
             if subdir == "renderers" and data:
                 extra_errors, warnings = additional_renderer_checks(path, data)

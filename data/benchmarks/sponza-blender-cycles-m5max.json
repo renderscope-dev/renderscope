@@ -1,5 +1,5 @@
 {
-  "id": "sponza-blender-cycles-2026-03-21",
+  "id": "sponza-blender-cycles-m5max-2026-03-21",
   "renderer": "blender-cycles",
   "renderer_version": "4.4.3",
   "scene": "sponza",
@@ -10,7 +10,7 @@
     "cpu": "Apple M5 Max",
     "cpu_cores": 18,
     "gpu": "Apple M5 Max",
-    "ram_gb": 64,
+    "ram_gb": 64.0,
     "os": "macOS 26.3.1"
   },
   "settings": {
@@ -20,13 +20,13 @@
     ],
     "samples_per_pixel": 256,
     "integrator": "path",
-    "gpu_enabled": false,
-    "max_bounces": 8
+    "max_bounces": 8,
+    "gpu_enabled": false
   },
   "results": {
     "render_time_seconds": 61.168,
-    "output_image": "renderscope-results/sponza/blender-cycles_256spp_256spp.exr",
-    "peak_memory_mb": 2184.6
+    "peak_memory_mb": 2184.6,
+    "output_image": "renderscope-results/sponza/blender-cycles_256spp_256spp.exr"
   },
   "quality_vs_reference": {
     "reference_renderer": "blender-cycles",

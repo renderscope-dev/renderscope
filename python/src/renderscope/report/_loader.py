@@ -1,12 +1,15 @@
 """Shared results file loading for the report module.
 
 All exporters use this module to load and validate the benchmark results
-JSON file.  The loader supports both formats produced by RenderScope:
+JSON file.  The loader supports the three formats produced by RenderScope:
 
 1. **Array format** — a JSON array of ``BenchmarkResult`` dicts
    (the direct output of ``BenchmarkRunner.save_results()``).
 2. **Wrapped format** — a JSON object with ``"results"`` key containing
    the array (used in fixture files and shared reports).
+3. **Single-record format** — one benchmark object on its own, which is how
+   published catalog records in ``data/benchmarks/`` are stored.  Accepting it
+   means any file RenderScope writes can be read back by any command.
 """
 
 from __future__ import annotations
@@ -70,14 +73,31 @@ def _normalize_results(data: Any, source: Path) -> list[dict[str, Any]]:
         results_list = data.get("results")
         if isinstance(results_list, list):
             return [_validate_entry(e, i, source) for i, e in enumerate(results_list)]
+
+        # **Single-record format** — one benchmark on its own. A published
+        # catalog record also has a "results" key, but it holds an object
+        # rather than an array, so the check above falls through to here.
+        if _is_single_record(data):
+            return [_validate_entry(data, 0, source)]
+
         msg = (
-            f"Expected a JSON array or an object with a 'results' array "
-            f"in {source}, got object without 'results' key."
+            f"Expected a JSON array, a single benchmark object, or an object with a "
+            f"'results' array in {source}, got an object with keys: "
+            f"{', '.join(sorted(map(str, data))) or '(none)'}."
         )
         raise ValueError(msg)
 
     msg = f"Expected a JSON array or object in {source}, got {type(data).__name__}"
     raise ValueError(msg)
+
+
+def _is_single_record(data: dict[str, Any]) -> bool:
+    """Return True if a JSON object is one benchmark rather than an envelope.
+
+    Both run records and published catalog records identify the renderer and
+    scene at the top level; an envelope does not.
+    """
+    return "renderer" in data and "scene" in data
 
 
 def _validate_entry(entry: Any, index: int, source: Path) -> dict[str, Any]:

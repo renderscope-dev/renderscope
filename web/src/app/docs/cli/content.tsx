@@ -10,6 +10,7 @@ const cliCommands = [
   { cmd: "renderscope benchmark", comment: "Run standardized benchmarks" },
   { cmd: "renderscope compare", comment: "Compare rendered images" },
   { cmd: "renderscope report", comment: "Generate HTML reports" },
+  { cmd: "renderscope publish", comment: "Prepare results for data/benchmarks/" },
   { cmd: "renderscope system-info", comment: "Print hardware specs" },
 ];
 

@@ -160,7 +160,12 @@ class ReferenceConfig:
 
 @dataclass(frozen=True)
 class OutputConfig:
-    benchmarks_dir: str = "data/benchmarks"
+    # Raw ``renderscope benchmark`` run records, one per scene/renderer. These
+    # are inputs to publishing, not catalog data — the underscore keeps them out
+    # of the web loader and `scripts/validate_data.py`. Turn them into published
+    # records with `renderscope publish` or
+    # `scripts/compute_benchmarks_from_renders.py`.
+    benchmarks_dir: str = "data/benchmarks/_raw"
     renders_dir: str = "assets/renders"
     logs_dir: str = "logs/benchmarks"
 
@@ -327,7 +332,7 @@ def load_config(path: Path) -> BenchmarkConfig:
     if not isinstance(out_raw, dict):
         out_raw = {}
     output = OutputConfig(
-        benchmarks_dir=str(out_raw.get("benchmarks_dir", "data/benchmarks")),
+        benchmarks_dir=str(out_raw.get("benchmarks_dir", "data/benchmarks/_raw")),
         renders_dir=str(out_raw.get("renders_dir", "assets/renders")),
         logs_dir=str(out_raw.get("logs_dir", "logs/benchmarks")),
     )

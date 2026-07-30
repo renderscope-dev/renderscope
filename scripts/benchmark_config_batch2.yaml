@@ -134,7 +134,9 @@ renderers:
 # Output paths (relative to repository root).
 # ---------------------------------------------------------------------------
 output:
-  benchmarks_dir: data/benchmarks
+  # Raw run records. The underscore keeps them out of the web loader and the
+  # data validator; `renderscope publish` turns them into data/benchmarks/*.json.
+  benchmarks_dir: data/benchmarks/_raw
   renders_dir: assets/renders
   logs_dir: logs/benchmarks
 

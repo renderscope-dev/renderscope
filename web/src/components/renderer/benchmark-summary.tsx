@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
 import type { BenchmarkEntry } from "@/types/benchmark";
-import { formatMemory, formatPSNR, formatSSIM } from "@/lib/format";
+import { NOT_MEASURED, formatMemory, formatPSNR, formatSSIM } from "@/lib/format";
 
 interface BenchmarkSummaryProps {
   rendererName: string;
@@ -17,8 +17,9 @@ interface BenchmarkSummaryProps {
   benchmarks: BenchmarkEntry[];
 }
 
-/** Format render time with appropriate precision. */
-function formatTime(seconds: number): string {
+/** Format render time with appropriate precision, or "—" when not measured. */
+function formatTime(seconds: number | null | undefined): string {
+  if (seconds == null) return NOT_MEASURED;
   if (seconds < 1) return `${(seconds * 1000).toFixed(0)}ms`;
   if (seconds < 60) return `${seconds.toFixed(1)}s`;
   const mins = Math.floor(seconds / 60);
@@ -26,10 +27,18 @@ function formatTime(seconds: number): string {
   return `${mins}m ${secs.toFixed(0)}s`;
 }
 
-/** Compute average of an array of numbers. */
-function avg(values: number[]): number {
-  if (values.length === 0) return 0;
-  return values.reduce((sum, v) => sum + v, 0) / values.length;
+/**
+ * Compute the average of the values that were actually measured.
+ *
+ * Unrecorded metrics arrive as `undefined` (a run with no reference image has
+ * no quality block at all). They are dropped rather than counted as zero, which
+ * would drag the average down and misrepresent the renderer. Returns
+ * `undefined` when nothing was measured, so callers can render "—".
+ */
+function avg(values: (number | undefined)[]): number | undefined {
+  const measured = values.filter((v): v is number => v != null && Number.isFinite(v));
+  if (measured.length === 0) return undefined;
+  return measured.reduce((sum, v) => sum + v, 0) / measured.length;
 }
 
 export function BenchmarkSummary({
@@ -82,8 +91,8 @@ export function BenchmarkSummary({
   // Compute summary statistics
   const renderTimes = benchmarks.map((b) => b.results.render_time_seconds);
   const memories = benchmarks.map((b) => b.results.peak_memory_mb);
-  const psnrValues = benchmarks.map((b) => b.quality_vs_reference.psnr);
-  const ssimValues = benchmarks.map((b) => b.quality_vs_reference.ssim);
+  const psnrValues = benchmarks.map((b) => b.quality_vs_reference?.psnr);
+  const ssimValues = benchmarks.map((b) => b.quality_vs_reference?.ssim);
   const sceneNames = [...new Set(benchmarks.map((b) => b.scene))];
   const hwProfiles = [...new Set(benchmarks.map((b) => b.hardware.label))];
 
@@ -228,16 +237,16 @@ export function BenchmarkSummary({
                       {entry.scene.replace(/-/g, " ")}
                     </td>
                     <td className="py-2 px-4 text-right tabular-nums text-muted-foreground">
-                      {formatPSNR(entry.quality_vs_reference.psnr)}
+                      {formatPSNR(entry.quality_vs_reference?.psnr)}
                     </td>
                     <td className="py-2 px-4 text-right tabular-nums text-muted-foreground">
-                      {formatSSIM(entry.quality_vs_reference.ssim)}
+                      {formatSSIM(entry.quality_vs_reference?.ssim)}
                     </td>
                     <td className="py-2 px-4 text-right tabular-nums text-muted-foreground">
                       {formatMemory(entry.results.peak_memory_mb)}
                     </td>
                     <td className="py-2 pl-4 text-right tabular-nums text-muted-foreground">
-                      {entry.settings.samples_per_pixel.toLocaleString()}
+                      {entry.settings.samples_per_pixel?.toLocaleString() ?? NOT_MEASURED}
                     </td>
                   </tr>
                 ))}

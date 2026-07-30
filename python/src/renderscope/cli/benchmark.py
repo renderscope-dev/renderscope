@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import typer
 from rich.panel import Panel
@@ -16,6 +17,9 @@ from rich.table import Table
 from rich.text import Text
 
 from renderscope.utils.console import console, err_console
+
+if TYPE_CHECKING:
+    from renderscope.models.benchmark import BenchmarkResult
 
 
 def _parse_resolution(resolution: str) -> tuple[int, int]:
@@ -135,6 +139,42 @@ def _print_result_summary(
     console.print()
 
 
+def _publish_results(
+    results: list[BenchmarkResult],
+    publish_dir: Path,
+    *,
+    submitted_by: str | None,
+    results_output: Path,
+) -> bool:
+    """Write catalog records alongside the raw results file.
+
+    A failure here must not discard the benchmark: the runs are already saved to
+    the results file, and ``renderscope publish`` can convert them once the
+    problem is fixed.  Returns ``True`` on success.
+    """
+    from renderscope.report.benchmark_export import BenchmarkExportError, export_results
+
+    try:
+        written = export_results(results, publish_dir, submitted_by=submitted_by)
+    except (BenchmarkExportError, OSError) as exc:
+        err_console.print(
+            f"\n[error]Benchmarks ran, but publishing to {publish_dir} failed.[/error]\n\n{exc}\n\n"
+            f"The measurements are safe in [bold]{results_output}[/bold]. "
+            f"Retry with:\n  renderscope publish {results_output} --output-dir {publish_dir}\n"
+        )
+        return False
+
+    console.print(
+        f"Published [bold]{len(written)}[/bold] catalog record(s) to [bold]{publish_dir}[/bold]"
+    )
+    for path in written:
+        console.print(f"  [dim]{path}[/dim]")
+    console.print(
+        "\n[dim]Validate with 'python scripts/validate_data.py', then open a pull request.[/dim]"
+    )
+    return True
+
+
 def benchmark_cmd(
     scene: list[str] | None = typer.Option(
         None,
@@ -204,6 +244,19 @@ def benchmark_cmd(
         Path("renderscope-results"),
         "--results-dir",
         help="Directory for rendered images and artifacts.",
+    ),
+    publish_dir: Path | None = typer.Option(
+        None,
+        "--publish-dir",
+        help=(
+            "Also write schema-conforming catalog records into this directory "
+            "(e.g. data/benchmarks), ready to submit as a pull request."
+        ),
+    ),
+    submitted_by: str | None = typer.Option(
+        None,
+        "--submitted-by",
+        help="GitHub username to credit in published records (used with --publish-dir).",
     ),
     dry_run: bool = typer.Option(
         False,
@@ -411,6 +464,11 @@ def benchmark_cmd(
         console.print()
         _print_result_summary(completed_results)
         console.print(f"Results saved to [bold]{output}[/bold] ({len(results)} entries)")
+
+        if publish_dir is not None and not _publish_results(
+            results, publish_dir, submitted_by=submitted_by, results_output=output
+        ):
+            sys.exit(1)
     else:
         console.print("[warning]No benchmark results were produced.[/warning]")
         sys.exit(1)

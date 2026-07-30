@@ -7,6 +7,7 @@
  * and the data integrity.
  */
 import { describe, it, expect } from "vitest";
+import type { BenchmarkEntry } from "@/types/benchmark";
 import {
   getAllBenchmarks,
   getHardwareProfiles,
@@ -33,7 +34,6 @@ describe("getAllBenchmarks", () => {
       expect(b).toHaveProperty("hardware");
       expect(b).toHaveProperty("settings");
       expect(b).toHaveProperty("results");
-      expect(b).toHaveProperty("quality_vs_reference");
       expect(typeof b.id).toBe("string");
       expect(typeof b.renderer).toBe("string");
       expect(typeof b.scene).toBe("string");
@@ -64,10 +64,31 @@ describe("getAllBenchmarks", () => {
     const benchmarks = getAllBenchmarks();
     for (const b of benchmarks) {
       expect(b.results.render_time_seconds).toBeGreaterThan(0);
-      expect(b.results.peak_memory_mb).toBeGreaterThan(0);
-      expect(b.quality_vs_reference.psnr).toBeGreaterThan(0);
-      expect(b.quality_vs_reference.ssim).toBeGreaterThan(0);
-      expect(b.quality_vs_reference.ssim).toBeLessThanOrEqual(1);
+      expect(b.results.output_image).toBeTruthy();
+      if (b.results.peak_memory_mb !== undefined) {
+        expect(b.results.peak_memory_mb).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  // `quality_vs_reference` is optional in benchmark.schema.json: a run with no
+  // reference image to compare against has no quality block at all. Where it is
+  // present, the metrics must still be in range.
+  it("quality metrics, where present, are in range", () => {
+    const benchmarks = getAllBenchmarks();
+    for (const b of benchmarks) {
+      const quality = b.quality_vs_reference;
+      if (!quality) continue;
+
+      expect(typeof quality.reference_renderer).toBe("string");
+      expect(quality.reference_samples).toBeGreaterThan(0);
+      if (quality.psnr !== undefined) {
+        expect(quality.psnr).toBeGreaterThan(0);
+      }
+      if (quality.ssim !== undefined) {
+        expect(quality.ssim).toBeGreaterThan(0);
+        expect(quality.ssim).toBeLessThanOrEqual(1);
+      }
     }
   });
 });
@@ -135,6 +156,48 @@ describe("getSceneNameMap", () => {
 });
 
 describe("toBenchmarkTableRows", () => {
+  /**
+   * A run with no reference image has no `quality_vs_reference` block — the
+   * schema makes it optional, and `renderscope publish` omits it rather than
+   * writing nulls. Reading through it unconditionally used to throw a
+   * TypeError during `next build`, failing the whole static export on an
+   * otherwise valid contribution.
+   */
+  const entryWithoutQuality: BenchmarkEntry = {
+    id: "cornell-box-pbrt-ryzen-7950x-2026-07-29",
+    renderer: "pbrt",
+    renderer_version: "4.0.0",
+    scene: "cornell-box",
+    timestamp: "2026-07-29T00:00:00+00:00",
+    hardware: {
+      id: "ryzen-7950x",
+      label: "AMD Ryzen 9 7950X",
+      cpu: "AMD Ryzen 9 7950X",
+      ram_gb: 64,
+      os: "Ubuntu 24.04",
+    },
+    settings: { resolution: [1920, 1080], samples_per_pixel: 1024 },
+    results: {
+      render_time_seconds: 47.3,
+      output_image: "renderscope-results/cornell-box/pbrt_1024spp.exr",
+    },
+  };
+
+  it("handles a benchmark with no quality metrics", () => {
+    const rows = toBenchmarkTableRows([entryWithoutQuality], {}, {});
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0]!.psnr).toBeUndefined();
+    expect(rows[0]!.ssim).toBeUndefined();
+    expect(rows[0]!.renderTime).toBe(47.3);
+    expect(rows[0]!.resolution).toBe("1920\u00d71080");
+  });
+
+  it("handles a benchmark with no memory measurement", () => {
+    const rows = toBenchmarkTableRows([entryWithoutQuality], {}, {});
+    expect(rows[0]!.peakMemory).toBeUndefined();
+  });
+
   it("transforms benchmark entries into table rows", () => {
     const benchmarks = getAllBenchmarks();
     const rendererNames = getRendererNameMap();
@@ -158,13 +221,13 @@ describe("toBenchmarkTableRows", () => {
       expect(typeof row.scene).toBe("string");
       expect(typeof row.sceneName).toBe("string");
       expect(typeof row.renderTime).toBe("number");
-      expect(typeof row.peakMemory).toBe("number");
-      expect(typeof row.psnr).toBe("number");
-      expect(typeof row.ssim).toBe("number");
       expect(typeof row.hardwareId).toBe("string");
       expect(typeof row.hardwareLabel).toBe("string");
-      expect(typeof row.spp).toBe("number");
       expect(row.resolution).toMatch(/^\d+×\d+$/);
+      // Optional per the schema — present as a number or absent, never NaN.
+      for (const value of [row.peakMemory, row.psnr, row.ssim, row.spp]) {
+        expect(value === undefined || Number.isFinite(value)).toBe(true);
+      }
       expect(typeof row.timestamp).toBe("string");
     }
   });

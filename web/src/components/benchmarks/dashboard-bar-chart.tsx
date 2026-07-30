@@ -38,16 +38,20 @@ const METRIC_CONFIG: Record<
   ssim: { label: "SSIM", format: (v) => formatSSIM(v), unit: "" },
 };
 
-function extractMetricValue(entry: BenchmarkEntry, metric: ChartMetric): number {
+/** Returns `undefined` when the run did not record this metric. */
+function extractMetricValue(
+  entry: BenchmarkEntry,
+  metric: ChartMetric
+): number | undefined {
   switch (metric) {
     case "renderTime":
       return entry.results.render_time_seconds;
     case "memory":
       return entry.results.peak_memory_mb;
     case "psnr":
-      return entry.quality_vs_reference.psnr;
+      return entry.quality_vs_reference?.psnr;
     case "ssim":
-      return entry.quality_vs_reference.ssim;
+      return entry.quality_vs_reference?.ssim;
   }
 }
 
@@ -103,7 +107,10 @@ export function DashboardBarChart({
           const entry = entries.find(
             (e) => e.scene === scene && e.renderer === renderer
           );
-          point[renderer] = entry ? extractMetricValue(entry, metric) : 0;
+          // Leave the key unset when unmeasured so the bar is omitted
+          // rather than drawn at zero.
+          const value = entry ? extractMetricValue(entry, metric) : undefined;
+          if (value != null) point[renderer] = value;
         }
         return point;
       });
@@ -118,7 +125,8 @@ export function DashboardBarChart({
         const entry = entries.find(
           (e) => e.renderer === renderer && e.scene === scene
         );
-        point[scene] = entry ? extractMetricValue(entry, metric) : 0;
+        const value = entry ? extractMetricValue(entry, metric) : undefined;
+        if (value != null) point[scene] = value;
       }
       return point;
     });

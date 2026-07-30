@@ -2,8 +2,12 @@
 
 from __future__ import annotations
 
+from typing import Any
+
+import pytest
+
 from renderscope.models.hardware import HardwareInfo
-from renderscope.utils.hardware import detect_hardware
+from renderscope.utils.hardware import _detect_cpu, _is_architecture_name, detect_hardware
 
 
 class TestDetectHardware:
@@ -47,3 +51,67 @@ class TestDetectHardware:
         hw = detect_hardware()
         assert hw.cpu_cores_physical >= 1
         assert hw.cpu_cores_logical >= 1
+
+
+class TestArchitectureNameDetection:
+    """`platform.processor()` returns an architecture on several platforms.
+
+    Benchmark records are stamped with the detected CPU and grouped by it in the
+    dashboard's hardware filter, so an architecture must not be accepted as a
+    chip name — "arm" identifies a machine no better than "a computer" does.
+    """
+
+    @pytest.mark.parametrize(
+        "value", ["arm", "arm64", "aarch64", "x86_64", "amd64", "i386", "i686", "x86", "  ARM  "]
+    )
+    def test_recognizes_architecture_strings(self, value: str) -> None:
+        assert _is_architecture_name(value) is True
+
+    @pytest.mark.parametrize(
+        "value",
+        [
+            "Apple M5 Max",
+            "AMD Ryzen 9 7950X",
+            "Intel(R) Core(TM) i9-13900K",
+            "ARMv8 Neoverse-N1",
+        ],
+    )
+    def test_accepts_real_cpu_models(self, value: str) -> None:
+        assert _is_architecture_name(value) is False
+
+    def test_falls_through_to_platform_probes_for_architectures(self, monkeypatch: Any) -> None:
+        """Apple Silicon reports "arm"; detection must not stop there."""
+        import renderscope.utils.hardware as hardware_module
+
+        monkeypatch.setattr(hardware_module.platform, "processor", lambda: "arm")
+        monkeypatch.setattr(hardware_module.platform, "system", lambda: "Darwin")
+        monkeypatch.setattr(hardware_module.platform, "machine", lambda: "arm64")
+
+        class _Completed:
+            returncode = 0
+            stdout = "Apple M5 Max\n"
+
+        monkeypatch.setattr(hardware_module.subprocess, "run", lambda *a, **k: _Completed())
+
+        assert _detect_cpu() == "Apple M5 Max"
+
+    def test_keeps_a_real_model_string_without_probing(self, monkeypatch: Any) -> None:
+        import renderscope.utils.hardware as hardware_module
+
+        monkeypatch.setattr(hardware_module.platform, "processor", lambda: "AMD Ryzen 9 7950X")
+
+        def _fail(*args: Any, **kwargs: Any) -> None:
+            raise AssertionError("platform probes should not run for a real CPU model")
+
+        monkeypatch.setattr(hardware_module.subprocess, "run", _fail)
+
+        assert _detect_cpu() == "AMD Ryzen 9 7950X"
+
+    def test_never_returns_an_empty_string(self, monkeypatch: Any) -> None:
+        import renderscope.utils.hardware as hardware_module
+
+        monkeypatch.setattr(hardware_module.platform, "processor", lambda: "")
+        monkeypatch.setattr(hardware_module.platform, "system", lambda: "Unknown")
+        monkeypatch.setattr(hardware_module.platform, "machine", lambda: "")
+
+        assert _detect_cpu() == "Unknown CPU"

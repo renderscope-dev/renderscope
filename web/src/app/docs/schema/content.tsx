@@ -31,12 +31,12 @@ const schemas = [
   {
     icon: <BarChart3 className="h-5 w-5" />,
     title: "Benchmark Results",
-    location: "/data/benchmarks/{id}.json",
+    location: "/data/benchmarks/{scene}-{renderer}-{hardware}.json",
     schema: "benchmark.schema.json",
     description:
-      "One file per benchmark run (renderer × scene × hardware). Includes render time, memory usage, image quality metrics, and convergence data.",
+      "One file per benchmark run (renderer × scene × hardware). Includes render time, memory usage, image quality metrics, and convergence data. Generate these with `renderscope publish` rather than writing them by hand.",
     required:
-      "id, renderer_id, scene_id, hardware, settings, results",
+      "id, renderer, renderer_version, scene, timestamp, hardware, settings, results",
   },
   {
     icon: <ImageIcon className="h-5 w-5" />,
