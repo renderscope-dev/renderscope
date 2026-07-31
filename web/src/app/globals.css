@@ -50,15 +50,22 @@
     --chart-5: 330 75% 50%;
 
     /* ── TECHNIQUE BADGE COLORS ────────────────────────────────── */
-    --technique-path-tracing:       215 85% 45%;
-    --technique-ray-tracing:        195 80% 38%;
-    --technique-rasterization:      152 55% 35%;
+    /* `TechniqueBadge` paints the label in these colours over a 10%-alpha wash
+       of the same hue, so each colour is effectively its own background and
+       must clear WCAG AA (4.5:1) against it. Seven of the nine originally sat
+       between 2.86:1 and 4.49:1 and failed the axe audit; lightness is now set
+       to the highest value that clears 4.6:1 over both --card and --background,
+       keeping each hue as vivid as accessibility allows. The dark-mode values
+       below already clear 6:1 and are unchanged. */
+    --technique-path-tracing:       215 85% 44%;
+    --technique-ray-tracing:        195 80% 30%;
+    --technique-rasterization:      152 55% 29%;
     --technique-neural:             268 70% 50%;
     --technique-gaussian-splatting: 258 65% 50%;
-    --technique-differentiable:     330 70% 46%;
-    --technique-volume:             25 85% 44%;
-    --technique-ray-marching:       185 70% 36%;
-    --technique-educational:        42 85% 38%;
+    --technique-differentiable:     330 70% 43%;
+    --technique-volume:             25 85% 35%;
+    --technique-ray-marching:       185 70% 27%;
+    --technique-educational:        42 85% 28%;
   }
 
   /* ================================================================

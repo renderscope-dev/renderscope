@@ -155,9 +155,18 @@ export default defineConfig({
     },
   ],
 
-  // Start the Next.js dev server before tests
+  // Serve the production static export — the artifact that actually ships.
+  //
+  // These tests previously ran against `npm run dev`. A development build
+  // hydrates differently, and the accessibility audit caught dark-palette text
+  // rendered over the light default background before next-themes applied the
+  // theme class. That surfaced as WCAG contrast violations on the docs pages in
+  // Firefox and WebKit (slower to hydrate) while Chromium passed — flagging a
+  // defect that does not exist in the shipped output.
+  //
+  // `out/` is produced by `npm run build`, which CI runs before Playwright.
   webServer: {
-    command: "npm run dev",
+    command: "npx --yes serve out -l 3000",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120000,

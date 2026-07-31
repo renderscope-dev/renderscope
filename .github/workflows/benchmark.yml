@@ -24,6 +24,11 @@ jobs:
     runs-on: self-hosted  # Must be a machine with renderers installed
     timeout-minutes: 1440  # 24 hours max
 
+    # `contents` to push the results branch, `pull-requests` to propose it.
+    permissions:
+      contents: write
+      pull-requests: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -79,8 +84,14 @@ jobs:
           pip install jsonschema
           python scripts/validate_data.py
 
-      - name: Commit results
+      - name: Propose results as a pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Branch is per-dispatch so concurrent benchmark runs on different
+          # renderers or scenes never overwrite one another's results.
+          BENCH_BRANCH: automation/benchmark-${{ github.run_id }}
         run: |
+          set -uo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/benchmarks/ logs/benchmarks/
@@ -91,10 +102,24 @@ jobs:
           fi
           if git diff --staged --quiet; then
             echo "No changes to commit"
-          else
-            git commit -m "bench: benchmark results for ${{ inputs.renderer }} × ${{ inputs.scene }}"
-            git push
+            exit 0
           fi
+
+          # main is protected: pushing to it is rejected with GH013, which is
+          # what silently discarded every scheduled data refresh for months.
+          # Propose the results instead of pushing them.
+          git checkout -B "$BENCH_BRANCH"
+          git commit -m "bench: benchmark results for ${{ inputs.renderer }} × ${{ inputs.scene }}"
+          git push --force-with-lease origin "$BENCH_BRANCH"
+
+          gh pr create --head "$BENCH_BRANCH" --base main \
+            --title "bench: results for ${{ inputs.renderer }} × ${{ inputs.scene }}" \
+            --body "Benchmark results produced by [run ${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) on a self-hosted runner." \
+            && exit 0
+
+          echo "::error::Results are on branch $BENCH_BRANCH but the pull request could not be opened."
+          echo "${{ github.server_url }}/${{ github.repository }}/compare/main...$BENCH_BRANCH?expand=1" >> "$GITHUB_STEP_SUMMARY"
+          exit 1
 
       - name: Upload artifacts
         # Always upload: a benchmark run can take hours, so a validation or

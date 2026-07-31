@@ -15,7 +15,7 @@ test.describe("Explore Page", () => {
   });
 
   test("search bar is functional", async ({ page }) => {
-    const searchInput = page.getByPlaceholderText("Search renderers...");
+    const searchInput = page.getByPlaceholder("Search renderers...");
     await expect(searchInput).toBeVisible();
 
     // Type a search query

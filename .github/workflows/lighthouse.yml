@@ -23,21 +23,25 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
-          cache-dependency-path: web/package-lock.json
+          # This is an npm-workspaces monorepo: the lockfile lives at the repo
+          # root, not in web/. Pointing the cache at web/package-lock.json made
+          # setup-node fail outright with "Some specified paths were not
+          # resolved", so the job never reached Lighthouse.
+          cache: npm
 
       - name: Install dependencies
+        # Workspaces must be installed from the root, where the lockfile is.
         run: npm ci
+        working-directory: .
 
       - name: Build
+        # `postbuild` runs check-bundle-size.mjs, so the budget is enforced here.
         run: npm run build
 
-      - name: Check bundle size
-        run: node scripts/check-bundle-size.mjs
-
       - name: Run Lighthouse CI
-        uses: treosh/lighthouse-ci-action@v12
-        with:
-          configPath: web/.lighthouserc.json
-          uploadArtifacts: true
-          temporaryPublicStorage: true
+        # Run through the repo's own @lhci/cli devDependency rather than the
+        # marketplace action: `uses:` steps ignore `defaults.run.working-directory`
+        # and execute at the repository root, where the config's
+        # `staticDistDir: "out"` does not resolve. A `run:` step stays in web/,
+        # which is also how the `lighthouse` npm script is used locally.
+        run: npm run lighthouse

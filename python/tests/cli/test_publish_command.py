@@ -33,14 +33,20 @@ def _written_records(directory: Path) -> list[dict[str, Any]]:
     ]
 
 
-def _flat(output: str) -> str:
-    """Collapse Rich's line wrapping so phrase assertions survive reflow.
+_ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
 
-    Rich wraps to the terminal width, which differs between a developer's shell
-    and CI. Asserting on the wrapped text would make these tests fail for
-    reasons that have nothing to do with the command's behaviour.
+
+def _flat(output: str) -> str:
+    """Normalize Rich output so phrase assertions survive styling and reflow.
+
+    Two things vary with the environment and neither says anything about the
+    command's behaviour: Rich wraps to the terminal width, and when colour is
+    enabled it splits words across escape sequences. Stripping styling and
+    collapsing whitespace removes both. The `_plain_cli_help` fixture already
+    disables forced colour; this is a second line of defence for output written
+    through the package's own console rather than Typer's.
     """
-    return re.sub(r"\s+", " ", output)
+    return re.sub(r"\s+", " ", _ANSI_RE.sub("", output))
 
 
 class TestPublishHappyPath:

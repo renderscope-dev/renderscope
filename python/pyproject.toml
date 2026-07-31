@@ -194,6 +194,21 @@ module = ["tifffile", "tifffile.*"]
 ignore_missing_imports = true
 follow_imports = "skip"
 
+# numpy >= 2.5 (Python 3.12+ only) ships stubs using the same PEP 695 `type`
+# statements, which mypy rejects while `python_version` targets this package's
+# 3.10 floor. Lowering the floor is not an option — it would stop mypy catching
+# uses of stdlib features unavailable on 3.10 — so numpy's stubs are skipped,
+# exactly as tifffile's are above. Revisit if mypy gains support for parsing
+# PEP 695 syntax independently of the configured target version.
+# `follow_imports_for_stubs` is required alongside `follow_imports`: numpy ships
+# inline stubs, and mypy parses .pyi files even when told to skip a module's
+# source unless this is set.
+[[tool.mypy.overrides]]
+module = ["numpy", "numpy.*"]
+ignore_missing_imports = true
+follow_imports = "skip"
+follow_imports_for_stubs = true
+
 [[tool.mypy.overrides]]
 module = ["pyluxcore", "pyluxcore.*", "pyfilament", "pyfilament.*", "ospray", "ospray.*"]
 ignore_missing_imports = true

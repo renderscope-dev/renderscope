@@ -34,20 +34,9 @@
   "latest_release": "2019-12-01",
   "latest_release_version": "git-2019",
   "status": "inactive",
-  "github_stars": 1300,
+  "github_stars": 1295,
   "github_stars_trend": [
-    1050,
-    1080,
-    1100,
-    1120,
-    1150,
-    1170,
-    1190,
-    1210,
-    1230,
-    1250,
-    1270,
-    1300
+    1295
   ],
   "commit_activity_52w": [
     0,
@@ -66,7 +55,7 @@
     0,
     0,
     0,
-    0,
+    1,
     0,
     0,
     0,
@@ -103,9 +92,9 @@
     0,
     0
   ],
-  "contributor_count": 5,
-  "open_issues": 45,
-  "fork_count": 210,
+  "contributor_count": 4,
+  "open_issues": 57,
+  "fork_count": 159,
   "tags": [
     "differentiable-rendering",
     "soft-rasterization",

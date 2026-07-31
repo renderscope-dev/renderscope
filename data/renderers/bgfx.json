@@ -114,20 +114,9 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "github_stars": 15200,
+  "github_stars": 17338,
   "github_stars_trend": [
-    14000,
-    14100,
-    14250,
-    14400,
-    14500,
-    14600,
-    14700,
-    14800,
-    14900,
-    15000,
-    15100,
-    15200
+    17338
   ],
   "commit_activity_52w": [
     5,
@@ -183,9 +172,9 @@
     5,
     8
   ],
-  "contributor_count": 250,
-  "open_issues": 320,
-  "fork_count": 2100,
+  "contributor_count": 288,
+  "open_issues": 286,
+  "fork_count": 2117,
   "install_command": "git clone https://github.com/bkaradzic/bgfx && cd bgfx && make",
   "community_links": {
     "discord": "https://discord.gg/bgfx",

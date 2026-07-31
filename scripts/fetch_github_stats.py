@@ -590,6 +590,61 @@ def print_summary(results: list[RendererUpdateResult], total_files: int) -> None
             print(f"  - {r.renderer_id}")
 
 
+def build_markdown_summary(
+    results: list[RendererUpdateResult], total_files: int
+) -> str:
+    """Render the run outcome as Markdown for a job summary or pull request body.
+
+    License mismatches in particular were only ever visible in raw log output,
+    where nobody saw them — `pbrt` has been listed as BSD-2-Clause while GitHub
+    reports Apache-2.0, which is exactly the kind of thing a reader of the
+    catalog would act on. Surfacing them where a human is already looking is
+    the point of this function.
+    """
+    updated = [r for r in results if r.updated]
+    failed = [r for r in results if r.failed]
+    non_github = [r for r in results if r.skipped]
+    license_warnings = [r for r in results if r.license_warning]
+
+    lines: list[str] = ["## Renderer data refresh", ""]
+    lines.append(f"- Renderers scanned: **{total_files}**")
+    lines.append(f"- Updated: **{len(updated)}**")
+    lines.append(f"- Failed: **{len(failed)}**")
+    lines.append(f"- Skipped (not hosted on GitHub): **{len(non_github)}**")
+    lines.append("")
+
+    if license_warnings:
+        lines.append("### License mismatches — needs a human decision")
+        lines.append("")
+        lines.append(
+            "GitHub's license detection is a heuristic and is not always right "
+            "(dual-licensed projects and SPDX spelling differences show up here), "
+            "so these are reported rather than applied automatically."
+        )
+        lines.append("")
+        for r in license_warnings:
+            lines.append(f"- {r.license_warning}")
+        lines.append("")
+
+    if failed:
+        lines.append("### Failed")
+        lines.append("")
+        for r in failed:
+            lines.append(f"- `{r.renderer_id}`")
+        lines.append("")
+
+    if non_github:
+        lines.append("<details><summary>Skipped (not hosted on GitHub)</summary>")
+        lines.append("")
+        for r in non_github:
+            lines.append(f"- `{r.renderer_id}` — {r.skip_reason}")
+        lines.append("")
+        lines.append("</details>")
+        lines.append("")
+
+    return "\n".join(lines)
+
+
 def main() -> int:
     """Entry point. Returns exit code."""
     parser = argparse.ArgumentParser(
@@ -617,6 +672,14 @@ def main() -> int:
         "--verbose",
         action="store_true",
         help="Enable debug-level logging.",
+    )
+    parser.add_argument(
+        "--summary-md",
+        metavar="PATH",
+        help=(
+            "Write a Markdown summary of the run to PATH, for use as a CI job "
+            "summary or pull request body."
+        ),
     )
     args = parser.parse_args()
 
@@ -670,6 +733,18 @@ def main() -> int:
 
     # Print summary
     print_summary(results, len(files))
+
+    if args.summary_md:
+        summary_path = Path(args.summary_md)
+        try:
+            summary_path.parent.mkdir(parents=True, exist_ok=True)
+            summary_path.write_text(
+                build_markdown_summary(results, len(files)), encoding="utf-8"
+            )
+            logger.info("Markdown summary written to %s", summary_path)
+        except OSError as exc:
+            # A summary is reporting, not the job — never fail the refresh over it.
+            logger.warning("Could not write summary to %s: %s", summary_path, exc)
 
     # Determine exit code
     any_failed = any(r.failed for r in results)

@@ -157,7 +157,9 @@ export function QuickStartTerminal() {
             <div className="h-3 w-3 rounded-full bg-yellow-500/60" />
             <div className="h-3 w-3 rounded-full bg-green-500/60" />
           </div>
-          <span className="text-xs text-zinc-500">Terminal</span>
+          {/* zinc-500 on zinc-900 is 3.66:1 — below the 4.5:1 WCAG AA floor for
+              this 12px label. zinc-400 clears it at 6.4:1. */}
+          <span className="text-xs text-zinc-400">Terminal</span>
           <CopyButton text={quickStart.commands[0]!} />
         </div>
 

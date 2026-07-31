@@ -102,7 +102,10 @@ def _print_paths(records: list[CanonicalBenchmark], output_dir: Path) -> None:
     from renderscope.report.benchmark_export import canonical_filename
 
     for record in records:
-        console.print(f"[dim]{output_dir / canonical_filename(record)}[/dim]")
+        # soft_wrap keeps Rich from hard-wrapping a long path mid-word. These
+        # lines exist to be copied into a pull request or piped to another
+        # command, and `.../cornel\nl-box-pbrt.json` is useless for both.
+        console.print(f"[dim]{output_dir / canonical_filename(record)}[/dim]", soft_wrap=True)
     console.print()
 
 

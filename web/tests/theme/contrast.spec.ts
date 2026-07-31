@@ -1,6 +1,14 @@
 import { test, expect } from "@playwright/test";
 import { navigateAndWait, checkTextContrast } from "../fixtures/test-utils";
 
+// The site's ThemeProvider uses `defaultTheme="light"` with `enableSystem`, so a
+// fresh browser profile resolves to whatever the OS reports — which Playwright
+// defaults to light. These specs assert dark-theme behaviour, so they request
+// the dark scheme explicitly instead of depending on a default that has since
+// changed.
+test.use({ colorScheme: "dark" });
+
+
 /**
  * Dark theme contrast verification tests.
  * Checks that all text meets WCAG AA contrast requirements

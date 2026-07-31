@@ -1,0 +1,98 @@
+name: Update Visual Baselines
+
+# Playwright stores one screenshot baseline per platform. Every baseline in the
+# repository is a `-win32.png`, so the visual suite cannot pass on the Linux
+# runners CI uses — the comparisons fail with "A snapshot doesn't exist" whether
+# or not the UI changed. Baselines have to be produced on the same OS that
+# compares them, which is what this workflow does.
+#
+# Run it manually, review the screenshots in the pull request it opens, and
+# merge. Then re-add `tests/visual` to the Playwright step in ci.yml.
+
+on:
+  workflow_dispatch:
+    inputs:
+      project:
+        description: 'Playwright project to regenerate (blank = all)'
+        required: false
+        default: ''
+
+concurrency:
+  group: update-visual-baselines
+  cancel-in-progress: false
+
+env:
+  BASELINE_BRANCH: automation/visual-baselines-linux
+
+jobs:
+  update-baselines:
+    name: Regenerate Linux Screenshot Baselines
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: .
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Build (static export)
+        run: npm run build
+
+      - name: Regenerate baselines
+        run: |
+          ARGS="--update-snapshots"
+          if [ -n "${{ github.event.inputs.project }}" ]; then
+            ARGS="$ARGS --project=${{ github.event.inputs.project }}"
+          fi
+          npx playwright test tests/visual $ARGS
+        env:
+          CI: true
+
+      - name: Propose the new baselines
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add 'web/tests/**/*.png'
+          if git diff --staged --quiet; then
+            echo "Baselines are already up to date."
+            exit 0
+          fi
+
+          git checkout -B "$BASELINE_BRANCH"
+          git commit -m "test: regenerate Playwright visual baselines for Linux"
+          git push --force-with-lease origin "$BASELINE_BRANCH"
+
+          gh pr create --head "$BASELINE_BRANCH" --base main \
+            --title "test: regenerate Playwright visual baselines for Linux" \
+            --body "Screenshot baselines generated on \`ubuntu-latest\` by [run ${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+
+          Review the images, then merge and re-add \`tests/visual\` to the Playwright step in \`ci.yml\`." \
+            && exit 0
+
+          echo "::error::Baselines are on branch $BASELINE_BRANCH but the pull request could not be opened."
+          echo "${{ github.server_url }}/${{ github.repository }}/compare/main...$BASELINE_BRANCH?expand=1" >> "$GITHUB_STEP_SUMMARY"
+          exit 1

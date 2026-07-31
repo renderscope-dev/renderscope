@@ -1,14 +1,15 @@
 {
   "ci": {
     "collect": {
+      "staticDistDir": "out",
       "url": [
-        "http://localhost:3000/",
-        "http://localhost:3000/explore/",
-        "http://localhost:3000/renderer/pbrt-v4/",
-        "http://localhost:3000/compare/",
-        "http://localhost:3000/gallery/",
-        "http://localhost:3000/benchmarks/",
-        "http://localhost:3000/learn/"
+        "http://localhost/",
+        "http://localhost/explore/",
+        "http://localhost/renderer/pbrt/",
+        "http://localhost/compare/",
+        "http://localhost/gallery/",
+        "http://localhost/benchmarks/",
+        "http://localhost/learn/"
       ],
       "numberOfRuns": 3,
       "settings": {

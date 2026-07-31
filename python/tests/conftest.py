@@ -8,6 +8,7 @@ from typing import Any
 
 import numpy as np
 import pytest
+import typer.rich_utils
 from typer.testing import CliRunner
 
 from renderscope.core.data_loader import clear_cache
@@ -30,6 +31,31 @@ def _clear_data_cache() -> None:
     """
     clear_cache()
     registry.clear_cache()
+
+
+# ---------------------------------------------------------------------------
+# Deterministic CLI output (autouse)
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture(autouse=True)
+def _plain_cli_help(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Render Typer's ``--help`` output as plain text for every test.
+
+    Typer forces colour whenever ``GITHUB_ACTIONS`` is set (see
+    ``typer.rich_utils.FORCE_TERMINAL``). Rich then styles each fragment of a
+    line independently, so ``--scene`` is emitted as
+    ``\\x1b[1;36m-\\x1b[0m\\x1b[1;36m-scene\\x1b[0m`` — the two hyphens land in
+    separate escape sequences and the option name stops being a contiguous
+    substring. Help-text assertions therefore passed on every developer machine
+    and failed on every CI run, for reasons unrelated to the CLI's behaviour.
+
+    ``FORCE_TERMINAL`` is a module-level constant evaluated at import time, so
+    it is patched directly rather than through the environment; Typer reads it
+    on each ``_get_rich_console()`` call, which makes this reliable regardless
+    of import order.
+    """
+    monkeypatch.setattr(typer.rich_utils, "FORCE_TERMINAL", None, raising=False)
 
 
 # ---------------------------------------------------------------------------

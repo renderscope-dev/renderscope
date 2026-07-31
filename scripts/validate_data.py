@@ -320,11 +320,15 @@ def additional_renderer_checks(
         except ValueError:
             pass
 
-    # Star trend length check
+    # Star trend length check.
+    # The trend is a rolling window that `fetch_github_stats.py` appends one
+    # point to per weekly run and caps at 12, so a newly tracked renderer
+    # legitimately has fewer. Only an over-long series indicates a bug — a
+    # short one just means the history is still being measured.
     trend = data.get("github_stars_trend", [])
-    if trend and len(trend) != 12:
+    if len(trend) > 12:
         warnings.append(
-            f"  github_stars_trend has {len(trend)} items (expected 12)"
+            f"  github_stars_trend has {len(trend)} items (rolling window caps at 12)"
         )
 
     # Commit activity length check

@@ -168,7 +168,8 @@ def _publish_results(
         f"Published [bold]{len(written)}[/bold] catalog record(s) to [bold]{publish_dir}[/bold]"
     )
     for path in written:
-        console.print(f"  [dim]{path}[/dim]")
+        # soft_wrap so the path stays on one line and remains copy-pasteable.
+        console.print(f"  [dim]{path}[/dim]", soft_wrap=True)
     console.print(
         "\n[dim]Validate with 'python scripts/validate_data.py', then open a pull request.[/dim]"
     )

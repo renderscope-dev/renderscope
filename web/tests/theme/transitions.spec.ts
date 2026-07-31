@@ -2,6 +2,14 @@ import { test, expect } from "@playwright/test";
 import { navigateAndWait } from "../fixtures/test-utils";
 import { NavigationComponent } from "../fixtures/pages";
 
+// The site's ThemeProvider uses `defaultTheme="light"` with `enableSystem`, so a
+// fresh browser profile resolves to whatever the OS reports — which Playwright
+// defaults to light. These specs assert dark-theme behaviour, so they request
+// the dark scheme explicitly instead of depending on a default that has since
+// changed.
+test.use({ colorScheme: "dark" });
+
+
 /**
  * Dark theme transition tests.
  * Verifies no white flash on load, theme toggle works,

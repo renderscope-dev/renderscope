@@ -42,6 +42,29 @@ test.describe("Accessibility — axe-core WCAG 2.1 AA audit", () => {
     }) => {
       await browserPage.goto(page.path, { waitUntil: "networkidle" });
 
+      // Wait for next-themes to resolve and apply the theme class.
+      //
+      // Until it does, the document carries neither `light` nor `dark`, and
+      // components styled for the dark palette paint over the light default
+      // background. Scanning inside that window reports contrast failures that
+      // do not exist once the theme lands — which is exactly what happened on
+      // CI, where Google Fonts requests time out and stretch the gap far wider
+      // than on a developer machine. A fixed sleep cannot cover that variance.
+      await browserPage.waitForFunction(
+        () => {
+          const cls = document.documentElement.classList;
+          return cls.contains("light") || cls.contains("dark");
+        },
+        undefined,
+        { timeout: 15000 }
+      );
+
+      // Let webfonts settle where they can; never block the audit on them,
+      // because CI runners frequently cannot reach fonts.gstatic.com.
+      await browserPage
+        .evaluate(() => document.fonts?.ready?.then(() => undefined))
+        .catch(() => undefined);
+
       // Allow client-side hydration to settle
       await browserPage.waitForTimeout(1500);
 
