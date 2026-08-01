@@ -53,7 +53,7 @@ export function HardwareContext({ hardware, className }: HardwareContextProps) {
           <TooltipTrigger asChild>
             <button
               type="button"
-              className="mt-0.5 shrink-0 text-muted-foreground/60 transition-colors hover:text-muted-foreground"
+              className="mt-0.5 shrink-0 text-muted-foreground transition-colors hover:text-muted-foreground"
               aria-label="Benchmark hardware information"
             >
               <Info className="h-3.5 w-3.5" />

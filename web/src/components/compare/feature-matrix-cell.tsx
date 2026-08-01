@@ -35,7 +35,7 @@ export function FeatureMatrixCell({
       >
         <div className="flex items-center justify-center">
           <Check
-            className="h-4 w-4 text-emerald-400"
+            className="h-4 w-4 text-emerald-700 dark:text-emerald-400"
             aria-hidden="true"
           />
         </div>
@@ -54,7 +54,7 @@ export function FeatureMatrixCell({
       >
         <div className="flex items-center justify-center">
           <X
-            className="h-4 w-4 text-red-400"
+            className="h-4 w-4 text-red-700 dark:text-red-400"
             aria-hidden="true"
           />
         </div>
@@ -69,7 +69,7 @@ export function FeatureMatrixCell({
     >
       <div className="flex items-center justify-center">
         <Minus
-          className="h-4 w-4 text-muted-foreground/50"
+          className="h-4 w-4 text-muted-foreground"
           aria-hidden="true"
         />
       </div>

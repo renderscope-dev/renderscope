@@ -205,15 +205,15 @@ export const placeholderRenders = [
 
 /** Color mapping for release freshness */
 export const releaseFreshnessColors: Record<string, string> = {
-  fresh: "text-emerald-400",
-  aging: "text-amber-400",
+  fresh: "text-emerald-700 dark:text-emerald-400",
+  aging: "text-amber-700 dark:text-amber-400",
   stale: "text-muted-foreground",
 };
 
 /** Color mapping for star trend */
 export const trendColors: Record<string, string> = {
-  up: "text-emerald-400",
-  down: "text-red-400",
+  up: "text-emerald-700 dark:text-emerald-400",
+  down: "text-red-700 dark:text-red-400",
   stable: "text-muted-foreground",
 };
 
@@ -331,12 +331,12 @@ export const statusConfig: Record<
 > = {
   active: {
     label: "Active",
-    color: "text-emerald-400",
+    color: "text-emerald-700 dark:text-emerald-400",
     dotColor: "bg-emerald-400",
   },
   maintenance: {
     label: "Maintenance",
-    color: "text-amber-400",
+    color: "text-amber-700 dark:text-amber-400",
     dotColor: "bg-amber-400",
   },
   inactive: {
@@ -351,7 +351,7 @@ export const statusConfig: Record<
   },
   deprecated: {
     label: "Deprecated",
-    color: "text-red-400",
+    color: "text-red-700 dark:text-red-400",
     dotColor: "bg-red-400",
   },
 };

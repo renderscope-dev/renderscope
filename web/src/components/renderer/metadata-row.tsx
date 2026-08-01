@@ -21,7 +21,7 @@ export function MetadataRow({
       <div className="flex min-w-[130px] shrink-0 items-center gap-2">
         {Icon && (
           <Icon
-            className="h-4 w-4 shrink-0 text-muted-foreground/60"
+            className="h-4 w-4 shrink-0 text-muted-foreground"
             aria-hidden="true"
           />
         )}

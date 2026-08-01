@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 /* ------------------------------------------------------------------ */
 
 const bibtex = `@software{renderscope2026,
-  author       = {Ashutosh Singh},
+  author       = {Ashutosh Mishra},
   title        = {{RenderScope}: An Open Source Platform for Cataloging,
                   Comparing, and Benchmarking Rendering Engines},
   year         = {2026},
@@ -34,7 +34,7 @@ license: Apache-2.0
 url: "https://render-scope.web.app"
 repository-code: "https://github.com/renderscope-dev/renderscope"`;
 
-const plainText = `Ashutosh Singh (2026). RenderScope: An Open Source Platform for Cataloging, Comparing, and Benchmarking Rendering Engines [Computer software]. https://render-scope.web.app`;
+const plainText = `Ashutosh Mishra (2026). RenderScope: An Open Source Platform for Cataloging, Comparing, and Benchmarking Rendering Engines [Computer software]. https://render-scope.web.app`;
 
 /* ------------------------------------------------------------------ */
 /*  Callout                                                            */
@@ -54,7 +54,7 @@ function Callout({
         className
       )}
     >
-      <Info className="mt-0.5 h-4 w-4 shrink-0 text-sky-400" />
+      <Info className="mt-0.5 h-4 w-4 shrink-0 text-sky-700 dark:text-sky-400" />
       <div className="text-sm leading-relaxed text-muted-foreground">
         {children}
       </div>
@@ -88,9 +88,9 @@ export function CitationPageContent() {
           publication, please cite:
         </p>
         <p className="text-sm font-medium leading-relaxed text-foreground">
-          Ashutosh Singh. RenderScope: An Open Source Platform for Cataloging,
+          Ashutosh Mishra. RenderScope: An Open Source Platform for Cataloging,
           Comparing, and Benchmarking Rendering Engines. 2026. Available at:{" "}
-          <span className="text-sky-400">https://render-scope.web.app</span>
+          <span className="text-sky-700 dark:text-sky-400">https://render-scope.web.app</span>
         </p>
       </motion.div>
 
@@ -144,14 +144,14 @@ export function CitationPageContent() {
           Each renderer in the RenderScope catalog has a permanent URL that can
           be cited directly:
         </p>
-        <p className="mt-2 font-mono text-sm text-sky-400">
+        <p className="mt-2 font-mono text-sm text-sky-700 dark:text-sky-400">
           https://render-scope.web.app/renderer/[renderer-id]
         </p>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           For example, to reference the Mitsuba 3 profile:{" "}
           <Link
             href="/renderer/mitsuba3"
-            className="text-sky-400 underline decoration-sky-400/30 underline-offset-2 hover:decoration-sky-400"
+            className="text-sky-700 dark:text-sky-400 underline decoration-sky-400/30 underline-offset-2 hover:decoration-sky-400"
           >
             https://render-scope.web.app/renderer/mitsuba3
           </Link>

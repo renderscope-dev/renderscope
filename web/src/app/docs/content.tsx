@@ -19,7 +19,7 @@ const docSections = [
     description:
       "Complete reference for the renderscope command-line tool. Every command, every flag, with examples.",
     href: "/docs/cli",
-    accentColor: "text-sky-400",
+    accentColor: "text-sky-700 dark:text-sky-400",
   },
   {
     icon: <Code className="h-5 w-5" />,
@@ -27,7 +27,7 @@ const docSections = [
     description:
       "Props, types, and usage examples for every component in the renderscope-ui npm package.",
     href: "/docs/api",
-    accentColor: "text-sky-400",
+    accentColor: "text-sky-700 dark:text-sky-400",
   },
   {
     icon: <Database className="h-5 w-5" />,
@@ -35,7 +35,7 @@ const docSections = [
     description:
       "JSON schema documentation for renderer metadata and benchmark results.",
     href: "/docs/schema",
-    accentColor: "text-sky-400",
+    accentColor: "text-sky-700 dark:text-sky-400",
   },
   {
     icon: <Heart className="h-5 w-5" />,
@@ -43,7 +43,7 @@ const docSections = [
     description:
       "How to add renderers, submit benchmarks, report issues, and contribute code.",
     href: "/docs/contributing",
-    accentColor: "text-sky-400",
+    accentColor: "text-sky-700 dark:text-sky-400",
   },
   {
     icon: <FlaskConical className="h-5 w-5" />,
@@ -51,7 +51,7 @@ const docSections = [
     description:
       "How benchmarks are designed, conducted, and validated for fair comparisons.",
     href: "/docs/methodology",
-    accentColor: "text-sky-400",
+    accentColor: "text-sky-700 dark:text-sky-400",
   },
   {
     icon: <Quote className="h-5 w-5" />,
@@ -59,7 +59,7 @@ const docSections = [
     description:
       "BibTeX, CITATION.cff, and plain text citation formats for your research.",
     href: "/docs/citation",
-    accentColor: "text-sky-400",
+    accentColor: "text-sky-700 dark:text-sky-400",
   },
 ];
 

@@ -77,7 +77,7 @@ export function RenderCard({
           </span>
           {render.samples_per_pixel !== null &&
             render.samples_per_pixel !== undefined && (
-              <span className="text-muted-foreground/50">
+              <span className="text-muted-foreground">
                 {render.samples_per_pixel.toLocaleString()} spp
               </span>
             )}

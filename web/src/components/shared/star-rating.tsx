@@ -27,7 +27,7 @@ export function StarRating({
 
   return (
     <div className={cn("flex items-center gap-1.5", className)}>
-      <Star className="h-3.5 w-3.5 fill-amber-400/80 text-amber-400/80 shrink-0" />
+      <Star className="h-3.5 w-3.5 fill-amber-400/80 text-amber-700 dark:text-amber-400/80 shrink-0" />
       <span className="text-sm font-medium tabular-nums text-foreground/80">
         {formatStars(count)}
       </span>

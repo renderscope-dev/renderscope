@@ -26,22 +26,57 @@ export async function checkNoHorizontalOverflow(page: Page): Promise<{
   offendingElement?: string;
 }> {
   return page.evaluate(() => {
-    const docWidth = document.documentElement.clientWidth;
-    const allElements = document.querySelectorAll("*");
+    const root = document.documentElement;
+    const docWidth = root.clientWidth;
 
-    for (const el of allElements) {
-      const rect = el.getBoundingClientRect();
-      if (rect.right > docWidth + 1) {
-        // +1 for sub-pixel tolerance
-        const tag = el.tagName.toLowerCase();
-        const cls = el.className?.toString().slice(0, 60) || "";
-        return {
-          hasOverflow: true,
-          offendingElement: `<${tag} class="${cls}"> (right edge: ${Math.round(rect.right)}px, viewport: ${docWidth}px)`,
-        };
-      }
+    // Horizontal overflow is a property of the page, not of any one box: it
+    // means the document actually scrolls sideways. Checking that first is
+    // what makes this test meaningful.
+    //
+    // Scanning every element's bounding rect on its own reports false
+    // positives, because `getBoundingClientRect()` returns the full geometry
+    // of a box even when an ancestor clips it. The hero's decorative light
+    // rays are `w-[250%]` inside an `overflow-hidden` wrapper — 10,659px wide
+    // on paper, entirely invisible in practice, and causing no scrollbar.
+    if (root.scrollWidth <= docWidth + 1) {
+      return { hasOverflow: false };
     }
-    return { hasOverflow: false };
+
+    /** True when some ancestor clips this element horizontally. */
+    const isClipped = (el: Element): boolean => {
+      let node = el.parentElement;
+      while (node) {
+        const overflowX = window.getComputedStyle(node).overflowX;
+        if (overflowX === "hidden" || overflowX === "clip") return true;
+        node = node.parentElement;
+      }
+      return false;
+    };
+
+    // The page does scroll — name the widest unclipped element responsible.
+    let worst: { el: Element; right: number } | null = null;
+    for (const el of document.querySelectorAll("*")) {
+      const rect = el.getBoundingClientRect();
+      if (rect.right <= docWidth + 1) continue;
+      if (isClipped(el)) continue;
+      if (!worst || rect.right > worst.right) worst = { el, right: rect.right };
+    }
+
+    if (!worst) {
+      return {
+        hasOverflow: true,
+        offendingElement:
+          `document scrollWidth ${root.scrollWidth}px exceeds clientWidth ` +
+          `${docWidth}px, but no unclipped element was found`,
+      };
+    }
+
+    const tag = worst.el.tagName.toLowerCase();
+    const cls = worst.el.className?.toString().slice(0, 60) || "";
+    return {
+      hasOverflow: true,
+      offendingElement: `<${tag} class="${cls}"> (right edge: ${Math.round(worst.right)}px, viewport: ${docWidth}px)`,
+    };
   });
 }
 

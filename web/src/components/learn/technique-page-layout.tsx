@@ -24,13 +24,13 @@ interface TechniquePageLayoutProps {
 }
 
 const accentBadgeColors: Record<string, string> = {
-  blue: "bg-blue-500/10 text-blue-400 ring-blue-500/20",
-  green: "bg-green-500/10 text-green-400 ring-green-500/20",
-  purple: "bg-purple-500/10 text-purple-400 ring-purple-500/20",
-  pink: "bg-pink-500/10 text-pink-400 ring-pink-500/20",
-  orange: "bg-orange-500/10 text-orange-400 ring-orange-500/20",
-  rose: "bg-rose-500/10 text-rose-400 ring-rose-500/20",
-  cyan: "bg-cyan-500/10 text-cyan-400 ring-cyan-500/20",
+  blue: "bg-blue-800/10 dark:bg-blue-500/10 text-blue-800 dark:text-blue-400 ring-blue-500/20",
+  green: "bg-green-800/10 dark:bg-green-500/10 text-green-800 dark:text-green-400 ring-green-500/20",
+  purple: "bg-purple-800/10 dark:bg-purple-500/10 text-purple-800 dark:text-purple-400 ring-purple-500/20",
+  pink: "bg-pink-800/10 dark:bg-pink-500/10 text-pink-800 dark:text-pink-400 ring-pink-500/20",
+  orange: "bg-orange-800/10 dark:bg-orange-500/10 text-orange-800 dark:text-orange-400 ring-orange-500/20",
+  rose: "bg-rose-800/10 dark:bg-rose-500/10 text-rose-800 dark:text-rose-400 ring-rose-500/20",
+  cyan: "bg-cyan-800/10 dark:bg-cyan-500/10 text-cyan-800 dark:text-cyan-400 ring-cyan-500/20",
 };
 
 export function TechniquePageLayout({

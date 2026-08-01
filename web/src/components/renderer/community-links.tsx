@@ -195,7 +195,7 @@ export function CommunityLinks({
 
               {hasCitations && (
                 <div className="mt-3 space-y-2">
-                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground/60">
+                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                     Notable Publications
                   </p>
                   <ul className="space-y-1.5">
@@ -213,7 +213,7 @@ export function CommunityLinks({
                           />
                           <span>
                             {c.title}
-                            <span className="ml-1.5 text-xs text-muted-foreground/50">
+                            <span className="ml-1.5 text-xs text-muted-foreground">
                               ({c.year})
                             </span>
                           </span>

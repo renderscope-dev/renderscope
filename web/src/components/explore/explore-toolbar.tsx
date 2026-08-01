@@ -77,7 +77,7 @@ export function ExploreToolbar({
                 <span className="font-semibold text-foreground tabular-nums">
                   {filteredCount}
                 </span>
-                <span className="text-muted-foreground/60">
+                <span className="text-muted-foreground">
                   {" "}
                   / {totalCount}
                 </span>{" "}

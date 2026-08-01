@@ -272,7 +272,7 @@ export function ImageToggle({
                   zIndex: isActive ? 1 : 0,
                 }}
               >
-                <ImageOff className="h-8 w-8 text-muted-foreground/50" />
+                <ImageOff className="h-8 w-8 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">
                   Failed to load: {image.label}
                 </span>

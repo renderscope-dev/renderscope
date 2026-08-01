@@ -75,7 +75,7 @@ export function TaxonomyLegend({ nodes, className }: TaxonomyLegendProps) {
                 <span className="text-[11px] text-muted-foreground">
                   {label}
                 </span>
-                <span className="text-[10px] text-muted-foreground/50 ml-auto tabular-nums">
+                <span className="text-[10px] text-muted-foreground ml-auto tabular-nums">
                   {count}
                 </span>
               </div>

@@ -48,12 +48,11 @@ test.describe("Explore Page", () => {
   test("clicking a renderer card navigates to detail page", async ({
     page,
   }) => {
-    // Wait for cards to load
-    const firstCard = page.locator("article").first();
-    await expect(firstCard).toBeVisible({ timeout: 10000 });
+    // Renderer cards are anchors, not <article> elements — the old selector
+    // matched nothing and the test timed out waiting for it.
+    const cardLink = page.locator('a[href^="/renderer/"]').first();
+    await expect(cardLink).toBeVisible({ timeout: 10000 });
 
-    // Click the first card's link
-    const cardLink = firstCard.locator("a").first();
     const href = await cardLink.getAttribute("href");
     await cardLink.click();
 

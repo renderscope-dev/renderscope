@@ -59,11 +59,11 @@ export function SceneMetadata({ scene, className }: SceneMetadataProps) {
             "flex items-center gap-2 rounded-lg border border-border/50 bg-muted/30 px-3 py-2"
           )}
         >
-          <span className="shrink-0 text-muted-foreground/60">
+          <span className="shrink-0 text-muted-foreground">
             {stat.icon}
           </span>
           <div className="min-w-0">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground/50">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
               {stat.label}
             </p>
             <p className="truncate text-sm font-mono text-foreground/80">

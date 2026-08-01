@@ -45,7 +45,7 @@ export function RenderMetadataBar({
               {img.rendererName}
             </span>
             {isPlaceholder && (
-              <span className="shrink-0 rounded bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-medium text-amber-400">
+              <span className="shrink-0 rounded bg-amber-800/10 dark:bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-medium text-amber-800 dark:text-amber-400">
                 Sample
               </span>
             )}

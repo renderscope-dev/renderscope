@@ -36,7 +36,7 @@ export function RendererPickerDropdown({
         <p className="text-sm text-muted-foreground">
           No renderers match &ldquo;{query}&rdquo;
         </p>
-        <p className="mt-1 text-xs text-muted-foreground/60">
+        <p className="mt-1 text-xs text-muted-foreground">
           Try a different search term
         </p>
       </CommandEmpty>
@@ -57,7 +57,7 @@ export function RendererPickerDropdown({
               {/* Checkmark for selected items */}
               <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center">
                 {isSelected && (
-                  <Check className="h-4 w-4 text-emerald-400" />
+                  <Check className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
                 )}
               </div>
 
@@ -69,7 +69,7 @@ export function RendererPickerDropdown({
                   </span>
                   {renderer.github_stars != null &&
                     renderer.github_stars > 0 && (
-                      <span className="inline-flex items-center gap-0.5 text-xs text-muted-foreground/60">
+                      <span className="inline-flex items-center gap-0.5 text-xs text-muted-foreground">
                         <Star className="h-3 w-3" />
                         {formatStars(renderer.github_stars)}
                       </span>

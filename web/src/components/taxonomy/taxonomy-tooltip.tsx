@@ -93,7 +93,7 @@ function RendererTooltip({ node }: { node: GraphNode }) {
       </div>
       {node.githubStars !== undefined && (
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+          <Star className="h-3 w-3 fill-amber-400 text-amber-700 dark:text-amber-400" />
           <span>{formatStars(node.githubStars)}</span>
         </div>
       )}
@@ -105,7 +105,7 @@ function RendererTooltip({ node }: { node: GraphNode }) {
           <span className={status.color}>{status.label}</span>
         </div>
       )}
-      <p className="text-[11px] text-muted-foreground/60 pt-0.5">
+      <p className="text-[11px] text-muted-foreground pt-0.5">
         Click to view profile
       </p>
     </div>

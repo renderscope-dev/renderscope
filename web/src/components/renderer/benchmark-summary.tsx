@@ -71,7 +71,7 @@ export function BenchmarkSummary({
               </span>{" "}
               yet.
             </p>
-            <p className="text-xs text-muted-foreground/60 max-w-md mb-5">
+            <p className="text-xs text-muted-foreground max-w-md mb-5">
               Benchmarks will be added as more renderers are tested across our
               standard scene suite.
             </p>
@@ -257,7 +257,7 @@ export function BenchmarkSummary({
 
         {/* Metadata + CTA */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-muted-foreground/60">
+          <p className="text-xs text-muted-foreground">
             {sceneNames.length} scene{sceneNames.length !== 1 ? "s" : ""} tested
             on {hwProfiles.join(", ")}
           </p>

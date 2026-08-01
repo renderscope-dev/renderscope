@@ -154,7 +154,7 @@ export function MagnifiedPanel({
         {/* Error state */}
         {error && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-muted">
-            <ImageOff className="h-6 w-6 text-muted-foreground/50" />
+            <ImageOff className="h-6 w-6 text-muted-foreground" />
             <span className="text-xs text-muted-foreground">
               {image.label}
             </span>

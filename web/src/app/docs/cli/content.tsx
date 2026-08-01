@@ -27,7 +27,7 @@ export function CLIReferenceContent() {
 
       {/* CLI preview code block */}
       <motion.div
-        className="mt-12 overflow-hidden rounded-lg border border-border/50 bg-black/50"
+        className="mt-12 overflow-hidden rounded-lg border border-border/50 bg-zinc-950"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.2 }}
@@ -40,8 +40,8 @@ export function CLIReferenceContent() {
         <div className="p-4 font-mono text-sm">
           {cliCommands.map((line, i) => (
             <div key={i} className="py-0.5">
-              <span className="text-foreground/90">{line.cmd}</span>
-              <span className="ml-4 text-muted-foreground">
+              <span className="text-zinc-100">{line.cmd}</span>
+              <span className="ml-4 text-zinc-400">
                 # {line.comment}
               </span>
             </div>

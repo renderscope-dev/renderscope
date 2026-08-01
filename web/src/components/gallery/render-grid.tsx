@@ -69,7 +69,7 @@ export function RenderGrid({
           "flex items-start gap-3 rounded-lg border border-border/50 bg-muted/20 px-4 py-3"
         )}
       >
-        <Info className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground/60" />
+        <Info className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
         <p className="text-sm leading-relaxed text-muted-foreground">
           Benchmark renders are being prepared. These scenes will be rendered by
           each engine at standardized settings for fair comparison.

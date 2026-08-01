@@ -96,7 +96,7 @@ export function SchemaPageContent() {
             }}
           >
             <div className="mb-3 flex items-center gap-2.5">
-              <span className="text-sky-400">{s.icon}</span>
+              <span className="text-sky-700 dark:text-sky-400">{s.icon}</span>
               <h2 className="text-lg font-semibold text-foreground">
                 {s.title}
               </h2>
@@ -109,7 +109,7 @@ export function SchemaPageContent() {
                 <span className="font-medium text-muted-foreground">
                   Location:
                 </span>{" "}
-                <code className="rounded bg-zinc-900 px-1.5 py-0.5">
+                <code className="rounded bg-zinc-900 px-1.5 py-0.5 text-zinc-200">
                   {s.location}
                 </code>
               </p>
@@ -117,7 +117,7 @@ export function SchemaPageContent() {
                 <span className="font-medium text-muted-foreground">
                   Schema:
                 </span>{" "}
-                <code className="rounded bg-zinc-900 px-1.5 py-0.5">
+                <code className="rounded bg-zinc-900 px-1.5 py-0.5 text-zinc-200">
                   /schemas/{s.schema}
                 </code>
               </p>
@@ -148,7 +148,7 @@ export function SchemaPageContent() {
           See the{" "}
           <Link
             href="/docs/contributing"
-            className="text-sky-400 underline decoration-sky-400/30 underline-offset-2 hover:decoration-sky-400"
+            className="text-sky-700 dark:text-sky-400 underline decoration-sky-400/30 underline-offset-2 hover:decoration-sky-400"
           >
             Contributing guide
           </Link>{" "}

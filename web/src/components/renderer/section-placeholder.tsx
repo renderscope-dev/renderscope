@@ -30,7 +30,7 @@ export function SectionPlaceholder({
             aria-hidden="true"
           />
         )}
-        <h2 className="text-base font-semibold text-muted-foreground/60">
+        <h2 className="text-base font-semibold text-muted-foreground">
           {title}
         </h2>
       </div>

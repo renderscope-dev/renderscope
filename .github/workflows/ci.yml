@@ -147,15 +147,8 @@ jobs:
         # entirely (fixed in tests/fixtures/test-utils.ts) and still reports
         # low ratios axe does not; until the two agree it is not a trustworthy
         # gate. Tracked as follow-up work — see CHANGELOG.
-        # The axe suite is excluded for a third reason: components across the
-        # docs and learn pages hardcode dark-palette Tailwind classes
-        # (text-sky-400, text-green-400, text-zinc-300 ...) that drop to
-        # 1.4:1-2.0:1 when the light theme is active. Those are real defects,
-        # predate this commit, and need a colour-system fix rather than a test
-        # change. Restore `tests/e2e/accessibility` once they are addressed.
         run: >-
           npx playwright test tests/e2e tests/responsive tests/touch
-          --grep-invert "axe-core WCAG"
           --project=${{ matrix.project }}
         env:
           CI: true

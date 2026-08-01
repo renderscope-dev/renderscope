@@ -31,12 +31,12 @@ interface AtAGlanceCardProps {
 
 function BooleanIndicator({ value }: { value: boolean }) {
   return value ? (
-    <span className="flex items-center gap-1 text-emerald-400">
+    <span className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400">
       <Check className="h-3.5 w-3.5" aria-hidden="true" />
       <span>Yes</span>
     </span>
   ) : (
-    <span className="flex items-center gap-1 text-muted-foreground/50">
+    <span className="flex items-center gap-1 text-muted-foreground">
       <X className="h-3.5 w-3.5" aria-hidden="true" />
       <span>No</span>
     </span>
@@ -100,7 +100,7 @@ export function AtAGlanceCard({ renderer }: AtAGlanceCardProps) {
 
           <MetadataRow label="GPU Support" icon={Layers}>
             {renderer.gpu_support ? (
-              <span className="text-emerald-400">
+              <span className="text-emerald-700 dark:text-emerald-400">
                 Yes{gpuDisplay ? ` (${gpuDisplay})` : ""}
               </span>
             ) : (

@@ -21,8 +21,8 @@ const ICON_MAP = {
 const ACCENT_MAP: Record<string, { border: string; icon: string; badge: string }> = {
   amber: {
     border: "border-t-amber-500/60",
-    icon: "text-amber-400",
-    badge: "bg-amber-500/10 text-amber-400",
+    icon: "text-amber-700 dark:text-amber-400",
+    badge: "bg-amber-800/10 dark:bg-amber-500/10 text-amber-800 dark:text-amber-400",
   },
   teal: {
     border: "border-t-teal-500/60",
@@ -31,8 +31,8 @@ const ACCENT_MAP: Record<string, { border: string; icon: string; badge: string }
   },
   violet: {
     border: "border-t-violet-500/60",
-    icon: "text-violet-400",
-    badge: "bg-violet-500/10 text-violet-400",
+    icon: "text-violet-700 dark:text-violet-400",
+    badge: "bg-violet-800/10 dark:bg-violet-500/10 text-violet-800 dark:text-violet-400",
   },
 };
 

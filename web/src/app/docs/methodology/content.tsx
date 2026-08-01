@@ -43,7 +43,7 @@ function SectionTitle({
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      <span className="text-sky-400">{icon}</span>
+      <span className="text-sky-700 dark:text-sky-400">{icon}</span>
       {children}
     </motion.h2>
   );
@@ -70,9 +70,9 @@ function Callout({
       )}
     >
       {isWarning ? (
-        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
+        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-700 dark:text-amber-400" />
       ) : (
-        <Info className="mt-0.5 h-4 w-4 shrink-0 text-sky-400" />
+        <Info className="mt-0.5 h-4 w-4 shrink-0 text-sky-700 dark:text-sky-400" />
       )}
       <div className="text-sm leading-relaxed text-muted-foreground">
         {children}
@@ -265,7 +265,7 @@ export function MethodologyPageContent() {
                 ease: "easeOut",
               }}
             >
-              <div className="mb-2 text-sky-400">{p.icon}</div>
+              <div className="mb-2 text-sky-700 dark:text-sky-400">{p.icon}</div>
               <h3 className="mb-1.5 text-sm font-semibold text-foreground">
                 {p.title}
               </h3>
@@ -302,7 +302,7 @@ export function MethodologyPageContent() {
           <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Example Hardware Profile
           </h3>
-          <div className="space-y-1.5 font-mono text-sm text-zinc-300">
+          <div className="space-y-1.5 font-mono text-sm text-foreground">
             <p>
               <span className="text-muted-foreground">CPU: </span>AMD Ryzen 9
               7950X (16 cores / 32 threads)
@@ -612,7 +612,7 @@ export function MethodologyPageContent() {
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
           <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold text-foreground">
-            <Timer className="h-4 w-4 text-sky-400" />
+            <Timer className="h-4 w-4 text-sky-700 dark:text-sky-400" />
             Render Time
           </h3>
           <Prose>
@@ -644,7 +644,7 @@ export function MethodologyPageContent() {
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
           <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold text-foreground">
-            <MemoryStick className="h-4 w-4 text-sky-400" />
+            <MemoryStick className="h-4 w-4 text-sky-700 dark:text-sky-400" />
             Peak Memory
           </h3>
           <Prose>
@@ -709,7 +709,7 @@ export function MethodologyPageContent() {
                     linked from its{" "}
                     <Link
                       href="/explore"
-                      className="text-sky-400 underline decoration-sky-400/30 underline-offset-2 hover:decoration-sky-400"
+                      className="text-sky-700 dark:text-sky-400 underline decoration-sky-400/30 underline-offset-2 hover:decoration-sky-400"
                     >
                       RenderScope profile page
                     </Link>

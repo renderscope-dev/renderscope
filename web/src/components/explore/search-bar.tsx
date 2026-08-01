@@ -96,7 +96,7 @@ export function SearchBar({
         className={cn(
           "h-10 pl-10 pr-20 w-full",
           "bg-muted/50 border-border/50",
-          "placeholder:text-muted-foreground/60",
+          "placeholder:text-muted-foreground",
           "focus-visible:ring-1 focus-visible:ring-ring focus-visible:border-border",
           "transition-colors duration-200"
         )}

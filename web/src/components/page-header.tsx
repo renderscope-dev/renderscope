@@ -23,14 +23,14 @@ const accentGradients: Record<string, string> = {
 };
 
 const accentBadgeColors: Record<string, string> = {
-  blue: "bg-blue-500/10 text-blue-400 ring-blue-500/20",
-  purple: "bg-purple-500/10 text-purple-400 ring-purple-500/20",
-  emerald: "bg-emerald-500/10 text-emerald-400 ring-emerald-500/20",
-  orange: "bg-orange-500/10 text-orange-400 ring-orange-500/20",
-  amber: "bg-amber-500/10 text-amber-400 ring-amber-500/20",
-  sky: "bg-sky-500/10 text-sky-400 ring-sky-500/20",
-  rose: "bg-rose-500/10 text-rose-400 ring-rose-500/20",
-  pink: "bg-pink-500/10 text-pink-400 ring-pink-500/20",
+  blue: "bg-blue-800/10 dark:bg-blue-500/10 text-blue-800 dark:text-blue-400 ring-blue-500/20",
+  purple: "bg-purple-800/10 dark:bg-purple-500/10 text-purple-800 dark:text-purple-400 ring-purple-500/20",
+  emerald: "bg-emerald-800/10 dark:bg-emerald-500/10 text-emerald-800 dark:text-emerald-400 ring-emerald-500/20",
+  orange: "bg-orange-800/10 dark:bg-orange-500/10 text-orange-800 dark:text-orange-400 ring-orange-500/20",
+  amber: "bg-amber-800/10 dark:bg-amber-500/10 text-amber-800 dark:text-amber-400 ring-amber-500/20",
+  sky: "bg-sky-800/10 dark:bg-sky-500/10 text-sky-800 dark:text-sky-400 ring-sky-500/20",
+  rose: "bg-rose-800/10 dark:bg-rose-500/10 text-rose-800 dark:text-rose-400 ring-rose-500/20",
+  pink: "bg-pink-800/10 dark:bg-pink-500/10 text-pink-800 dark:text-pink-400 ring-pink-500/20",
 };
 
 const accentIconColors: Record<string, string> = {

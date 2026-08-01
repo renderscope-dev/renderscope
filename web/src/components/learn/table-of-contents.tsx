@@ -11,13 +11,13 @@ interface TableOfContentsProps {
 }
 
 const accentActiveColors: Record<string, string> = {
-  blue: "text-blue-400 border-blue-400",
-  green: "text-green-400 border-green-400",
-  purple: "text-purple-400 border-purple-400",
-  pink: "text-pink-400 border-pink-400",
-  orange: "text-orange-400 border-orange-400",
-  rose: "text-rose-400 border-rose-400",
-  cyan: "text-cyan-400 border-cyan-400",
+  blue: "text-blue-700 dark:text-blue-400 border-blue-400",
+  green: "text-green-700 dark:text-green-400 border-green-400",
+  purple: "text-purple-700 dark:text-purple-400 border-purple-400",
+  pink: "text-pink-700 dark:text-pink-400 border-pink-400",
+  orange: "text-orange-700 dark:text-orange-400 border-orange-400",
+  rose: "text-rose-700 dark:text-rose-400 border-rose-400",
+  cyan: "text-cyan-700 dark:text-cyan-400 border-cyan-400",
 };
 
 export function TableOfContents({
@@ -28,7 +28,7 @@ export function TableOfContents({
   const [isOpen, setIsOpen] = useState(false);
 
   const activeStyle =
-    accentActiveColors[accentColor] ?? "text-blue-400 border-blue-400";
+    accentActiveColors[accentColor] ?? "text-blue-700 dark:text-blue-400 border-blue-400";
 
   const handleObserver = useCallback(() => {
     const observer = new IntersectionObserver(

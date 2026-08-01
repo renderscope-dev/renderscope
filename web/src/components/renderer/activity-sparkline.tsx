@@ -62,7 +62,7 @@ export function ActivitySparkline({
           className="h-5 w-5 shrink-0 text-muted-foreground/40"
           aria-hidden="true"
         />
-        <p className="text-sm text-muted-foreground/60">
+        <p className="text-sm text-muted-foreground">
           Commit activity data is not available for this renderer.
         </p>
       </div>

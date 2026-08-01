@@ -123,7 +123,7 @@ function Callout({
         className
       )}
     >
-      <Info className="mt-0.5 h-4 w-4 shrink-0 text-sky-400" />
+      <Info className="mt-0.5 h-4 w-4 shrink-0 text-sky-700 dark:text-sky-400" />
       <p className="text-sm leading-relaxed text-muted-foreground">
         {children}
       </p>
@@ -153,7 +153,7 @@ function SectionTitle({
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      <span className="text-sky-400">{icon}</span>
+      <span className="text-sky-700 dark:text-sky-400">{icon}</span>
       {children}
     </motion.h2>
   );
@@ -189,14 +189,14 @@ export function ContributingPageContent() {
               ease: "easeOut",
             }}
           >
-            <div className="text-sky-400">{p.icon}</div>
+            <div className="text-sky-700 dark:text-sky-400">{p.icon}</div>
             <div className="flex-1">
               <h2 className="mb-1 text-sm font-semibold text-foreground group-hover:text-primary">
                 {p.title}
               </h2>
               <p className="text-xs text-muted-foreground">{p.description}</p>
             </div>
-            <ArrowDown className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground transition-colors group-hover:text-sky-400" />
+            <ArrowDown className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground transition-colors group-hover:text-sky-700 dark:text-sky-400" />
           </motion.a>
         ))}
       </div>
@@ -262,7 +262,7 @@ export function ContributingPageContent() {
                     See the{" "}
                     <Link
                       href="/docs/schema"
-                      className="text-sky-400 underline decoration-sky-400/30 underline-offset-2 hover:decoration-sky-400"
+                      className="text-sky-700 dark:text-sky-400 underline decoration-sky-400/30 underline-offset-2 hover:decoration-sky-400"
                     >
                       Data Schema documentation
                     </Link>{" "}
@@ -416,7 +416,7 @@ export function ContributingPageContent() {
           See the{" "}
           <Link
             href="/docs/methodology"
-            className="text-sky-400 underline decoration-sky-400/30 underline-offset-2 hover:decoration-sky-400"
+            className="text-sky-700 dark:text-sky-400 underline decoration-sky-400/30 underline-offset-2 hover:decoration-sky-400"
           >
             Methodology page
           </Link>{" "}
@@ -461,7 +461,7 @@ export function ContributingPageContent() {
             href={`${siteConfig.github}/issues/new/choose`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-sky-500/30 bg-sky-500/10 px-4 py-2.5 text-sm font-medium text-sky-400 transition-colors hover:border-sky-500/50 hover:bg-sky-500/15"
+            className="inline-flex items-center gap-2 rounded-lg border border-sky-800/30 dark:border-sky-500/30 bg-sky-800/10 dark:bg-sky-500/10 px-4 py-2.5 text-sm font-medium text-sky-800 dark:text-sky-400 transition-colors hover:border-sky-800/50 dark:border-sky-500/50 hover:bg-sky-800/15 dark:bg-sky-500/15"
           >
             <Github className="h-4 w-4" />
             Open an Issue on GitHub
@@ -629,7 +629,7 @@ export function ContributingPageContent() {
             href={`${siteConfig.github}/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sky-400 underline decoration-sky-400/30 underline-offset-2 hover:decoration-sky-400"
+            className="text-sky-700 dark:text-sky-400 underline decoration-sky-400/30 underline-offset-2 hover:decoration-sky-400"
           >
             good first issue
           </a>{" "}

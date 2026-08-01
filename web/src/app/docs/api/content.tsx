@@ -33,7 +33,7 @@ export function APIReferenceContent() {
 
       {/* Code example block */}
       <motion.div
-        className="mt-12 overflow-hidden rounded-lg border border-border/50 bg-black/50"
+        className="mt-12 overflow-hidden rounded-lg border border-border/50 bg-zinc-950"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.2 }}
@@ -43,7 +43,7 @@ export function APIReferenceContent() {
           <div className="h-3 w-3 rounded-full bg-yellow-500/60" />
           <div className="h-3 w-3 rounded-full bg-green-500/60" />
         </div>
-        <pre role="region" aria-label="Code example" tabIndex={0} className="overflow-x-auto p-4 font-mono text-sm text-foreground/90">
+        <pre role="region" aria-label="Code example" tabIndex={0} className="overflow-x-auto p-4 font-mono text-sm text-zinc-100">
           {codeExample}
         </pre>
       </motion.div>

@@ -25,13 +25,13 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 };
 
 const accentTextColors: Record<string, string> = {
-  blue: "text-blue-400",
-  green: "text-green-400",
-  purple: "text-purple-400",
-  pink: "text-pink-400",
-  orange: "text-orange-400",
-  rose: "text-rose-400",
-  cyan: "text-cyan-400",
+  blue: "text-blue-700 dark:text-blue-400",
+  green: "text-green-700 dark:text-green-400",
+  purple: "text-purple-700 dark:text-purple-400",
+  pink: "text-pink-700 dark:text-pink-400",
+  orange: "text-orange-700 dark:text-orange-400",
+  rose: "text-rose-700 dark:text-rose-400",
+  cyan: "text-cyan-700 dark:text-cyan-400",
 };
 
 const accentBorderColors: Record<string, string> = {
@@ -61,7 +61,7 @@ interface TechniqueCardProps {
 
 export function TechniqueCard({ technique, index }: TechniqueCardProps) {
   const Icon = iconMap[technique.icon];
-  const textColor = accentTextColors[technique.accentColor] ?? "text-blue-400";
+  const textColor = accentTextColors[technique.accentColor] ?? "text-blue-700 dark:text-blue-400";
   const borderHover =
     accentBorderColors[technique.accentColor] ?? "hover:border-blue-500/40";
   const glowHover =

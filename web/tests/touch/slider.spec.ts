@@ -1,6 +1,16 @@
 import { test, expect } from "@playwright/test";
 import { navigateAndWait } from "../fixtures/test-utils";
 
+// No project enabled touch emulation, so `locator.tap()` threw "The page does
+// not support tap" everywhere. Touch emulation now belongs to the mobile and
+// tablet projects (see playwright.config.ts); these specs skip on the desktop
+// projects, where a touch gesture is not something a user can perform.
+test.skip(
+  ({ hasTouch }) => !hasTouch,
+  "Touch gestures only apply to touch-capable projects"
+);
+
+
 /**
  * Touch interaction tests for the image comparison slider.
  * Verifies that the slider handle responds to touch drag gestures.

@@ -276,7 +276,7 @@ export function RegionZoom({
           {/* Error state */}
           {overviewError && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-muted">
-              <ImageOff className="h-8 w-8 text-muted-foreground/50" />
+              <ImageOff className="h-8 w-8 text-muted-foreground" />
               <span className="text-sm text-muted-foreground">
                 Failed to load image
               </span>

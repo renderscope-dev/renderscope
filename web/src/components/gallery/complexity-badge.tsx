@@ -12,23 +12,23 @@ const complexityConfig: Record<
 > = {
   trivial: {
     label: "Trivial",
-    className: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20",
+    className: "text-emerald-800 dark:text-emerald-400 bg-emerald-800/10 dark:bg-emerald-400/10 border-emerald-800/20 dark:border-emerald-400/20",
   },
   low: {
     label: "Low",
-    className: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20",
+    className: "text-emerald-800 dark:text-emerald-400 bg-emerald-800/10 dark:bg-emerald-400/10 border-emerald-800/20 dark:border-emerald-400/20",
   },
   medium: {
     label: "Medium",
-    className: "text-amber-400 bg-amber-400/10 border-amber-400/20",
+    className: "text-amber-800 dark:text-amber-400 bg-amber-800/10 dark:bg-amber-400/10 border-amber-800/20 dark:border-amber-400/20",
   },
   high: {
     label: "High",
-    className: "text-rose-400 bg-rose-400/10 border-rose-400/20",
+    className: "text-rose-800 dark:text-rose-400 bg-rose-800/10 dark:bg-rose-400/10 border-rose-800/20 dark:border-rose-400/20",
   },
   extreme: {
     label: "Extreme",
-    className: "text-red-400 bg-red-400/10 border-red-400/20",
+    className: "text-red-800 dark:text-red-400 bg-red-800/10 dark:bg-red-400/10 border-red-800/20 dark:border-red-400/20",
   },
 };
 

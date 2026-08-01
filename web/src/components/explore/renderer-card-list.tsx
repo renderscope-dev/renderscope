@@ -74,7 +74,7 @@ export function RendererCardList({
             />
           </div>
 
-          <ArrowRight className="h-4 w-4 text-muted-foreground/50 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
+          <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
         </article>
       </Link>
     </motion.div>

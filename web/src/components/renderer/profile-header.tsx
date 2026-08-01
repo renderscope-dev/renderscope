@@ -70,7 +70,7 @@ export function ProfileHeader({ renderer }: ProfileHeaderProps) {
               variant="secondary"
               className={cn(
                 "gap-1 text-xs font-medium",
-                "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                "bg-emerald-800/10 dark:bg-emerald-500/10 text-emerald-800 dark:text-emerald-400 border-emerald-800/20 dark:border-emerald-500/20"
               )}
             >
               <Gpu className="h-3 w-3" aria-hidden="true" />

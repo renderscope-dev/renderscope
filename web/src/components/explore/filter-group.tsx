@@ -88,7 +88,7 @@ export function FilterGroup({
                 "text-xs tabular-nums shrink-0",
                 isSelected
                   ? "text-foreground/70 font-medium"
-                  : "text-muted-foreground/60"
+                  : "text-muted-foreground"
               )}
             >
               {option.count}

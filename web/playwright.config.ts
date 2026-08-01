@@ -79,6 +79,9 @@ export default defineConfig({
       use: {
         browserName: "chromium",
         viewport: VIEWPORTS.tablet,
+        // These projects emulate touch devices; without this, tap and
+        // touchscreen gestures throw instead of running.
+        hasTouch: true,
       },
     },
     {
@@ -102,6 +105,9 @@ export default defineConfig({
       use: {
         browserName: "firefox",
         viewport: VIEWPORTS.mobile,
+        // These projects emulate touch devices; without this, tap and
+        // touchscreen gestures throw instead of running.
+        hasTouch: true,
       },
     },
     {

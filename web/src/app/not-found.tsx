@@ -7,7 +7,7 @@ export default function NotFound() {
       <div className="space-y-4">
         <SearchX className="mx-auto h-16 w-16 text-rose-500/50" />
 
-        <p className="text-6xl font-bold text-foreground/20 sm:text-8xl">404</p>
+        <p aria-hidden="true" className="text-6xl font-bold text-foreground/20 sm:text-8xl">404</p>
 
         <div className="mx-auto h-px w-12 bg-gradient-to-r from-rose-500 to-rose-400" />
 

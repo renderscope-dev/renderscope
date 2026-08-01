@@ -26,7 +26,7 @@ export function PlaceholderBadge({ className }: PlaceholderBadgeProps) {
             className={cn(
               "inline-flex items-center gap-1.5 rounded-full",
               "border border-amber-500/30 bg-amber-500/10 px-3 py-1",
-              "text-xs font-medium text-amber-400",
+              "text-xs font-medium text-amber-700 dark:text-amber-400",
               "backdrop-blur-sm transition-colors hover:bg-amber-500/15",
               className
             )}

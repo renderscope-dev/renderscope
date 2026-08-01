@@ -83,11 +83,11 @@ export function EditorialSection({
           <div className="rounded-lg border-l-4 border-emerald-500/70 bg-emerald-500/[0.06] px-5 py-4">
             <div className="flex items-start gap-3">
               <Lightbulb
-                className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400"
+                className="mt-0.5 h-4 w-4 shrink-0 text-emerald-700 dark:text-emerald-400"
                 aria-hidden="true"
               />
               <div>
-                <p className="text-xs font-medium uppercase tracking-wider text-emerald-400 mb-1">
+                <p className="text-xs font-medium uppercase tracking-wider text-emerald-700 dark:text-emerald-400 mb-1">
                   Best for
                 </p>
                 <p className="text-sm font-medium text-foreground leading-relaxed">
@@ -101,11 +101,11 @@ export function EditorialSection({
             <div className="rounded-lg border-l-4 border-amber-500/50 bg-amber-500/[0.04] px-5 py-4">
               <div className="flex items-start gap-3">
                 <ShieldAlert
-                  className="mt-0.5 h-4 w-4 shrink-0 text-amber-400/80"
+                  className="mt-0.5 h-4 w-4 shrink-0 text-amber-700 dark:text-amber-400/80"
                   aria-hidden="true"
                 />
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-amber-400/80 mb-1">
+                  <p className="text-xs font-medium uppercase tracking-wider text-amber-700 dark:text-amber-400/80 mb-1">
                     Not ideal for
                   </p>
                   <p className="text-sm text-muted-foreground leading-relaxed">
@@ -123,7 +123,7 @@ export function EditorialSection({
           <div>
             <div className="flex items-center gap-2 mb-4">
               <CheckCircle2
-                className="h-4 w-4 text-emerald-400"
+                className="h-4 w-4 text-emerald-700 dark:text-emerald-400"
                 aria-hidden="true"
               />
               <h3 className="text-base font-semibold text-foreground">
@@ -149,7 +149,7 @@ export function EditorialSection({
           <div>
             <div className="flex items-center gap-2 mb-4">
               <AlertTriangle
-                className="h-4 w-4 text-amber-400"
+                className="h-4 w-4 text-amber-700 dark:text-amber-400"
                 aria-hidden="true"
               />
               <h3 className="text-base font-semibold text-foreground">

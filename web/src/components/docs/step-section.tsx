@@ -27,7 +27,7 @@ export function StepSection({ steps, className }: StepSectionProps) {
         >
           {/* Vertical connector line */}
           <div className="flex flex-col items-center">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-sky-500/30 bg-sky-500/10 text-sm font-semibold text-sky-400">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-sky-800/30 dark:border-sky-500/30 bg-sky-800/10 dark:bg-sky-500/10 text-sm font-semibold text-sky-800 dark:text-sky-400">
               {index + 1}
             </div>
             {index < steps.length - 1 && (

@@ -97,7 +97,7 @@ function CopyButton({ text }: { text: string }) {
       aria-label="Copy to clipboard"
     >
       {copied ? (
-        <Check className="h-4 w-4 text-emerald-400" />
+        <Check className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
       ) : (
         <Copy className="h-4 w-4" />
       )}
@@ -122,7 +122,7 @@ function InstallChip({ icon, command }: { icon: React.ReactNode; command: string
       {icon}
       <span>{command}</span>
       {copied ? (
-        <Check className="h-3.5 w-3.5 text-emerald-400" />
+        <Check className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-400" />
       ) : (
         <Copy className="h-3.5 w-3.5 opacity-50" />
       )}
@@ -358,7 +358,7 @@ export function HomePageContent({
       {/* ── Quick Start Terminal Section ──────────────────────────── */}
       <section className="mx-auto w-full max-w-6xl px-4 pb-20 sm:px-6 lg:px-8">
         <motion.div
-          className="overflow-hidden rounded-lg border border-border/50 bg-black/50"
+          className="overflow-hidden rounded-lg border border-border/50 bg-zinc-950"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
@@ -378,7 +378,7 @@ export function HomePageContent({
           <div className="p-4 font-mono text-sm">
             {terminalLines.map((line, i) => (
               <div key={i} className="py-0.5">
-                <span className="mr-2 text-emerald-400">$</span>
+                <span className="mr-2 text-emerald-700 dark:text-emerald-400">$</span>
                 <span className="text-foreground/90">{line}</span>
               </div>
             ))}

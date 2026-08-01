@@ -34,12 +34,12 @@ export function CitationCard({
     >
       {/* Header */}
       <div className="flex items-center gap-2.5 border-b border-border/40 px-5 py-3.5">
-        <span className="text-sky-400">{icon}</span>
+        <span className="text-sky-700 dark:text-sky-400">{icon}</span>
         <h3 className="text-sm font-semibold text-foreground">{title}</h3>
       </div>
 
       {/* Citation body */}
-      <div className="relative flex-1 overflow-x-auto bg-zinc-950/50 p-4 pr-12">
+      <div className="relative flex-1 overflow-x-auto bg-zinc-950 p-4 pr-12">
         <div className="absolute right-2 top-2 z-10">
           <CopyButton text={citation} />
         </div>

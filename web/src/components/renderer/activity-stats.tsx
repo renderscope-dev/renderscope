@@ -87,7 +87,7 @@ export function ActivityStats({
           <StatItem
             icon={
               <Star
-                className="h-4 w-4 fill-amber-400/80 text-amber-400/80"
+                className="h-4 w-4 fill-amber-400/80 text-amber-700 dark:text-amber-400/80"
                 aria-hidden="true"
               />
             }
@@ -117,7 +117,7 @@ export function ActivityStats({
           <StatItem
             icon={
               <Tag
-                className="h-4 w-4 text-muted-foreground/60"
+                className="h-4 w-4 text-muted-foreground"
                 aria-hidden="true"
               />
             }
@@ -147,7 +147,7 @@ export function ActivityStats({
           <StatItem
             icon={
               <Users
-                className="h-4 w-4 text-muted-foreground/60"
+                className="h-4 w-4 text-muted-foreground"
                 aria-hidden="true"
               />
             }

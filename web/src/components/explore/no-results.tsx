@@ -12,9 +12,9 @@ export function NoResults({ query, hasFilters, onClearAll }: NoResultsProps) {
     <div className="flex flex-col items-center justify-center py-24 text-center">
       <div className="rounded-full bg-muted/50 p-5 mb-5">
         {hasFilters ? (
-          <FilterX className="h-8 w-8 text-muted-foreground/50" />
+          <FilterX className="h-8 w-8 text-muted-foreground" />
         ) : (
-          <Search className="h-8 w-8 text-muted-foreground/50" />
+          <Search className="h-8 w-8 text-muted-foreground" />
         )}
       </div>
 
