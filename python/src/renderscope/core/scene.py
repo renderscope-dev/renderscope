@@ -111,6 +111,25 @@ class SceneInfo(BaseModel):
     reference: SceneReference | None = None
     camera: CameraInfo
     download_size_mb: float
+
+    # --- Download sources (all optional; populated as hosting is provisioned) ---
+    # Explicit, fully-qualified URL to the scene's archive.  Takes precedence
+    # over ``archive`` + a configured base URL.  Supports ``http(s)://`` and
+    # ``file://`` schemes.
+    archive_url: str | None = None
+    # Archive filename or path relative to a configured base URL
+    # (see ``SceneDownloader`` / ``RENDERSCOPE_SCENE_BASE_URL``).  Defaults to
+    # ``<id>.tar.gz`` when neither this nor ``archive_url`` is set.
+    archive: str | None = None
+    # Expected SHA-256 (hex) of the downloaded archive.  When present, the
+    # downloader verifies integrity and refuses to install a mismatched file.
+    sha256: str | None = None
+    # Name to save the download under when the source is a single file rather
+    # than an archive.  The Stanford Bunny, for example, is published as a bare
+    # ``bunny.obj``; this records that it belongs at ``stanford-bunny.obj`` so
+    # the path in ``formats`` resolves.
+    filename: str | None = None
+
     is_downloaded: bool = False  # Set dynamically by SceneManager
 
 
@@ -249,6 +268,22 @@ class SceneManager:
         if not compatible:
             return None
 
+        # A manifest entry promises a path, not a file. Converted formats in
+        # particular (the .glb variants produced by scripts/convert_to_gltf.py)
+        # ship with no upstream download, so choosing one would hand the adapter
+        # a path that does not exist and surface as an obscure render failure.
+        #
+        # Once a scene is downloaded, what is on disk is the truth: report a
+        # renderer as incompatible rather than letting it fail later. Before
+        # download there is nothing to inspect, so the declared set stands —
+        # `benchmark --dry-run` still needs to reason about the run matrix.
+        if self.is_downloaded(scene_id):
+            compatible = {
+                fmt for fmt in compatible if (self._scenes_dir / scene.formats[fmt]).is_file()
+            }
+            if not compatible:
+                return None
+
         # Prefer native scene formats over generic ones.
         native_priority = ["pbrt", "mitsuba_xml", "xml", "blend"]
         for native in native_priority:
@@ -293,6 +328,18 @@ class SceneManager:
         marker = self._scenes_dir / scene_id / _COMPLETE_MARKER
         if marker.is_file():
             marker.unlink()
+
+    def remove_scene(self, scene_id: str) -> None:
+        """Delete a scene's entire local directory, if present.
+
+        Used for a clean re-download: removing the directory (rather than just
+        the marker) guarantees stale files from a previous archive don't linger.
+        """
+        import shutil
+
+        scene_dir = self._scenes_dir / scene_id
+        if scene_dir.exists():
+            shutil.rmtree(scene_dir)
 
     # ------------------------------------------------------------------
     # Manifest loading

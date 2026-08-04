@@ -29,9 +29,10 @@ test.describe("Benchmarks Page", () => {
   });
 
   test("methodology section exists", async ({ page }) => {
-    // Scroll down to find methodology
-    const methodology = page.locator("text=/Methodology|methodology/i");
-    const count = await methodology.count();
-    expect(count).toBeGreaterThan(0);
+    // `count()` samples the DOM once with no retry, so this raced hydration and
+    // failed intermittently on the slower WebKit runners in CI. `toBeAttached`
+    // asserts the same thing — the section is present — but waits for it.
+    const methodology = page.locator("text=/methodology/i").first();
+    await expect(methodology).toBeAttached();
   });
 });

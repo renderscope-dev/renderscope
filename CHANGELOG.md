@@ -7,6 +7,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — benchmark scenes can now be downloaded
+
+`renderscope download-scenes` could not acquire a single one of the seven
+scenes. It created empty directory scaffolding, printed "Scene hosting not yet
+available" for every entry, and exited — so `benchmark` reported every scene as
+missing, `publish` had nothing to convert, and `data/benchmarks/` held one
+record measured on the maintainer's own machine.
+
+No hosting was needed. The upstream URLs already existed in the repository, in
+`scripts/acquire_scenes.py` and the `downloads` maps of `data/scenes/*.json`;
+the manifest the CLI actually reads had none of them.
+
+- Wired `archive_url` and a verified `sha256` for **cornell-box, sponza,
+  stanford-bunny, and veach-mis**. Each archive was downloaded and its internal
+  layout checked against the paths in `formats` before being declared working,
+  and each checksum was computed from the artifact that was fetched.
+- Added `filename` to the manifest schema, for sources published as a single
+  loose file. The Stanford Bunny ships as a bare `bunny.obj`, which the
+  downloader previously rejected as an unsupported archive.
+- `get_compatible_format` now believes what is on disk. The `.glb` variants are
+  produced by `scripts/convert_to_gltf.py` and ship with no upstream download,
+  so selecting one handed the adapter a path that did not exist. Once a scene is
+  downloaded, an absent format is reported as incompatible; before download the
+  declared set still stands, so `benchmark --dry-run` reasons correctly.
+- `benchmark` gained `--scenes-dir`. It constructed a bare `SceneManager`, so it
+  only ever looked in `~/.renderscope/scenes/` — scenes downloaded with
+  `download-scenes --output-dir` elsewhere were reported as missing.
+- The mock adapter wrote through PIL, which cannot save `.exr` — the extension
+  the benchmark runner uses — so `benchmark --renderer mock` crashed with
+  "unknown file extension". It now writes through the package's own image
+  writer.
+
+**Three scenes remain manual, honestly reported rather than silently broken.**
+`download.blender.org/demo/*` now returns 403 to every user agent, so the
+`classroom` and `bmw` URLs in `scripts/acquire_scenes.py` are dead; their
+`source_url` now points at the Blender demo-files page that does work. The
+`san-miguel` archive is 535 MB and its internal layout was not verified, so no
+`archive_url` is claimed for it. In all three cases `download-scenes` reports
+the source and the directory to place files in, which is what it already did.
+
+Verified end to end against live upstream: `download-scenes` (checksums
+enforced) → `benchmark --scenes-dir` → `--publish-dir` → a record with zero
+`benchmark.schema.json` violations.
+
 ### Fixed — CI had been red on every commit since 2026-03-19
 
 - **The weekly catalog refresh had never once succeeded.** All 19 retained runs
@@ -63,14 +107,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and CI runs on Linux, so every comparison fails with "A snapshot doesn't
   exist". Run the new **Update Visual Baselines** workflow to generate the Linux
   set, then re-add `tests/visual` to the Playwright step in `ci.yml`.
-- `tests/e2e/accessibility` is excluded from the blocking cross-browser matrix.
-  Components across the docs and learn pages hardcode dark-palette Tailwind
-  classes (`text-sky-400`, `text-green-400`, `text-zinc-300`, `text-amber-400`,
-  `text-emerald-400`, `text-cyan-400`) which fall to between 1.37:1 and 2.01:1
-  when the light theme is active — genuine WCAG AA failures that predate this
-  commit. They need a colour-system fix (semantic tokens that adapt per theme),
-  not a test change. The nine technique/terminal violations that *were* fixed
-  here are unrelated to these.
+- The mobile and tablet Playwright projects (which run only on push to `main`)
+  have pre-existing failures, including a genuine responsive bug: the compare
+  feature matrix (`table.w-full`) overflows horizontally at a 320px viewport.
 - `tests/theme` is excluded from CI: its `checkTextContrast` helper disagrees
   with axe-core, which reports zero violations on the same pages. The helper
   discarded the alpha channel entirely — reporting a contrast ratio of exactly

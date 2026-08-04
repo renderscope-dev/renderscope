@@ -15,10 +15,10 @@ import time
 from typing import TYPE_CHECKING
 
 import numpy as np
-from PIL import Image
 
 from renderscope.adapters.base import RendererAdapter
 from renderscope.core.runner import RenderResultBuilder
+from renderscope.utils.image_io import save_image
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -84,10 +84,15 @@ class MockRendererAdapter(RendererAdapter):
         if self._sleep_seconds > 0:
             time.sleep(self._sleep_seconds)
 
-        # Generate a deterministic solid-color image
-        arr = np.full((height, width, 3), 128, dtype=np.uint8)
+        # Generate a deterministic mid-grey image.
+        #
+        # Written through the package's own image writer rather than PIL: the
+        # benchmark runner names its outputs `.exr`, which PIL cannot save, so
+        # `renderscope benchmark --renderer mock` failed with "unknown file
+        # extension" before reaching any of the surrounding pipeline.
+        arr = np.full((height, width, 3), 0.5, dtype=np.float32)
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        Image.fromarray(arr, mode="RGB").save(str(output_path))
+        save_image(arr, output_path)
 
         builder = RenderResultBuilder(
             renderer=self.name,

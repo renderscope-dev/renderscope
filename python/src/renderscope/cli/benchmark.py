@@ -246,6 +246,15 @@ def benchmark_cmd(
         "--results-dir",
         help="Directory for rendered images and artifacts.",
     ),
+    scenes_dir: Path | None = typer.Option(
+        None,
+        "--scenes-dir",
+        help=(
+            "Directory holding downloaded scenes. Must match the "
+            "'download-scenes --output-dir' you used. Defaults to "
+            "~/.renderscope/scenes/."
+        ),
+    ),
     publish_dir: Path | None = typer.Option(
         None,
         "--publish-dir",
@@ -308,7 +317,7 @@ def benchmark_cmd(
     from renderscope.core.registry import registry
     from renderscope.core.scene import SceneManager
 
-    scene_manager = SceneManager()
+    scene_manager = SceneManager(scenes_dir=scenes_dir)
     runner = BenchmarkRunner(
         scene_manager=scene_manager,
         registry=registry,

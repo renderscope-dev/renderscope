@@ -169,6 +169,9 @@ SCENE_SOURCES: list[SceneSource] = [
         name="Classroom",
         urls=[
             DownloadEntry(
+                # NOTE: download.blender.org/demo/* now returns 403 to every
+                # user agent. Obtain this scene from
+                # https://www.blender.org/download/demo-files/ by hand.
                 url="https://download.blender.org/demo/test/classroom.zip",
                 filename="classroom.zip",
                 extract=True,
@@ -182,6 +185,9 @@ SCENE_SOURCES: list[SceneSource] = [
         name="BMW M6",
         urls=[
             DownloadEntry(
+                # NOTE: download.blender.org/demo/* now returns 403 to every
+                # user agent. Obtain this scene from
+                # https://www.blender.org/download/demo-files/ by hand.
                 url="https://download.blender.org/demo/test/BMW27.blend.zip",
                 filename="bmw.zip",
                 extract=True,

@@ -11,6 +11,7 @@ from renderscope.core.scene import (
     FormatNotAvailableError,
     SceneInfo,
     SceneManager,
+    SceneManifest,
     SceneNotDownloadedError,
     SceneNotFoundError,
 )
@@ -363,3 +364,126 @@ class TestBundledManifest:
             assert scene.polygon_count > 0
             assert len(scene.formats) > 0
             assert scene.camera.fov > 0
+
+
+class TestFormatPresence:
+    """A manifest entry promises a path, not a file.
+
+    The `.glb` variants are produced by `scripts/convert_to_gltf.py` and ship
+    with no upstream download, so selecting one handed the adapter a path that
+    did not exist and surfaced as an obscure render failure.
+    """
+
+    @staticmethod
+    def _manager(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> SceneManager:
+        manifest = {
+            "version": "1.0",
+            "scenes": [
+                {
+                    "id": "demo",
+                    "name": "Demo",
+                    "description": "d",
+                    "source": "s",
+                    "source_url": "https://example.com",
+                    "polygon_count": 1,
+                    "tests": [],
+                    "complexity": "simple",
+                    "formats": {"obj": "demo/demo.obj", "glb": "demo/demo.glb"},
+                    "camera": {
+                        "position": [0, 0, 1],
+                        "target": [0, 0, 0],
+                        "up": [0, 1, 0],
+                        "fov": 45,
+                    },
+                    "download_size_mb": 0.1,
+                }
+            ],
+        }
+
+        @staticmethod  # type: ignore[misc]
+        def _load() -> SceneManifest:
+            return SceneManifest.model_validate(manifest)
+
+        monkeypatch.setattr(SceneManager, "_load_manifest", _load)
+        scenes_dir = tmp_path / "scenes"
+        scenes_dir.mkdir()
+        return SceneManager(scenes_dir=scenes_dir)
+
+    def test_prefers_a_format_that_exists_on_disk(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        manager = self._manager(tmp_path, monkeypatch)
+        scene_dir = tmp_path / "scenes" / "demo"
+        scene_dir.mkdir(parents=True)
+        (scene_dir / "demo.obj").write_text("v 0 0 0\n", encoding="utf-8")
+        manager.mark_downloaded("demo")
+
+        # glb sorts before obj alphabetically, so a naive picker would take it.
+        assert manager.get_compatible_format("demo", ["glb", "obj"]) == "obj"
+
+    def test_reports_incompatible_when_no_declared_format_is_present(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        manager = self._manager(tmp_path, monkeypatch)
+        (tmp_path / "scenes" / "demo").mkdir(parents=True)
+        manager.mark_downloaded("demo")
+
+        assert manager.get_compatible_format("demo", ["glb"]) is None
+
+    def test_uses_declared_formats_before_download(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """`benchmark --dry-run` reasons about the matrix before any files exist."""
+        manager = self._manager(tmp_path, monkeypatch)
+        assert manager.get_compatible_format("demo", ["glb"]) == "glb"
+
+
+class TestBundledManifestSources:
+    """The shipped manifest is what makes `download-scenes` work at all.
+
+    Every entry that claims a download source must carry enough information to
+    install correctly, and every entry without one must still tell a contributor
+    where to get the scene by hand.
+    """
+
+    @staticmethod
+    def _scenes() -> list[SceneInfo]:
+        return SceneManager().list_scenes()
+
+    def test_every_scene_is_either_downloadable_or_documented(self) -> None:
+        for scene in self._scenes():
+            if scene.archive_url:
+                continue
+            assert scene.source_url.startswith("http"), (
+                f"{scene.id} has no archive_url, so source_url must tell a "
+                f"contributor where to obtain it"
+            )
+
+    def test_wired_sources_declare_a_checksum(self) -> None:
+        """A source we fetch automatically must be verifiable."""
+        for scene in self._scenes():
+            if not scene.archive_url:
+                continue
+            assert scene.sha256, f"{scene.id} declares archive_url but no sha256"
+            assert len(scene.sha256) == 64, f"{scene.id} sha256 is not a hex digest"
+
+    def test_non_archive_sources_declare_a_target_filename(self) -> None:
+        """A bare file has no internal structure to infer a name from."""
+        for scene in self._scenes():
+            url = scene.archive_url or ""
+            if not url or url.endswith((".zip", ".tar.gz", ".tgz", ".tar")):
+                continue
+            assert scene.filename, (
+                f"{scene.id} points at a non-archive source ({url}); it needs "
+                f"'filename' so the download lands where 'formats' expects"
+            )
+
+    def test_declared_filename_matches_a_declared_format_path(self) -> None:
+        for scene in self._scenes():
+            if not scene.filename:
+                continue
+            expected = f"{scene.id}/{scene.filename}"
+            assert expected in scene.formats.values(), (
+                f"{scene.id} saves as '{expected}' but no entry in 'formats' "
+                f"points there: {sorted(scene.formats.values())}"
+            )

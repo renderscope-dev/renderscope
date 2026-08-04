@@ -1,21 +1,41 @@
 """The ``renderscope download-scenes`` command.
 
-Downloads standard benchmark scenes (Cornell Box, Sponza, etc.)
-to a local directory for use in benchmarking.  Scenes are fetched
-from the RenderScope scene hosting infrastructure, with graceful
-fallback to the original source URLs when hosting is unavailable.
+Downloads standard benchmark scenes (Cornell Box, Sponza, etc.) to a local
+directory for use in benchmarking.  Each scene is fetched from the source
+declared in the bundled scene manifest — either a per-scene ``archive_url`` or a
+base URL (``--base-url`` / ``RENDERSCOPE_SCENE_BASE_URL``) joined with the
+scene's archive name — then integrity-checked against its manifest SHA-256 and
+extracted into the scenes directory.
+
+Scenes that don't yet have a download source configured are reported with their
+original source URL and the path to place files manually, rather than being
+silently skipped.
 """
 
 from __future__ import annotations
 
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import typer
 from rich.panel import Panel
+from rich.progress import (
+    BarColumn,
+    DownloadColumn,
+    Progress,
+    SpinnerColumn,
+    TaskID,
+    TextColumn,
+    TimeRemainingColumn,
+    TransferSpeedColumn,
+)
 from rich.table import Table
 from rich.text import Text
 
 from renderscope.utils.console import console, err_console
+
+if TYPE_CHECKING:
+    from renderscope.core.downloader import ProgressCallback
 
 
 def _fmt_size(mb: float) -> str:
@@ -60,7 +80,7 @@ def _print_scene_list(
         if isinstance(formats, dict):
             fmt_list = ", ".join(sorted(formats.keys()))
 
-        status = "\u2705 Downloaded" if is_downloaded else "\u274c Not downloaded"
+        status = "✅ Downloaded" if is_downloaded else "❌ Not downloaded"
 
         table.add_row(scene_id, name, complexity, _fmt_size(size_mb), fmt_list, status)
 
@@ -68,13 +88,22 @@ def _print_scene_list(
 
     footer = Text()
     footer.append(f"\nTotal: {total_count} scenes ({_fmt_size(total_size)})", style="dim")
-    footer.append(f"  \u2022  {downloaded_count} downloaded", style="dim")
-    footer.append(f"  \u2022  {remaining} remaining", style="dim")
+    footer.append(f"  •  {downloaded_count} downloaded", style="dim")
+    footer.append(f"  •  {remaining} remaining", style="dim")
 
     console.print()
     console.print(Panel(table, title="Available Scenes", border_style="bright_blue"))
     console.print(footer)
     console.print()
+
+
+def _make_progress_cb(progress: Progress, task_id: TaskID) -> ProgressCallback:
+    """Build a download-progress callback bound to a specific progress task."""
+
+    def _update(done: int, total: int | None) -> None:
+        progress.update(task_id, completed=done, total=total)
+
+    return _update
 
 
 def download_scenes_cmd(
@@ -89,6 +118,14 @@ def download_scenes_cmd(
         "--output-dir",
         "-o",
         help="Directory to download scenes into. Defaults to ~/.renderscope/scenes/.",
+    ),
+    base_url: str | None = typer.Option(
+        None,
+        "--base-url",
+        help=(
+            "Base URL hosting the scene archives. Overrides the "
+            "RENDERSCOPE_SCENE_BASE_URL environment variable."
+        ),
     ),
     list_scenes: bool = typer.Option(
         False,
@@ -105,10 +142,17 @@ def download_scenes_cmd(
     """Download standard benchmark scenes for use with renderscope.
 
     Fetches canonical test scenes (Cornell Box, Sponza Atrium,
-    Stanford Bunny, etc.) in multiple formats from the RenderScope
-    asset repository.
+    Stanford Bunny, etc.) in multiple formats, verifies their integrity,
+    and installs them into the scenes directory.
     """
-    from renderscope.core.scene import SceneManager, SceneNotFoundError
+    from renderscope.core.downloader import (
+        ArchiveExtractionError,
+        ChecksumMismatchError,
+        DownloadFailedError,
+        SceneDownloader,
+        SceneSourceUnavailableError,
+    )
+    from renderscope.core.scene import SceneInfo, SceneManager, SceneNotFoundError
 
     scene_manager = SceneManager(scenes_dir=output_dir)
 
@@ -121,7 +165,6 @@ def download_scenes_cmd(
 
     # Determine which scenes to download.
     if scene is not None:
-        # Download a single specific scene.
         try:
             scene_info = scene_manager.get_scene(scene)
         except SceneNotFoundError:
@@ -133,7 +176,6 @@ def download_scenes_cmd(
 
         scenes_to_download = [scene_info]
     else:
-        # Download all scenes.
         scenes_to_download = scene_manager.list_scenes()
 
     if not scenes_to_download:
@@ -145,7 +187,6 @@ def download_scenes_cmd(
         scenes_to_download = [
             s for s in scenes_to_download if not scene_manager.is_downloaded(s.id)
         ]
-
         if not scenes_to_download:
             console.print(
                 "[success]All requested scenes are already downloaded.[/success]\n"
@@ -153,73 +194,75 @@ def download_scenes_cmd(
             )
             raise typer.Exit(code=0)
 
-    # Show download plan.
+    downloader = SceneDownloader(scene_manager, base_url=base_url)
+
+    # Show the download plan.
     total_size = sum(s.download_size_mb for s in scenes_to_download)
     console.print()
     console.print(
         f"Downloading {len(scenes_to_download)} scene(s) "
         f"({_fmt_size(total_size)}) to [bold]{scene_manager.scenes_dir}[/bold]"
     )
+    if downloader.base_url:
+        console.print(f"Source: [bold]{downloader.base_url}[/bold]")
     console.print()
 
-    # Download each scene.
     success_count = 0
-    fail_count = 0
+    no_source: list[SceneInfo] = []
+    failures: list[tuple[SceneInfo, Exception]] = []
 
-    for s in scenes_to_download:
-        console.print(f"  \u25cf {s.name} ({s.id}) — {_fmt_size(s.download_size_mb)}")
-
-        # Note: The actual download infrastructure (scene hosting at
-        # render-scope.web.app/scenes) is set up in Phase 26.  For now, the
-        # download command creates the scene directory structure and marks
-        # it as "ready" so the rest of the CLI can operate in demo mode.
-        # When the hosting infrastructure is available, the download logic
-        # below should be replaced with actual HTTP fetching.
-        try:
-            # Prepare scene directory.
-            if force:
-                scene_manager.remove_marker(s.id)
-
-            scene_dir = scene_manager.prepare_scene_dir(s.id)
-
-            # Create subdirectories for scene formats.
-            for _fmt, rel_path in s.formats.items():
-                file_path = scene_manager.scenes_dir / rel_path
-                file_path.parent.mkdir(parents=True, exist_ok=True)
-
-            # Attempt download from hosting infrastructure.
-            # For now, scenes must be placed manually or acquired from
-            # the original source.
-            console.print(
-                f"    [warning]Scene hosting not yet available.[/warning]\n"
-                f"    Original source: {s.source_url}\n"
-                f"    Place scene files in: {scene_dir}"
-            )
-
-            # Do not mark as downloaded since files aren't actually present.
-            # When real download infrastructure is in place, this will be:
-            #   scene_manager.mark_downloaded(s.id)
-            fail_count += 1
-
-        except OSError as exc:
-            err_console.print(f"    [error]Failed: {exc}[/error]")
-            fail_count += 1
-        except Exception as exc:
-            err_console.print(f"    [error]Unexpected error: {exc}[/error]")
-            fail_count += 1
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        BarColumn(),
+        DownloadColumn(),
+        TransferSpeedColumn(),
+        TimeRemainingColumn(),
+        console=console,
+    ) as progress:
+        for s in scenes_to_download:
+            task_id = progress.add_task(f"{s.name} ({s.id})", total=None)
+            try:
+                downloader.download_scene(s.id, progress=_make_progress_cb(progress, task_id))
+                progress.update(task_id, description=f"[success]✓ {s.name} ({s.id})[/success]")
+                success_count += 1
+            except SceneSourceUnavailableError:
+                progress.update(
+                    task_id,
+                    description=f"[warning]• {s.name} ({s.id}) — no source[/warning]",
+                    total=1,
+                    completed=1,
+                )
+                no_source.append(s)
+            except (DownloadFailedError, ChecksumMismatchError, ArchiveExtractionError) as exc:
+                progress.update(
+                    task_id,
+                    description=f"[error]✗ {s.name} ({s.id})[/error]",
+                    total=1,
+                    completed=1,
+                )
+                failures.append((s, exc))
 
     # Summary.
     console.print()
     if success_count > 0:
+        console.print(f"[success]✓ {success_count} scene(s) downloaded successfully.[/success]")
+
+    if no_source:
         console.print(
-            f"[success]\u2713 {success_count} scene(s) downloaded successfully.[/success]"
+            f"\n[warning]⚠  {len(no_source)} scene(s) have no download source configured.[/warning]\n"
+            "   Set --base-url / RENDERSCOPE_SCENE_BASE_URL, or acquire them manually:"
         )
-    if fail_count > 0:
-        console.print(
-            f"[warning]\u26a0  {fail_count} scene(s) could not be downloaded.[/warning]\n"
-            "   Scene hosting is set up in a future release.\n"
-            "   For now, acquire scenes from the original sources listed above\n"
-            "   and place them in the scenes directory."
-        )
+        for s in no_source:
+            console.print(
+                f"     • [bold]{s.id}[/bold] — {s.source_url}\n"
+                f"       place files in: {scene_manager.scenes_dir / s.id}"
+            )
+
+    if failures:
+        err_console.print(f"\n[error]✗ {len(failures)} scene(s) failed to download.[/error]")
+        for failed_scene, error in failures:
+            err_console.print(f"     • [bold]{failed_scene.id}[/bold]: {error}")
+
     console.print()
-    raise typer.Exit(code=0)
+    raise typer.Exit(code=1 if failures else 0)
