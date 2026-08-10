@@ -1,4 +1,5 @@
 import type { BenchmarkEntry } from "@/types/benchmark";
+import { crossRendererPsnr } from "@/lib/benchmark-quality";
 import { formatMemory, formatPSNR } from "@/lib/format";
 import { formatRenderTime } from "@/lib/utils";
 
@@ -158,10 +159,14 @@ export function computeRankings(
   }
 
   // ── Highest Quality (higher is better) ──────────────────────
+  // Self-referenced records are excluded: a renderer compared against its own
+  // higher-sample render measures convergence, not accuracy, and a biased
+  // renderer scores best precisely because it converges to its own answer.
+  // Awarding on those values would rank renderers by how quietly they settle.
   const psnrAvgs = computeRendererAverages(
     entries,
     rendererNames,
-    (e) => e.quality_vs_reference?.psnr
+    crossRendererPsnr
   ).sort((a, b) => b.avg - a.avg);
 
   if (psnrAvgs.length >= 1) {

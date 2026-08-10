@@ -50,7 +50,10 @@ export function CompareTabNav({ activeTab, onTabChange }: CompareTabNavProps) {
       role="tablist"
       aria-label="Comparison sections"
     >
-      <nav className="flex gap-1">
+      {/* The three tabs need ~380px, so at a 320px viewport they pushed the
+          whole document into horizontal scroll. Scroll the tab strip itself
+          instead, and keep each label on one line so it stays legible. */}
+      <nav className="flex gap-1 overflow-x-auto">
         {TAB_DEFINITIONS.map((tab) => {
           const isActive = activeTab === tab.key;
           return (
@@ -67,7 +70,7 @@ export function CompareTabNav({ activeTab, onTabChange }: CompareTabNavProps) {
                 announceToScreenReader(`${tab.label} tab selected`);
               }}
               className={cn(
-                "relative inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium",
+                "relative inline-flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 text-sm font-medium",
                 "transition-colors duration-150",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                 "rounded-t-md",

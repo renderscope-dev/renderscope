@@ -129,6 +129,35 @@ def _print_next_steps(output_dir: Path, count: int) -> None:
     console.print()
 
 
+def _warn_about_self_reference(records: list[CanonicalBenchmark]) -> None:
+    """Tell the contributor when quality is a convergence measurement.
+
+    A run compared against its own renderer's higher-sample output produces a
+    number that looks like a quality score but cannot be compared with other
+    renderers. Saying so here — rather than letting it surface as an unexplained
+    "self" marker on the dashboard — lets the contributor decide whether to
+    publish it or obtain a real reference first.
+    """
+    from renderscope.report.benchmark_export import is_self_referenced
+
+    affected = [r for r in records if is_self_referenced(r)]
+    if not affected:
+        return
+
+    console.print()
+    console.print(
+        f"[warning]{len(affected)} record(s) compare a renderer against its own "
+        f"reference render.[/warning]"
+    )
+    for record in affected:
+        console.print(f"  [dim]{record.scene} x {record.renderer}[/dim]")
+    console.print(
+        "  These measure convergence, not accuracy, and are excluded from\n"
+        "  cross-renderer quality rankings on the dashboard. Publishing them is\n"
+        "  fine — record in --notes how the reference was produced."
+    )
+
+
 def publish_cmd(
     results_file: Path = typer.Argument(
         help="Benchmark results JSON file written by 'renderscope benchmark --output'.",
@@ -234,6 +263,7 @@ def publish_cmd(
     replacements = _plan_actions(records, output_dir)
 
     if dry_run:
+        _warn_about_self_reference(records)
         _print_plan(records, output_dir, replacements, dry_run=True)
         console.print(f"\n[dim]Would write to {output_dir}:[/dim]")
         _print_paths(records, output_dir)
@@ -247,6 +277,7 @@ def publish_cmd(
         err_console.print(f"\n[error]Could not write to {output_dir}:[/error] {exc}\n")
         raise typer.Exit(code=1) from exc
 
+    _warn_about_self_reference(records)
     _print_plan(records, output_dir, replacements, dry_run=False)
     _print_next_steps(output_dir, len(records))
     _print_paths(records, output_dir)

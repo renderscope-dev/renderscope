@@ -61,6 +61,7 @@ __all__ = [
     "derive_hardware_id",
     "derive_hardware_label",
     "export_results",
+    "is_self_referenced",
     "iter_published_records",
     "parse_record",
     "reject_filename_collisions",
@@ -322,6 +323,19 @@ def derive_hardware_id(cpu: str, gpu: str | None) -> str:
     timestamp, hostname, or anything else that varies between runs.
     """
     return slugify(derive_hardware_label(cpu, gpu)) or "unknown-hardware"
+
+
+def is_self_referenced(benchmark: CanonicalBenchmark) -> bool:
+    """Whether a record's quality was measured against its own renderer.
+
+    Comparing a renderer to its own higher-sample render measures how far it has
+    converged toward its own answer, not how close that answer is to correct. A
+    biased renderer scores best precisely because it settles quickly, so these
+    values cannot be ranked against genuine cross-renderer comparisons. The web
+    dashboard applies the same rule in ``lib/benchmark-quality.ts``.
+    """
+    quality = benchmark.quality_vs_reference
+    return quality is not None and quality.reference_renderer == benchmark.renderer
 
 
 def canonical_filename(benchmark: CanonicalBenchmark) -> str:

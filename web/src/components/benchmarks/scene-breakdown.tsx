@@ -15,6 +15,7 @@ import {
 } from "recharts";
 import type { BenchmarkEntry } from "@/types/benchmark";
 import { formatRenderTime } from "@/lib/utils";
+import { crossRendererPsnr } from "@/lib/benchmark-quality";
 import { formatMemory, formatPSNR } from "@/lib/format";
 import { chartTooltipStyle } from "@/lib/chart-utils";
 import { cn } from "@/lib/utils";
@@ -63,7 +64,8 @@ function extractRadarValue(
     case "memory":
       return entry.results.peak_memory_mb;
     case "psnr":
-      return entry.quality_vs_reference?.psnr;
+      // Not comparable across renderers when self-referenced.
+      return crossRendererPsnr(entry);
   }
 }
 

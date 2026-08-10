@@ -5,6 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { formatRenderTime } from "@/lib/utils";
+import {
+  SELF_REFERENCE_NOTE,
+  rowIsSelfReferenced,
+} from "@/lib/benchmark-quality";
 import { formatMemory, formatPSNR, formatSSIM } from "@/lib/format";
 import { techniqueColorMap } from "@/lib/constants";
 import type { BenchmarkTableRow as BenchmarkTableRowType } from "@/types/benchmark";
@@ -14,11 +18,30 @@ interface BenchmarkTableRowProps {
   highlightedRowId?: string | null;
 }
 
+/**
+ * Marks a quality value measured against the renderer's own reference.
+ *
+ * Without this the dashboard shows a convergence number in a column headed
+ * "PSNR", beside true cross-renderer values, with nothing to tell them apart.
+ */
+function SelfReferenceMarker() {
+  return (
+    <abbr
+      title={SELF_REFERENCE_NOTE}
+      aria-label={SELF_REFERENCE_NOTE}
+      className="cursor-help rounded bg-muted px-1 text-[10px] font-medium uppercase tracking-wide text-muted-foreground no-underline"
+    >
+      self
+    </abbr>
+  );
+}
+
 export function BenchmarkTableRowComponent({
   row,
   highlightedRowId,
 }: BenchmarkTableRowProps) {
   const isHighlighted = highlightedRowId === row.id;
+  const selfReferenced = row.psnr != null && rowIsSelfReferenced(row);
   const primaryTechnique = row.rendererTechnique[0];
   const techniqueClass = primaryTechnique
     ? techniqueColorMap[primaryTechnique as keyof typeof techniqueColorMap]
@@ -77,7 +100,10 @@ export function BenchmarkTableRowComponent({
 
       {/* PSNR */}
       <TableCell className="text-right tabular-nums">
-        {formatPSNR(row.psnr)}
+        <span className="inline-flex items-center justify-end gap-1">
+          {formatPSNR(row.psnr)}
+          {selfReferenced && <SelfReferenceMarker />}
+        </span>
       </TableCell>
 
       {/* SSIM */}

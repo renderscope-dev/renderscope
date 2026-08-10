@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { entryIsSelfReferenced } from "@/lib/benchmark-quality";
 import type {
   BenchmarkEntry,
   BenchmarkTableRow,
@@ -151,6 +152,7 @@ export function toBenchmarkTableRows(
       // fail the whole static export.
       psnr: b.quality_vs_reference?.psnr,
       ssim: b.quality_vs_reference?.ssim,
+      selfReferencedQuality: entryIsSelfReferenced(b),
       hardwareId: b.hardware.id,
       hardwareLabel: b.hardware.label,
       spp: b.settings.samples_per_pixel,

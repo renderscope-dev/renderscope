@@ -7,17 +7,37 @@ test.describe("Site Navigation", () => {
     await expect(page.locator("h1").first()).toBeVisible();
   });
 
-  test("main navigation links are present", async ({ page }) => {
+  test("main navigation links are present", async ({ page }, testInfo) => {
     await page.goto("/");
 
-    // Desktop nav items
+    const destinations = [
+      "Explore",
+      "Compare",
+      "Gallery",
+      "Benchmarks",
+      "Learn",
+      "Docs",
+    ];
+
+    // Below the `md` breakpoint the header links are collapsed behind the
+    // hamburger by design, so open the drawer before asserting they are
+    // reachable. Asserting header visibility unconditionally made this a
+    // desktop-only test that could never pass on the mobile projects.
+    const width = page.viewportSize()?.width ?? 0;
+    if (width < 768) {
+      await page.getByRole("button", { name: /open navigation menu/i }).click();
+      const drawer = page.getByRole("dialog");
+      await expect(drawer).toBeVisible();
+      for (const name of destinations) {
+        await expect(drawer.getByRole("link", { name: new RegExp(`^${name}`) })).toBeVisible();
+      }
+      return;
+    }
+
     const nav = page.locator("nav, header");
-    await expect(nav.getByText("Explore")).toBeVisible();
-    await expect(nav.getByText("Compare")).toBeVisible();
-    await expect(nav.getByText("Gallery")).toBeVisible();
-    await expect(nav.getByText("Benchmarks")).toBeVisible();
-    await expect(nav.getByText("Learn")).toBeVisible();
-    await expect(nav.getByText("Docs")).toBeVisible();
+    for (const name of destinations) {
+      await expect(nav.getByText(name).first()).toBeVisible();
+    }
   });
 
   test("navigates to explore page", async ({ page }) => {

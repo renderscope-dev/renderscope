@@ -38,18 +38,24 @@ test.describe("Touch: mobile navigation", () => {
     await nav.hamburgerButton.tap();
     await page.waitForTimeout(400);
 
-    // Tap outside the drawer (on the overlay/backdrop)
-    const overlay = page.locator(
-      '[data-testid="drawer-overlay"], .fixed.inset-0, [role="dialog"] + div'
-    );
-    if (await overlay.isVisible()) {
-      await overlay.tap();
+    // The drawer is `w-80` (320px). On the narrowest mobile viewport it spans
+    // the full width, so there is no backdrop left to tap — dismissal there is
+    // the close button or Escape, both of which Radix wires up. Tap outside
+    // only when an outside actually exists.
+    const box = await nav.mobileDrawer.boundingBox();
+    expect(box, "drawer should be on screen before dismissing it").not.toBeNull();
+    const viewportWidth = page.viewportSize()?.width ?? 0;
+
+    if (box!.x > 8) {
+      await page.touchscreen.tap(Math.round(box!.x / 2), Math.round(box!.y + box!.height / 2));
     } else {
-      // Tap in the top-left corner (outside drawer)
-      await page.touchscreen.tap(10, 10);
+      expect(
+        Math.round(box!.width),
+        "drawer spans the viewport, so Escape is the dismissal path"
+      ).toBeGreaterThanOrEqual(viewportWidth - 1);
+      await page.keyboard.press("Escape");
     }
 
-    await page.waitForTimeout(400);
     await expect(nav.mobileDrawer).not.toBeVisible();
   });
 

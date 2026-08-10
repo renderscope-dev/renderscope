@@ -14,6 +14,10 @@ import {
 } from "recharts";
 import type { BenchmarkEntry } from "@/types/benchmark";
 import { formatRenderTime } from "@/lib/utils";
+import {
+  crossRendererPsnr,
+  crossRendererSsim,
+} from "@/lib/benchmark-quality";
 import { formatMemory, formatPSNR, formatSSIM } from "@/lib/format";
 import { chartTooltipStyle, chartAxisStyle } from "@/lib/chart-utils";
 import { describeBarChart } from "@/lib/a11y-utils";
@@ -48,10 +52,13 @@ function extractMetricValue(
       return entry.results.render_time_seconds;
     case "memory":
       return entry.results.peak_memory_mb;
+    // Self-referenced quality is a convergence measurement and is not
+    // comparable across renderers, so it is omitted rather than charted
+    // beside true cross-renderer values. See lib/benchmark-quality.ts.
     case "psnr":
-      return entry.quality_vs_reference?.psnr;
+      return crossRendererPsnr(entry);
     case "ssim":
-      return entry.quality_vs_reference?.ssim;
+      return crossRendererSsim(entry);
   }
 }
 

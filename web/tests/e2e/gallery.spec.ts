@@ -30,6 +30,9 @@ test.describe("Gallery Page", () => {
 
   test("clicking a scene card navigates to detail page", async ({ page }) => {
     const sceneLink = page.locator("a[href*='/gallery/']").first();
+    // On narrow viewports the first card sits below the fold; Playwright's
+    // visibility check does not scroll, so bring it into view first.
+    await sceneLink.scrollIntoViewIfNeeded();
     await expect(sceneLink).toBeVisible({ timeout: 10000 });
 
     const href = await sceneLink.getAttribute("href");

@@ -113,11 +113,13 @@ test.describe("Responsive layout: navigation behavior", () => {
     const drawer = page.locator(
       '[data-testid="mobile-drawer"], [role="dialog"]'
     );
-    const firstLink = drawer.first().locator("a").first();
-    await firstLink.click();
+    // The first <a> in the drawer is the RenderScope logo, which links to "/"
+    // — the page already open. Same-route navigation is a no-op, so the
+    // close-on-route-change never fired and this asserted against a drawer
+    // that was never asked to close. Click an actual destination instead.
+    await drawer.first().getByRole("link", { name: /^Explore/ }).click();
 
-    // Drawer should close after navigation
-    await page.waitForTimeout(500);
+    await expect(page).toHaveURL(/\/explore/);
     await expect(drawer.first()).not.toBeVisible();
   });
 });

@@ -121,6 +121,12 @@ export interface BenchmarkTableRow {
   /** Absent when the run had no reference image to compare against. */
   psnr?: number;
   ssim?: number;
+  /**
+   * True when the quality metrics were measured against the same renderer that
+   * produced them — a convergence measurement, not a cross-renderer comparison.
+   * See `lib/benchmark-quality.ts`.
+   */
+  selfReferencedQuality?: boolean;
   hardwareId: string;
   hardwareLabel: string;
   /** Absent for time-budgeted runs and rasterization renderers. */
