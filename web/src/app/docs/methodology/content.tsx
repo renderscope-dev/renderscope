@@ -434,6 +434,31 @@ export function MethodologyPageContent() {
               Measures pixel-level fidelity between a test image and a reference
               image. Higher is better.
             </p>
+            <p>
+              <strong>What the reference is matters more than the number.</strong>{" "}
+              Each scene nominates a ground-truth renderer and sample count in
+              its manifest &mdash; Cornell Box and Veach MIS use PBRT at 65,536
+              samples per pixel; the remainder use Blender Cycles. Generate one
+              with{" "}
+              <code className="rounded bg-card px-1.5 py-0.5 text-xs text-foreground/80">
+                renderscope reference --scene &lt;id&gt;
+              </code>
+              , which writes a provenance record beside the image so the
+              renderer, version, sample count, and resolution behind every
+              quality figure stay recoverable.
+            </p>
+            <p>
+              A benchmark compared against its <em>own</em> renderer&apos;s
+              higher-sample output measures convergence, not accuracy. Those
+              values cannot be ranked against one another &mdash; a biased
+              renderer scores best precisely because it settles quickly on its
+              own answer &mdash; so they are marked{" "}
+              <span className="rounded bg-muted px-1 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+                self
+              </span>{" "}
+              in the benchmark table and excluded from cross-renderer quality
+              comparisons and rankings.
+            </p>
           </Prose>
           <FormulaBlock
             label="Formula"

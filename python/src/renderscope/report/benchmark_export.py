@@ -34,6 +34,7 @@ from __future__ import annotations
 
 import json
 import logging
+import math
 import re
 from pathlib import Path, PurePosixPath
 from typing import TYPE_CHECKING, Any
@@ -376,10 +377,20 @@ def _opt_int(value: Any, *, minimum: int) -> int | None:
 
 
 def _opt_float(value: Any, *, minimum: float | None = None) -> float | None:
-    """Return ``value`` as a float if it is a valid, in-range number."""
+    """Return ``value`` as a float if it is a valid, in-range, finite number.
+
+    Non-finite values are dropped rather than published. A render that matches
+    its reference exactly has an MSE of zero and therefore an infinite PSNR,
+    which Python serialises as a bare ``Infinity`` — accepted by ``json.load``
+    but rejected by ``JSON.parse``, so the record would crash the web build
+    while passing ``scripts/validate_data.py``. Omitting the metric says the
+    same thing honestly: the images are identical.
+    """
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
     number = float(value)
+    if not math.isfinite(number):
+        return None
     if minimum is not None and number < minimum:
         return None
     return number

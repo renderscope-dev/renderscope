@@ -463,16 +463,57 @@ class BenchmarkRunner:
         except Exception:
             logger.debug("LPIPS computation failed", exc_info=True)
 
-        scene = self._scene_manager.get_scene(scene_id)
-        ref_info = scene.reference
+        renderer, ref_samples = self._describe_reference(scene_id, reference_path)
 
         return QualityMetrics(
-            reference_renderer=ref_info.renderer if ref_info else None,
-            reference_samples=ref_info.samples if ref_info else None,
+            reference_renderer=renderer,
+            reference_samples=ref_samples,
             psnr=psnr_val,
             ssim=ssim_val,
             mse=mse_val,
             lpips=lpips_val,
+        )
+
+    def _describe_reference(
+        self, scene_id: str, reference_path: Path
+    ) -> tuple[str | None, int | None]:
+        """Identify what actually produced the reference image.
+
+        The manifest records which renderer and sample count *should* serve as
+        ground truth for a scene. That is the right default, but it is a
+        nomination rather than an observation: a contributor may have generated
+        the reference with a different renderer, or at a lower sample count
+        while iterating. Reporting the nomination would attribute a record's
+        quality to a ground truth that never produced it.
+
+        ``renderscope reference`` writes a provenance sidecar beside the image,
+        so prefer that when present and fall back to the manifest otherwise.
+        """
+        scene = self._scene_manager.get_scene(scene_id)
+        declared = scene.reference
+        fallback = (
+            declared.renderer if declared else None,
+            declared.samples if declared else None,
+        )
+
+        sidecar = reference_path.with_suffix(".json")
+        if not sidecar.is_file():
+            return fallback
+
+        try:
+            provenance = json.loads(sidecar.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError) as exc:
+            logger.warning("Ignoring unreadable reference provenance %s: %s", sidecar, exc)
+            return fallback
+
+        if not isinstance(provenance, dict):
+            return fallback
+
+        renderer = provenance.get("renderer")
+        samples = provenance.get("samples")
+        return (
+            renderer if isinstance(renderer, str) and renderer else fallback[0],
+            samples if isinstance(samples, int) and samples > 0 else fallback[1],
         )
 
     # ------------------------------------------------------------------

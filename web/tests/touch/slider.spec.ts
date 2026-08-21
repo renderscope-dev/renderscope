@@ -59,51 +59,22 @@ test.describe("Touch: image comparison slider", () => {
     await page.touchscreen.tap(startX, startY);
     await page.waitForTimeout(100);
 
-    // Perform a touch drag gesture via dispatched TouchEvents
-    await page.evaluate(
-      ({ sx, sy, tx, ty }) => {
-        const el = document.elementFromPoint(sx, sy);
-        if (!el) return;
-
-        el.dispatchEvent(
-          new TouchEvent("touchstart", {
-            bubbles: true,
-            touches: [
-              new Touch({ identifier: 0, target: el, clientX: sx, clientY: sy }),
-            ],
-          })
-        );
-
-        // Simulate intermediate move points for smooth drag
-        const steps = 10;
-        for (let i = 1; i <= steps; i++) {
-          const x = sx + (tx - sx) * (i / steps);
-          const y = sy + (ty - sy) * (i / steps);
-          el.dispatchEvent(
-            new TouchEvent("touchmove", {
-              bubbles: true,
-              touches: [
-                new Touch({ identifier: 0, target: el, clientX: x, clientY: y }),
-              ],
-            })
-          );
-        }
-
-        el.dispatchEvent(
-          new TouchEvent("touchend", {
-            bubbles: true,
-            changedTouches: [
-              new Touch({ identifier: 0, target: el, clientX: tx, clientY: ty }),
-            ],
-          })
-        );
-      },
-      { sx: startX, sy: startY, tx: targetX, ty: startY }
-    );
-
+    // The slider is driven by Pointer events (`use-slider-drag.ts` uses
+    // onPointerDown/Move/Up with setPointerCapture). The previous version
+    // dispatched synthetic TouchEvents, which the component never listens for,
+    // so the handle correctly never moved and the test asserted against a
+    // gesture the app cannot receive. Playwright's mouse emits genuine,
+    // trusted pointer events, which is the same handler a real touch drag
+    // reaches on a touch device.
+    await page.mouse.move(startX, startY);
+    await page.mouse.down();
+    const steps = 10;
+    for (let i = 1; i <= steps; i++) {
+      await page.mouse.move(startX + (targetX - startX) * (i / steps), startY);
+    }
+    await page.mouse.up();
     await page.waitForTimeout(300);
 
-    // Verify the slider position has changed
     const newHandleBox = await handle.boundingBox();
     if (newHandleBox && handleBox) {
       // Handle should have moved left

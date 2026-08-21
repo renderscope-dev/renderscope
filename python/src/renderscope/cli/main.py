@@ -16,6 +16,7 @@ from renderscope.cli.download import download_scenes_cmd
 from renderscope.cli.info import info_cmd
 from renderscope.cli.list_renderers import list_cmd
 from renderscope.cli.publish import publish_cmd
+from renderscope.cli.reference import reference_cmd
 from renderscope.cli.report import report_cmd
 from renderscope.cli.system_info import system_info_cmd
 from renderscope.utils.console import console
@@ -66,4 +67,8 @@ app.command(
     name="publish",
     help="Convert benchmark results into catalog records for data/benchmarks/.",
 )(publish_cmd)
+app.command(
+    name="reference",
+    help="Render the ground-truth image a scene's quality metrics compare against.",
+)(reference_cmd)
 app.command(name="download-scenes", help="Download standard benchmark scenes.")(download_scenes_cmd)

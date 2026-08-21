@@ -42,6 +42,7 @@ import shutil
 import subprocess
 import sys
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -210,6 +211,55 @@ def build_parser() -> argparse.ArgumentParser:
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
+
+def _install_for_benchmark_runner(
+    scene_id: str, renderer: str, ref_exr: Path, samples: int
+) -> None:
+    """Copy a finished reference to where the benchmark runner reads it.
+
+    This script writes to ``assets/renders/<scene>/<renderer>_reference.exr``,
+    but ``SceneManager.get_reference_path`` — the only consumer — reads the
+    manifest's ``reference.image``, under the scenes directory. The two never
+    agreed, so hours of reference rendering produced a file that nothing
+    consumed and every benchmark still reported no quality at all.
+
+    Failure here is reported but not fatal: the render itself succeeded, and the
+    artifact is still on disk under assets/renders/.
+    """
+    try:
+        from renderscope.core.scene import SceneManager
+
+        manager = SceneManager()
+        target = manager.reference_target_path(scene_id)
+        if target is None:
+            console.print(
+                f"  [dim]{scene_id} declares no reference in the manifest; "
+                f"not installing for the benchmark runner.[/dim]"
+            )
+            return
+
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ref_exr, target)
+
+        # Provenance beside the image: a quality number is only interpretable
+        # if the reader knows what produced the reference.
+        provenance = {
+            "scene": scene_id,
+            "renderer": renderer,
+            "samples": samples,
+            "generated_at": datetime.now(tz=timezone.utc).isoformat(),
+            "generated_by": "scripts/generate_reference_renders.py",
+        }
+        target.with_suffix(".json").write_text(
+            json.dumps(provenance, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        )
+        console.print(f"  [dim]installed for benchmarking: {target}[/dim]")
+    except Exception as exc:  # noqa: BLE001 - reported, never fatal
+        console.print(
+            f"  [yellow]WARN[/yellow] could not install {scene_id} reference "
+            f"for the benchmark runner: {exc}"
+        )
 
 
 def main() -> None:
@@ -409,6 +459,7 @@ def main() -> None:
 
                 # Verify BOTH exit code and actual output file existence.
                 if proc.returncode == 0 and ref_exr.is_file() and ref_exr.stat().st_size > 0:
+                    _install_for_benchmark_runner(scene_id, renderer, ref_exr, ref_spp)
                     results.append((scene_id, "success", elapsed))
                     console.print(
                         f"  [green]OK[/green] {scene_id} ({renderer}): {_fmt_time(elapsed)}"

@@ -72,12 +72,14 @@ test.describe("Touch: mobile navigation", () => {
         '[data-testid="mobile-drawer"] a[href*="explore"], [role="dialog"] a[href*="explore"]'
       )
       .first();
-    if (await exploreLink.isVisible()) {
-      await exploreLink.tap();
-      await page.waitForLoadState("networkidle");
+    await expect(exploreLink).toBeVisible();
+    await exploreLink.tap();
 
-      // Should have navigated to the explore page
-      expect(page.url()).toContain("/explore");
-    }
+    // Wait for the route itself, not for the network to fall idle: the router
+    // navigates client-side, so `networkidle` resolved while the URL was still
+    // "/" and the assertion read the old location. The original `if (visible)`
+    // guard also meant a drawer that failed to open silently passed.
+    await page.waitForURL(/\/explore/);
+    expect(page.url()).toContain("/explore");
   });
 });

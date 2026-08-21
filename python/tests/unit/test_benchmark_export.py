@@ -726,3 +726,53 @@ class TestHistoricalRunRecord:
     def test_corrects_the_gpu_claim(self) -> None:
         """The run requested GPU and got CPU; publishing must say CPU."""
         assert to_canonical(_legacy_run_record()).settings.gpu_enabled is False
+
+
+class TestNonFiniteMetrics:
+    """Infinity and NaN are not representable in JSON.
+
+    A render matching its reference exactly has an MSE of zero and therefore an
+    infinite PSNR. Python's `json` writes that as a bare `Infinity`, which
+    `json.load` and `scripts/validate_data.py` both accept but `JSON.parse`
+    rejects — so the record would pass every Python-side check and then crash
+    the web build.
+    """
+
+    def test_infinite_psnr_is_omitted(
+        self, full_benchmark_result: BenchmarkResult, assert_schema_valid: Any
+    ) -> None:
+        quality = QualityMetrics(
+            reference_renderer="pbrt",
+            reference_samples=65536,
+            psnr=float("inf"),
+            ssim=1.0,
+            mse=0.0,
+        )
+        result = full_benchmark_result.model_copy(update={"quality_vs_reference": quality})
+        document = to_canonical(result).to_dict()
+
+        assert "psnr" not in document["quality_vs_reference"]
+        assert document["quality_vs_reference"]["mse"] == 0.0
+        assert_schema_valid(document)
+
+    def test_the_serialized_record_is_parseable_json(
+        self, full_benchmark_result: BenchmarkResult
+    ) -> None:
+        quality = QualityMetrics(
+            reference_renderer="pbrt", reference_samples=65536, psnr=float("inf")
+        )
+        result = full_benchmark_result.model_copy(update={"quality_vs_reference": quality})
+        raw = to_canonical(result).to_json()
+
+        assert "Infinity" not in raw
+        assert "NaN" not in raw
+        json.loads(raw)  # strict parse, as the web loader does
+
+    @pytest.mark.parametrize("bad", [float("inf"), float("-inf"), float("nan")])
+    def test_non_finite_convergence_metrics_are_omitted(
+        self, full_benchmark_result: BenchmarkResult, bad: float
+    ) -> None:
+        points = [ConvergencePoint(samples=16, time=1.0, psnr=bad)]
+        result = full_benchmark_result.model_copy(update={"convergence": points})
+        document = to_canonical(result).to_dict()
+        assert "psnr" not in document["convergence"][0]

@@ -29,10 +29,10 @@ test.describe("Gallery Page", () => {
   });
 
   test("clicking a scene card navigates to detail page", async ({ page }) => {
-    const sceneLink = page.locator("a[href*='/gallery/']").first();
-    // On narrow viewports the first card sits below the fold; Playwright's
-    // visibility check does not scroll, so bring it into view first.
-    await sceneLink.scrollIntoViewIfNeeded();
+    // `:visible` matters on mobile: the first `a[href*='/gallery/']` in the DOM
+    // is not rendered at narrow widths, so selecting it positionally picked an
+    // element that could never become visible.
+    const sceneLink = page.locator("a[href*='/gallery/']:visible").first();
     await expect(sceneLink).toBeVisible({ timeout: 10000 });
 
     const href = await sceneLink.getAttribute("href");

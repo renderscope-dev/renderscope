@@ -7,6 +7,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — reference renders, so quality metrics can exist at all
+
+`BenchmarkRunner` computes PSNR, SSIM, MSE and a convergence curve the moment
+`SceneManager.get_reference_path()` returns a file, and `None` until then. No
+reference had ever existed, and the one tool that generates them —
+`scripts/generate_reference_renders.py` — wrote to
+`assets/renders/<scene>/<renderer>_reference.exr` while the runner reads the
+manifest's `reference.image` under the scenes directory. Different root,
+different filename: hours of 65,536-spp rendering produced a file nothing
+consumed.
+
+- `renderscope reference --scene <id>` renders the ground truth and writes it
+  where the runner reads, defaulting to the renderer and sample count the
+  manifest nominates so independently generated references stay comparable. It
+  refuses to replace an existing reference without `--force`, because every
+  published quality number for that scene is measured against it.
+- A provenance sidecar is written beside each reference recording the renderer,
+  version, sample count, resolution, and machine. A quality figure is only
+  interpretable if you know what produced the thing it was measured against.
+- `generate_reference_renders.py` now installs its output at the same location,
+  closing the gap between producing a reference and consuming one.
+- `SceneManager.reference_target_path()` answers "where does this belong",
+  which `get_reference_path()` cannot: it returns `None` for a missing file,
+  correct for a reader and useless to a writer.
+- `SceneReference` gained optional `url`/`sha256`, so references can be
+  distributed once hosting is decided. Unlike scene geometry they are
+  RenderScope-generated, so there is no upstream to point at.
+
+### Fixed — two accuracy bugs the reference work exposed
+
+- **A perfect match produced unparseable JSON.** A render identical to its
+  reference has an MSE of zero and therefore an infinite PSNR, which Python
+  serialises as a bare `Infinity`. `json.load` and `scripts/validate_data.py`
+  both accept it; `JSON.parse` rejects it, so such a record passed every
+  Python-side check and then crashed the web build. Non-finite metrics are now
+  omitted, which says the same thing honestly.
+- **Records attributed quality to a reference that never produced it.** The
+  quality block reported the manifest's *nomination* (`pbrt` at 65,536 spp)
+  regardless of what actually generated the file on disk. It now prefers the
+  provenance sidecar and falls back to the manifest.
+
 ### Added — benchmark scenes can now be downloaded
 
 `renderscope download-scenes` could not acquire a single one of the seven
