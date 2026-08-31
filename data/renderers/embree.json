@@ -32,16 +32,12 @@
   "latest_release": "2026-04-02",
   "latest_release_version": "4.4.1",
   "status": "active",
-  "github_stars": 2729,
+  "github_stars": 2748,
   "github_stars_trend": [
-    2729
+    2729,
+    2748
   ],
   "commit_activity_52w": [
-    0,
-    1,
-    0,
-    2,
-    0,
     0,
     0,
     0,
@@ -88,10 +84,15 @@
     1,
     0,
     0,
+    0,
+    3,
+    0,
+    14,
+    5,
     0
   ],
-  "contributor_count": 52,
-  "open_issues": 69,
+  "contributor_count": 53,
+  "open_issues": 70,
   "fork_count": 435,
   "tags": [
     "ray-tracing",

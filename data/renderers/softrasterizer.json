@@ -34,9 +34,10 @@
   "latest_release": "2019-12-01",
   "latest_release_version": "git-2019",
   "status": "inactive",
-  "github_stars": 1295,
+  "github_stars": 1298,
   "github_stars_trend": [
-    1295
+    1295,
+    1298
   ],
   "commit_activity_52w": [
     0,
@@ -50,12 +51,12 @@
     0,
     0,
     0,
-    0,
-    0,
-    0,
-    0,
-    0,
     1,
+    0,
+    0,
+    0,
+    0,
+    0,
     0,
     0,
     0,

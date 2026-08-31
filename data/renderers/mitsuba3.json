@@ -37,19 +37,15 @@
   "paper": "https://doi.org/10.1145/3528223.3530168",
   "paper_bibtex": "@article{jakob2022mitsuba3,\n  title={Mitsuba 3 renderer},\n  author={Jakob, Wenzel and Speierer, S{\\'e}bastien and Roussel, Nicolas and Nimier-David, Merlin and Vicini, Delio and Zeltner, Tizian and Nicolet, Baptiste and Gross, Miguel and D\\'ecoret, Xavier},\n  journal={ACM Transactions on Graphics},\n  volume={41},\n  number={4},\n  pages={1--17},\n  year={2022},\n  publisher={ACM New York, NY, USA}\n}",
   "first_release": "2022-07-15",
-  "latest_release": "2026-02-23",
-  "latest_release_version": "3.8.0",
+  "latest_release": "2026-08-07",
+  "latest_release_version": "3.9.0",
   "status": "active",
-  "github_stars": 2865,
+  "github_stars": 2901,
   "github_stars_trend": [
-    2865
+    2865,
+    2901
   ],
   "commit_activity_52w": [
-    35,
-    0,
-    13,
-    11,
-    5,
     4,
     14,
     4,
@@ -94,13 +90,18 @@
     33,
     1,
     0,
+    3,
     0,
-    0,
-    8
+    9,
+    21,
+    37,
+    13,
+    13,
+    4
   ],
-  "contributor_count": 71,
-  "open_issues": 132,
-  "fork_count": 351,
+  "contributor_count": 73,
+  "open_issues": 130,
+  "fork_count": 358,
   "tags": [
     "research",
     "differentiable",

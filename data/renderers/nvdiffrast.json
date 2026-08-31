@@ -36,16 +36,12 @@
   "latest_release": "2025-12-08",
   "latest_release_version": "0.4.0",
   "status": "active",
-  "github_stars": 1894,
+  "github_stars": 1909,
   "github_stars_trend": [
-    1894
+    1894,
+    1909
   ],
   "commit_activity_52w": [
-    0,
-    0,
-    0,
-    0,
-    0,
     0,
     3,
     0,
@@ -92,11 +88,16 @@
     0,
     0,
     0,
+    0,
+    0,
+    0,
+    0,
+    0,
     0
   ],
   "contributor_count": 4,
-  "open_issues": 26,
-  "fork_count": 240,
+  "open_issues": 27,
+  "fork_count": 244,
   "tags": [
     "differentiable",
     "rasterization",

@@ -35,9 +35,10 @@
   "latest_release": "2020-07-18",
   "latest_release_version": "3.5.1",
   "status": "maintenance",
-  "github_stars": 64,
+  "github_stars": 66,
   "github_stars_trend": [
-    64
+    64,
+    66
   ],
   "commit_activity_52w": [
     0,
@@ -95,7 +96,7 @@
   ],
   "contributor_count": 12,
   "open_issues": 5,
-  "fork_count": 9,
+  "fork_count": 10,
   "tags": [
     "classic",
     "historical",

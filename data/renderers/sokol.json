@@ -39,16 +39,12 @@
   "latest_release": "2024-10-01",
   "latest_release_version": "pre-webgpu",
   "status": "active",
-  "github_stars": 10152,
+  "github_stars": 10252,
   "github_stars_trend": [
-    10152
+    10152,
+    10252
   ],
   "commit_activity_52w": [
-    23,
-    15,
-    12,
-    11,
-    37,
     14,
     24,
     26,
@@ -94,12 +90,17 @@
     31,
     7,
     10,
-    7,
-    4
+    17,
+    25,
+    19,
+    27,
+    24,
+    24,
+    5
   ],
-  "contributor_count": 137,
-  "open_issues": 136,
-  "fork_count": 657,
+  "contributor_count": 140,
+  "open_issues": 140,
+  "fork_count": 666,
   "tags": [
     "minimal",
     "header-only",

@@ -38,9 +38,10 @@
   "latest_release": "2024-08-01",
   "latest_release_version": "2.3.0",
   "status": "active",
-  "github_stars": 37,
+  "github_stars": 38,
   "github_stars_trend": [
-    37
+    37,
+    38
   ],
   "commit_activity_52w": [
     0,
@@ -98,7 +99,7 @@
   ],
   "contributor_count": 69,
   "open_issues": 0,
-  "fork_count": 17,
+  "fork_count": 18,
   "tags": [
     "hpc",
     "parallel",

@@ -38,16 +38,12 @@
   "latest_release": "2019-05-09",
   "latest_release_version": "1.0.0",
   "status": "maintenance",
-  "github_stars": 2780,
+  "github_stars": 2781,
   "github_stars_trend": [
-    2780
+    2780,
+    2781
   ],
   "commit_activity_52w": [
-    0,
-    0,
-    0,
-    0,
-    0,
     0,
     0,
     0,
@@ -94,11 +90,16 @@
     2,
     0,
     0,
+    0,
+    0,
+    0,
+    0,
+    0,
     0
   ],
   "contributor_count": 35,
-  "open_issues": 147,
-  "fork_count": 374,
+  "open_issues": 146,
+  "fork_count": 373,
   "tags": [
     "differentiable-rendering",
     "tensorflow",

@@ -33,9 +33,10 @@
   "first_release": "2016-01-01",
   "latest_release": "2024-01-01",
   "status": "active",
-  "github_stars": 914,
+  "github_stars": 913,
   "github_stars_trend": [
-    914
+    914,
+    913
   ],
   "commit_activity_52w": [
     0,
@@ -93,7 +94,7 @@
   ],
   "contributor_count": 1,
   "open_issues": 41,
-  "fork_count": 57,
+  "fork_count": 58,
   "tags": [
     "educational",
     "research",

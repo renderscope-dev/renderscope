@@ -110,9 +110,10 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "github_stars": 1457,
+  "github_stars": 1455,
   "github_stars_trend": [
-    1457
+    1457,
+    1455
   ],
   "commit_activity_52w": [
     0,
@@ -169,8 +170,8 @@
     0
   ],
   "contributor_count": 22,
-  "open_issues": 72,
-  "fork_count": 119,
+  "open_issues": 73,
+  "fork_count": 120,
   "integrations": [
     "Nerfstudio",
     "PyTorch"

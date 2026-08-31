@@ -38,9 +38,10 @@
   "latest_release": "2024-07-23",
   "latest_release_version": "3.2.0",
   "status": "active",
-  "github_stars": 1090,
+  "github_stars": 1095,
   "github_stars_trend": [
-    1090
+    1090,
+    1095
   ],
   "commit_activity_52w": [
     0,
@@ -96,9 +97,9 @@
     0,
     0
   ],
-  "contributor_count": 47,
+  "contributor_count": 46,
   "open_issues": 56,
-  "fork_count": 199,
+  "fork_count": 200,
   "tags": [
     "scientific-visualization",
     "cpu-ray-tracing",

@@ -46,16 +46,12 @@
   "latest_release": "2025-01-08",
   "latest_release_version": "0.19.0",
   "status": "active",
-  "github_stars": 13849,
+  "github_stars": 13928,
   "github_stars_trend": [
-    13849
+    13849,
+    13928
   ],
   "commit_activity_52w": [
-    1,
-    0,
-    1,
-    0,
-    0,
     0,
     0,
     0,
@@ -102,11 +98,16 @@
     2,
     3,
     1,
-    2
+    5,
+    6,
+    2,
+    5,
+    1,
+    1
   ],
-  "contributor_count": 244,
-  "open_issues": 1357,
-  "fork_count": 2601,
+  "contributor_count": 249,
+  "open_issues": 1305,
+  "fork_count": 2612,
   "tags": [
     "3d-data-processing",
     "point-cloud",

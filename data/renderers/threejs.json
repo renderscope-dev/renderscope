@@ -144,20 +144,16 @@
     "/renders/samples/threejs_sample_2.webp",
     "/renders/samples/threejs_sample_3.webp"
   ],
-  "github_stars": 114124,
+  "github_stars": 114966,
   "github_stars_trend": [
-    114124
+    114124,
+    114966
   ],
-  "fork_count": 36455,
-  "open_issues": 378,
+  "fork_count": 36514,
+  "open_issues": 374,
   "latest_release_version": "r185",
   "latest_release": "2026-07-01",
   "commit_activity_52w": [
-    47,
-    38,
-    41,
-    38,
-    47,
     50,
     23,
     27,
@@ -190,7 +186,7 @@
     48,
     30,
     62,
-    48,
+    47,
     38,
     30,
     44,
@@ -204,7 +200,12 @@
     61,
     46,
     43,
-    24
+    31,
+    26,
+    54,
+    76,
+    43,
+    8
   ],
-  "contributor_count": 364
+  "contributor_count": 363
 }

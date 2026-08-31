@@ -118,9 +118,10 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "github_stars": 11866,
+  "github_stars": 11954,
   "github_stars_trend": [
-    11866
+    11866,
+    11954
   ],
   "commit_activity_52w": [
     0,
@@ -177,8 +178,8 @@
     0
   ],
   "contributor_count": 244,
-  "open_issues": 952,
-  "fork_count": 1658,
+  "open_issues": 954,
+  "fork_count": 1666,
   "integrations": [
     "gsplat",
     "nerfacc",
