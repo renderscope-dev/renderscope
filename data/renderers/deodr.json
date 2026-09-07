@@ -33,9 +33,10 @@
   "latest_release": "2024-03-17",
   "latest_release_version": "0.0.2",
   "status": "maintenance",
-  "github_stars": 381,
+  "github_stars": 382,
   "github_stars_trend": [
-    381
+    381,
+    382
   ],
   "commit_activity_52w": [
     0,

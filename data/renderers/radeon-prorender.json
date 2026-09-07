@@ -41,12 +41,13 @@
   "latest_release": "2025-05-22",
   "latest_release_version": "3.1.6.patch1",
   "status": "active",
-  "github_stars": 280,
+  "github_stars": 285,
   "github_stars_trend": [
-    280
+    280,
+    285
   ],
   "commit_activity_52w": [
-    1,
+    0,
     0,
     0,
     0,
@@ -100,8 +101,8 @@
     0
   ],
   "contributor_count": 3,
-  "open_issues": 21,
-  "fork_count": 56,
+  "open_issues": 22,
+  "fork_count": 59,
   "tags": [
     "gpu-accelerated",
     "path-tracing",

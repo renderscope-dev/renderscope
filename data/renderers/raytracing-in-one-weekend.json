@@ -31,9 +31,10 @@
   "latest_release": "2025-04-25",
   "latest_release_version": "4.0.2",
   "status": "active",
-  "github_stars": 10557,
+  "github_stars": 10631,
   "github_stars_trend": [
-    10557
+    10557,
+    10631
   ],
   "commit_activity_52w": [
     0,
@@ -90,8 +91,8 @@
     0
   ],
   "contributor_count": 52,
-  "open_issues": 79,
-  "fork_count": 1008,
+  "open_issues": 80,
+  "fork_count": 1009,
   "tags": [
     "educational",
     "ray-tracing",

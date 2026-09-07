@@ -34,17 +34,12 @@
   "latest_release": "2019-09-03",
   "latest_release_version": "2.1.0-beta",
   "status": "maintenance",
-  "github_stars": 2305,
+  "github_stars": 2315,
   "github_stars_trend": [
-    2305
+    2305,
+    2315
   ],
   "commit_activity_52w": [
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
     0,
     0,
     0,
@@ -90,11 +85,17 @@
     0,
     0,
     0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
     0
   ],
   "contributor_count": 85,
-  "open_issues": 461,
-  "fork_count": 352,
+  "open_issues": 462,
+  "fork_count": 355,
   "tags": [
     "production",
     "physically-based",

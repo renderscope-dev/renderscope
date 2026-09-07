@@ -38,17 +38,12 @@
   "latest_release": "2026-04-23",
   "latest_release_version": "6.0",
   "status": "active",
-  "github_stars": 34110,
+  "github_stars": 34625,
   "github_stars_trend": [
-    34110
+    34110,
+    34625
   ],
   "commit_activity_52w": [
-    95,
-    50,
-    74,
-    30,
-    101,
-    68,
     18,
     24,
     55,
@@ -94,11 +89,17 @@
     24,
     30,
     12,
-    14
+    17,
+    11,
+    15,
+    17,
+    27,
+    17,
+    2
   ],
   "contributor_count": 434,
-  "open_issues": 29,
-  "fork_count": 3221,
+  "open_issues": 17,
+  "fork_count": 3274,
   "tags": [
     "beginner-friendly",
     "c-language",

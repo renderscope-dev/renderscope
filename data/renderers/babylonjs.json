@@ -143,21 +143,16 @@
     "/renders/samples/babylonjs_sample_2.webp",
     "/renders/samples/babylonjs_sample_3.webp"
   ],
-  "github_stars": 25869,
+  "github_stars": 26033,
   "github_stars_trend": [
-    25869
+    25869,
+    26033
   ],
-  "fork_count": 3675,
-  "open_issues": 22,
-  "latest_release_version": "9.19.0",
-  "latest_release": "2026-07-30",
+  "fork_count": 3686,
+  "open_issues": 23,
+  "latest_release_version": "9.25.0",
+  "latest_release": "2026-09-03",
   "commit_activity_52w": [
-    59,
-    25,
-    25,
-    33,
-    41,
-    12,
     31,
     26,
     36,
@@ -203,7 +198,13 @@
     49,
     30,
     31,
-    18
+    21,
+    40,
+    33,
+    1,
+    57,
+    25,
+    0
   ],
   "contributor_count": 296
 }
