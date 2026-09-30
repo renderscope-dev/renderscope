@@ -143,16 +143,47 @@ class TestDownloadSceneValidation:
 class TestDownloadOutput:
     """Tests for the download command's output formatting."""
 
-    def test_download_all_scenes_message(self, tmp_path: Path) -> None:
-        """Downloading all scenes shows the download plan."""
+    def test_download_all_scenes_message(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Downloading all scenes shows the download plan.
+
+        Every catalog format now has a real upstream source, so invoking this
+        for real would pull ~670 MB from the internet on every test run — three
+        times over, once per Python version in CI. The fetch is stubbed out; the
+        plan and summary this asserts on are the command's own code.
+        """
+        from renderscope.core.downloader import FormatDownloadResult, SceneDownloader
+
+        fetched: list[tuple[str, str]] = []
+
+        def _fake_download_format(
+            self: SceneDownloader, scene_id: str, fmt: str, **_kwargs: object
+        ) -> FormatDownloadResult:
+            fetched.append((scene_id, fmt))
+            format_dir = self._manager.format_dir(scene_id, fmt)
+            format_dir.mkdir(parents=True, exist_ok=True)
+            return FormatDownloadResult(
+                scene_id=scene_id,
+                format=fmt,
+                url="file:///stub",
+                archive_bytes=0,
+                verified=True,
+                format_dir=format_dir,
+                scene_path=format_dir / "stub",
+            )
+
+        monkeypatch.setattr(SceneDownloader, "download_format", _fake_download_format)
+
         result = runner.invoke(
             app,
             ["download-scenes", "--output-dir", str(tmp_path / "scenes")],
         )
-        assert result.exit_code == 0
-        # Should show downloading message or hosting not available message.
+        assert result.exit_code == 0, result.output
+        assert fetched, "the command downloaded nothing at all"
         output_lower = result.output.lower()
-        assert "download" in output_lower or "scene" in output_lower
+        assert "downloading" in output_lower
+        assert "downloaded successfully" in output_lower
 
     def test_download_with_custom_output_dir(self, tmp_path: Path) -> None:
         """Custom output directory is used."""

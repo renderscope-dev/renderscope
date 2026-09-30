@@ -69,7 +69,8 @@ renderscope system-info
 | `renderscope benchmark` | Run standardized benchmarks with convergence tracking |
 | `renderscope report` | Generate HTML/JSON/CSV/Markdown reports |
 | `renderscope publish` | Convert results into catalog records for `data/benchmarks/` |
-| `renderscope download-scenes` | Download standard benchmark scenes |
+| `renderscope download-scenes` | Download standard benchmark scenes, per format, checksum-verified |
+| `renderscope reference` | Render the ground-truth image quality is measured against |
 
 ## Library Usage
 

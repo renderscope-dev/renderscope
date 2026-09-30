@@ -22,13 +22,37 @@
   "source_url": "https://www.blender.org/download/demo-files/",
   "license": "CC0-1.0",
   "available_formats": [
-    "blend",
-    "gltf",
-    "obj"
+    "blend"
   ],
-  "downloads": {
-    "blend": "https://download.blender.org/demo/test/classroom.zip"
+  "sources": {
+    "blend": {
+      "url": "https://ftp.nluug.nl/pub/graphics/blender/demo/test/classroom.zip",
+      "sha256": "0f0ecc58d45f12b2f4272a53e2d8e69135518e16e956b118f10c20d8dcfdf5e6",
+      "size_mb": 67.02,
+      "path": "classroom/classroom.blend",
+      "note": "Served from the nluug Blender mirror: download.blender.org now refuses automated requests with HTTP 403."
+    }
   },
+  "reference": {
+    "renderer": "blender-cycles",
+    "samples": 65536,
+    "image": "reference.exr"
+  },
+  "thumbnail": "/renders/classroom/thumbnail.webp",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "renders": [
+    {
+      "renderer_id": "blender-cycles",
+      "image_web": "/renders/classroom/blender-cycles_1920x1080.webp",
+      "image_thumb": "/renders/classroom/blender-cycles_400x225.webp",
+      "render_time_seconds": 34.7,
+      "samples_per_pixel": 1024,
+      "integrator": "path_tracing"
+    }
+  ],
   "camera": {
     "position": [
       4.6,
@@ -46,20 +70,5 @@
       0
     ],
     "fov": 50
-  },
-  "thumbnail": "/renders/classroom/thumbnail.webp",
-  "resolution": [
-    1920,
-    1080
-  ],
-  "renders": [
-    {
-      "renderer_id": "blender-cycles",
-      "image_web": "/renders/classroom/blender-cycles_1920x1080.webp",
-      "image_thumb": "/renders/classroom/blender-cycles_400x225.webp",
-      "render_time_seconds": 34.7,
-      "samples_per_pixel": 1024,
-      "integrator": "path_tracing"
-    }
-  ]
+  }
 }

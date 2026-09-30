@@ -1,11 +1,11 @@
 {
   "version": "1.0.0",
-  "description": "RenderScope standard benchmark scene manifest. Used by the CLI's download-scenes command.",
+  "description": "RenderScope standard benchmark scene manifest. Generated from data/scenes/*.json by scripts/generate_scene_manifest.py — edit the catalog, not this file.",
   "scenes": [
     {
       "id": "cornell-box",
       "name": "Cornell Box",
-      "description": "Classic global illumination test scene from Cornell University. Tests color bleeding, soft shadows, and indirect illumination.",
+      "description": "The classic global illumination test scene, originally measured at Cornell University. Tests fundamental light transport: color bleeding between diffuse walls, soft shadows from an area light source, and indirect illumination. The simplest meaningful GI benchmark — every physically based renderer should produce a recognizable result.",
       "source": "Cornell University Program of Computer Graphics",
       "source_url": "https://www.graphics.cornell.edu/online/box/data.html",
       "polygon_count": 32,
@@ -15,11 +15,28 @@
         "soft_shadows",
         "indirect_light"
       ],
-      "complexity": "simple",
+      "complexity": "trivial",
       "formats": {
-        "obj": "cornell-box/CornellBox-Original.obj",
-        "pbrt": "cornell-box/pbrt/cornell-box/scene-v4.pbrt",
-        "glb": "cornell-box/cornell-box.glb"
+        "mitsuba_xml": {
+          "url": "https://benedikt-bitterli.me/resources/mitsuba/cornell-box.zip",
+          "sha256": "d57ffb9d176d34cc45d3d570b51e75be1dc6a4edc78879ba6fe40e2ce093e645",
+          "size_mb": 3.22,
+          "path": "cornell-box/scene_v3.xml",
+          "note": "Benedikt Bitterli's resource pack; also ships a Tungsten reference render (TungstenRender.exr) alongside the scene description."
+        },
+        "obj": {
+          "url": "https://casual-effects.com/g3d/data10/common/model/CornellBox/CornellBox.zip",
+          "sha256": "f27eaf47afec74b5236ce3095ac02d4256e8ac8610bfdb5a53560c67c2e0d8f1",
+          "size_mb": 0.21,
+          "path": "CornellBox-Original.obj"
+        },
+        "pbrt": {
+          "url": "https://benedikt-bitterli.me/resources/pbrt-v4/cornell-box.zip",
+          "sha256": "3ac9dcd287f7079b23dbc9eaefe19e64c942c0ec3740b328e09d44c2163b835d",
+          "size_mb": 3.22,
+          "path": "cornell-box/scene-v4.pbrt",
+          "note": "Benedikt Bitterli's resource pack; also ships a Tungsten reference render (TungstenRender.exr) alongside the scene description."
+        }
       },
       "reference": {
         "renderer": "pbrt",
@@ -44,59 +61,12 @@
         ],
         "fov": 39.3
       },
-      "download_size_mb": 0.3,
-      "archive_url": "https://casual-effects.com/g3d/data10/common/model/CornellBox/CornellBox.zip",
-      "sha256": "f27eaf47afec74b5236ce3095ac02d4256e8ac8610bfdb5a53560c67c2e0d8f1"
-    },
-    {
-      "id": "sponza",
-      "name": "Sponza Atrium",
-      "description": "Architectural interior benchmark for complex indirect lighting and texture-heavy scenes.",
-      "source": "Crytek / Morgan McGuire Computer Graphics Archive",
-      "source_url": "https://casual-effects.com/data/",
-      "polygon_count": 262267,
-      "tests": [
-        "global_illumination",
-        "indirect_light",
-        "textures",
-        "complex_geometry"
-      ],
-      "complexity": "moderate",
-      "formats": {
-        "obj": "sponza/sponza.obj",
-        "glb": "sponza/sponza.glb"
-      },
-      "reference": {
-        "renderer": "blender-cycles",
-        "samples": 65536,
-        "image": "sponza/reference.exr"
-      },
-      "camera": {
-        "position": [
-          -10,
-          2,
-          0
-        ],
-        "target": [
-          0,
-          2,
-          0
-        ],
-        "up": [
-          0,
-          1,
-          0
-        ],
-        "fov": 60
-      },
-      "download_size_mb": 76.0,
-      "archive_url": "https://casual-effects.com/g3d/data10/common/model/crytek_sponza/sponza.zip",
-      "sha256": "da005cbee0be2df2abc8513f3ceb61bcb6f69aac112babcd9c00169a27c2770c"
+      "download_size_mb": 6.65
     },
     {
       "id": "stanford-bunny",
       "name": "Stanford Bunny",
-      "description": "Classic 3D scanned rabbit model for evaluating material rendering and basic lighting.",
+      "description": "A 3D scanned rabbit model from the Stanford 3D Scanning Repository. One of the most recognizable test models in computer graphics. Useful for evaluating material rendering, smooth surface handling, and basic lighting on a familiar shape.",
       "source": "Stanford University 3D Scanning Repository",
       "source_url": "https://graphics.stanford.edu/data/3Dscanrep/",
       "polygon_count": 69451,
@@ -105,10 +75,22 @@
         "reflections",
         "indirect_light"
       ],
-      "complexity": "simple",
+      "complexity": "low",
       "formats": {
-        "obj": "stanford-bunny/stanford-bunny.obj",
-        "glb": "stanford-bunny/stanford-bunny.glb"
+        "obj": {
+          "url": "https://graphics.stanford.edu/~mdfisher/Data/Meshes/bunny.obj",
+          "sha256": "e4bfe098950c61c42190fefe8f23ad7b469da8d5d488c8f8e28a0e0b00c4c88c",
+          "size_mb": 0.2,
+          "filename": "stanford-bunny.obj",
+          "path": "stanford-bunny.obj"
+        },
+        "ply": {
+          "url": "https://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz",
+          "sha256": "a5720bd96d158df403d153381b8411a727a1d73cff2f33dc9b212d6f75455b84",
+          "size_mb": 4.67,
+          "path": "bunny/reconstruction/bun_zipper.ply",
+          "note": "The Stanford 3D Scanning Repository's zippered reconstruction."
+        }
       },
       "reference": {
         "renderer": "blender-cycles",
@@ -133,145 +115,12 @@
         ],
         "fov": 45
       },
-      "download_size_mb": 0.2,
-      "archive_url": "https://graphics.stanford.edu/~mdfisher/Data/Meshes/bunny.obj",
-      "sha256": "e4bfe098950c61c42190fefe8f23ad7b469da8d5d488c8f8e28a0e0b00c4c88c",
-      "filename": "stanford-bunny.obj"
-    },
-    {
-      "id": "classroom",
-      "name": "Classroom",
-      "description": "Blender demo scene with mixed lighting testing caustics, volumetrics, and complex materials.",
-      "source": "Blender Foundation Demo Files",
-      "source_url": "https://www.blender.org/download/demo-files/",
-      "polygon_count": 756242,
-      "tests": [
-        "global_illumination",
-        "caustics",
-        "volumetric",
-        "complex_geometry",
-        "textures"
-      ],
-      "complexity": "complex",
-      "formats": {
-        "blend": "classroom/classroom/classroom.blend",
-        "glb": "classroom/classroom.glb"
-      },
-      "reference": {
-        "renderer": "blender-cycles",
-        "samples": 65536,
-        "image": "classroom/reference.exr"
-      },
-      "camera": {
-        "position": [
-          4.6,
-          1.6,
-          -3.5
-        ],
-        "target": [
-          0,
-          1.2,
-          0
-        ],
-        "up": [
-          0,
-          1,
-          0
-        ],
-        "fov": 50
-      },
-      "download_size_mb": 67.0
-    },
-    {
-      "id": "bmw",
-      "name": "BMW M6",
-      "description": "Automotive benchmark with specular reflections, complex curved geometry, and HDR environment lighting.",
-      "source": "Blender Foundation Demo Files",
-      "source_url": "https://www.blender.org/download/demo-files/",
-      "polygon_count": 1156128,
-      "tests": [
-        "reflections",
-        "complex_geometry",
-        "hdri_lighting",
-        "textures"
-      ],
-      "complexity": "complex",
-      "formats": {
-        "blend": "bmw/BMW27.blend",
-        "glb": "bmw/bmw.glb"
-      },
-      "reference": {
-        "renderer": "blender-cycles",
-        "samples": 65536,
-        "image": "bmw/reference.exr"
-      },
-      "camera": {
-        "position": [
-          5,
-          2.5,
-          -5
-        ],
-        "target": [
-          0,
-          0.5,
-          0
-        ],
-        "up": [
-          0,
-          1,
-          0
-        ],
-        "fov": 45
-      },
-      "download_size_mb": 2.9
-    },
-    {
-      "id": "san-miguel",
-      "name": "San Miguel",
-      "description": "Extreme-scale outdoor scene with 10M+ polygons. Stress test for geometry handling and memory management.",
-      "source": "Guillermo M. Leal Llaguno / PBRT Scene Repository",
-      "source_url": "https://pbrt.org/scenes-v4",
-      "polygon_count": 10503076,
-      "tests": [
-        "global_illumination",
-        "outdoor_lighting",
-        "complex_geometry",
-        "textures"
-      ],
-      "complexity": "complex",
-      "formats": {
-        "obj": "san-miguel/san-miguel.obj",
-        "glb": "san-miguel/san-miguel.glb"
-      },
-      "reference": {
-        "renderer": "blender-cycles",
-        "samples": 65536,
-        "image": "san-miguel/reference.exr"
-      },
-      "camera": {
-        "position": [
-          8,
-          2,
-          0
-        ],
-        "target": [
-          0,
-          1.5,
-          0
-        ],
-        "up": [
-          0,
-          1,
-          0
-        ],
-        "fov": 65
-      },
-      "download_size_mb": 510.0
+      "download_size_mb": 4.87
     },
     {
       "id": "veach-mis",
       "name": "Veach MIS",
-      "description": "Eric Veach's diagnostic scene for multiple importance sampling. Exposes algorithmic differences in light sampling.",
+      "description": "Eric Veach's classic test scene designed to demonstrate the importance of Multiple Importance Sampling. Features four plates with varying roughness illuminated by four lights of varying size. Exposes algorithmic differences in how renderers sample difficult light transport paths — a diagnostic tool more than a beauty test.",
       "source": "Eric Veach / PBRT Scene Repository",
       "source_url": "https://pbrt.org/scenes-v4",
       "polygon_count": 1200,
@@ -280,9 +129,22 @@
         "reflections",
         "soft_shadows"
       ],
-      "complexity": "simple",
+      "complexity": "low",
       "formats": {
-        "pbrt": "veach-mis/veach-mis/scene-v4.pbrt"
+        "mitsuba_xml": {
+          "url": "https://benedikt-bitterli.me/resources/mitsuba/veach-mis.zip",
+          "sha256": "b90851ba861c802ace8a61cde43116576edc754a12b1ddd7308b68d65371770c",
+          "size_mb": 1.91,
+          "path": "veach-mis/scene_v3.xml",
+          "note": "Benedikt Bitterli's resource pack; also ships a Tungsten reference render (TungstenRender.exr) alongside the scene description."
+        },
+        "pbrt": {
+          "url": "https://benedikt-bitterli.me/resources/pbrt-v4/veach-mis.zip",
+          "sha256": "a23345a4ebd47078beaf689c74bc84cc81954cdf4a8008cdb918ace04f187b0c",
+          "size_mb": 1.91,
+          "path": "veach-mis/scene-v4.pbrt",
+          "note": "Benedikt Bitterli's resource pack; also ships a Tungsten reference render (TungstenRender.exr) alongside the scene description."
+        }
       },
       "reference": {
         "renderer": "pbrt",
@@ -307,9 +169,199 @@
         ],
         "fov": 20
       },
-      "download_size_mb": 1.9,
-      "archive_url": "https://benedikt-bitterli.me/resources/pbrt-v4/veach-mis.zip",
-      "sha256": "a23345a4ebd47078beaf689c74bc84cc81954cdf4a8008cdb918ace04f187b0c"
+      "download_size_mb": 3.82
+    },
+    {
+      "id": "sponza",
+      "name": "Sponza Atrium",
+      "description": "An architectural interior based on the Sponza Palace atrium in Dubrovnik, Croatia. A standard benchmark for testing complex indirect lighting, light interaction across many surfaces, and texture-heavy scenes. Used in virtually every rendering research paper as a reference scene.",
+      "source": "Crytek / Morgan McGuire Computer Graphics Archive",
+      "source_url": "https://casual-effects.com/data/",
+      "polygon_count": 262267,
+      "tests": [
+        "global_illumination",
+        "indirect_light",
+        "textures",
+        "complex_geometry"
+      ],
+      "complexity": "medium",
+      "formats": {
+        "obj": {
+          "url": "https://casual-effects.com/g3d/data10/common/model/crytek_sponza/sponza.zip",
+          "sha256": "da005cbee0be2df2abc8513f3ceb61bcb6f69aac112babcd9c00169a27c2770c",
+          "size_mb": 76.4,
+          "path": "sponza.obj"
+        }
+      },
+      "reference": {
+        "renderer": "blender-cycles",
+        "samples": 65536,
+        "image": "sponza/reference.exr"
+      },
+      "camera": {
+        "position": [
+          -10,
+          2,
+          0
+        ],
+        "target": [
+          0,
+          2,
+          0
+        ],
+        "up": [
+          0,
+          1,
+          0
+        ],
+        "fov": 60
+      },
+      "download_size_mb": 76.4
+    },
+    {
+      "id": "bmw",
+      "name": "BMW M6",
+      "description": "An automotive rendering benchmark from the Blender Foundation featuring a BMW M6 with detailed reflective surfaces, complex curved body panels, and HDR environment lighting. Pushes material quality to its limits with clearcoat, metallic paint, and glass materials.",
+      "source": "Blender Foundation Demo Files",
+      "source_url": "https://www.blender.org/download/demo-files/",
+      "polygon_count": 1156128,
+      "tests": [
+        "reflections",
+        "complex_geometry",
+        "hdri_lighting",
+        "textures"
+      ],
+      "complexity": "high",
+      "formats": {
+        "blend": {
+          "url": "https://ftp.nluug.nl/pub/graphics/blender/demo/test/BMW27.blend.zip",
+          "sha256": "08170de260488c14855a13db81c8d5ad844bc6162c3db13e1d9ba8094f55fe2b",
+          "size_mb": 2.87,
+          "path": "BMW27.blend",
+          "note": "Served from the nluug Blender mirror: download.blender.org now refuses automated requests with HTTP 403."
+        }
+      },
+      "reference": {
+        "renderer": "blender-cycles",
+        "samples": 65536,
+        "image": "bmw/reference.exr"
+      },
+      "camera": {
+        "position": [
+          5,
+          2.5,
+          -5
+        ],
+        "target": [
+          0,
+          0.5,
+          0
+        ],
+        "up": [
+          0,
+          1,
+          0
+        ],
+        "fov": 45
+      },
+      "download_size_mb": 2.87
+    },
+    {
+      "id": "classroom",
+      "name": "Classroom",
+      "description": "A Blender Foundation demo scene depicting a detailed school classroom interior with mixed lighting: directional sunlight through windows combined with artificial interior lights. Tests a wide range of rendering capabilities including caustics, volumetric effects, and complex material interactions.",
+      "source": "Blender Foundation Demo Files",
+      "source_url": "https://www.blender.org/download/demo-files/",
+      "polygon_count": 756242,
+      "tests": [
+        "global_illumination",
+        "caustics",
+        "volumetric",
+        "complex_geometry",
+        "textures"
+      ],
+      "complexity": "high",
+      "formats": {
+        "blend": {
+          "url": "https://ftp.nluug.nl/pub/graphics/blender/demo/test/classroom.zip",
+          "sha256": "0f0ecc58d45f12b2f4272a53e2d8e69135518e16e956b118f10c20d8dcfdf5e6",
+          "size_mb": 67.02,
+          "path": "classroom/classroom.blend",
+          "note": "Served from the nluug Blender mirror: download.blender.org now refuses automated requests with HTTP 403."
+        }
+      },
+      "reference": {
+        "renderer": "blender-cycles",
+        "samples": 65536,
+        "image": "classroom/reference.exr"
+      },
+      "camera": {
+        "position": [
+          4.6,
+          1.6,
+          -3.5
+        ],
+        "target": [
+          0,
+          1.2,
+          0
+        ],
+        "up": [
+          0,
+          1,
+          0
+        ],
+        "fov": 50
+      },
+      "download_size_mb": 67.02
+    },
+    {
+      "id": "san-miguel",
+      "name": "San Miguel",
+      "description": "A large outdoor courtyard scene with complex vegetation, intricate architectural details, and over 10 million polygons. The ultimate stress test for renderer geometry handling, memory management, and outdoor global illumination. Many renderers struggle with this scene's scale.",
+      "source": "Guillermo M. Leal Llaguno / PBRT Scene Repository",
+      "source_url": "https://pbrt.org/scenes-v4",
+      "polygon_count": 10503076,
+      "tests": [
+        "global_illumination",
+        "outdoor_lighting",
+        "complex_geometry",
+        "textures"
+      ],
+      "complexity": "extreme",
+      "formats": {
+        "obj": {
+          "url": "https://casual-effects.com/g3d/data10/research/model/San_Miguel/San_Miguel.zip",
+          "sha256": "85874077735808150e679b3c71d70a37a270cb8833f4911325aa1099da3f7d4a",
+          "size_mb": 510.71,
+          "path": "san-miguel.obj",
+          "note": "Half a gigabyte of geometry and textures; expect a long download."
+        }
+      },
+      "reference": {
+        "renderer": "blender-cycles",
+        "samples": 65536,
+        "image": "san-miguel/reference.exr"
+      },
+      "camera": {
+        "position": [
+          8,
+          2,
+          0
+        ],
+        "target": [
+          0,
+          1.5,
+          0
+        ],
+        "up": [
+          0,
+          1,
+          0
+        ],
+        "fov": 65
+      },
+      "download_size_mb": 510.71
     }
   ]
 }

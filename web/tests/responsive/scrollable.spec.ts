@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { navigateAndWait } from "../fixtures/test-utils";
+import { isMobileLayout, navigateAndWait } from "../fixtures/test-utils";
 
 /**
  * Tests for scrollable components on mobile viewports.
@@ -11,8 +11,7 @@ test.describe("Responsive: scrollable components on mobile", () => {
   test("Feature matrix is horizontally scrollable on mobile", async ({
     page,
   }) => {
-    const viewport = page.viewportSize();
-    if (!viewport || viewport.width > 768) {
+    if (!isMobileLayout(page)) {
       test.skip();
       return;
     }
@@ -53,8 +52,7 @@ test.describe("Responsive: scrollable components on mobile", () => {
   });
 
   test("Benchmark data table is usable on mobile", async ({ page }) => {
-    const viewport = page.viewportSize();
-    if (!viewport || viewport.width > 768) {
+    if (!isMobileLayout(page)) {
       test.skip();
       return;
     }

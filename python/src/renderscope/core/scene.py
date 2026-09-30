@@ -4,9 +4,25 @@ Manages discovery, download status, path resolution, and format compatibility
 for the bundled benchmark scenes (Cornell Box, Sponza, Stanford Bunny, etc.).
 
 The manifest is a JSON file shipped with the package at
-``data/scenes/manifest.json``.  Actual scene files are large binary assets
-stored in ``~/.renderscope/scenes/`` and downloaded on demand via the
-``renderscope download-scenes`` CLI command.
+``data/scenes/manifest.json``.  It is **generated** from the repository's scene
+catalog (``data/scenes/*.json``) by ``scripts/generate_scene_manifest.py`` so the
+CLI and the website cannot describe a scene differently; edit the catalog, not
+the manifest.
+
+Actual scene files are large binary assets stored in ``~/.renderscope/scenes/``
+and downloaded on demand via the ``renderscope download-scenes`` CLI command.
+
+**On-disk layout.**  Each format has its own source and its own directory::
+
+    <scenes_dir>/<scene_id>/<format>/<source.path>
+    <scenes_dir>/<scene_id>/<format>/.renderscope-complete
+    <scenes_dir>/<scene_id>/reference.exr
+
+A scene is rarely published as one archive containing every format — the Cornell
+Box's OBJ, PBRT and Mitsuba descriptions come from three unrelated hosts.  Giving
+each format its own directory lets them be fetched, verified, replaced and
+reasoned about independently, and means declaring a format implies a source that
+can actually deliver it.
 """
 
 from __future__ import annotations
@@ -24,7 +40,7 @@ logger = logging.getLogger(__name__)
 # Default directory where scenes are stored on disk.
 _DEFAULT_SCENES_DIR = Path.home() / ".renderscope" / "scenes"
 
-# Marker file written after a successful scene download.
+# Marker file written into a format's directory after it installs successfully.
 _COMPLETE_MARKER = ".renderscope-complete"
 
 
@@ -68,6 +84,23 @@ class FormatNotAvailableError(Exception):
         )
 
 
+class FormatNotDownloadedError(Exception):
+    """Raised when a declared format has not been installed locally.
+
+    Distinct from :class:`FormatNotAvailableError`: the scene does offer this
+    format, it simply has not been fetched yet.  Formats download independently,
+    so having the Cornell Box's OBJ says nothing about having its PBRT.
+    """
+
+    def __init__(self, scene_id: str, fmt: str) -> None:
+        self.scene_id = scene_id
+        self.format = fmt
+        super().__init__(
+            f"Scene '{scene_id}' has not been downloaded in '{fmt}' format.\n"
+            f"Run 'renderscope download-scenes --scene {scene_id} --format {fmt}' to get it."
+        )
+
+
 # ---------------------------------------------------------------------------
 # Pydantic models
 # ---------------------------------------------------------------------------
@@ -107,6 +140,41 @@ class SceneReference(BaseModel):
     sha256: str | None = None
 
 
+class SceneFormat(BaseModel):
+    """Where one format of a scene comes from, and where it lands.
+
+    Formats are acquired independently: the Cornell Box's OBJ, PBRT and Mitsuba
+    descriptions are published by three unrelated hosts, so a single per-scene
+    archive could never deliver all three.  Each format therefore carries its
+    own source, its own checksum, and its own directory.
+    """
+
+    model_config = ConfigDict(extra="ignore")
+
+    # Path to the scene's entry file relative to this format's directory,
+    # exactly as the source archive lays it out.
+    path: str
+
+    # --- Source (optional: a format may be declared with no automated source) ---
+    # Fully-qualified URL of the archive or loose file.  Supports ``http(s)://``
+    # and ``file://`` schemes.
+    url: str | None = None
+    # Archive filename relative to a configured mirror (see ``SceneDownloader``
+    # / ``RENDERSCOPE_SCENE_BASE_URL``).  Defaults to ``<scene_id>-<format>.tar.gz``.
+    archive: str | None = None
+    # Expected SHA-256 (hex) of the downloaded bytes.  When present, the
+    # downloader verifies integrity and refuses to install a mismatched file.
+    sha256: str | None = None
+    # Download size in megabytes, measured from the source.
+    size_mb: float = 0.0
+    # Name to save the download under when the source is a single loose file
+    # rather than an archive.  The Stanford Bunny is published as a bare
+    # ``bunny.obj``; this records that it belongs at ``stanford-bunny.obj``.
+    filename: str | None = None
+    # Anything a user needs to know about this source.
+    note: str | None = None
+
+
 class SceneInfo(BaseModel):
     """Metadata for a standard benchmark scene."""
 
@@ -119,31 +187,17 @@ class SceneInfo(BaseModel):
     source_url: str
     polygon_count: int
     tests: list[str]
-    complexity: str  # "simple", "moderate", "complex"
-    formats: dict[str, str]  # format_id -> relative path
+    # "trivial", "low", "medium", "high", "extreme" — the catalog's vocabulary,
+    # shared with the website so a scene is not rated twice.
+    complexity: str
+    formats: dict[str, SceneFormat]  # format_id -> source
     reference: SceneReference | None = None
     camera: CameraInfo
     download_size_mb: float
 
-    # --- Download sources (all optional; populated as hosting is provisioned) ---
-    # Explicit, fully-qualified URL to the scene's archive.  Takes precedence
-    # over ``archive`` + a configured base URL.  Supports ``http(s)://`` and
-    # ``file://`` schemes.
-    archive_url: str | None = None
-    # Archive filename or path relative to a configured base URL
-    # (see ``SceneDownloader`` / ``RENDERSCOPE_SCENE_BASE_URL``).  Defaults to
-    # ``<id>.tar.gz`` when neither this nor ``archive_url`` is set.
-    archive: str | None = None
-    # Expected SHA-256 (hex) of the downloaded archive.  When present, the
-    # downloader verifies integrity and refuses to install a mismatched file.
-    sha256: str | None = None
-    # Name to save the download under when the source is a single file rather
-    # than an archive.  The Stanford Bunny, for example, is published as a bare
-    # ``bunny.obj``; this records that it belongs at ``stanford-bunny.obj`` so
-    # the path in ``formats`` resolves.
-    filename: str | None = None
-
-    is_downloaded: bool = False  # Set dynamically by SceneManager
+    # --- Dynamic state, populated by SceneManager ---
+    is_downloaded: bool = False
+    installed_formats: list[str] = Field(default_factory=list)
 
 
 class SceneManifest(BaseModel):
@@ -183,11 +237,7 @@ class SceneManager:
 
     def list_scenes(self) -> list[SceneInfo]:
         """Return all scenes from the manifest with download status populated."""
-        scenes: list[SceneInfo] = []
-        for scene in self._manifest.scenes:
-            updated = scene.model_copy(update={"is_downloaded": self.is_downloaded(scene.id)})
-            scenes.append(updated)
-        return scenes
+        return [self._with_state(scene) for scene in self._manifest.scenes]
 
     def get_scene(self, scene_id: str) -> SceneInfo:
         """Look up a single scene by ID.
@@ -197,20 +247,86 @@ class SceneManager:
         """
         for scene in self._manifest.scenes:
             if scene.id == scene_id:
-                return scene.model_copy(update={"is_downloaded": self.is_downloaded(scene.id)})
+                return self._with_state(scene)
         available = [s.id for s in self._manifest.scenes]
         raise SceneNotFoundError(scene_id, available=available)
 
-    def is_downloaded(self, scene_id: str) -> bool:
-        """Check if a scene's files exist locally.
+    def _with_state(self, scene: SceneInfo) -> SceneInfo:
+        """Return a copy of ``scene`` carrying its current on-disk state."""
+        installed = [
+            fmt for fmt in sorted(scene.formats) if self.is_format_downloaded(scene.id, fmt)
+        ]
+        return scene.model_copy(
+            update={"is_downloaded": bool(installed), "installed_formats": installed}
+        )
 
-        A scene is considered downloaded if its directory exists and contains
-        the ``.renderscope-complete`` marker file (written after a successful
-        download to detect partial downloads).
+    def _has_marker(self, scene_id: str, fmt: str) -> bool:
+        """Whether a format's completion marker is present."""
+        return (self._scenes_dir / scene_id / fmt / _COMPLETE_MARKER).is_file()
+
+    def format_dir(self, scene_id: str, fmt: str) -> Path:
+        """Directory a format is installed into, whether or not it exists yet."""
+        return self._scenes_dir / scene_id / fmt
+
+    def scene_dir(self, scene_id: str) -> Path:
+        """Directory holding every format of a scene, plus its reference render."""
+        return self._scenes_dir / scene_id
+
+    def is_format_downloaded(self, scene_id: str, fmt: str) -> bool:
+        """Check whether one format of a scene is installed locally.
+
+        A format counts as installed only when its directory holds the
+        ``.renderscope-complete`` marker *and* the file the manifest promises,
+        so a partial or superseded install is reported as missing rather than
+        failing later inside a renderer.
         """
-        scene_dir = self._scenes_dir / scene_id
-        marker = scene_dir / _COMPLETE_MARKER
-        return marker.is_file()
+        try:
+            scene = self._scene_or_raise(scene_id)
+        except SceneNotFoundError:
+            return False
+        source = scene.formats.get(fmt)
+        if source is None or not self._has_marker(scene_id, fmt):
+            return False
+        return (self.format_dir(scene_id, fmt) / source.path).is_file()
+
+    def is_downloaded(self, scene_id: str) -> bool:
+        """Check whether any format of a scene is installed locally.
+
+        Formats are fetched independently, so a scene becomes usable as soon as
+        one of them lands.  Callers that need a specific format should ask
+        :meth:`is_format_downloaded`.
+        """
+        try:
+            scene = self._scene_or_raise(scene_id)
+        except SceneNotFoundError:
+            return False
+        return any(self.is_format_downloaded(scene_id, fmt) for fmt in scene.formats)
+
+    def installed_formats(self, scene_id: str) -> list[str]:
+        """Formats of a scene that are present and complete on disk, sorted."""
+        try:
+            scene = self._scene_or_raise(scene_id)
+        except SceneNotFoundError:
+            return []
+        return [fmt for fmt in sorted(scene.formats) if self.is_format_downloaded(scene_id, fmt)]
+
+    def describe_formats(self, scene_id: str) -> str:
+        """A human-readable answer to "what can this scene actually be read as?".
+
+        Reports what is on disk once a scene has been downloaded and what is
+        merely declared before that, because an error message naming formats the
+        caller does not have is worse than no message at all.
+        """
+        installed = self.installed_formats(scene_id)
+        if installed:
+            return ", ".join(installed)
+        try:
+            declared = sorted(self._scene_or_raise(scene_id).formats)
+        except SceneNotFoundError:
+            return "(none)"
+        if not declared:
+            return "(none)"
+        return f"none downloaded (declared: {', '.join(declared)})"
 
     def get_scene_path(self, scene_id: str, fmt: str) -> Path:
         """Resolve the local file path for a scene in a specific format.
@@ -224,18 +340,33 @@ class SceneManager:
 
         Raises:
             SceneNotFoundError: If the scene doesn't exist in the manifest.
-            SceneNotDownloadedError: If the scene hasn't been downloaded.
             FormatNotAvailableError: If the scene doesn't offer that format.
+            SceneNotDownloadedError: If nothing has been downloaded for the scene.
+            FormatNotDownloadedError: If this particular format is missing.
         """
-        scene = self.get_scene(scene_id)
+        scene = self._scene_or_raise(scene_id)
+
+        if fmt not in scene.formats:
+            raise FormatNotAvailableError(scene_id, fmt, sorted(scene.formats))
 
         if not self.is_downloaded(scene_id):
             raise SceneNotDownloadedError(scene_id)
 
-        if fmt not in scene.formats:
-            raise FormatNotAvailableError(scene_id, fmt, list(scene.formats.keys()))
+        if not self.is_format_downloaded(scene_id, fmt):
+            raise FormatNotDownloadedError(scene_id, fmt)
 
-        return self._scenes_dir / scene.formats[fmt]
+        return self.format_dir(scene_id, fmt) / scene.formats[fmt].path
+
+    def _scene_or_raise(self, scene_id: str) -> SceneInfo:
+        """Return the raw manifest entry for ``scene_id`` without on-disk state.
+
+        :meth:`get_scene` populates install state, which is computed from the
+        very predicates that call this — going through it would recurse.
+        """
+        for scene in self._manifest.scenes:
+            if scene.id == scene_id:
+                return scene
+        raise SceneNotFoundError(scene_id, available=[s.id for s in self._manifest.scenes])
 
     def get_reference_path(self, scene_id: str) -> Path | None:
         """Resolve the local path to a scene's reference image.
@@ -289,8 +420,8 @@ class SceneManager:
         Returns:
             The best matching format ID, or ``None`` if no compatible format exists.
         """
-        scene = self.get_scene(scene_id)
-        scene_formats = set(scene.formats.keys())
+        scene = self._scene_or_raise(scene_id)
+        scene_formats = set(scene.formats)
         renderer_formats = set(supported_formats)
 
         # Find the intersection of available and supported formats.
@@ -298,19 +429,15 @@ class SceneManager:
         if not compatible:
             return None
 
-        # A manifest entry promises a path, not a file. Converted formats in
-        # particular (the .glb variants produced by scripts/convert_to_gltf.py)
-        # ship with no upstream download, so choosing one would hand the adapter
-        # a path that does not exist and surface as an obscure render failure.
-        #
-        # Once a scene is downloaded, what is on disk is the truth: report a
-        # renderer as incompatible rather than letting it fail later. Before
-        # download there is nothing to inspect, so the declared set stands —
-        # `benchmark --dry-run` still needs to reason about the run matrix.
+        # A manifest entry promises a path, not a file, and formats download
+        # independently — having the Cornell Box's OBJ says nothing about having
+        # its PBRT. Once anything has been downloaded, what is on disk is the
+        # truth: report a renderer as incompatible rather than letting it fail
+        # later inside the renderer. Before any download there is nothing to
+        # inspect, so the declared set stands — `benchmark --dry-run` still
+        # needs to reason about the full run matrix.
         if self.is_downloaded(scene_id):
-            compatible = {
-                fmt for fmt in compatible if (self._scenes_dir / scene.formats[fmt]).is_file()
-            }
+            compatible = {fmt for fmt in compatible if self.is_format_downloaded(scene_id, fmt)}
             if not compatible:
                 return None
 
@@ -341,29 +468,36 @@ class SceneManager:
 
     def prepare_scene_dir(self, scene_id: str) -> Path:
         """Create the local directory for a scene and return its path."""
-        scene = self.get_scene(scene_id)
-        scene_dir = self._scenes_dir / scene.id
+        scene_dir = self._scenes_dir / self._scene_or_raise(scene_id).id
         scene_dir.mkdir(parents=True, exist_ok=True)
         return scene_dir
 
-    def mark_downloaded(self, scene_id: str) -> None:
-        """Write the completion marker for a scene."""
-        scene_dir = self._scenes_dir / scene_id
-        scene_dir.mkdir(parents=True, exist_ok=True)
-        marker = scene_dir / _COMPLETE_MARKER
-        marker.write_text(f"Downloaded by RenderScope\nScene: {scene_id}\n", encoding="utf-8")
+    def mark_format_downloaded(self, scene_id: str, fmt: str) -> None:
+        """Write the completion marker for one installed format."""
+        format_dir = self.format_dir(scene_id, fmt)
+        format_dir.mkdir(parents=True, exist_ok=True)
+        (format_dir / _COMPLETE_MARKER).write_text(
+            f"Downloaded by RenderScope\nScene: {scene_id}\nFormat: {fmt}\n",
+            encoding="utf-8",
+        )
 
-    def remove_marker(self, scene_id: str) -> None:
-        """Remove the completion marker (e.g., for re-download)."""
-        marker = self._scenes_dir / scene_id / _COMPLETE_MARKER
-        if marker.is_file():
-            marker.unlink()
+    def remove_format(self, scene_id: str, fmt: str) -> None:
+        """Delete one format's local directory, if present.
+
+        Used for a clean re-download: removing the directory (rather than just
+        the marker) guarantees stale files from a previous archive don't linger.
+        """
+        import shutil
+
+        format_dir = self.format_dir(scene_id, fmt)
+        if format_dir.exists():
+            shutil.rmtree(format_dir)
 
     def remove_scene(self, scene_id: str) -> None:
         """Delete a scene's entire local directory, if present.
 
-        Used for a clean re-download: removing the directory (rather than just
-        the marker) guarantees stale files from a previous archive don't linger.
+        This also discards the scene's reference render, which lives beside the
+        format directories and can cost hours to regenerate.
         """
         import shutil
 

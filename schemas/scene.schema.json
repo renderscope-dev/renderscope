@@ -11,7 +11,8 @@
     "tests",
     "complexity",
     "source",
-    "available_formats"
+    "available_formats",
+    "sources"
   ],
   "additionalProperties": false,
   "properties": {
@@ -57,7 +58,13 @@
     "complexity": {
       "type": "string",
       "description": "Overall scene complexity rating.",
-      "enum": ["trivial", "low", "medium", "high", "extreme"]
+      "enum": [
+        "trivial",
+        "low",
+        "medium",
+        "high",
+        "extreme"
+      ]
     },
     "vertices": {
       "type": "integer",
@@ -118,17 +125,95 @@
       "minItems": 1,
       "uniqueItems": true
     },
+    "sources": {
+      "type": "object",
+      "description": "Per-format acquisition detail, keyed by format id. Its keys are the single source of truth for which formats exist; 'available_formats' must list exactly the same set.",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "description": "How one format of this scene is obtained and where its entry file sits once installed.",
+        "required": [
+          "path"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Path to the scene's entry file relative to this format's directory, exactly as the source archive lays it out. Installed at <scenes_dir>/<scene_id>/<format>/<path>.",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "description": "Fully-qualified URL of the archive or loose file to download. Omit when no automated source exists; the format is then declared but must be acquired manually.",
+            "format": "uri"
+          },
+          "archive": {
+            "type": "string",
+            "description": "Archive filename relative to a configured scene mirror (RENDERSCOPE_SCENE_BASE_URL). Used only when a mirror is set."
+          },
+          "sha256": {
+            "type": "string",
+            "description": "Expected SHA-256 of the downloaded bytes, lowercase hex.",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "size_mb": {
+            "type": "number",
+            "description": "Download size in megabytes, measured from the source.",
+            "minimum": 0
+          },
+          "filename": {
+            "type": "string",
+            "description": "Name to save the download as when the source is a single loose file rather than an archive."
+          },
+          "note": {
+            "type": "string",
+            "description": "Anything a user needs to know about this source."
+          }
+        }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "description": "The ground-truth render every quality metric for this scene is measured against. Produced by 'renderscope reference'.",
+      "required": [
+        "renderer",
+        "samples",
+        "image"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "renderer": {
+          "type": "string",
+          "description": "Renderer id nominated to produce the ground truth."
+        },
+        "samples": {
+          "type": "integer",
+          "description": "Samples per pixel the reference is rendered at.",
+          "minimum": 1
+        },
+        "image": {
+          "type": "string",
+          "description": "Reference image path relative to the scene's directory.",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "description": "Where a pre-rendered reference can be downloaded, once hosted.",
+          "format": "uri"
+        },
+        "sha256": {
+          "type": "string",
+          "description": "Expected SHA-256 of the reference image, lowercase hex.",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
     "thumbnail": {
       "type": "string",
       "description": "Relative path to the scene thumbnail image."
-    },
-    "downloads": {
-      "type": "object",
-      "description": "Mapping of format name to download URL for each available format.",
-      "additionalProperties": {
-        "type": "string",
-        "format": "uri"
-      }
     },
     "resolution": {
       "type": "array",
@@ -145,7 +230,9 @@
       "description": "Pre-rendered images for this scene from various renderers.",
       "items": {
         "type": "object",
-        "required": ["renderer_id"],
+        "required": [
+          "renderer_id"
+        ],
         "additionalProperties": true,
         "properties": {
           "renderer_id": {
@@ -161,15 +248,24 @@
             "description": "Path to thumbnail rendered image."
           },
           "render_time_seconds": {
-            "type": ["number", "null"],
+            "type": [
+              "number",
+              "null"
+            ],
             "description": "Render time in seconds."
           },
           "samples_per_pixel": {
-            "type": ["integer", "null"],
+            "type": [
+              "integer",
+              "null"
+            ],
             "description": "Samples per pixel used."
           },
           "integrator": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "Integrator or algorithm used."
           }
         }
@@ -183,21 +279,27 @@
         "position": {
           "type": "array",
           "description": "Camera position as [x, y, z].",
-          "items": { "type": "number" },
+          "items": {
+            "type": "number"
+          },
           "minItems": 3,
           "maxItems": 3
         },
         "look_at": {
           "type": "array",
           "description": "Camera look-at target as [x, y, z].",
-          "items": { "type": "number" },
+          "items": {
+            "type": "number"
+          },
           "minItems": 3,
           "maxItems": 3
         },
         "up": {
           "type": "array",
           "description": "Camera up vector as [x, y, z].",
-          "items": { "type": "number" },
+          "items": {
+            "type": "number"
+          },
           "minItems": 3,
           "maxItems": 3
         },

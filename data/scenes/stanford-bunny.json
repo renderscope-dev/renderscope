@@ -19,14 +19,41 @@
   "source_url": "https://graphics.stanford.edu/data/3Dscanrep/",
   "license": "Free for research and educational use",
   "available_formats": [
-    "ply",
     "obj",
-    "pbrt",
-    "gltf"
+    "ply"
   ],
-  "downloads": {
-    "obj": "https://graphics.stanford.edu/~mdfisher/Data/Meshes/bunny.obj"
+  "sources": {
+    "obj": {
+      "url": "https://graphics.stanford.edu/~mdfisher/Data/Meshes/bunny.obj",
+      "sha256": "e4bfe098950c61c42190fefe8f23ad7b469da8d5d488c8f8e28a0e0b00c4c88c",
+      "size_mb": 0.2,
+      "filename": "stanford-bunny.obj",
+      "path": "stanford-bunny.obj"
+    },
+    "ply": {
+      "url": "https://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz",
+      "sha256": "a5720bd96d158df403d153381b8411a727a1d73cff2f33dc9b212d6f75455b84",
+      "size_mb": 4.67,
+      "path": "bunny/reconstruction/bun_zipper.ply",
+      "note": "The Stanford 3D Scanning Repository's zippered reconstruction."
+    }
   },
+  "reference": {
+    "renderer": "blender-cycles",
+    "samples": 65536,
+    "image": "reference.exr"
+  },
+  "thumbnail": "/renders/stanford-bunny/thumbnail.webp",
+  "renders": [
+    {
+      "renderer_id": "blender-cycles",
+      "image_web": "/renders/stanford-bunny/blender-cycles_1920x1080.webp",
+      "image_thumb": "/renders/stanford-bunny/blender-cycles_400x225.webp",
+      "render_time_seconds": null,
+      "samples_per_pixel": 1024,
+      "integrator": null
+    }
+  ],
   "camera": {
     "position": [
       -0.03,
@@ -44,16 +71,5 @@
       0
     ],
     "fov": 45
-  },
-  "renders": [
-    {
-      "renderer_id": "blender-cycles",
-      "image_web": "/renders/stanford-bunny/blender-cycles_1920x1080.webp",
-      "image_thumb": "/renders/stanford-bunny/blender-cycles_400x225.webp",
-      "render_time_seconds": null,
-      "samples_per_pixel": 1024,
-      "integrator": null
-    }
-  ],
-  "thumbnail": "/renders/stanford-bunny/thumbnail.webp"
+  }
 }

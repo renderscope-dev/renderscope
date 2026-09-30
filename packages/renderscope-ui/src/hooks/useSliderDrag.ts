@@ -31,6 +31,7 @@ export interface UseSliderDragReturn {
     onPointerDown: (e: React.PointerEvent) => void;
     onPointerMove: (e: React.PointerEvent) => void;
     onPointerUp: (e: React.PointerEvent) => void;
+    onPointerCancel: (e: React.PointerEvent) => void;
   };
   /** Keyboard event handler to attach to the handle element */
   handleKeyDown: (e: React.KeyboardEvent) => void;
@@ -105,13 +106,33 @@ export function useSliderDrag({
     [calculatePosition, updatePosition],
   );
 
-  const onPointerUp = useCallback((e: React.PointerEvent) => {
+  const endDrag = useCallback((e: React.PointerEvent) => {
     if (!isDraggingRef.current) return;
 
-    (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+    const target = e.currentTarget as HTMLElement;
+    // A cancelled pointer has already lost capture, and releasing one that was
+    // never held throws NotFoundError in Firefox.
+    if (target.hasPointerCapture(e.pointerId)) {
+      target.releasePointerCapture(e.pointerId);
+    }
     isDraggingRef.current = false;
     setIsDragging(false);
   }, []);
+
+  const onPointerUp = endDrag;
+
+  /**
+   * The browser can take a gesture away mid-drag.
+   *
+   * A touch the compositor decides is a scroll fires `pointercancel` instead of
+   * further `pointermove`s, and no `pointerup` follows. Without this the slider
+   * stayed stuck in its dragging state: the resize cursor latched on, the
+   * metadata overlay stayed suppressed, and a later hover-move was treated as a
+   * continuing drag. `.rs-slider` sets `touch-action: none` so the compositor
+   * does not claim horizontal drags; this handles the cancellations it cannot
+   * prevent, such as a system interruption.
+   */
+  const onPointerCancel = endDrag;
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -164,6 +185,7 @@ export function useSliderDrag({
       onPointerDown,
       onPointerMove,
       onPointerUp,
+      onPointerCancel,
     },
     handleKeyDown,
     setPosition,

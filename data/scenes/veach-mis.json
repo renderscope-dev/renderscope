@@ -19,31 +19,31 @@
   "source_url": "https://pbrt.org/scenes-v4",
   "license": "Public domain",
   "available_formats": [
-    "pbrt",
-    "mitsuba_xml"
+    "mitsuba_xml",
+    "pbrt"
   ],
-  "downloads": {
-    "pbrt": "https://benedikt-bitterli.me/resources/pbrt-v4/veach-mis.zip",
-    "mitsuba_xml": "https://benedikt-bitterli.me/resources/mitsuba/veach-mis.zip"
+  "sources": {
+    "mitsuba_xml": {
+      "url": "https://benedikt-bitterli.me/resources/mitsuba/veach-mis.zip",
+      "sha256": "b90851ba861c802ace8a61cde43116576edc754a12b1ddd7308b68d65371770c",
+      "size_mb": 1.91,
+      "path": "veach-mis/scene_v3.xml",
+      "note": "Benedikt Bitterli's resource pack; also ships a Tungsten reference render (TungstenRender.exr) alongside the scene description."
+    },
+    "pbrt": {
+      "url": "https://benedikt-bitterli.me/resources/pbrt-v4/veach-mis.zip",
+      "sha256": "a23345a4ebd47078beaf689c74bc84cc81954cdf4a8008cdb918ace04f187b0c",
+      "size_mb": 1.91,
+      "path": "veach-mis/scene-v4.pbrt",
+      "note": "Benedikt Bitterli's resource pack; also ships a Tungsten reference render (TungstenRender.exr) alongside the scene description."
+    }
   },
-  "camera": {
-    "position": [
-      0,
-      2,
-      15
-    ],
-    "look_at": [
-      0,
-      1.69,
-      0
-    ],
-    "up": [
-      0,
-      1,
-      0
-    ],
-    "fov": 20
+  "reference": {
+    "renderer": "pbrt",
+    "samples": 65536,
+    "image": "reference.exr"
   },
+  "thumbnail": "/renders/veach-mis/thumbnail.webp",
   "renders": [
     {
       "renderer_id": "mitsuba3",
@@ -62,5 +62,22 @@
       "integrator": "path"
     }
   ],
-  "thumbnail": "/renders/veach-mis/thumbnail.webp"
+  "camera": {
+    "position": [
+      0,
+      2,
+      15
+    ],
+    "look_at": [
+      0,
+      1.69,
+      0
+    ],
+    "up": [
+      0,
+      1,
+      0
+    ],
+    "fov": 20
+  }
 }

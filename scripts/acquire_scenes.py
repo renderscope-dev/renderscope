@@ -6,6 +6,11 @@ Downloads standard benchmark scenes from their official public sources into
 the assets/scenes/ directory. Scenes are used by the benchmark runner to
 produce fair, apples-to-apples visual and performance comparisons.
 
+Sources come from the scene catalog (``data/scenes/*.json``), the same place the
+CLI's ``renderscope download-scenes`` reads them from. They used to be a
+hardcoded table here, which drifted: it still pointed at Blender demo URLs that
+now answer 403, and it disagreed with the catalog about which formats exist.
+
 Usage:
     python scripts/acquire_scenes.py                     # Download all scenes
     python scripts/acquire_scenes.py --scene cornell-box # Download one scene
@@ -85,12 +90,14 @@ console = Console() if HAS_RICH else None
 
 @dataclass
 class DownloadEntry:
-    """A single file to download for a scene."""
+    """A single file to download for one format of a scene."""
 
     url: str
     filename: str
+    fmt: str
     sha256: Optional[str] = None
     extract: bool = False
+    size_mb: float = 0.0
 
 
 @dataclass
@@ -121,108 +128,79 @@ class DownloadResult:
 # Scene source registry
 # ---------------------------------------------------------------------------
 
-# Each entry defines where to download a scene from and what files to expect.
-# URLs point to public, freely available resources.
-# SHA-256 hashes are provided where known; None means skip hash verification.
+# Derived from data/scenes/*.json so this script, the CLI and the website cannot
+# disagree about where a scene comes from or which formats exist. Add a format
+# to the catalog's "sources" block and it appears here.
 
-SCENE_SOURCES: list[SceneSource] = [
-    SceneSource(
-        id="cornell-box",
-        name="Cornell Box",
-        urls=[
-            DownloadEntry(
-                url="https://casual-effects.com/g3d/data10/common/model/CornellBox/CornellBox.zip",
-                filename="CornellBox.zip",
-                extract=True,
-            ),
-        ],
-        expected_files=["CornellBox-Original.obj"],
-        total_size_mb=0.3,
-    ),
-    SceneSource(
-        id="sponza",
-        name="Sponza Atrium",
-        urls=[
-            DownloadEntry(
-                url="https://casual-effects.com/g3d/data10/common/model/crytek_sponza/sponza.zip",
-                filename="sponza.zip",
-                extract=True,
-            ),
-        ],
-        expected_files=["sponza.obj"],
-        total_size_mb=76.0,
-    ),
-    SceneSource(
-        id="stanford-bunny",
-        name="Stanford Bunny",
-        urls=[
-            DownloadEntry(
-                url="https://graphics.stanford.edu/~mdfisher/Data/Meshes/bunny.obj",
-                filename="stanford-bunny.obj",
-            ),
-        ],
-        expected_files=["stanford-bunny.obj"],
-        total_size_mb=0.2,
-    ),
-    SceneSource(
-        id="classroom",
-        name="Classroom",
-        urls=[
-            DownloadEntry(
-                # NOTE: download.blender.org/demo/* now returns 403 to every
-                # user agent. Obtain this scene from
-                # https://www.blender.org/download/demo-files/ by hand.
-                url="https://download.blender.org/demo/test/classroom.zip",
-                filename="classroom.zip",
-                extract=True,
-            ),
-        ],
-        expected_files=["classroom.blend"],
-        total_size_mb=67.0,
-    ),
-    SceneSource(
-        id="bmw",
-        name="BMW M6",
-        urls=[
-            DownloadEntry(
-                # NOTE: download.blender.org/demo/* now returns 403 to every
-                # user agent. Obtain this scene from
-                # https://www.blender.org/download/demo-files/ by hand.
-                url="https://download.blender.org/demo/test/BMW27.blend.zip",
-                filename="bmw.zip",
-                extract=True,
-            ),
-        ],
-        expected_files=["BMW27.blend"],
-        total_size_mb=2.9,
-    ),
-    SceneSource(
-        id="san-miguel",
-        name="San Miguel",
-        urls=[
-            DownloadEntry(
-                url="https://casual-effects.com/g3d/data10/research/model/San_Miguel/San_Miguel.zip",
-                filename="San_Miguel.zip",
-                extract=True,
-            ),
-        ],
-        expected_files=["San_Miguel.obj"],
-        total_size_mb=510.0,
-    ),
-    SceneSource(
-        id="veach-mis",
-        name="Veach MIS",
-        urls=[
-            DownloadEntry(
-                url="https://benedikt-bitterli.me/resources/pbrt-v4/veach-mis.zip",
-                filename="veach-mis.zip",
-                extract=True,
-            ),
-        ],
-        expected_files=["scene-v4.pbrt"],
-        total_size_mb=1.9,
-    ),
-]
+_ARCHIVE_SUFFIXES = (".zip", ".tar.gz", ".tgz", ".tar", ".tar.bz2", ".tar.xz")
+
+
+def _is_archive(url: str) -> bool:
+    """Whether a URL points at an archive rather than a single loose file."""
+    name = url.split("?", 1)[0].rsplit("/", 1)[-1].lower()
+    return name.endswith(_ARCHIVE_SUFFIXES)
+
+
+def load_scene_sources() -> list[SceneSource]:
+    """Build the download registry from the scene catalog.
+
+    Scenes are ordered by the catalog's complexity rating so the cheapest
+    downloads come first, matching ``renderscope download-scenes --list``.
+    """
+    import json
+
+    rank = {"trivial": 0, "low": 1, "medium": 2, "high": 3, "extreme": 4}
+    scenes: list[tuple[int, str, SceneSource]] = []
+
+    for path in sorted((PROJECT_ROOT / "data" / "scenes").glob("*.json")):
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError) as exc:
+            _log_error(f"Could not read {path.name}: {exc}")
+            continue
+
+        scene_id = data.get("id") or path.stem
+        entries: list[DownloadEntry] = []
+        expected: list[str] = []
+
+        for fmt in sorted(data.get("sources") or {}):
+            source = data["sources"][fmt]
+            expected.append(Path(source["path"]).name)
+            url = source.get("url")
+            if not url:
+                # Declared but not hosted anywhere we can fetch from; the CLI
+                # reports these too rather than pretending they are available.
+                continue
+            entries.append(
+                DownloadEntry(
+                    url=url,
+                    filename=source.get("filename") or url.rsplit("/", 1)[-1],
+                    fmt=fmt,
+                    sha256=source.get("sha256"),
+                    extract=_is_archive(url),
+                    size_mb=float(source.get("size_mb", 0.0)),
+                )
+            )
+
+        scenes.append(
+            (
+                rank.get(data.get("complexity", ""), 99),
+                scene_id,
+                SceneSource(
+                    id=scene_id,
+                    name=data.get("name", scene_id),
+                    urls=entries,
+                    expected_files=expected,
+                    total_size_mb=round(sum(e.size_mb for e in entries), 2),
+                ),
+            )
+        )
+
+    scenes.sort(key=lambda row: (row[0], row[1]))
+    return [scene for _, _, scene in scenes]
+
+
+SCENE_SOURCES: list[SceneSource] = load_scene_sources()
 
 SCENE_SOURCE_MAP: dict[str, SceneSource] = {s.id: s for s in SCENE_SOURCES}
 
@@ -448,8 +426,13 @@ def download_scene(
     total_bytes = 0
 
     for entry in scene.urls:
-        dest_path = scene_dir / entry.filename
-        desc = f"{scene.name} / {entry.filename}"
+        # One directory per format: a scene's archives come from unrelated
+        # publishers and several of them unpack a same-named LICENSE.txt, so a
+        # shared directory let one source quietly overwrite another's files.
+        format_dir = scene_dir / entry.fmt
+        format_dir.mkdir(parents=True, exist_ok=True)
+        dest_path = format_dir / entry.filename
+        desc = f"{scene.name} / {entry.fmt} / {entry.filename}"
 
         # Skip if file already exists and not forcing
         if not force and dest_path.exists() and dest_path.stat().st_size > 0:
@@ -487,7 +470,7 @@ def download_scene(
         if entry.extract:
             _log(f"  Extracting {entry.filename}...")
             try:
-                extracted = extract_archive(dest_path, scene_dir)
+                extracted = extract_archive(dest_path, format_dir)
                 if verbose:
                     _log_info(f"  Extracted {len(extracted)} items")
             except RuntimeError as exc:

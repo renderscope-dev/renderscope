@@ -1,6 +1,29 @@
 import { Page } from "@playwright/test";
 
 /**
+ * Tailwind's `md` breakpoint, in CSS pixels.
+ *
+ * `md:` means `min-width: 768px`, so a 768px-wide viewport gets the *desktop*
+ * layout: the navbar's hamburger is `md:hidden` and the header links appear.
+ * Guards written as `width > 768` therefore ran the mobile-only assertions on
+ * the 768x1024 tablet projects, where the hamburger is correctly absent — four
+ * failures on every CI run, caused by the boundary and not by the app.
+ */
+export const MD_BREAKPOINT_PX = 768;
+
+/** True when the viewport is narrow enough to get the mobile layout. */
+export function isMobileLayout(page: Page): boolean {
+  const width = page.viewportSize()?.width;
+  return width !== undefined && width < MD_BREAKPOINT_PX;
+}
+
+/** True when the viewport gets the `md`-and-up layout (768px counts). */
+export function isDesktopLayout(page: Page): boolean {
+  const width = page.viewportSize()?.width;
+  return width !== undefined && width >= MD_BREAKPOINT_PX;
+}
+
+/**
  * Wait for the page to be fully loaded and visually stable.
  * Critical for visual regression tests — all lazy-loaded images,
  * fonts, and animations must settle before screenshot capture.

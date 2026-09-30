@@ -21,14 +21,36 @@
   "source_url": "https://casual-effects.com/data/",
   "license": "CC-BY-3.0",
   "available_formats": [
-    "obj",
-    "pbrt",
-    "gltf",
-    "mitsuba_xml"
+    "obj"
   ],
-  "downloads": {
-    "obj": "https://casual-effects.com/g3d/data10/common/model/crytek_sponza/sponza.zip"
+  "sources": {
+    "obj": {
+      "url": "https://casual-effects.com/g3d/data10/common/model/crytek_sponza/sponza.zip",
+      "sha256": "da005cbee0be2df2abc8513f3ceb61bcb6f69aac112babcd9c00169a27c2770c",
+      "size_mb": 76.4,
+      "path": "sponza.obj"
+    }
   },
+  "reference": {
+    "renderer": "blender-cycles",
+    "samples": 65536,
+    "image": "reference.exr"
+  },
+  "thumbnail": "/renders/sponza/thumbnail.webp",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "renders": [
+    {
+      "renderer_id": "blender-cycles",
+      "image_web": "/renders/sponza/blender-cycles_1920x1080.webp",
+      "image_thumb": "/renders/sponza/blender-cycles_400x225.webp",
+      "render_time_seconds": null,
+      "samples_per_pixel": 1024,
+      "integrator": null
+    }
+  ],
   "camera": {
     "position": [
       -10,
@@ -46,20 +68,5 @@
       0
     ],
     "fov": 60
-  },
-  "resolution": [
-    1920,
-    1080
-  ],
-  "renders": [
-    {
-      "renderer_id": "blender-cycles",
-      "image_web": "/renders/sponza/blender-cycles_1920x1080.webp",
-      "image_thumb": "/renders/sponza/blender-cycles_400x225.webp",
-      "render_time_seconds": null,
-      "samples_per_pixel": 1024,
-      "integrator": null
-    }
-  ],
-  "thumbnail": "/renders/sponza/thumbnail.webp"
+  }
 }

@@ -284,3 +284,10 @@ jobs:
 
       - name: Validate JSON data against schemas
         run: python scripts/validate_data.py
+
+      # The scene catalog is the single source of truth for both halves of the
+      # product: the website renders it and the CLI's manifest.json is generated
+      # from it. This regenerates the manifest and fails on any difference, so
+      # editing one without the other cannot merge.
+      - name: Validate scene catalog and generated manifest
+        run: python scripts/validate_scenes.py

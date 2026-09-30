@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { navigateAndWait } from "../fixtures/test-utils";
+import { isMobileLayout, navigateAndWait } from "../fixtures/test-utils";
 import { NavigationComponent } from "../fixtures/pages";
 
 /**
@@ -9,8 +9,7 @@ import { NavigationComponent } from "../fixtures/pages";
 
 test.describe("Touch: mobile navigation", () => {
   test.beforeEach(async ({ page }) => {
-    const viewport = page.viewportSize();
-    if (!viewport || viewport.width > 768) {
+    if (!isMobileLayout(page)) {
       test.skip();
     }
   });

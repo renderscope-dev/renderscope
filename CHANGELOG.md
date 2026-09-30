@@ -7,6 +7,116 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed — the scene catalog is now a single, verified source of truth
+
+RenderScope described its seven benchmark scenes twice. `data/scenes/*.json` fed
+the website; `python/src/renderscope/data/scenes/manifest.json` fed the CLI.
+Nothing compared them, and they had drifted apart on nearly every field:
+
+- **Two disjoint complexity vocabularies.** The catalog used
+  `trivial/low/medium/high/extreme`, schema-enforced; the manifest used
+  `simple/moderate/complex`, unvalidated.
+- **Format lists that disagreed with each other and with reality.** The site
+  rendered a section headed "Available Formats" listing **22 formats across the
+  seven scenes. Four were obtainable.** Downloading every scene that had a
+  source and listing what landed on disk gave: cornell-box `obj` (site claimed
+  `obj, pbrt, mitsuba_xml, gltf`), sponza `obj` (claimed four), stanford-bunny
+  `obj` (claimed four), veach-mis `pbrt` (claimed two). `glb`/`gltf` was
+  declared for six scenes and delivered for none, which is why the `filament`
+  adapter could not run a single catalog scene.
+- **`camera.look_at` versus `camera.target`** for the same point.
+- **`validate_scenes.py` printed `Manifest is in sync with scene data`** while
+  all of the above was true. It compared only the *set of scene ids*. It was
+  also not run by CI at all.
+
+The most concrete consequence: `renderscope reference --scene cornell-box` — the
+flagship scene, whose manifest nominated PBRT at 65,536 spp as ground truth —
+could never run, because the only archive wired up was an OBJ-only zip and PBRT
+reads only `.pbrt`.
+
+`data/scenes/*.json` is now the only authored description of a scene, and the
+CLI manifest is generated from it.
+
+- **`sources` replaces `downloads`** in `schemas/scene.schema.json`: per format,
+  the archive URL, its SHA-256, its download size, and the path to the entry
+  file inside it. `available_formats` must list exactly the keys of `sources`.
+- **`scripts/generate_scene_manifest.py`** derives the CLI manifest from the
+  catalog, mapping `faces` to `polygon_count` and `camera.look_at` to
+  `camera.target` at that one boundary. The generated file stays committed
+  because the wheel ships it.
+- **`scripts/validate_scenes.py` regenerates the manifest and diffs it byte for
+  byte**, and now runs in CI. Editing one side without the other fails with the
+  offending lines. It also rejects a format that advertises no source, a source
+  with no checksum or size, and a loose-file source whose `filename` and `path`
+  disagree.
+- `scripts/acquire_scenes.py` had a *third* hardcoded copy of the same URLs,
+  including the dead Blender ones. It now derives them from the catalog.
+- The Python test suite asserts that every nominated reference renderer can read
+  at least one format its scene actually offers, which is what made the Cornell
+  Box's ground truth unreachable.
+
+### Added — every scene is downloadable, and each format has its own source
+
+A scene is rarely published as one archive containing every format: the Cornell
+Box's OBJ comes from Morgan McGuire's archive, its PBRT and Mitsuba descriptions
+from Benedikt Bitterli's resource pack. The downloader resolved a single
+`archive_url` per scene, so the other formats were unreachable by construction.
+
+- **Formats are fetched, verified and installed independently**, each into
+  `<scenes_dir>/<scene_id>/<format>/` with its own completion marker. Installing
+  one can neither clobber nor be clobbered by another — several of these archives
+  ship a same-named `LICENSE.txt`. `download-scenes --format pbrt` takes one
+  format; the default takes all of them.
+- **11 sources, covering all 7 scenes and 4 formats that had none.** Each archive
+  was downloaded, its internal layout inspected, and its SHA-256 computed from
+  the bytes that arrived:
+  - cornell-box: `pbrt` and `mitsuba_xml` (Bitterli) — **this is what unblocks
+    `renderscope reference --scene cornell-box`**
+  - veach-mis: `mitsuba_xml` (Bitterli)
+  - stanford-bunny: `ply` (Stanford 3D Scanning Repository's zippered
+    reconstruction)
+  - san-miguel: `obj` (535 MB, layout verified)
+  - classroom and bmw: `blend`, from the nluug Blender mirror.
+    `download.blender.org/demo/*` answers 403 to every user agent, including a
+    browser one; `ftp.nluug.nl/pub/graphics/blender/demo/test/` serves the same
+    files with the same names.
+- `SceneManager` gained `is_format_downloaded`, `installed_formats`,
+  `format_dir`, `describe_formats` and `remove_format`. A format counts as
+  installed only when its marker *and* the file the manifest promises are both
+  present, so a deleted or half-extracted file is reported as missing rather
+  than handed to a renderer.
+- `download-scenes --list` marks each format separately, since a scene is no
+  longer simply downloaded or not.
+- **A checksum proves the bytes, not the layout.** An archive that installs
+  cleanly without containing its declared file is now refused
+  (`SceneFileMissingError`) *before* the completion marker is written, so an
+  upstream repackaging cannot leave a format marked present with nothing
+  readable in it.
+
+### Fixed
+
+- **Error messages named formats the caller did not have.** `renderscope
+  reference` reported `Scene provides: glb, obj, pbrt` — the *declared* list —
+  directly below "cannot read any format", sending readers to look for files
+  that were never downloaded. Both it and the benchmark runner's skip warning
+  now report what is on disk, and `reference` names the command that fetches a
+  format the renderer could actually read.
+- **`download-scenes --list` overflowed an 80-column terminal**, where Rich
+  truncated the Formats column and hid the download status entirely. The table
+  now shrinks to the terminal.
+- **Four cross-browser CI jobs failed on a breakpoint boundary, not a bug.** The
+  `chromium-tablet` project is exactly 768px wide. Tailwind's `md:` means
+  `min-width: 768px`, so that viewport gets the desktop layout and the navbar's
+  `md:hidden` hamburger is correctly absent — but the responsive and touch specs
+  skipped their mobile-only assertions at `width > 768`, so they ran anyway and
+  failed to find it. The guards now use a shared, documented `isMobileLayout()`
+  helper. `webkit-tablet` passed only because iPad (gen 7) is 810px wide.
+- **A unit test downloaded the scene catalog from the internet.**
+  `test_download_all_scenes_message` invoked `download-scenes` for real against
+  the live manifest; with every format now sourced that is ~670 MB per run, on
+  three Python versions. The fetch is stubbed; the Python suite went from 51s to
+  17s.
+
 ### Added — reference renders, so quality metrics can exist at all
 
 `BenchmarkRunner` computes PSNR, SSIM, MSE and a convergence curve the moment
@@ -80,13 +190,10 @@ the manifest the CLI actually reads had none of them.
   "unknown file extension". It now writes through the package's own image
   writer.
 
-**Three scenes remain manual, honestly reported rather than silently broken.**
-`download.blender.org/demo/*` now returns 403 to every user agent, so the
-`classroom` and `bmw` URLs in `scripts/acquire_scenes.py` are dead; their
-`source_url` now points at the Blender demo-files page that does work. The
-`san-miguel` archive is 535 MB and its internal layout was not verified, so no
-`archive_url` is claimed for it. In all three cases `download-scenes` reports
-the source and the directory to place files in, which is what it already did.
+**Three scenes remained manual at the time of this entry** — `classroom` and
+`bmw` because `download.blender.org/demo/*` answers 403, `san-miguel` because
+its 535 MB archive had not been layout-verified. All three are now downloadable;
+see *every scene is downloadable* above.
 
 Verified end to end against live upstream: `download-scenes` (checksums
 enforced) → `benchmark --scenes-dir` → `--publish-dir` → a record with zero

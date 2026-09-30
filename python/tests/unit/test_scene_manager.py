@@ -9,6 +9,7 @@ import pytest
 
 from renderscope.core.scene import (
     FormatNotAvailableError,
+    FormatNotDownloadedError,
     SceneInfo,
     SceneManager,
     SceneManifest,
@@ -31,10 +32,10 @@ _MINIMAL_MANIFEST = {
             "source_url": "https://example.com/test",
             "polygon_count": 100,
             "tests": ["global_illumination"],
-            "complexity": "simple",
+            "complexity": "trivial",
             "formats": {
-                "pbrt": "test-scene/test-scene.pbrt",
-                "obj": "test-scene/test-scene.obj",
+                "pbrt": {"path": "test-scene.pbrt"},
+                "obj": {"path": "test-scene.obj"},
             },
             "reference": {
                 "renderer": "pbrt",
@@ -57,10 +58,10 @@ _MINIMAL_MANIFEST = {
             "source_url": "https://example.com/test2",
             "polygon_count": 5000,
             "tests": ["reflections", "caustics"],
-            "complexity": "moderate",
+            "complexity": "medium",
             "formats": {
-                "blend": "test-scene-2/test-scene-2.blend",
-                "gltf": "test-scene-2/test-scene-2.gltf",
+                "blend": {"path": "test-scene-2.blend"},
+                "gltf": {"path": "test-scene-2.gltf"},
             },
             "reference": None,
             "camera": {
@@ -107,6 +108,22 @@ def scene_manager(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> SceneManag
     scenes_dir = tmp_path / "scenes"
     scenes_dir.mkdir()
     return SceneManager(scenes_dir=scenes_dir)
+
+
+def install_format(
+    manager: SceneManager, scene_id: str, fmt: str, body: str = "scene data"
+) -> Path:
+    """Put a format on disk the way a successful download leaves it.
+
+    Formats install independently into their own directory, so a test that needs
+    one has to create that directory's file *and* its marker — the same pair
+    ``SceneDownloader`` writes.
+    """
+    target = manager.format_dir(scene_id, fmt) / manager.get_scene(scene_id).formats[fmt].path
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(body, encoding="utf-8")
+    manager.mark_format_downloaded(scene_id, fmt)
+    return target
 
 
 # ---------------------------------------------------------------------------
@@ -156,7 +173,7 @@ class TestSceneLookup:
         assert scene.id == "test-scene"
         assert scene.name == "Test Scene"
         assert scene.polygon_count == 100
-        assert scene.complexity == "simple"
+        assert scene.complexity == "trivial"
         assert "pbrt" in scene.formats
         assert "obj" in scene.formats
         assert scene.reference is not None
@@ -186,45 +203,81 @@ class TestSceneLookup:
 
 
 class TestDownloadStatus:
-    """Tests for is_downloaded() and marker file detection."""
+    """Tests for install detection, which is now per format.
 
-    def test_is_downloaded_true(self, scene_manager: SceneManager) -> None:
-        """is_downloaded() returns True when the marker file exists."""
-        scene_dir = scene_manager.scenes_dir / "test-scene"
-        scene_dir.mkdir(parents=True)
-        (scene_dir / ".renderscope-complete").write_text("done", encoding="utf-8")
+    A scene is no longer simply downloaded or not: the Cornell Box's OBJ, PBRT
+    and Mitsuba descriptions come from three unrelated hosts, so having one says
+    nothing about having the others.
+    """
+
+    def test_is_format_downloaded_true(self, scene_manager: SceneManager) -> None:
+        """A format counts as installed when its file and marker are both there."""
+        install_format(scene_manager, "test-scene", "pbrt")
+        assert scene_manager.is_format_downloaded("test-scene", "pbrt") is True
         assert scene_manager.is_downloaded("test-scene") is True
+
+    def test_other_formats_stay_missing(self, scene_manager: SceneManager) -> None:
+        """Installing one format does not imply the rest."""
+        install_format(scene_manager, "test-scene", "pbrt")
+        assert scene_manager.is_format_downloaded("test-scene", "obj") is False
+        assert scene_manager.installed_formats("test-scene") == ["pbrt"]
 
     def test_is_downloaded_false(self, scene_manager: SceneManager) -> None:
         """is_downloaded() returns False when no scene directory exists."""
         assert scene_manager.is_downloaded("test-scene") is False
+        assert scene_manager.installed_formats("test-scene") == []
 
-    def test_is_downloaded_partial(self, scene_manager: SceneManager) -> None:
-        """is_downloaded() returns False when directory exists but marker is missing."""
-        scene_dir = scene_manager.scenes_dir / "test-scene"
-        scene_dir.mkdir(parents=True)
-        # Create a scene file but no marker.
-        (scene_dir / "test-scene.pbrt").write_text("scene data", encoding="utf-8")
+    def test_marker_without_the_file_is_not_downloaded(self, scene_manager: SceneManager) -> None:
+        """A marker alone is not an install.
+
+        The marker records that extraction finished; it cannot vouch for a file
+        that has since been deleted. Reporting the format as present would hand
+        a renderer a path that does not exist.
+        """
+        scene_manager.mark_format_downloaded("test-scene", "pbrt")
+        assert scene_manager.is_format_downloaded("test-scene", "pbrt") is False
         assert scene_manager.is_downloaded("test-scene") is False
 
-    def test_mark_downloaded(self, scene_manager: SceneManager) -> None:
-        """mark_downloaded() creates the completion marker."""
-        scene_manager.mark_downloaded("test-scene")
-        assert scene_manager.is_downloaded("test-scene") is True
+    def test_file_without_the_marker_is_not_downloaded(self, scene_manager: SceneManager) -> None:
+        """A half-extracted directory must not pass for a finished download."""
+        target = scene_manager.format_dir("test-scene", "pbrt") / "test-scene.pbrt"
+        target.parent.mkdir(parents=True)
+        target.write_text("scene data", encoding="utf-8")
+        assert scene_manager.is_format_downloaded("test-scene", "pbrt") is False
 
-    def test_remove_marker(self, scene_manager: SceneManager) -> None:
-        """remove_marker() removes the completion marker."""
-        scene_manager.mark_downloaded("test-scene")
+    def test_undeclared_format_is_never_downloaded(self, scene_manager: SceneManager) -> None:
+        """Files under a directory the manifest never mentions do not count."""
+        stray = scene_manager.format_dir("test-scene", "usd")
+        stray.mkdir(parents=True)
+        (stray / ".renderscope-complete").write_text("done", encoding="utf-8")
+        assert scene_manager.is_format_downloaded("test-scene", "usd") is False
+
+    def test_remove_format_leaves_the_others(self, scene_manager: SceneManager) -> None:
+        """remove_format() discards one format without touching its siblings."""
+        install_format(scene_manager, "test-scene", "pbrt")
+        install_format(scene_manager, "test-scene", "obj")
+
+        scene_manager.remove_format("test-scene", "pbrt")
+
+        assert scene_manager.is_format_downloaded("test-scene", "pbrt") is False
+        assert scene_manager.is_format_downloaded("test-scene", "obj") is True
         assert scene_manager.is_downloaded("test-scene") is True
-        scene_manager.remove_marker("test-scene")
-        assert scene_manager.is_downloaded("test-scene") is False
 
     def test_get_downloaded_scene_ids(self, scene_manager: SceneManager) -> None:
         """get_downloaded_scene_ids() returns only downloaded scenes."""
-        scene_manager.mark_downloaded("test-scene")
+        install_format(scene_manager, "test-scene", "pbrt")
         downloaded = scene_manager.get_downloaded_scene_ids()
         assert "test-scene" in downloaded
         assert "test-scene-2" not in downloaded
+
+    def test_list_scenes_reports_installed_formats(self, scene_manager: SceneManager) -> None:
+        """The CLI's scene table reads its per-format ticks from here."""
+        install_format(scene_manager, "test-scene", "obj")
+        by_id = {s.id: s for s in scene_manager.list_scenes()}
+        assert by_id["test-scene"].installed_formats == ["obj"]
+        assert by_id["test-scene"].is_downloaded is True
+        assert by_id["test-scene-2"].installed_formats == []
+        assert by_id["test-scene-2"].is_downloaded is False
 
 
 # ---------------------------------------------------------------------------
@@ -236,33 +289,50 @@ class TestPathResolution:
     """Tests for get_scene_path() and get_reference_path()."""
 
     def test_get_scene_path(self, scene_manager: SceneManager) -> None:
-        """get_scene_path() returns the correct path for a downloaded scene."""
-        scene_manager.mark_downloaded("test-scene")
+        """Each format resolves inside its own directory."""
+        install_format(scene_manager, "test-scene", "pbrt")
         path = scene_manager.get_scene_path("test-scene", "pbrt")
-        expected = scene_manager.scenes_dir / "test-scene" / "test-scene.pbrt"
+        expected = scene_manager.scenes_dir / "test-scene" / "pbrt" / "test-scene.pbrt"
         assert path == expected
+        assert path.is_file()
+
+    def test_formats_do_not_share_a_directory(self, scene_manager: SceneManager) -> None:
+        """Two sources installing side by side must not be able to collide."""
+        install_format(scene_manager, "test-scene", "pbrt")
+        install_format(scene_manager, "test-scene", "obj")
+        pbrt = scene_manager.get_scene_path("test-scene", "pbrt")
+        obj = scene_manager.get_scene_path("test-scene", "obj")
+        assert pbrt.parent != obj.parent
+        assert pbrt.parent.parent == obj.parent.parent
 
     def test_get_scene_path_not_downloaded(self, scene_manager: SceneManager) -> None:
-        """get_scene_path() raises SceneNotDownloadedError for undownloaded scenes."""
+        """Nothing downloaded at all is reported as a scene-level problem."""
         with pytest.raises(SceneNotDownloadedError, match="test-scene"):
+            scene_manager.get_scene_path("test-scene", "pbrt")
+
+    def test_get_scene_path_format_not_downloaded(self, scene_manager: SceneManager) -> None:
+        """A missing format is a different problem from a missing scene.
+
+        It has a different fix — fetch that one format — so it gets its own
+        error rather than being reported as an absent scene.
+        """
+        install_format(scene_manager, "test-scene", "obj")
+        with pytest.raises(FormatNotDownloadedError, match="pbrt"):
             scene_manager.get_scene_path("test-scene", "pbrt")
 
     def test_get_scene_path_format_not_available(self, scene_manager: SceneManager) -> None:
         """get_scene_path() raises FormatNotAvailableError for unsupported formats."""
-        scene_manager.mark_downloaded("test-scene")
+        install_format(scene_manager, "test-scene", "pbrt")
         with pytest.raises(FormatNotAvailableError, match="usd"):
             scene_manager.get_scene_path("test-scene", "usd")
 
     def test_get_reference_path_downloaded(self, scene_manager: SceneManager) -> None:
-        """get_reference_path() returns the path when reference exists and is downloaded."""
-        scene_manager.mark_downloaded("test-scene")
-        # Create the actual reference file.
+        """The reference sits beside the format directories, not inside one."""
+        install_format(scene_manager, "test-scene", "pbrt")
         ref_path = scene_manager.scenes_dir / "test-scene" / "reference.exr"
-        ref_path.parent.mkdir(parents=True, exist_ok=True)
         ref_path.write_text("fake exr data", encoding="utf-8")
 
-        result = scene_manager.get_reference_path("test-scene")
-        assert result == ref_path
+        assert scene_manager.get_reference_path("test-scene") == ref_path
 
     def test_get_reference_path_not_downloaded(self, scene_manager: SceneManager) -> None:
         """get_reference_path() returns None when scene is not downloaded."""
@@ -271,7 +341,7 @@ class TestPathResolution:
 
     def test_get_reference_path_no_reference(self, scene_manager: SceneManager) -> None:
         """get_reference_path() returns None when scene has no reference."""
-        scene_manager.mark_downloaded("test-scene-2")
+        install_format(scene_manager, "test-scene-2", "blend")
         result = scene_manager.get_reference_path("test-scene-2")
         assert result is None
 
@@ -369,9 +439,9 @@ class TestBundledManifest:
 class TestFormatPresence:
     """A manifest entry promises a path, not a file.
 
-    The `.glb` variants are produced by `scripts/convert_to_gltf.py` and ship
-    with no upstream download, so selecting one handed the adapter a path that
-    did not exist and surfaced as an obscure render failure.
+    Formats arrive independently, so the declared set overstates what a renderer
+    can actually read: choosing a format that has not been fetched hands the
+    adapter a path that does not exist and surfaces as an obscure render failure.
     """
 
     @staticmethod
@@ -387,8 +457,11 @@ class TestFormatPresence:
                     "source_url": "https://example.com",
                     "polygon_count": 1,
                     "tests": [],
-                    "complexity": "simple",
-                    "formats": {"obj": "demo/demo.obj", "glb": "demo/demo.glb"},
+                    "complexity": "trivial",
+                    "formats": {
+                        "obj": {"path": "demo.obj"},
+                        "glb": {"path": "demo.glb"},
+                    },
                     "camera": {
                         "position": [0, 0, 1],
                         "target": [0, 0, 0],
@@ -413,10 +486,7 @@ class TestFormatPresence:
         self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         manager = self._manager(tmp_path, monkeypatch)
-        scene_dir = tmp_path / "scenes" / "demo"
-        scene_dir.mkdir(parents=True)
-        (scene_dir / "demo.obj").write_text("v 0 0 0\n", encoding="utf-8")
-        manager.mark_downloaded("demo")
+        install_format(manager, "demo", "obj", body="v 0 0 0\n")
 
         # glb sorts before obj alphabetically, so a naive picker would take it.
         assert manager.get_compatible_format("demo", ["glb", "obj"]) == "obj"
@@ -425,8 +495,7 @@ class TestFormatPresence:
         self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         manager = self._manager(tmp_path, monkeypatch)
-        (tmp_path / "scenes" / "demo").mkdir(parents=True)
-        manager.mark_downloaded("demo")
+        install_format(manager, "demo", "obj", body="v 0 0 0\n")
 
         assert manager.get_compatible_format("demo", ["glb"]) is None
 
@@ -437,53 +506,105 @@ class TestFormatPresence:
         manager = self._manager(tmp_path, monkeypatch)
         assert manager.get_compatible_format("demo", ["glb"]) == "glb"
 
+    def test_describe_formats_switches_from_declared_to_installed(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Error messages must name what the caller has, not what exists upstream."""
+        manager = self._manager(tmp_path, monkeypatch)
+        assert manager.describe_formats("demo") == "none downloaded (declared: glb, obj)"
 
-class TestBundledManifestSources:
+        install_format(manager, "demo", "obj", body="v 0 0 0\n")
+        assert manager.describe_formats("demo") == "obj"
+
+
+class TestBundledCatalogSources:
     """The shipped manifest is what makes `download-scenes` work at all.
 
-    Every entry that claims a download source must carry enough information to
-    install correctly, and every entry without one must still tell a contributor
-    where to get the scene by hand.
+    It is generated from ``data/scenes/*.json``, so these assertions are really
+    about the catalog: every format it advertises must be obtainable, verifiable,
+    and land where the manifest says it will.
     """
 
     @staticmethod
     def _scenes() -> list[SceneInfo]:
         return SceneManager().list_scenes()
 
-    def test_every_scene_is_either_downloadable_or_documented(self) -> None:
+    def test_every_format_is_either_downloadable_or_documented(self) -> None:
         for scene in self._scenes():
-            if scene.archive_url:
-                continue
-            assert scene.source_url.startswith("http"), (
-                f"{scene.id} has no archive_url, so source_url must tell a "
-                f"contributor where to obtain it"
-            )
+            for fmt, source in scene.formats.items():
+                if source.url:
+                    continue
+                assert scene.source_url.startswith("http"), (
+                    f"{scene.id}/{fmt} has no url, so source_url must tell a "
+                    f"contributor where to obtain it"
+                )
 
     def test_wired_sources_declare_a_checksum(self) -> None:
         """A source we fetch automatically must be verifiable."""
         for scene in self._scenes():
-            if not scene.archive_url:
-                continue
-            assert scene.sha256, f"{scene.id} declares archive_url but no sha256"
-            assert len(scene.sha256) == 64, f"{scene.id} sha256 is not a hex digest"
+            for fmt, source in scene.formats.items():
+                if not source.url:
+                    continue
+                assert source.sha256, f"{scene.id}/{fmt} declares a url but no sha256"
+                assert len(source.sha256) == 64, f"{scene.id}/{fmt} sha256 is not a hex digest"
 
     def test_non_archive_sources_declare_a_target_filename(self) -> None:
         """A bare file has no internal structure to infer a name from."""
         for scene in self._scenes():
-            url = scene.archive_url or ""
-            if not url or url.endswith((".zip", ".tar.gz", ".tgz", ".tar")):
-                continue
-            assert scene.filename, (
-                f"{scene.id} points at a non-archive source ({url}); it needs "
-                f"'filename' so the download lands where 'formats' expects"
+            for fmt, source in scene.formats.items():
+                url = source.url or ""
+                if not url or url.endswith((".zip", ".tar.gz", ".tgz", ".tar")):
+                    continue
+                assert source.filename, (
+                    f"{scene.id}/{fmt} points at a non-archive source ({url}); it "
+                    f"needs 'filename' so the download lands where 'path' expects"
+                )
+
+    def test_declared_filename_is_where_the_path_points(self) -> None:
+        for scene in self._scenes():
+            for fmt, source in scene.formats.items():
+                if not source.filename:
+                    continue
+                assert source.path == source.filename, (
+                    f"{scene.id}/{fmt} saves as '{source.filename}' but 'path' "
+                    f"points at '{source.path}'"
+                )
+
+    def test_wired_sources_declare_a_download_size(self) -> None:
+        """The CLI prints a download plan before spending anyone's bandwidth."""
+        for scene in self._scenes():
+            for fmt, source in scene.formats.items():
+                if not source.url:
+                    continue
+                assert source.size_mb > 0, f"{scene.id}/{fmt} declares no size_mb"
+
+    def test_download_size_is_the_sum_of_its_formats(self) -> None:
+        for scene in self._scenes():
+            expected = round(sum(s.size_mb for s in scene.formats.values()), 2)
+            assert scene.download_size_mb == pytest.approx(expected), (
+                f"{scene.id} advertises {scene.download_size_mb} MB but its "
+                f"formats add up to {expected} MB"
             )
 
-    def test_declared_filename_matches_a_declared_format_path(self) -> None:
+    def test_every_reference_renderer_can_read_a_declared_format(self) -> None:
+        """A nominated ground truth that cannot open the scene is unreachable.
+
+        The Cornell Box nominated PBRT while offering no PBRT description, so
+        `renderscope reference --scene cornell-box` could never run.
+        """
+        from renderscope.core.registry import registry
+
         for scene in self._scenes():
-            if not scene.filename:
+            if scene.reference is None:
                 continue
-            expected = f"{scene.id}/{scene.filename}"
-            assert expected in scene.formats.values(), (
-                f"{scene.id} saves as '{expected}' but no entry in 'formats' "
-                f"points there: {sorted(scene.formats.values())}"
+            adapter = registry.get(scene.reference.renderer)
+            assert adapter is not None, (
+                f"{scene.id} nominates unknown renderer '{scene.reference.renderer}'"
+            )
+            readable = set(adapter.supported_formats()) & set(scene.formats)
+            assert readable, (
+                f"{scene.id} nominates {scene.reference.renderer} as its reference "
+                f"renderer, but that renderer reads "
+                f"{sorted(adapter.supported_formats())} and the scene offers "
+                f"{sorted(scene.formats)}"
             )

@@ -34,12 +34,16 @@ def _flat(output: str) -> str:
 
 @pytest.fixture()
 def downloaded_scene(tmp_path: Path) -> Path:
-    """A scenes directory with cornell-box present and marked downloaded."""
+    """A scenes directory with cornell-box's OBJ installed.
+
+    Formats live in their own directories, so the layout mirrors what
+    ``download-scenes --scene cornell-box --format obj`` leaves behind.
+    """
     scenes = tmp_path / "scenes"
-    scene_dir = scenes / "cornell-box"
-    scene_dir.mkdir(parents=True)
-    (scene_dir / "CornellBox-Original.obj").write_text("v 0 0 0\n", encoding="utf-8")
-    (scene_dir / ".renderscope-complete").write_text("done", encoding="utf-8")
+    obj_dir = scenes / "cornell-box" / "obj"
+    obj_dir.mkdir(parents=True)
+    (obj_dir / "CornellBox-Original.obj").write_text("v 0 0 0\n", encoding="utf-8")
+    (obj_dir / ".renderscope-complete").write_text("done", encoding="utf-8")
     return scenes
 
 
@@ -54,7 +58,6 @@ class TestReferenceTargetPath:
         # Nothing there yet, so the reader correctly reports "no reference".
         assert manager.get_reference_path("cornell-box") is None
 
-        target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(b"exr")
         assert manager.get_reference_path("cornell-box") == target
 
@@ -74,8 +77,8 @@ class TestReferenceTargetPath:
                     "source_url": "https://example.com",
                     "polygon_count": 1,
                     "tests": [],
-                    "complexity": "simple",
-                    "formats": {"obj": "no-ref/a.obj"},
+                    "complexity": "trivial",
+                    "formats": {"obj": {"path": "a.obj"}},
                     "camera": {
                         "position": [0, 0, 1],
                         "target": [0, 0, 0],
@@ -241,10 +244,41 @@ class TestReferenceCommand:
 
     def test_defaults_the_renderer_to_the_manifest_nomination(self, downloaded_scene: Path) -> None:
         """The manifest names the ground-truth renderer; the command honours it."""
-        scene = SceneManager(scenes_dir=downloaded_scene).get_scene("cornell-box")
+        manager = SceneManager(scenes_dir=downloaded_scene)
+        scene = manager.get_scene("cornell-box")
         assert scene.reference is not None
         assert scene.reference.renderer == "pbrt"
         assert scene.reference.samples == 65536
+        # And that renderer can actually read a format the scene ships, or the
+        # nomination would be unreachable however the command behaves.
+        assert "pbrt" in scene.formats
+
+    def test_says_which_format_to_fetch_when_none_is_readable(
+        self, cli_runner: CliRunner, downloaded_scene: Path
+    ) -> None:
+        """Only the OBJ is installed, and PBRT cannot read OBJ.
+
+        Reporting the declared format list here sent readers looking for a file
+        they did not have; the fix names what is on disk and how to get the rest.
+        """
+        result = cli_runner.invoke(
+            app,
+            [
+                "reference",
+                "--scene",
+                "cornell-box",
+                "--renderer",
+                "pbrt",
+                "--scenes-dir",
+                str(downloaded_scene),
+            ],
+        )
+        assert result.exit_code == 1
+        flat = _flat(result.output)
+        if "not installed on this system" in flat:
+            pytest.skip("PBRT is not installed, so the format check is never reached")
+        assert "Scene provides: obj" in flat
+        assert "--format pbrt" in flat
 
     def test_requires_the_scene_to_be_downloaded(
         self, cli_runner: CliRunner, tmp_path: Path

@@ -147,7 +147,8 @@ renderscope/
 ├── data/
 │   ├── renderers/              54 renderer profiles (JSON)
 │   ├── benchmarks/             Benchmark results across scenes and hardware
-│   ├── scenes/                 7 standard benchmark scenes
+│   ├── scenes/                 7 standard benchmark scenes (source of truth for the
+│   │                           CLI's generated scene manifest)
 │   ├── taxonomy.json           Renderer technique classification
 │   └── glossary.json           67 rendering terms
 ├── scripts/                    Automation (benchmarks, data refresh, deployment)
@@ -385,7 +386,8 @@ flowchart LR
 renderscope benchmark --scene cornell-box sponza --renderer pbrt mitsuba3 cycles
 
 # Or step by step
-renderscope download-scenes                                       # Fetch scene assets
+renderscope download-scenes --scene cornell-box                   # Fetch a scene (all formats)
+renderscope download-scenes --scene cornell-box --format pbrt     # Or just one format
 renderscope benchmark --scene cornell-box --renderer pbrt         # Run single benchmark
 renderscope compare reference.exr pbrt_output.exr --metrics all   # Compute metrics
 renderscope report results.json --format html --output report.html # Generate report

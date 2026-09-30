@@ -175,4 +175,75 @@ describe("ImageCompareSlider", () => {
     const skeleton = container.querySelector(".rs-skeleton");
     expect(skeleton).toBeNull();
   });
+
+  // ── Pointer dragging ──────────────────────────────────────────────────────
+  //
+  // jsdom reports every element as 0x0, so `getBoundingClientRect` is stubbed
+  // to give the container a real width; the hook divides by `rect.width`, which
+  // is NaN otherwise.
+
+  /** Give the slider container a measurable box and return it. */
+  function measuredContainer(container: HTMLElement): HTMLElement {
+    const root = container.firstElementChild as HTMLElement;
+    root.getBoundingClientRect = () =>
+      ({ left: 0, top: 0, width: 400, height: 200, right: 400, bottom: 200, x: 0, y: 0 }) as DOMRect;
+    return root;
+  }
+
+  it("moves the divider when a pointer is dragged across it", async () => {
+    const onPositionChange = vi.fn();
+    const { container } = render(
+      <ImageCompareSlider
+        left={mockLeftImage}
+        right={mockRightImage}
+        onPositionChange={onPositionChange}
+      />,
+    );
+    await waitForImageLoad();
+    const root = measuredContainer(container);
+
+    fireEvent.pointerDown(root, { pointerId: 1, clientX: 200, clientY: 100 });
+    fireEvent.pointerMove(root, { pointerId: 1, clientX: 100, clientY: 100 });
+    fireEvent.pointerUp(root, { pointerId: 1, clientX: 100, clientY: 100 });
+
+    expect(screen.getByRole("slider")).toHaveAttribute("aria-valuenow", "25");
+    expect(onPositionChange).toHaveBeenLastCalledWith(0.25);
+  });
+
+  it("stops dragging when the browser cancels the gesture", async () => {
+    // A touch the compositor reclassifies as a scroll fires `pointercancel`
+    // and never a `pointerup`. Without handling it the slider stayed latched in
+    // its dragging state, and the next bare `pointermove` kept moving the
+    // divider with nothing pressed.
+    const { container } = render(
+      <ImageCompareSlider left={mockLeftImage} right={mockRightImage} />,
+    );
+    await waitForImageLoad();
+    const root = measuredContainer(container);
+
+    fireEvent.pointerDown(root, { pointerId: 1, clientX: 200, clientY: 100 });
+    fireEvent.pointerMove(root, { pointerId: 1, clientX: 100, clientY: 100 });
+    expect(screen.getByRole("slider")).toHaveAttribute("aria-valuenow", "25");
+
+    fireEvent.pointerCancel(root, { pointerId: 1, clientX: 100, clientY: 100 });
+
+    // Moving afterwards must not drag: the gesture is over.
+    fireEvent.pointerMove(root, { pointerId: 1, clientX: 360, clientY: 100 });
+    expect(screen.getByRole("slider")).toHaveAttribute("aria-valuenow", "25");
+  });
+
+  it("clamps the divider to the container edges", async () => {
+    const { container } = render(
+      <ImageCompareSlider left={mockLeftImage} right={mockRightImage} />,
+    );
+    await waitForImageLoad();
+    const root = measuredContainer(container);
+
+    fireEvent.pointerDown(root, { pointerId: 1, clientX: 200, clientY: 100 });
+    fireEvent.pointerMove(root, { pointerId: 1, clientX: -500, clientY: 100 });
+    expect(screen.getByRole("slider")).toHaveAttribute("aria-valuenow", "0");
+
+    fireEvent.pointerMove(root, { pointerId: 1, clientX: 9000, clientY: 100 });
+    expect(screen.getByRole("slider")).toHaveAttribute("aria-valuenow", "100");
+  });
 });

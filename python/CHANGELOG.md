@@ -7,7 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Scene formats are now acquired independently, each with its own source.** `SceneInfo.formats` maps a format id to a `SceneFormat` (url, sha256, size, in-archive path) instead of to a bare path string, and the per-scene `archive_url`/`sha256`/`filename` fields are gone. A scene is rarely published as one archive containing every format — the Cornell Box's OBJ, PBRT and Mitsuba descriptions come from three unrelated hosts — so resolving a single archive per scene made the other formats unreachable, and `cornell-box` declared a `pbrt` format no download could produce. Every catalog scene is now downloadable, and `renderscope reference --scene cornell-box` (PBRT at 65,536 spp) can run for the first time.
+- **On-disk layout:** `<scenes_dir>/<scene_id>/<format>/<path>`, with the completion marker inside each format's directory and the reference render beside them at `<scenes_dir>/<scene_id>/`. Formats no longer share a directory, so installing one cannot clobber another — several of these archives ship a same-named `LICENSE.txt`. Scenes downloaded by an earlier version are re-fetched; they live in a cache (`~/.renderscope/scenes/`), not in your project.
+- `data/scenes/manifest.json` is **generated** from the repository's scene catalog (`data/scenes/*.json`) by `scripts/generate_scene_manifest.py`, and CI fails if the two drift. `complexity` therefore now uses the catalog's vocabulary (`trivial`/`low`/`medium`/`high`/`extreme`) rather than the manifest's former `simple`/`moderate`/`complex`.
+
 ### Added
+
+- `renderscope download-scenes --format/-f FMT` (repeatable) — fetch only the formats your renderer reads. San Miguel's OBJ is half a gigabyte; needing the Cornell Box's PBRT description should not mean taking everything. `--list` marks each format separately, because a scene is no longer simply downloaded or not.
+- `SceneManager.is_format_downloaded()`, `installed_formats()`, `format_dir()`, `scene_dir()`, `describe_formats()`, `mark_format_downloaded()`, `remove_format()`. A format counts as installed only when its marker *and* the file the manifest promises are both present, so a deleted or half-extracted file is reported as missing instead of being handed to a renderer.
+- `SceneDownloader.download_format()` and `downloadable_formats()`; `download_scene()` gained `formats=` and reports formats that have no configured source in `DownloadResult.without_source` rather than raising, so one unhostable format cannot block the rest of a scene.
+- `FormatNotDownloadedError` — a declared format that has not been fetched is a different problem from an absent scene, and has a different fix.
+- `SceneFileMissingError` — a checksum proves the bytes arrived intact, not that the archive's layout is what was expected. An archive that installs cleanly without containing its declared file is refused *before* the completion marker is written, so an upstream repackaging cannot leave a format marked present with nothing readable in it.
 
 - `renderscope publish <results.json>` — converts a benchmark run into the schema-conforming records the RenderScope catalog accepts in `data/benchmarks/`, one file per renderer × scene × machine. Supports `--dry-run`, `--hardware-id`/`--hardware-label`, `--notes`, `--submitted-by`, and `--base-dir`. Local and offline: it writes files ready to submit, it never uploads.
 - `renderscope benchmark --publish-dir DIR` (and `--submitted-by`) — measure and publish in one step. If publishing fails the measurements remain in the results file, recoverable with `renderscope publish`.
@@ -17,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Error messages named formats the caller did not have.** `renderscope reference` printed `Scene provides: glb, obj, pbrt` — the *declared* list — directly below "cannot read any format of 'cornell-box'", sending readers to look for files that had never been downloaded. It and the benchmark runner's skip warning now report what is on disk, and `reference` names the `download-scenes --format` command that would fetch something the renderer can read.
+- `download-scenes --list` overflowed an 80-column terminal, where Rich truncated the Formats column and hid the download status entirely. The table now shrinks to the terminal.
 - `_detect_cpu()` treated `platform.processor()`'s architecture strings (`"arm"`, `"amd64"`, …) as CPU model names. On Apple Silicon that returned `"arm"` and skipped the `sysctl machdep.cpu.brand_string` probe entirely, stamping every benchmark with a CPU that identifies nothing. Architecture names are now rejected so the platform-specific probes run.
 
 ### Changed

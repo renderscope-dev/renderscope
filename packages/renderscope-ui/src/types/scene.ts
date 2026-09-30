@@ -42,6 +42,34 @@ export type SceneTestCategory =
   | "hair_fur"
   | "participating_media";
 
+/** How one format of a scene is obtained. */
+export interface SceneSource {
+  /** Entry file path relative to this format's directory. */
+  path: string;
+  /** Where the archive or loose file is downloaded from. */
+  url?: string;
+  /** Archive name relative to a configured scene mirror. */
+  archive?: string;
+  /** Expected SHA-256 of the downloaded bytes, lowercase hex. */
+  sha256?: string;
+  /** Download size in megabytes. */
+  size_mb?: number;
+  /** Name to save the download as when the source is a single loose file. */
+  filename?: string;
+  /** Anything a reader needs to know about this source. */
+  note?: string;
+}
+
+/** The ground-truth render a scene's quality metrics are measured against. */
+export interface SceneReference {
+  renderer: string;
+  samples: number;
+  /** Reference image path relative to the scene's directory. */
+  image: string;
+  url?: string;
+  sha256?: string;
+}
+
 /** Camera position for a standard benchmark view. */
 export interface CameraPosition {
   position: [x: number, y: number, z: number];
@@ -88,8 +116,14 @@ export interface SceneData {
   /** URL to the original source. */
   source_url?: string;
 
-  /** Scene file formats available. */
+  /** Scene file formats available. Mirrors the keys of `sources`. */
   available_formats: string[];
+
+  /** How each format is obtained, keyed by format id. */
+  sources?: Record<string, SceneSource>;
+
+  /** The ground-truth render this scene's quality metrics are measured against. */
+  reference?: SceneReference;
 
   /** Path to a thumbnail image. */
   thumbnail?: string;

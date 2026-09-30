@@ -212,12 +212,21 @@ def reference_cmd(
 
     scene_format = scene_manager.get_compatible_format(scene, adapter.supported_formats())
     if scene_format is None:
-        err_console.print(
-            f"[error]{adapter.display_name} cannot read any format of "
+        message = (
+            f"[error]{adapter.display_name} cannot read any downloaded format of "
             f"'{scene}'.[/error]\n"
             f"Renderer supports: {', '.join(adapter.supported_formats())}\n"
-            f"Scene provides: {', '.join(sorted(scene_info.formats))}"
+            f"Scene provides: {scene_manager.describe_formats(scene)}"
         )
+        # A format the renderer could read may simply not be fetched yet, which
+        # is a different problem from an incompatible scene and has a fix.
+        missing = sorted(set(adapter.supported_formats()) & set(scene_info.formats))
+        if missing:
+            message += (
+                f"\n\nRun 'renderscope download-scenes --scene {scene} "
+                f"--format {missing[0]}' to fetch a format it can read."
+            )
+        err_console.print(message)
         raise typer.Exit(code=1)
 
     _print_plan(scene_info, adapter.display_name, sample_count, width, height, target, scene_format)

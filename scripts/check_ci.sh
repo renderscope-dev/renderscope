@@ -42,6 +42,9 @@ step "Python: pytest"
 step "Data: validate JSON schemas"
 (cd "$ROOT" && python scripts/validate_data.py) && pass "data validation" || fail "data validation"
 
+step "Data: scene catalog and generated manifest"
+(cd "$ROOT" && python scripts/validate_scenes.py) && pass "scene validation" || fail "scene validation"
+
 # ── Web ─────────────────────────────────────────
 step "Web: ESLint"
 (cd "$ROOT/web" && npm run lint) && pass "web lint" || fail "web lint"

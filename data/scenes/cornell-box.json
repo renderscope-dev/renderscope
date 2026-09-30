@@ -20,33 +20,36 @@
   "source_url": "https://www.graphics.cornell.edu/online/box/data.html",
   "license": "Public domain",
   "available_formats": [
-    "obj",
-    "pbrt",
     "mitsuba_xml",
-    "gltf"
+    "obj",
+    "pbrt"
   ],
-  "downloads": {
-    "obj": "https://casual-effects.com/g3d/data10/common/model/CornellBox/CornellBox.zip",
-    "pbrt": "https://benedikt-bitterli.me/resources/pbrt-v4/cornell-box.zip",
-    "mitsuba_xml": "https://benedikt-bitterli.me/resources/mitsuba/cornell-box.zip"
+  "sources": {
+    "mitsuba_xml": {
+      "url": "https://benedikt-bitterli.me/resources/mitsuba/cornell-box.zip",
+      "sha256": "d57ffb9d176d34cc45d3d570b51e75be1dc6a4edc78879ba6fe40e2ce093e645",
+      "size_mb": 3.22,
+      "path": "cornell-box/scene_v3.xml",
+      "note": "Benedikt Bitterli's resource pack; also ships a Tungsten reference render (TungstenRender.exr) alongside the scene description."
+    },
+    "obj": {
+      "url": "https://casual-effects.com/g3d/data10/common/model/CornellBox/CornellBox.zip",
+      "sha256": "f27eaf47afec74b5236ce3095ac02d4256e8ac8610bfdb5a53560c67c2e0d8f1",
+      "size_mb": 0.21,
+      "path": "CornellBox-Original.obj"
+    },
+    "pbrt": {
+      "url": "https://benedikt-bitterli.me/resources/pbrt-v4/cornell-box.zip",
+      "sha256": "3ac9dcd287f7079b23dbc9eaefe19e64c942c0ec3740b328e09d44c2163b835d",
+      "size_mb": 3.22,
+      "path": "cornell-box/scene-v4.pbrt",
+      "note": "Benedikt Bitterli's resource pack; also ships a Tungsten reference render (TungstenRender.exr) alongside the scene description."
+    }
   },
-  "camera": {
-    "position": [
-      278,
-      273,
-      -800
-    ],
-    "look_at": [
-      278,
-      273,
-      0
-    ],
-    "up": [
-      0,
-      1,
-      0
-    ],
-    "fov": 39.3
+  "reference": {
+    "renderer": "pbrt",
+    "samples": 65536,
+    "image": "reference.exr"
   },
   "thumbnail": "/renders/cornell-box/thumbnail.webp",
   "resolution": [
@@ -70,5 +73,23 @@
       "samples_per_pixel": 1024,
       "integrator": "volpath"
     }
-  ]
+  ],
+  "camera": {
+    "position": [
+      278,
+      273,
+      -800
+    ],
+    "look_at": [
+      278,
+      273,
+      0
+    ],
+    "up": [
+      0,
+      1,
+      0
+    ],
+    "fov": 39.3
+  }
 }

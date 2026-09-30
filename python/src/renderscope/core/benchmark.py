@@ -623,13 +623,17 @@ class BenchmarkRunner:
                     scene_id, adapter.supported_formats()
                 )
                 if fmt is None:
+                    # Report what is on disk rather than what the manifest
+                    # declares: a format that has not been downloaded cannot
+                    # explain a skip, and naming it sends the reader looking in
+                    # the wrong place.
                     logger.warning(
                         "Skipping %s x %s — no compatible format. "
                         "Renderer supports: %s. Scene has: %s.",
                         adapter.display_name,
                         scene_id,
                         ", ".join(adapter.supported_formats()),
-                        ", ".join(self._scene_manager.get_scene(scene_id).formats.keys()),
+                        self._scene_manager.describe_formats(scene_id),
                     )
                     continue
 

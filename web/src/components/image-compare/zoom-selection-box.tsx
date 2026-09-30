@@ -115,6 +115,10 @@ export function ZoomSelectionBox({
         onPointerDown={handlePointerDown}
         className={cn(
           'absolute z-10 border-2 border-white/80',
+          // Dragged with a pointer, so it must claim the gesture rather than
+          // let the browser treat the swipe as a scroll. See the note in
+          // image-compare-slider.tsx.
+          'touch-none',
           isDragging ? 'cursor-grabbing' : 'cursor-grab',
           animate && !isDragging && 'transition-all duration-150 ease-out',
         )}

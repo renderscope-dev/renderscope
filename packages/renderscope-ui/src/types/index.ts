@@ -40,6 +40,8 @@ export type {
   LightType,
   SceneTestCategory,
   CameraPosition,
+  SceneSource,
+  SceneReference,
   SceneData,
 } from "./scene";
 

@@ -10,10 +10,20 @@ test.skip(
   "Touch gestures only apply to touch-capable projects"
 );
 
-
 /**
  * Touch interaction tests for the image comparison slider.
- * Verifies that the slider handle responds to touch drag gestures.
+ *
+ * What these cover is deliberately narrow: that real touch input reaches the
+ * component, and that the component claims the gesture rather than letting the
+ * browser treat a horizontal swipe as a scroll. Those are the two things only a
+ * real engine can answer.
+ *
+ * The drag arithmetic itself — position mapping, clamping, and recovering from
+ * a cancelled pointer — is covered by unit tests in
+ * `packages/renderscope-ui/src/components/ImageCompare/ImageCompareSlider.test.tsx`.
+ * It used to be asserted here with `page.mouse`, which Playwright does not
+ * deliver into a touch-emulated Firefox context, so the assertion measured the
+ * harness rather than the app.
  */
 
 test.describe("Touch: image comparison slider", () => {
@@ -29,56 +39,54 @@ test.describe("Touch: image comparison slider", () => {
     }
   });
 
-  test("Slider handle moves on touch drag", async ({ page }) => {
+  test("Slider handle moves on touch", async ({ page }) => {
     const slider = page.locator('[data-testid="image-compare-slider"]');
-    if (!(await slider.isVisible())) {
-      test.skip();
-      return;
-    }
+    await expect(slider).toBeVisible();
+
+    // The slider sits well below the fold on a phone — 651px down a 568px-tall
+    // viewport on the narrowest project. `page.touchscreen` takes viewport
+    // coordinates and silently hits nothing when the target is off-screen, so
+    // the gesture reached no element at all and the handle correctly never
+    // moved. `locator.tap()` auto-scrolls; raw touch input does not.
+    await slider.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(200);
 
     const box = await slider.boundingBox();
-    if (!box) return;
+    expect(box, "slider should have a layout box once visible").not.toBeNull();
 
-    // Find the slider handle/divider
-    const handle = slider
-      .locator(
-        '[data-testid="slider-handle"], [role="slider"], .slider-handle'
-      )
-      .first();
+    const handle = slider.locator('[role="slider"]').first();
+    await expect(handle).toHaveAttribute("aria-valuenow", "50");
+
+    // Touch the quarter point: a press maps straight onto a position, which is
+    // what the first frame of any drag does.
+    await page.touchscreen.tap(
+      Math.round(box!.x + box!.width * 0.25),
+      Math.round(box!.y + box!.height / 2)
+    );
+    await page.waitForTimeout(250);
+
+    await expect(handle).toHaveAttribute("aria-valuenow", "25");
+
     const handleBox = await handle.boundingBox();
+    expect(handleBox, "handle should be on screen").not.toBeNull();
+    expect(handleBox!.x).toBeLessThan(box!.x + box!.width / 2);
+  });
 
-    // Get initial handle position
-    const startX =
-      handleBox ? handleBox.x + handleBox.width / 2 : box.x + box.width / 2;
-    const startY = box.y + box.height / 2;
+  test("Slider claims the horizontal gesture instead of surrendering it", async ({
+    page,
+  }) => {
+    // The divider is dragged with a pointer. Under the default
+    // `touch-action: auto` the compositor treats a horizontal swipe as a
+    // scroll: it fires `pointercancel` immediately after `pointerdown` and
+    // sends no `pointermove`, so on a phone the slider could be tapped but
+    // never dragged. The npm package's `.rs-slider` has always set
+    // `touch-action: none`; the web app's Tailwind copy had not.
+    const slider = page.locator('[data-testid="image-compare-slider"]');
+    await expect(slider).toBeVisible();
 
-    // Simulate touch drag: start at center, drag to the left quarter
-    const targetX = box.x + box.width * 0.25;
-
-    // Tap first to focus the slider
-    await page.touchscreen.tap(startX, startY);
-    await page.waitForTimeout(100);
-
-    // The slider is driven by Pointer events (`use-slider-drag.ts` uses
-    // onPointerDown/Move/Up with setPointerCapture). The previous version
-    // dispatched synthetic TouchEvents, which the component never listens for,
-    // so the handle correctly never moved and the test asserted against a
-    // gesture the app cannot receive. Playwright's mouse emits genuine,
-    // trusted pointer events, which is the same handler a real touch drag
-    // reaches on a touch device.
-    await page.mouse.move(startX, startY);
-    await page.mouse.down();
-    const steps = 10;
-    for (let i = 1; i <= steps; i++) {
-      await page.mouse.move(startX + (targetX - startX) * (i / steps), startY);
-    }
-    await page.mouse.up();
-    await page.waitForTimeout(300);
-
-    const newHandleBox = await handle.boundingBox();
-    if (newHandleBox && handleBox) {
-      // Handle should have moved left
-      expect(newHandleBox.x).toBeLessThan(handleBox.x);
-    }
+    const touchAction = await slider.evaluate(
+      (el) => getComputedStyle(el).touchAction
+    );
+    expect(touchAction).toBe("none");
   });
 });

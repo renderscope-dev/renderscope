@@ -100,6 +100,13 @@ export function ImageCompareSlider({
       data-testid="image-compare-slider"
       className={cn(
         'relative overflow-hidden select-none',
+        // The divider is dragged with a pointer, so the container has to claim
+        // the gesture. With the default `touch-action: auto` a horizontal swipe
+        // is interpreted as a scroll: the browser fires `pointercancel` right
+        // after `pointerdown` and sends no `pointermove`, so on a phone the
+        // slider could be tapped but never dragged. The npm package's
+        // `.rs-slider` has always set this; this Tailwind copy had not.
+        'touch-none',
         'rounded-lg border border-border',
         'bg-muted',
         isDragging

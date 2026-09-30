@@ -21,12 +21,33 @@
   "source_url": "https://pbrt.org/scenes-v4",
   "license": "Free for non-commercial use",
   "available_formats": [
-    "pbrt",
     "obj"
   ],
-  "downloads": {
-    "obj": "https://casual-effects.com/g3d/data10/research/model/San_Miguel/San_Miguel.zip"
+  "sources": {
+    "obj": {
+      "url": "https://casual-effects.com/g3d/data10/research/model/San_Miguel/San_Miguel.zip",
+      "sha256": "85874077735808150e679b3c71d70a37a270cb8833f4911325aa1099da3f7d4a",
+      "size_mb": 510.71,
+      "path": "san-miguel.obj",
+      "note": "Half a gigabyte of geometry and textures; expect a long download."
+    }
   },
+  "reference": {
+    "renderer": "blender-cycles",
+    "samples": 65536,
+    "image": "reference.exr"
+  },
+  "thumbnail": "/renders/san-miguel/thumbnail.webp",
+  "renders": [
+    {
+      "renderer_id": "blender-cycles",
+      "image_web": "/renders/san-miguel/blender-cycles_1920x1080.webp",
+      "image_thumb": "/renders/san-miguel/blender-cycles_400x225.webp",
+      "render_time_seconds": null,
+      "samples_per_pixel": 1024,
+      "integrator": null
+    }
+  ],
   "camera": {
     "position": [
       8,
@@ -44,16 +65,5 @@
       0
     ],
     "fov": 65
-  },
-  "renders": [
-    {
-      "renderer_id": "blender-cycles",
-      "image_web": "/renders/san-miguel/blender-cycles_1920x1080.webp",
-      "image_thumb": "/renders/san-miguel/blender-cycles_400x225.webp",
-      "render_time_seconds": null,
-      "samples_per_pixel": 1024,
-      "integrator": null
-    }
-  ],
-  "thumbnail": "/renders/san-miguel/thumbnail.webp"
+  }
 }

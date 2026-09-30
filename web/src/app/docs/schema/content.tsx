@@ -44,8 +44,9 @@ const schemas = [
     location: "/data/scenes/{id}.json",
     schema: "scene.schema.json",
     description:
-      "One file per standard benchmark scene. Describes geometry complexity, lighting, materials, and what rendering features the scene tests.",
-    required: "id, name, description, complexity, tests, source",
+      "One file per standard benchmark scene. Describes geometry complexity, lighting, materials, what rendering features the scene tests, and where each file format is downloaded from. The Python package's scene manifest is generated from these files, so the CLI and the site never describe a scene differently.",
+    required:
+      "id, name, description, complexity, tests, source, available_formats, sources",
   },
   {
     icon: <Network className="h-5 w-5" />,

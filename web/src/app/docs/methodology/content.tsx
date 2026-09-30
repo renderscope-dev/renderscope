@@ -745,7 +745,15 @@ export function MethodologyPageContent() {
               {
                 title: "Download the scene",
                 content: (
-                  <CodeBlock code="renderscope download-scenes --scene cornell-box" />
+                  <>
+                    <CodeBlock code="renderscope download-scenes --scene cornell-box" />
+                    <p className="mt-3">
+                      Each format is fetched from its own source and verified
+                      against a SHA-256 checksum, so add{" "}
+                      <code>--format pbrt</code> to take only the one your
+                      renderer reads.
+                    </p>
+                  </>
                 ),
               },
               {

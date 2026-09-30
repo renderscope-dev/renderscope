@@ -3,8 +3,13 @@
 RenderScope Scene Metadata Validator
 
 Validates scene metadata JSON files in /data/scenes/ against the scene schema,
-and optionally cross-checks against the actual files on disk and the Python
-package's manifest.json.
+checks that every format the catalog advertises can actually be obtained, and
+confirms the Python package's generated manifest.json still matches the catalog.
+
+The manifest check used to compare only the *set of scene ids*, so it printed
+"in sync" while the two files disagreed about formats, complexity vocabulary and
+camera field names. It now regenerates the manifest and compares it byte for
+byte, which is the only comparison that cannot quietly pass.
 
 Usage:
     python scripts/validate_scenes.py                  # Validate all scenes
@@ -19,6 +24,7 @@ Exit codes:
 from __future__ import annotations
 
 import argparse
+import difflib
 import io
 import json
 import math
@@ -178,7 +184,11 @@ def validate_format_consistency(
     scene_dir: Path,
     check_files: bool,
 ) -> tuple[list[str], list[str]]:
-    """Check format-related consistency.
+    """Check that every advertised format is real and obtainable.
+
+    The website renders ``available_formats`` under a heading that reads
+    "Available Formats". Every entry there is a promise, so each one must name a
+    source, and each source must carry enough detail to fetch and verify.
 
     Returns (errors, warnings).
     """
@@ -186,40 +196,92 @@ def validate_format_consistency(
     warnings: list[str] = []
 
     available_formats = data.get("available_formats", [])
-    downloads = data.get("downloads", {})
+    sources: dict[str, Any] = data.get("sources", {}) or {}
 
-    # Check that downloads keys are a subset of available_formats
-    for fmt in downloads:
-        if fmt not in available_formats:
-            warnings.append(
-                f"  'downloads' contains format '{fmt}' not listed "
-                f"in 'available_formats'"
+    # `available_formats` is the public list and `sources` is the operative one;
+    # they describe the same fact, so a mismatch is always a bug.
+    if sorted(available_formats) != sorted(sources):
+        errors.append(
+            f"  'available_formats' {sorted(available_formats)} does not match "
+            f"'sources' keys {sorted(sources)}"
+        )
+
+    if len(available_formats) != len(set(available_formats)):
+        errors.append("  'available_formats' contains duplicates")
+
+    for fmt in sorted(sources):
+        source = sources[fmt]
+        path = source.get("path", "")
+        if not path:
+            errors.append(f"  source '{fmt}' has no 'path'")
+        elif path.startswith("/") or ".." in Path(path).parts:
+            errors.append(f"  source '{fmt}' path '{path}' escapes the scene directory")
+
+        url = source.get("url")
+        if not url:
+            # Nothing to fetch from is allowed, but then the scene's own
+            # source_url has to tell a contributor where to look.
+            if not str(data.get("source_url", "")).startswith("http"):
+                errors.append(
+                    f"  source '{fmt}' has no 'url' and the scene has no "
+                    f"'source_url' to fall back on"
+                )
+            continue
+
+        sha = source.get("sha256", "")
+        if not sha:
+            errors.append(f"  source '{fmt}' declares a url but no 'sha256'")
+        elif len(sha) != 64 or any(c not in "0123456789abcdef" for c in sha):
+            errors.append(f"  source '{fmt}' sha256 is not a lowercase hex digest")
+
+        if float(source.get("size_mb", 0) or 0) <= 0:
+            errors.append(
+                f"  source '{fmt}' declares a url but no 'size_mb'; the CLI "
+                f"prints a download plan before spending anyone's bandwidth"
             )
+
+        # A loose file has no internal structure to infer a name from, so the
+        # catalog has to say what to save it as — and that has to be where
+        # 'path' points, or the download lands somewhere nothing reads.
+        if not _is_archive_url(url):
+            filename = source.get("filename")
+            if not filename:
+                errors.append(
+                    f"  source '{fmt}' points at a non-archive ({url}); it needs "
+                    f"'filename' so the download lands where 'path' expects"
+                )
+            elif filename != path:
+                errors.append(
+                    f"  source '{fmt}' saves as '{filename}' but 'path' points "
+                    f"at '{path}'"
+                )
 
     # Optionally check files on disk
     if check_files and scene_dir.exists():
-        scene_id = data.get("id", "")
-        for fmt in available_formats:
-            # Check common file extensions
-            extensions = _format_to_extensions(fmt)
-            found = False
-            for ext in extensions:
-                candidate = scene_dir / f"{scene_id}.{ext}"
-                if candidate.exists():
-                    found = True
-                    break
-                # Also check recursively
-                if list(scene_dir.rglob(f"*.{ext}")):
-                    found = True
-                    break
-
-            if not found and fmt not in downloads:
+        for fmt in sorted(sources):
+            expected = Path(sources[fmt].get("path", "")).name
+            if not expected:
+                continue
+            format_dir = scene_dir / fmt
+            found = (format_dir / sources[fmt]["path"]).exists() or bool(
+                list(scene_dir.rglob(expected))
+            )
+            if not found:
                 warnings.append(
-                    f"  Format '{fmt}' listed in available_formats but "
-                    f"no matching file found on disk and no download URL provided"
+                    f"  Format '{fmt}' is declared but '{expected}' was not "
+                    f"found under {scene_dir}"
                 )
 
     return errors, warnings
+
+
+_ARCHIVE_SUFFIXES = (".zip", ".tar.gz", ".tgz", ".tar", ".tar.bz2", ".tar.xz")
+
+
+def _is_archive_url(url: str) -> bool:
+    """Whether a URL points at an archive rather than a single loose file."""
+    name = url.split("?", 1)[0].rsplit("/", 1)[-1].lower()
+    return name.endswith(_ARCHIVE_SUFFIXES)
 
 
 def _format_to_extensions(fmt: str) -> list[str]:
@@ -242,7 +304,12 @@ def validate_manifest_sync(
     scene_ids: set[str],
     verbose: bool,
 ) -> tuple[list[str], list[str]]:
-    """Check that scene JSONs are in sync with the Python package manifest.
+    """Check the generated CLI manifest still matches the scene catalog.
+
+    ``manifest.json`` is derived from ``data/scenes/*.json``, so the honest test
+    is to regenerate it and compare the result with what is committed. Comparing
+    scene ids — which is all this used to do — passes even when the two files
+    disagree about every other field, and it did.
 
     Returns (errors, warnings).
     """
@@ -250,44 +317,58 @@ def validate_manifest_sync(
     warnings: list[str] = []
 
     if not MANIFEST_PATH.exists():
-        if verbose:
-            warnings.append(
-                f"  Manifest file not found: {MANIFEST_PATH.relative_to(PROJECT_ROOT)}. "
-                f"Skipping manifest sync check."
-            )
+        errors.append(
+            f"  Manifest not found: {MANIFEST_PATH.relative_to(PROJECT_ROOT)}. "
+            f"Run: python scripts/generate_scene_manifest.py"
+        )
+        return errors, warnings
+
+    sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
+    try:
+        from generate_scene_manifest import (  # noqa: PLC0415
+            CatalogError,
+            build_manifest,
+            load_catalog,
+            render_manifest,
+        )
+    except ImportError as exc:  # pragma: no cover - a missing sibling script
+        errors.append(f"  Could not import the manifest generator: {exc}")
         return errors, warnings
 
     try:
-        manifest = load_json(MANIFEST_PATH)
-    except (json.JSONDecodeError, OSError) as exc:
-        errors.append(f"  Failed to read manifest: {exc}")
+        expected = render_manifest(build_manifest(load_catalog()))
+    except (CatalogError, KeyError) as exc:
+        errors.append(f"  The catalog cannot be turned into a manifest: {exc}")
         return errors, warnings
 
-    # Manifest can be a list of scene objects or a dict
-    if isinstance(manifest, list):
-        manifest_ids = {entry.get("id", "") for entry in manifest}
-    elif isinstance(manifest, dict):
-        manifest_ids = {entry.get("id", "") for entry in manifest.get("scenes", [])}
-    else:
-        errors.append("  Manifest has unexpected structure (expected list or dict)")
+    actual = MANIFEST_PATH.read_text(encoding="utf-8")
+    if actual == expected:
+        if verbose:
+            warnings.append(
+                f"  {MANIFEST_PATH.relative_to(PROJECT_ROOT)} matches the catalog "
+                f"exactly ({len(scene_ids)} scenes)"
+            )
         return errors, warnings
 
-    # Scenes in data/ but not in manifest
-    missing_from_manifest = scene_ids - manifest_ids
-    if missing_from_manifest:
-        for sid in sorted(missing_from_manifest):
-            warnings.append(
-                f"  Scene '{sid}' exists in data/scenes/ but not in manifest.json"
-            )
-
-    # Scenes in manifest but not in data/
-    extra_in_manifest = manifest_ids - scene_ids
-    if extra_in_manifest:
-        for sid in sorted(extra_in_manifest):
-            warnings.append(
-                f"  Scene '{sid}' exists in manifest.json but not in data/scenes/"
-            )
-
+    diff = list(
+        difflib.unified_diff(
+            actual.splitlines(),
+            expected.splitlines(),
+            fromfile=str(MANIFEST_PATH.relative_to(PROJECT_ROOT)),
+            tofile="generated from data/scenes/",
+            lineterm="",
+            n=1,
+        )
+    )
+    errors.append(
+        f"  {MANIFEST_PATH.relative_to(PROJECT_ROOT)} does not match "
+        f"data/scenes/. Run: python scripts/generate_scene_manifest.py"
+    )
+    # Enough of the diff to see what drifted, without burying the summary.
+    for line in diff[:40]:
+        errors.append(f"    {line}")
+    if len(diff) > 40:
+        errors.append(f"    ... {len(diff) - 40} more diff lines")
     return errors, warnings
 
 
@@ -402,7 +483,8 @@ def main() -> int:
     if manifest_errors:
         for err in manifest_errors:
             print(f"  {FAIL} {err}")
-        failed += len(manifest_errors)
+        # One drift, not one per diff line.
+        failed += 1
     elif manifest_warnings:
         for w in manifest_warnings:
             print(f"  {WARN} {w}")

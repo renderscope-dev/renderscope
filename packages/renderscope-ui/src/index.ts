@@ -46,6 +46,8 @@ export type {
   LightType,
   SceneTestCategory,
   CameraPosition,
+  SceneSource,
+  SceneReference,
   SceneData,
   // Image comparison types
   ComparisonImage,

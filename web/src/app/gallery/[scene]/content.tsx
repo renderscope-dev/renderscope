@@ -28,6 +28,22 @@ const GalleryLightbox = dynamic(
   { ssr: false }
 );
 
+/** Render a download size the way the CLI's plan does. */
+function formatDownloadSize(sizeMb: number): string {
+  if (sizeMb >= 1024) return `${(sizeMb / 1024).toFixed(1)} GB`;
+  if (sizeMb >= 1) return `${Math.round(sizeMb)} MB`;
+  return `${Math.round(sizeMb * 1024)} KB`;
+}
+
+/** The host a scene format is downloaded from, for the link's label. */
+function sourceHost(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "Download";
+  }
+}
+
 interface SceneDetailContentProps {
   scene: SceneData;
   renderers: RendererData[];
@@ -42,6 +58,14 @@ export function SceneDetailContent({
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const renders = scene.renders ?? [];
+
+  // `sources` is the operative list: its keys are what `available_formats`
+  // mirrors, and each entry says where the format is actually fetched from.
+  // Advertising a format with no source is what made these badges untrue.
+  const formatRows = Object.entries(scene.sources ?? {})
+    .map(([format, source]) => ({ format, source }))
+    .sort((a, b) => a.format.localeCompare(b.format));
+  const downloadableFormats = formatRows.filter((row) => row.source.url);
 
   // Build lightbox entries from renders with matching renderer data
   const lightboxEntries = renders
@@ -190,29 +214,77 @@ export function SceneDetailContent({
       </motion.section>
 
       {/* Available formats */}
-      {scene.available_formats.length > 0 && (
+      {formatRows.length > 0 && (
         <motion.section
           className="mb-12"
           initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
         >
-          <h2 className="mb-4 text-xl font-semibold text-foreground">
+          <h2 className="mb-1 text-xl font-semibold text-foreground">
             Available Formats
           </h2>
-          <div className="flex flex-wrap gap-2">
-            {scene.available_formats.map((format) => (
-              <span
+          <p className="mb-4 text-sm text-muted-foreground">
+            Every format below names the archive it comes from, so a benchmark
+            you run locally reads the same geometry these renders were made
+            from.
+          </p>
+
+          <ul className="divide-y divide-border/60 rounded-lg border border-border/60">
+            {formatRows.map(({ format, source }) => (
+              <li
                 key={format}
+                className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3"
+              >
+                <span className="min-w-20 text-sm font-medium text-foreground">
+                  {sceneFormatLabels[format] ?? format.toUpperCase()}
+                </span>
+                {typeof source.size_mb === "number" && source.size_mb > 0 && (
+                  <span className="text-xs tabular-nums text-muted-foreground">
+                    {formatDownloadSize(source.size_mb)}
+                  </span>
+                )}
+                {source.url ? (
+                  <a
+                    href={source.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "ml-auto inline-flex items-center gap-1.5 text-xs",
+                      "text-primary transition-colors hover:text-primary/80"
+                    )}
+                  >
+                    <FileDown className="h-3.5 w-3.5 shrink-0" />
+                    {sourceHost(source.url)}
+                  </a>
+                ) : (
+                  <span className="ml-auto text-xs text-muted-foreground">
+                    Manual download
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+
+          {downloadableFormats.length > 0 && (
+            <div className="mt-4">
+              <p className="mb-2 text-sm text-muted-foreground">
+                Fetch {downloadableFormats.length === formatRows.length
+                  ? "them"
+                  : "the downloadable ones"}{" "}
+                with the CLI:
+              </p>
+              <code
                 className={cn(
-                  "inline-flex items-center rounded-full border border-border/50 px-3 py-1",
-                  "text-xs font-medium text-muted-foreground bg-muted/30"
+                  "block overflow-x-auto rounded-md border border-border/60 bg-muted/40",
+                  "px-3 py-2 text-xs text-foreground"
                 )}
               >
-                {sceneFormatLabels[format] ?? format.toUpperCase()}
-              </span>
-            ))}
-          </div>
+                renderscope download-scenes --scene {scene.id}
+              </code>
+            </div>
+          )}
+
           {scene.source_url && (
             <a
               href={scene.source_url}
@@ -220,8 +292,8 @@ export function SceneDetailContent({
               rel="noopener noreferrer"
               className="mt-3 inline-flex items-center gap-1.5 text-sm text-primary transition-colors hover:text-primary/80"
             >
-              <FileDown className="h-3.5 w-3.5" />
-              Download scene files
+              <ExternalLink className="h-3.5 w-3.5" />
+              Original scene source
             </a>
           )}
         </motion.section>

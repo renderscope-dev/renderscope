@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import {
   navigateAndWait,
   checkNoHorizontalOverflow,
+  isMobileLayout,
 } from "../fixtures/test-utils";
 
 /**
@@ -65,8 +66,7 @@ test.describe("Responsive layout: navigation behavior", () => {
   test("Mobile: hamburger is visible, opens drawer with nav links", async ({
     page,
   }) => {
-    const viewport = page.viewportSize();
-    if (!viewport || viewport.width > 768) {
+    if (!isMobileLayout(page)) {
       test.skip();
       return;
     }
@@ -96,8 +96,7 @@ test.describe("Responsive layout: navigation behavior", () => {
   });
 
   test("Mobile: hamburger drawer closes on link click", async ({ page }) => {
-    const viewport = page.viewportSize();
-    if (!viewport || viewport.width > 768) {
+    if (!isMobileLayout(page)) {
       test.skip();
       return;
     }

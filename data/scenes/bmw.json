@@ -20,13 +20,33 @@
   "source_url": "https://www.blender.org/download/demo-files/",
   "license": "CC0-1.0",
   "available_formats": [
-    "blend",
-    "gltf",
-    "obj"
+    "blend"
   ],
-  "downloads": {
-    "blend": "https://download.blender.org/demo/test/BMW27.blend.zip"
+  "sources": {
+    "blend": {
+      "url": "https://ftp.nluug.nl/pub/graphics/blender/demo/test/BMW27.blend.zip",
+      "sha256": "08170de260488c14855a13db81c8d5ad844bc6162c3db13e1d9ba8094f55fe2b",
+      "size_mb": 2.87,
+      "path": "BMW27.blend",
+      "note": "Served from the nluug Blender mirror: download.blender.org now refuses automated requests with HTTP 403."
+    }
   },
+  "reference": {
+    "renderer": "blender-cycles",
+    "samples": 65536,
+    "image": "reference.exr"
+  },
+  "thumbnail": "/renders/bmw/thumbnail.webp",
+  "renders": [
+    {
+      "renderer_id": "blender-cycles",
+      "image_web": "/renders/bmw/blender-cycles_1920x1080.webp",
+      "image_thumb": "/renders/bmw/blender-cycles_400x225.webp",
+      "render_time_seconds": null,
+      "samples_per_pixel": 1024,
+      "integrator": null
+    }
+  ],
   "camera": {
     "position": [
       5,
@@ -44,16 +64,5 @@
       0
     ],
     "fov": 45
-  },
-  "renders": [
-    {
-      "renderer_id": "blender-cycles",
-      "image_web": "/renders/bmw/blender-cycles_1920x1080.webp",
-      "image_thumb": "/renders/bmw/blender-cycles_400x225.webp",
-      "render_time_seconds": null,
-      "samples_per_pixel": 1024,
-      "integrator": null
-    }
-  ],
-  "thumbnail": "/renders/bmw/thumbnail.webp"
+  }
 }

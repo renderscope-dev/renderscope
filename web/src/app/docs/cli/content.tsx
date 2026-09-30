@@ -7,7 +7,15 @@ import { PageHeader } from "@/components/page-header";
 
 const cliCommands = [
   { cmd: "renderscope list", comment: "List detected renderers" },
+  {
+    cmd: "renderscope download-scenes",
+    comment: "Fetch benchmark scenes (--format picks one)",
+  },
   { cmd: "renderscope benchmark", comment: "Run standardized benchmarks" },
+  {
+    cmd: "renderscope reference",
+    comment: "Render the ground truth quality is measured against",
+  },
   { cmd: "renderscope compare", comment: "Compare rendered images" },
   { cmd: "renderscope report", comment: "Generate HTML reports" },
   { cmd: "renderscope publish", comment: "Prepare results for data/benchmarks/" },
