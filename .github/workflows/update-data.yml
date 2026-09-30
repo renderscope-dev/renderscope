@@ -29,6 +29,32 @@ env:
   # repeated refreshes update one pull request instead of accumulating dozens.
   DATA_BRANCH: automation/renderer-data-refresh
 
+# Pushing the branch and opening the pull request both need a token that is not
+# the automatic GITHUB_TOKEN, because GITHUB_TOKEN cannot do either job here:
+#
+#   * Opening a pull request with it is governed by "Allow GitHub Actions to
+#     create and approve pull requests". That control is greyed out in this
+#     repository because the renderscope-dev organization forbids it, so no
+#     repository-level change can turn it on.
+#   * GitHub also suppresses workflow runs for anything GITHUB_TOKEN pushes, to
+#     stop a workflow triggering itself. That is why no CI run has ever attached
+#     to the data branch, and why the required status checks could never be
+#     satisfied even on the runs where the branch pushed cleanly.
+#
+# A fine-grained personal access token or GitHub App installation token is
+# subject to neither restriction: the pull request opens, and both the branch
+# push and the pull request trigger workflows normally.
+#
+# Set repository secret RS_AUTOMATION_TOKEN, scoped to this repository only:
+#
+#   Contents:      Read and write   (push the data branch)
+#   Pull requests: Read and write   (open and update the pull request)
+#
+# Without it the run still fetches and pushes the data, then fails at the
+# pull-request step with these instructions rather than an opaque error. The
+# token is referenced only by the two steps that need it, so the rest of the job
+# never sees it.
+
 jobs:
   update-github-stats:
     name: Fetch GitHub Stats & Update Data
@@ -48,7 +74,9 @@ jobs:
         with:
           # Fetch full history so branch operations work correctly
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # Persisted for the branch push further down. Pushing with the
+          # automation token is what lets CI run on the data branch at all.
+          token: ${{ secrets.RS_AUTOMATION_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -99,8 +127,11 @@ jobs:
         if: steps.changes.outputs.changed == 'true' && github.event.inputs.dry_run != 'true'
         run: |
           set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Every commit in this repository is authored by the project or its
+          # owner; an automated refresh is no exception. The default
+          # "github-actions[bot]" identity put a tool's name in the history.
+          git config user.name "RenderScope Contributors"
+          git config user.email "ashutoshm1771@gmail.com"
 
           # Recreate the branch from the current main each run so the pull
           # request always shows only the data diff, never stale commits from
@@ -116,7 +147,8 @@ jobs:
       - name: Open or update the pull request
         if: steps.changes.outputs.changed == 'true' && github.event.inputs.dry_run != 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.RS_AUTOMATION_TOKEN || secrets.GITHUB_TOKEN }}
+          USING_PAT: ${{ secrets.RS_AUTOMATION_TOKEN != '' }}
         run: |
           set -uo pipefail
           BODY_FILE="$RUNNER_TEMP/pr-body.md"
@@ -140,17 +172,31 @@ jobs:
               && echo "Opened a pull request." && exit 0
           fi
 
-          # Opening pull requests from Actions is governed by a repository
-          # setting ("Allow GitHub Actions to create and approve pull requests").
-          # When it is off the refreshed data is still safely on the branch, so
-          # say that loudly instead of failing with an opaque permissions error.
+          # The refreshed data is already safely on the branch, so name the
+          # cause and the fix rather than failing with an opaque permissions
+          # error. The most likely cause is the secret not being set: the
+          # automatic GITHUB_TOKEN cannot open pull requests here, and the
+          # organization forbids the setting that would allow it.
           echo "::error::Could not open a pull request automatically."
           {
             echo "### Pull request not created"
             echo
             echo "The refreshed data was pushed to \`$DATA_BRANCH\`, but the pull"
-            echo "request could not be opened. Enable **Settings → Actions → General →**"
-            echo "**Allow GitHub Actions to create and approve pull requests**, or open it manually:"
+            echo "request could not be opened."
+            echo
+            if [ "$USING_PAT" != "true" ]; then
+              echo "This run used the automatic \`GITHUB_TOKEN\`, which is not"
+              echo "permitted to create pull requests in this organization."
+              echo "Set the \`RS_AUTOMATION_TOKEN\` repository secret to a"
+              echo "fine-grained token with **Contents: Read and write** and"
+              echo "**Pull requests: Read and write** on this repository."
+            else
+              echo "\`RS_AUTOMATION_TOKEN\` was used, so check that it has not"
+              echo "expired and still grants **Pull requests: Read and write**"
+              echo "on this repository."
+            fi
+            echo
+            echo "Open it by hand in the meantime:"
             echo
             echo "${{ github.server_url }}/${{ github.repository }}/compare/main...$DATA_BRANCH?expand=1"
           } >> "$GITHUB_STEP_SUMMARY"

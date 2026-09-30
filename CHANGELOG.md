@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed — the weekly catalog refresh can finally open its pull request
+
+Every scheduled run of `update-data.yml` since 2026-08 fetched fresh statistics,
+pushed them to `automation/renderer-data-refresh`, and then failed with
+`GitHub Actions is not permitted to create or approve pull requests`.
+
+The repository setting that governs this — *Allow GitHub Actions to create and
+approve pull requests* — is **greyed out**, because the `renderscope-dev`
+organization forbids it. No repository-level change can turn it on.
+
+A second, quieter failure had the same root cause. `ci.yml` was given a
+`push: automation/**` trigger on the theory that it would attach the required
+checks to a pull request `GITHUB_TOKEN` could not trigger workflows for. It
+never fired once: GitHub suppresses workflow runs for *pushes* made with
+`GITHUB_TOKEN` too. `gh run list` shows no run has ever attached to that branch.
+
+- The branch push and the pull request now use a `RS_AUTOMATION_TOKEN` secret
+  when one is set, falling back to `GITHUB_TOKEN` otherwise. A token that is not
+  `GITHUB_TOKEN` is subject to neither restriction: the pull request opens, and
+  both the push and the pull request trigger workflows normally. It is
+  referenced only by the two steps that need it, so no other step sees it.
+- When the secret is absent the run still fetches and pushes the data, then
+  fails at the pull-request step naming the missing secret and the exact
+  permissions it needs, instead of pointing at a setting that cannot be changed.
+- **Automated commits are no longer authored by `github-actions[bot]`.** The
+  refresh set that identity explicitly, putting a tool's name in the history of
+  a project whose every other commit is the project's own. It now commits as
+  `RenderScope Contributors`.
+
 ### Changed — the scene catalog is now a single, verified source of truth
 
 RenderScope described its seven benchmark scenes twice. `data/scenes/*.json` fed
