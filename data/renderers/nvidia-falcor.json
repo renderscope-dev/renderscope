@@ -39,8 +39,8 @@
   "repository": "https://github.com/NVIDIAGameWorks/Falcor",
   "documentation": "https://github.com/NVIDIAGameWorks/Falcor/tree/master/docs",
   "first_release": "2017-07-01",
-  "latest_release": "2024-08-19",
-  "latest_release_version": "8.0",
+  "latest_release": "2026-09-21",
+  "latest_release_version": "9.0",
   "status": "active",
   "tags": [
     "research",
@@ -117,9 +117,10 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "github_stars": 3203,
+  "github_stars": 3244,
   "github_stars_trend": [
-    3203
+    3203,
+    3244
   ],
   "commit_activity_52w": [
     0,
@@ -172,12 +173,12 @@
     0,
     0,
     0,
-    0,
+    1,
     0
   ],
-  "contributor_count": 21,
+  "contributor_count": 22,
   "open_issues": 65,
-  "fork_count": 612,
+  "fork_count": 621,
   "install_command": "git clone https://github.com/NVIDIAGameWorks/Falcor && cd Falcor && setup.bat",
   "community_links": {
     "forum": "https://github.com/NVIDIAGameWorks/Falcor/discussions"

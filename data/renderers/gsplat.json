@@ -110,20 +110,12 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "github_stars": 5473,
+  "github_stars": 5742,
   "github_stars_trend": [
-    5473
+    5473,
+    5742
   ],
   "commit_activity_52w": [
-    0,
-    0,
-    3,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
     0,
     0,
     1,
@@ -162,15 +154,24 @@
     45,
     41,
     33,
-    14,
+    15,
     6,
+    2,
+    2,
+    1,
     0,
+    2,
+    0,
+    1,
+    0,
+    0,
+    1,
     0,
     0
   ],
-  "contributor_count": 113,
-  "open_issues": 355,
-  "fork_count": 927,
+  "contributor_count": 116,
+  "open_issues": 369,
+  "fork_count": 975,
   "integrations": [
     "Nerfstudio",
     "PyTorch"

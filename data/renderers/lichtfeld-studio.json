@@ -37,20 +37,12 @@
   "latest_release": "2026-06-24",
   "latest_release_version": "0.5.3",
   "status": "active",
-  "github_stars": 3464,
+  "github_stars": 3795,
   "github_stars_trend": [
-    3464
+    3464,
+    3795
   ],
   "commit_activity_52w": [
-    32,
-    18,
-    38,
-    36,
-    42,
-    29,
-    24,
-    18,
-    8,
     14,
     3,
     18,
@@ -93,11 +85,20 @@
     48,
     12,
     22,
-    21
+    25,
+    35,
+    37,
+    109,
+    50,
+    126,
+    37,
+    79,
+    162,
+    18
   ],
-  "contributor_count": 53,
-  "open_issues": 138,
-  "fork_count": 414,
+  "contributor_count": 63,
+  "open_issues": 235,
+  "fork_count": 469,
   "tags": [
     "gaussian-splatting",
     "3dgs",

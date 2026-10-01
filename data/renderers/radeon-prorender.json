@@ -38,15 +38,15 @@
   "repository": "https://github.com/GPUOpen-LibrariesAndSDKs/RadeonProRenderSDK",
   "documentation": "https://radeon-pro.github.io/RadeonProRenderDocs/",
   "first_release": "2016-01-01",
-  "latest_release": "2025-05-22",
-  "latest_release_version": "3.1.6.patch1",
+  "latest_release": "2026-09-10",
+  "latest_release_version": "3.1.7.1",
   "status": "active",
-  "github_stars": 280,
+  "github_stars": 286,
   "github_stars_trend": [
-    280
+    280,
+    286
   ],
   "commit_activity_52w": [
-    1,
     0,
     0,
     0,
@@ -95,13 +95,14 @@
     0,
     0,
     0,
+    3,
     0,
     0,
     0
   ],
   "contributor_count": 3,
-  "open_issues": 21,
-  "fork_count": 56,
+  "open_issues": 22,
+  "fork_count": 58,
   "tags": [
     "gpu-accelerated",
     "path-tracing",
