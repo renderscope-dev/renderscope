@@ -32,6 +32,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # Persisted for the branch push below; a non-GITHUB_TOKEN push is
+          # what lets CI run on the branch at all.
+          token: ${{ secrets.RS_AUTOMATION_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -86,14 +90,21 @@ jobs:
 
       - name: Propose results as a pull request
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_TOKEN cannot open pull requests here: the organization
+          # forbids the setting that would allow it, and GitHub also suppresses
+          # workflow runs for anything it pushes. See update-data.yml for the
+          # full explanation and the token's required permissions.
+          GH_TOKEN: ${{ secrets.RS_AUTOMATION_TOKEN || secrets.GITHUB_TOKEN }}
           # Branch is per-dispatch so concurrent benchmark runs on different
           # renderers or scenes never overwrite one another's results.
           BENCH_BRANCH: automation/benchmark-${{ github.run_id }}
         run: |
           set -uo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Every commit in this repository is authored by the project or its
+          # owner; an automated one is no exception. The default
+          # "github-actions[bot]" identity put a tool's name in the history.
+          git config user.name "RenderScope Contributors"
+          git config user.email "ashutoshm1771@gmail.com"
           git add data/benchmarks/ logs/benchmarks/
           # Optionally add WebP files if they exist and are small enough
           # --force needed because assets/renders/ is in .gitignore (EXR protection)

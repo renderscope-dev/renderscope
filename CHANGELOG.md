@@ -52,10 +52,13 @@ never fired once: GitHub suppresses workflow runs for *pushes* made with
 - When the secret is absent the run still fetches and pushes the data, then
   fails at the pull-request step naming the missing secret and the exact
   permissions it needs, instead of pointing at a setting that cannot be changed.
-- **Automated commits are no longer authored by `github-actions[bot]`.** The
-  refresh set that identity explicitly, putting a tool's name in the history of
-  a project whose every other commit is the project's own. It now commits as
-  `RenderScope Contributors`.
+- **No automated commit is authored by `github-actions[bot]` any more.** Three
+  workflows set that identity explicitly — `update-data.yml`, `benchmark.yml`
+  and `update-visual-baselines.yml` — putting a tool's name in the history of a
+  project whose every other commit is the project's own. All three now commit as
+  `RenderScope Contributors`, and all three take the automation token, so the
+  benchmark and visual-baseline workflows will not hit the same pull-request
+  failure the data refresh did.
 
 ### Changed — the scene catalog is now a single, verified source of truth
 
