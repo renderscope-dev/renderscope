@@ -91,9 +91,16 @@ jobs:
     needs: build
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    # `checks` because action-hosting-deploy reports the preview URL by
+    # creating a check run (POST /repos/:owner/:repo/check-runs), which the
+    # default read-only token cannot do. Without it the step fails with
+    # "Resource not accessible by integration" after the deploy has already
+    # succeeded. Dormant until now: this job only runs on pull requests, and
+    # the repository had never had one.
     permissions:
       contents: read
       pull-requests: write
+      checks: write
 
     steps:
       - name: Checkout repository

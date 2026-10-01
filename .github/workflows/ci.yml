@@ -4,19 +4,13 @@ on:
   pull_request:
     branches: [main]
   push:
-    # `automation/**` covers branches opened by scheduled workflows.
-    #
-    # This was added believing it would attach checks to a pull request the
-    # default GITHUB_TOKEN could not trigger workflows for. It does not, and
-    # never did: GitHub suppresses workflow runs for *pushes* made with
-    # GITHUB_TOKEN too, so no run has ever fired on the data branch. The real
-    # fix is the RS_AUTOMATION_TOKEN secret in update-data.yml — a
-    # non-GITHUB_TOKEN push triggers this workflow normally, and the pull
-    # request it opens triggers the `pull_request` job above.
-    #
-    # Kept because it does fire when a person pushes to one of these branches
-    # to repair an automated run by hand.
-    branches: [main, 'automation/**']
+    # `main` only. An `automation/**` entry was added here believing it would
+    # attach checks to a pull request the default GITHUB_TOKEN could not
+    # trigger workflows for; it never fired, because GitHub suppresses runs for
+    # pushes made with GITHUB_TOKEN too. RS_AUTOMATION_TOKEN fixed that
+    # properly, and with it the `pull_request` trigger above fires — so keeping
+    # the branch pattern only ran every job twice on the same commit.
+    branches: [main]
 
 concurrency:
   group: ci-${{ github.ref }}

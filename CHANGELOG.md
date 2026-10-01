@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed — two faults the repository's first pull request exposed
+
+Opening a pull request at last ran code paths that had never executed.
+
+- **The preview deploy failed after deploying successfully.**
+  `action-hosting-deploy` reports the preview URL by creating a check run, and
+  `deploy-preview` granted only `contents: read` and `pull-requests: write`, so
+  the call returned `403 Resource not accessible by integration`. Added
+  `checks: write`. The job only runs on pull requests, so nothing had ever
+  reached it.
+- **Every CI job ran twice on the same commit.** `ci.yml` kept an
+  `automation/**` push trigger from when `GITHUB_TOKEN`-created pull requests
+  could not trigger workflows. With `RS_AUTOMATION_TOKEN` the `pull_request`
+  trigger fires properly, making the push trigger pure duplication. Removed.
+- The four required status checks on `main` named no existing job — two were a
+  single job name split on its comma, and one used a hyphen where the job has
+  an em-dash — so no pull request could ever satisfy them. Replaced with the
+  five real job names. The cross-browser suite stays out of the required set:
+  six of its nine projects only run on pushes to `main`, so requiring them
+  would stall every pull request.
+
 ### Fixed — the weekly catalog refresh can finally open its pull request
 
 Every scheduled run of `update-data.yml` since 2026-08 fetched fresh statistics,
