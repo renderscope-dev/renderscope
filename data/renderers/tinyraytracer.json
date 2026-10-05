@@ -30,10 +30,11 @@
   "latest_release": "2019-02-01",
   "latest_release_version": "1.0",
   "status": "archived",
-  "github_stars": 5374,
+  "github_stars": 5377,
   "github_stars_trend": [
     5354,
-    5374
+    5374,
+    5377
   ],
   "commit_activity_52w": [
     0,

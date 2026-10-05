@@ -121,6 +121,7 @@
   "github_stars": 12042,
   "github_stars_trend": [
     11866,
+    12042,
     12042
   ],
   "commit_activity_52w": [
@@ -178,8 +179,8 @@
     0
   ],
   "contributor_count": 244,
-  "open_issues": 959,
-  "fork_count": 1680,
+  "open_issues": 963,
+  "fork_count": 1681,
   "integrations": [
     "gsplat",
     "nerfacc",

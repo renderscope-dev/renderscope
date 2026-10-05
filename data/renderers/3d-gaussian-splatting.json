@@ -108,10 +108,11 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "github_stars": 24052,
+  "github_stars": 24105,
   "github_stars_trend": [
     22831,
-    24052
+    24052,
+    24105
   ],
   "commit_activity_52w": [
     0,
@@ -168,8 +169,8 @@
     0
   ],
   "contributor_count": 12,
-  "open_issues": 714,
-  "fork_count": 3459,
+  "open_issues": 716,
+  "fork_count": 3462,
   "integrations": [],
   "install_command": "git clone https://github.com/graphdeco-inria/gaussian-splatting --recursive && cd gaussian-splatting && pip install -e submodules/diff-gaussian-rasterization submodules/simple-knn",
   "community_links": {

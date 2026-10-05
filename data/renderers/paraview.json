@@ -49,13 +49,13 @@
   "latest_release": "2024-11-01",
   "latest_release_version": "6.2.0",
   "status": "active",
-  "github_stars": 1704,
+  "github_stars": 1706,
   "github_stars_trend": [
     1673,
-    1704
+    1704,
+    1706
   ],
   "commit_activity_52w": [
-    28,
     27,
     39,
     27,
@@ -106,11 +106,12 @@
     24,
     23,
     13,
-    23
+    28,
+    2
   ],
   "contributor_count": 216,
   "open_issues": 8,
-  "fork_count": 493,
+  "fork_count": 494,
   "tags": [
     "scientific-visualization",
     "volume-rendering",

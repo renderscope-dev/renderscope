@@ -41,10 +41,10 @@
   "github_stars": 2782,
   "github_stars_trend": [
     2780,
+    2782,
     2782
   ],
   "commit_activity_52w": [
-    0,
     0,
     0,
     0,
@@ -95,10 +95,11 @@
     0,
     0,
     0,
+    0,
     0
   ],
   "contributor_count": 35,
-  "open_issues": 149,
+  "open_issues": 150,
   "fork_count": 374,
   "tags": [
     "differentiable-rendering",

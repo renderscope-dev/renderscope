@@ -144,17 +144,17 @@
     "/renders/samples/threejs_sample_2.webp",
     "/renders/samples/threejs_sample_3.webp"
   ],
-  "github_stars": 116106,
+  "github_stars": 116243,
   "github_stars_trend": [
     114124,
-    116106
+    116106,
+    116243
   ],
-  "fork_count": 36597,
-  "open_issues": 383,
+  "fork_count": 36610,
+  "open_issues": 388,
   "latest_release_version": "r186",
   "latest_release": "2026-09-24",
   "commit_activity_52w": [
-    27,
     61,
     35,
     67,
@@ -205,7 +205,8 @@
     94,
     40,
     69,
-    27
+    55,
+    36
   ],
   "contributor_count": 363
 }

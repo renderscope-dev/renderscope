@@ -42,13 +42,13 @@
   "latest_release": "2025-08-08",
   "latest_release_version": "0.18.0",
   "status": "active",
-  "github_stars": 5178,
+  "github_stars": 5182,
   "github_stars_trend": [
     5149,
-    5178
+    5178,
+    5182
   ],
   "commit_activity_52w": [
-    0,
     0,
     0,
     2,
@@ -99,10 +99,11 @@
     0,
     0,
     0,
+    0,
     0
   ],
   "contributor_count": 32,
-  "open_issues": 27,
+  "open_issues": 26,
   "fork_count": 629,
   "tags": [
     "differentiable",

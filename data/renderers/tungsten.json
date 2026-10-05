@@ -30,10 +30,11 @@
   "first_release": "2014-01-01",
   "latest_release": "2018-05-17",
   "status": "archived",
-  "github_stars": 1834,
+  "github_stars": 1835,
   "github_stars_trend": [
     1830,
-    1834
+    1834,
+    1835
   ],
   "commit_activity_52w": [
     0,

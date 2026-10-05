@@ -47,13 +47,13 @@
   "latest_release": "2024-10-15",
   "latest_release_version": "9.7.1",
   "status": "active",
-  "github_stars": 3213,
+  "github_stars": 3211,
   "github_stars_trend": [
     3186,
-    3213
+    3213,
+    3211
   ],
   "commit_activity_52w": [
-    75,
     78,
     63,
     53,
@@ -94,7 +94,7 @@
     116,
     124,
     106,
-    109,
+    115,
     174,
     122,
     98,
@@ -103,12 +103,13 @@
     84,
     115,
     68,
-    68,
-    17
+    77,
+    41,
+    7
   ],
   "contributor_count": 257,
   "open_issues": 0,
-  "fork_count": 1310,
+  "fork_count": 1309,
   "tags": [
     "scientific-visualization",
     "volume-rendering",

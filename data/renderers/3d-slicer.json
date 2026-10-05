@@ -46,13 +46,13 @@
   "latest_release": "2024-09-15",
   "latest_release_version": "5.12.4",
   "status": "active",
-  "github_stars": 2642,
+  "github_stars": 2644,
   "github_stars_trend": [
     2557,
-    2642
+    2642,
+    2644
   ],
   "commit_activity_52w": [
-    22,
     7,
     9,
     5,
@@ -103,11 +103,12 @@
     10,
     8,
     34,
-    12
+    15,
+    0
   ],
   "contributor_count": 226,
-  "open_issues": 648,
-  "fork_count": 791,
+  "open_issues": 650,
+  "fork_count": 793,
   "tags": [
     "medical-imaging",
     "volume-rendering",

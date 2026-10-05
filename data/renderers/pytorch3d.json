@@ -40,13 +40,13 @@
   "latest_release": "2025-11-28",
   "latest_release_version": "0.7.9",
   "status": "active",
-  "github_stars": 9972,
+  "github_stars": 9976,
   "github_stars_trend": [
     9939,
-    9972
+    9972,
+    9976
   ],
   "commit_activity_52w": [
-    1,
     0,
     0,
     2,
@@ -97,11 +97,12 @@
     0,
     4,
     0,
-    1
+    1,
+    0
   ],
   "contributor_count": 140,
-  "open_issues": 312,
-  "fork_count": 1468,
+  "open_issues": 314,
+  "fork_count": 1469,
   "tags": [
     "differentiable",
     "pytorch",
