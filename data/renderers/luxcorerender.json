@@ -43,10 +43,10 @@
   "github_stars": 1335,
   "github_stars_trend": [
     1313,
+    1335,
     1335
   ],
   "commit_activity_52w": [
-    11,
     27,
     11,
     17,
@@ -97,10 +97,11 @@
     4,
     32,
     1,
-    0
+    4,
+    1
   ],
-  "contributor_count": 38,
-  "open_issues": 106,
+  "contributor_count": 39,
+  "open_issues": 105,
   "fork_count": 165,
   "tags": [
     "physically-based",

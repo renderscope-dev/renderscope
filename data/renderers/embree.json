@@ -32,13 +32,13 @@
   "latest_release": "2026-04-02",
   "latest_release_version": "4.4.1",
   "status": "active",
-  "github_stars": 2759,
+  "github_stars": 2763,
   "github_stars_trend": [
     2729,
-    2759
+    2759,
+    2763
   ],
   "commit_activity_52w": [
-    3,
     0,
     0,
     1,
@@ -89,11 +89,12 @@
     0,
     0,
     0,
+    0,
     0
   ],
   "contributor_count": 53,
-  "open_issues": 77,
-  "fork_count": 436,
+  "open_issues": 80,
+  "fork_count": 438,
   "tags": [
     "ray-tracing",
     "bvh",

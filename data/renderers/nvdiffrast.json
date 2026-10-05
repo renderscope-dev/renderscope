@@ -36,13 +36,13 @@
   "latest_release": "2025-12-08",
   "latest_release_version": "0.4.0",
   "status": "active",
-  "github_stars": 1925,
+  "github_stars": 1926,
   "github_stars_trend": [
     1894,
-    1925
+    1925,
+    1926
   ],
   "commit_activity_52w": [
-    0,
     0,
     1,
     0,
@@ -51,6 +51,7 @@
     0,
     1,
     12,
+    0,
     0,
     0,
     0,

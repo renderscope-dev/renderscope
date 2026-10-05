@@ -38,10 +38,11 @@
   "latest_release": "2025-07-31",
   "latest_release_version": "1.7.4",
   "status": "active",
-  "github_stars": 28396,
+  "github_stars": 28402,
   "github_stars_trend": [
     28315,
-    28396
+    28396,
+    28402
   ],
   "commit_activity_52w": [
     0,
@@ -98,8 +99,8 @@
     0
   ],
   "contributor_count": 232,
-  "open_issues": 924,
-  "fork_count": 2389,
+  "open_issues": 925,
+  "fork_count": 2390,
   "tags": [
     "programming-language",
     "gpu-computing",

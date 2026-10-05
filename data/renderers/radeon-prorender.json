@@ -41,10 +41,11 @@
   "latest_release": "2026-09-10",
   "latest_release_version": "3.1.7.1",
   "status": "active",
-  "github_stars": 286,
+  "github_stars": 285,
   "github_stars_trend": [
     280,
-    286
+    286,
+    285
   ],
   "commit_activity_52w": [
     0,
@@ -94,8 +95,8 @@
     0,
     0,
     0,
-    0,
     3,
+    0,
     0,
     0,
     0

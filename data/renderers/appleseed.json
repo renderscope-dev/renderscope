@@ -34,13 +34,13 @@
   "latest_release": "2019-09-03",
   "latest_release_version": "2.1.0-beta",
   "status": "maintenance",
-  "github_stars": 2324,
+  "github_stars": 2327,
   "github_stars_trend": [
     2305,
-    2324
+    2324,
+    2327
   ],
   "commit_activity_52w": [
-    0,
     0,
     1,
     0,
@@ -76,6 +76,7 @@
     0,
     0,
     2,
+    0,
     0,
     0,
     0,

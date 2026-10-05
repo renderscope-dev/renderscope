@@ -36,13 +36,13 @@
   "latest_release": "2025-12-25",
   "latest_release_version": "1.10.16",
   "status": "active",
-  "github_stars": 5234,
+  "github_stars": 5236,
   "github_stars_trend": [
     5192,
-    5234
+    5234,
+    5236
   ],
   "commit_activity_52w": [
-    4,
     13,
     4,
     5,
@@ -93,11 +93,12 @@
     0,
     0,
     0,
+    0,
     0
   ],
   "contributor_count": 137,
-  "open_issues": 371,
-  "fork_count": 892,
+  "open_issues": 372,
+  "fork_count": 893,
   "tags": [
     "game-engine",
     "python",

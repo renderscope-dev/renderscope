@@ -31,10 +31,11 @@
   "latest_release": "2025-04-25",
   "latest_release_version": "4.0.2",
   "status": "active",
-  "github_stars": 10673,
+  "github_stars": 10684,
   "github_stars_trend": [
     10557,
-    10673
+    10673,
+    10684
   ],
   "commit_activity_52w": [
     0,

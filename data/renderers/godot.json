@@ -149,17 +149,17 @@
   "sample_renders": [
     "/renders/samples/godot_sample_1.webp"
   ],
-  "github_stars": 118022,
+  "github_stars": 118139,
   "github_stars_trend": [
     114830,
-    118022
+    118022,
+    118139
   ],
-  "fork_count": 26916,
-  "open_issues": 18904,
+  "fork_count": 26949,
+  "open_issues": 18923,
   "latest_release_version": "4.7.2-stable",
   "latest_release": "2026-08-18",
   "commit_activity_52w": [
-    255,
     155,
     200,
     208,
@@ -198,19 +198,20 @@
     177,
     167,
     171,
-    176,
+    177,
     200,
     162,
     146,
     111,
-    151,
-    143,
+    152,
+    144,
     175,
     167,
-    137,
-    124,
+    138,
+    126,
     134,
-    101
+    138,
+    0
   ],
   "contributor_count": 459
 }
