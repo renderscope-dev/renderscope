@@ -40,16 +40,13 @@
   "latest_release": "2026-09-06",
   "latest_release_version": "wheels-v2.11.2",
   "status": "active",
-  "github_stars": 1335,
+  "github_stars": 1340,
   "github_stars_trend": [
     1313,
-    1335
+    1335,
+    1340
   ],
   "commit_activity_52w": [
-    11,
-    27,
-    11,
-    17,
     2,
     5,
     0,
@@ -97,11 +94,15 @@
     4,
     32,
     1,
+    4,
+    9,
+    6,
+    16,
     0
   ],
-  "contributor_count": 38,
-  "open_issues": 106,
-  "fork_count": 165,
+  "contributor_count": 40,
+  "open_issues": 107,
+  "fork_count": 169,
   "tags": [
     "physically-based",
     "unbiased",

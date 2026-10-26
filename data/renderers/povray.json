@@ -34,16 +34,13 @@
   "latest_release": "2021-07-08",
   "latest_release_version": "3.7.0.10",
   "status": "maintenance",
-  "github_stars": 1518,
+  "github_stars": 1519,
   "github_stars_trend": [
     1511,
-    1518
+    1518,
+    1519
   ],
   "commit_activity_52w": [
-    0,
-    0,
-    0,
-    0,
     0,
     0,
     0,
@@ -91,11 +88,15 @@
     0,
     0,
     0,
+    0,
+    2,
+    0,
+    0,
     0
   ],
   "contributor_count": 16,
-  "open_issues": 222,
-  "fork_count": 304,
+  "open_issues": 224,
+  "fork_count": 306,
   "tags": [
     "classic",
     "historical",

@@ -117,10 +117,11 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "github_stars": 3244,
+  "github_stars": 3263,
   "github_stars_trend": [
     3203,
-    3244
+    3244,
+    3263
   ],
   "commit_activity_52w": [
     0,
@@ -169,16 +170,16 @@
     0,
     0,
     0,
-    0,
-    0,
-    0,
-    0,
     1,
+    0,
+    0,
+    0,
+    0,
     0
   ],
   "contributor_count": 22,
-  "open_issues": 65,
-  "fork_count": 621,
+  "open_issues": 67,
+  "fork_count": 628,
   "install_command": "git clone https://github.com/NVIDIAGameWorks/Falcor && cd Falcor && setup.bat",
   "community_links": {
     "forum": "https://github.com/NVIDIAGameWorks/Falcor/discussions"

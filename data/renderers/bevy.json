@@ -137,20 +137,17 @@
   "sample_renders": [
     "/renders/samples/bevy_sample_1.webp"
   ],
-  "github_stars": 48518,
+  "github_stars": 49284,
   "github_stars_trend": [
     47409,
-    48518
+    48518,
+    49284
   ],
-  "fork_count": 4872,
-  "open_issues": 3429,
-  "latest_release_version": "0.19.1",
-  "latest_release": "2026-08-13",
+  "fork_count": 4975,
+  "open_issues": 3520,
+  "latest_release_version": "0.20.0",
+  "latest_release": "2026-10-08",
   "commit_activity_52w": [
-    71,
-    50,
-    34,
-    46,
     44,
     22,
     13,
@@ -198,7 +195,11 @@
     59,
     80,
     55,
-    30
+    45,
+    39,
+    49,
+    61,
+    11
   ],
-  "contributor_count": 435
+  "contributor_count": 436
 }

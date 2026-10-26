@@ -34,19 +34,16 @@
   "paper": "https://doi.org/10.1145/3592433",
   "paper_bibtex": "@article{kerbl20233dgs,\n  title={3D Gaussian Splatting for Real-Time Radiance Field Rendering},\n  author={Kerbl, Bernhard and Kopanas, Georgios and Leimk{\\\"u}hler, Thomas and Drettakis, George},\n  journal={ACM Transactions on Graphics (TOG)},\n  volume={42},\n  number={4},\n  pages={139},\n  year={2023},\n  publisher={ACM},\n  doi={10.1145/3592433}\n}",
   "first_release": "2024-01-15",
-  "latest_release": "2026-06-24",
-  "latest_release_version": "0.5.3",
+  "latest_release": "2026-10-18",
+  "latest_release_version": "0.5.4.1",
   "status": "active",
-  "github_stars": 3795,
+  "github_stars": 3914,
   "github_stars_trend": [
     3464,
-    3795
+    3795,
+    3914
   ],
   "commit_activity_52w": [
-    14,
-    3,
-    18,
-    0,
     1,
     2,
     2,
@@ -94,11 +91,15 @@
     37,
     79,
     162,
-    18
+    89,
+    342,
+    375,
+    74,
+    35
   ],
-  "contributor_count": 63,
-  "open_issues": 235,
-  "fork_count": 469,
+  "contributor_count": 69,
+  "open_issues": 229,
+  "fork_count": 505,
   "tags": [
     "gaussian-splatting",
     "3dgs",

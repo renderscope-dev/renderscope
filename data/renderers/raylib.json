@@ -35,19 +35,16 @@
   "repository": "https://github.com/raysan5/raylib",
   "documentation": "https://www.raylib.com/cheatsheet/cheatsheet.html",
   "first_release": "2013-11-01",
-  "latest_release": "2026-04-23",
-  "latest_release_version": "6.0",
+  "latest_release": "2026-10-15",
+  "latest_release_version": "6.2",
   "status": "active",
-  "github_stars": 34912,
+  "github_stars": 35425,
   "github_stars_trend": [
     34110,
-    34912
+    34912,
+    35425
   ],
   "commit_activity_52w": [
-    16,
-    49,
-    29,
-    32,
     30,
     23,
     88,
@@ -95,11 +92,15 @@
     21,
     22,
     25,
-    11
+    20,
+    33,
+    56,
+    23,
+    6
   ],
-  "contributor_count": 434,
-  "open_issues": 15,
-  "fork_count": 3315,
+  "contributor_count": 433,
+  "open_issues": 14,
+  "fork_count": 3357,
   "tags": [
     "beginner-friendly",
     "c-language",
