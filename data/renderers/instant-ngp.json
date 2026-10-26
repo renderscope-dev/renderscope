@@ -113,16 +113,13 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "github_stars": 17565,
+  "github_stars": 17583,
   "github_stars_trend": [
     17509,
-    17565
+    17565,
+    17583
   ],
   "commit_activity_52w": [
-    3,
-    0,
-    0,
-    0,
     0,
     0,
     0,
@@ -170,11 +167,15 @@
     0,
     0,
     0,
+    0,
+    0,
+    0,
+    0,
     0
   ],
   "contributor_count": 43,
-  "open_issues": 503,
-  "fork_count": 2070,
+  "open_issues": 504,
+  "fork_count": 2064,
   "integrations": [
     "Nerfstudio",
     "tiny-cuda-nn"

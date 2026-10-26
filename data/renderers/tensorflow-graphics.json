@@ -38,16 +38,13 @@
   "latest_release": "2019-05-09",
   "latest_release_version": "1.0.0",
   "status": "maintenance",
-  "github_stars": 2782,
+  "github_stars": 2784,
   "github_stars_trend": [
     2780,
-    2782
+    2782,
+    2784
   ],
   "commit_activity_52w": [
-    0,
-    0,
-    0,
-    0,
     0,
     0,
     0,
@@ -95,10 +92,14 @@
     0,
     0,
     0,
+    0,
+    3,
+    0,
+    0,
     0
   ],
-  "contributor_count": 35,
-  "open_issues": 149,
+  "contributor_count": 36,
+  "open_issues": 145,
   "fork_count": 374,
   "tags": [
     "differentiable-rendering",

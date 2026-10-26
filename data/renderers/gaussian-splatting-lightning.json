@@ -36,16 +36,13 @@
   "latest_release": "2025-04-02",
   "latest_release_version": "0.12.1",
   "status": "active",
-  "github_stars": 1107,
+  "github_stars": 1115,
   "github_stars_trend": [
     1088,
-    1107
+    1107,
+    1115
   ],
   "commit_activity_52w": [
-    3,
-    0,
-    0,
-    0,
     2,
     7,
     3,
@@ -93,11 +90,15 @@
     0,
     0,
     0,
+    0,
+    0,
+    0,
+    0,
     0
   ],
   "contributor_count": 5,
   "open_issues": 32,
-  "fork_count": 85,
+  "fork_count": 87,
   "tags": [
     "gaussian-splatting",
     "pytorch-lightning",

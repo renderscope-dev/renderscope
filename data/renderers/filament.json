@@ -153,16 +153,17 @@
     "/renders/samples/filament_sample_2.webp",
     "/renders/samples/filament_sample_3.webp"
   ],
-  "github_stars": 20549,
+  "github_stars": 20656,
   "github_stars_trend": [
     20312,
-    20549
+    20549,
+    20656
   ],
-  "fork_count": 2271,
-  "open_issues": 217,
-  "latest_release_version": "1.77.2",
-  "latest_release": "2026-09-28",
-  "contributor_count": 231,
+  "fork_count": 2283,
+  "open_issues": 202,
+  "latest_release_version": "1.78.1",
+  "latest_release": "2026-10-21",
+  "contributor_count": 234,
   "commit_activity_52w": [
     18,
     27,

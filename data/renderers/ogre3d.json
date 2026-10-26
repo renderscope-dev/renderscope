@@ -118,16 +118,13 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "github_stars": 1391,
+  "github_stars": 1397,
   "github_stars_trend": [
     1365,
-    1391
+    1391,
+    1397
   ],
   "commit_activity_52w": [
-    1,
-    0,
-    2,
-    2,
     2,
     7,
     10,
@@ -175,11 +172,15 @@
     1,
     0,
     0,
+    0,
+    0,
+    0,
+    0,
     0
   ],
   "contributor_count": 149,
-  "open_issues": 153,
-  "fork_count": 291,
+  "open_issues": 154,
+  "fork_count": 294,
   "integrations": [
     "Blender (community)"
   ],

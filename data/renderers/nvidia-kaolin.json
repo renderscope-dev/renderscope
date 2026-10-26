@@ -42,16 +42,13 @@
   "latest_release": "2025-08-08",
   "latest_release_version": "0.18.0",
   "status": "active",
-  "github_stars": 5178,
+  "github_stars": 5195,
   "github_stars_trend": [
     5149,
-    5178
+    5178,
+    5195
   ],
   "commit_activity_52w": [
-    0,
-    0,
-    0,
-    2,
     0,
     0,
     0,
@@ -99,11 +96,15 @@
     0,
     0,
     0,
+    0,
+    1,
+    1,
+    0,
     0
   ],
-  "contributor_count": 32,
-  "open_issues": 27,
-  "fork_count": 629,
+  "contributor_count": 35,
+  "open_issues": 17,
+  "fork_count": 628,
   "tags": [
     "differentiable",
     "nvidia",
