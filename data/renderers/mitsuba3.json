@@ -40,17 +40,13 @@
   "latest_release": "2026-08-07",
   "latest_release_version": "3.9.0",
   "status": "active",
-  "github_stars": 2936,
+  "github_stars": 2972,
   "github_stars_trend": [
     2865,
-    2936
+    2936,
+    2972
   ],
   "commit_activity_52w": [
-    1,
-    4,
-    0,
-    6,
-    13,
     2,
     1,
     2,
@@ -97,11 +93,16 @@
     37,
     59,
     23,
+    0,
+    1,
+    1,
+    0,
+    0,
     0
   ],
   "contributor_count": 73,
-  "open_issues": 138,
-  "fork_count": 369,
+  "open_issues": 148,
+  "fork_count": 373,
   "tags": [
     "research",
     "differentiable",

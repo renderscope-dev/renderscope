@@ -40,14 +40,10 @@
   "github_stars": 36,
   "github_stars_trend": [
     34,
+    36,
     36
   ],
   "commit_activity_52w": [
-    0,
-    0,
-    0,
-    0,
-    0,
     0,
     0,
     1,
@@ -94,9 +90,14 @@
     0,
     0,
     0,
+    0,
+    0,
+    0,
+    0,
+    0,
     0
   ],
-  "contributor_count": 9,
+  "contributor_count": 8,
   "open_issues": 16,
   "fork_count": 8,
   "tags": [

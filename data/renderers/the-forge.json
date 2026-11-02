@@ -117,17 +117,13 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "github_stars": 5668,
+  "github_stars": 5804,
   "github_stars_trend": [
     5613,
-    5668
+    5668,
+    5804
   ],
   "commit_activity_52w": [
-    0,
-    0,
-    0,
-    0,
-    0,
     0,
     0,
     0,
@@ -174,11 +170,16 @@
     0,
     0,
     0,
+    0,
+    0,
+    0,
+    0,
+    0,
     0
   ],
   "contributor_count": 8,
   "open_issues": 15,
-  "fork_count": 577,
+  "fork_count": 593,
   "install_command": "git clone https://github.com/ConfettiFX/The-Forge",
   "community_links": {
     "discord": "https://discord.gg/hJS54bz",
