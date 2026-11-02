@@ -33,10 +33,11 @@
   "latest_release": "2024-03-14",
   "latest_release_version": "nightly",
   "status": "active",
-  "github_stars": 786,
+  "github_stars": 792,
   "github_stars_trend": [
     776,
-    786
+    786,
+    792
   ],
   "commit_activity_52w": [
     0,

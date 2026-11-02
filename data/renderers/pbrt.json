@@ -38,17 +38,13 @@
   "latest_release": "2023-03-28",
   "latest_release_version": "4.0.0",
   "status": "active",
-  "github_stars": 3722,
+  "github_stars": 3739,
   "github_stars_trend": [
     3649,
-    3722
+    3722,
+    3739
   ],
   "commit_activity_52w": [
-    1,
-    1,
-    21,
-    0,
-    0,
     0,
     0,
     0,
@@ -93,13 +89,18 @@
     0,
     0,
     1,
+    1,
+    0,
+    0,
+    0,
+    0,
     0,
     0,
     0
   ],
-  "contributor_count": 43,
-  "open_issues": 95,
-  "fork_count": 642,
+  "contributor_count": 44,
+  "open_issues": 100,
+  "fork_count": 651,
   "tags": [
     "research",
     "educational",

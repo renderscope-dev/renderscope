@@ -41,10 +41,11 @@
   "latest_release": "2023-01-15",
   "latest_release_version": "0.4.1",
   "status": "maintenance",
-  "github_stars": 1446,
+  "github_stars": 1447,
   "github_stars_trend": [
     1443,
-    1446
+    1446,
+    1447
   ],
   "commit_activity_52w": [
     0,
