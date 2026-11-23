@@ -153,25 +153,18 @@
     "/renders/samples/filament_sample_2.webp",
     "/renders/samples/filament_sample_3.webp"
   ],
-  "github_stars": 20549,
+  "github_stars": 20789,
   "github_stars_trend": [
     20312,
-    20549
+    20549,
+    20789
   ],
-  "fork_count": 2271,
-  "open_issues": 217,
-  "latest_release_version": "1.77.2",
-  "latest_release": "2026-09-28",
-  "contributor_count": 231,
+  "fork_count": 2317,
+  "open_issues": 200,
+  "latest_release_version": "1.81.0",
+  "latest_release": "2026-11-17",
+  "contributor_count": 243,
   "commit_activity_52w": [
-    18,
-    27,
-    21,
-    29,
-    26,
-    13,
-    15,
-    1,
     32,
     39,
     17,
@@ -215,6 +208,14 @@
     23,
     37,
     27,
-    25
+    33,
+    25,
+    32,
+    80,
+    38,
+    34,
+    51,
+    29,
+    3
   ]
 }
