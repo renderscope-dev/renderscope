@@ -36,8 +36,8 @@
   "repository": "https://github.com/turanszkij/WickedEngine",
   "documentation": "https://github.com/turanszkij/WickedEngine/wiki",
   "first_release": "2015-01-01",
-  "latest_release": "2026-08-24",
-  "latest_release_version": "0.72.113",
+  "latest_release": "2026-11-03",
+  "latest_release_version": "0.72.139",
   "status": "active",
   "tags": [
     "game-engine",
@@ -114,20 +114,13 @@
     "open_shading_language": false,
     "materialx": false
   },
-  "github_stars": 7258,
+  "github_stars": 7377,
   "github_stars_trend": [
     7162,
-    7258
+    7258,
+    7377
   ],
   "commit_activity_52w": [
-    11,
-    11,
-    8,
-    18,
-    23,
-    6,
-    17,
-    20,
     9,
     21,
     8,
@@ -171,11 +164,19 @@
     0,
     2,
     10,
-    5
+    5,
+    10,
+    6,
+    9,
+    14,
+    18,
+    21,
+    10,
+    8
   ],
-  "contributor_count": 63,
-  "open_issues": 118,
-  "fork_count": 779,
+  "contributor_count": 66,
+  "open_issues": 113,
+  "fork_count": 812,
   "install_command": "git clone https://github.com/turanszkij/WickedEngine && cd WickedEngine && cmake -B build -S . && cmake --build build --config Release",
   "community_links": {
     "discord": "https://discord.gg/CFjRYmE",

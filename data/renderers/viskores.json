@@ -41,6 +41,7 @@
   "github_stars": 38,
   "github_stars_trend": [
     37,
+    38,
     38
   ],
   "commit_activity_52w": [
@@ -99,7 +100,7 @@
   ],
   "contributor_count": 69,
   "open_issues": 0,
-  "fork_count": 19,
+  "fork_count": 20,
   "tags": [
     "hpc",
     "parallel",
